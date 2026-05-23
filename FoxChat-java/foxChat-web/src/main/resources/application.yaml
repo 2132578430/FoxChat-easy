@@ -1,0 +1,65 @@
+spring:
+  application:
+    name: FoxChat
+  datasource:
+    username: root
+    password: root123
+    url: jdbc:mysql://localhost:3306/FoxChat?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      password: root
+      host: localhost
+      port: 6379
+  mail:
+    host: smtp.qq.com
+    username: 2132578430@qq.com # 替换为你的邮箱
+    password: kxqbnxdkrqqrhfad # 替换为你的授权码
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
+      max-request-size: 10MB
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: admin
+    password: admin
+    listener:
+      simple:
+        acknowledge-mode: manual # 手动ack
+FoxNetty:
+  config:
+    port: 13000
+FoxJwt:
+  Secret: FoxChatSecretKeylhx21wkb
+  Expiration: 86400000
+server:
+  port: 12000
+
+minio:
+  endpoint: http://localhost:9000  # API 地址
+  public-endpoint: http://localhost:9000 # 公网访问地址
+  username: minioadmin           # 账号
+  password: minioadmin           # 密码
+  bucket-name: bedfox-chat         # 桶名字
+
+remote:
+  python-url: http://localhost:8000
+
+Executor:
+  corePoolSize: 10
+  maxPoolSize: 100
+  queueCapacity: 1000
+
+logging:
+  level:
+    com.bedfox.bedfoxchat: debug

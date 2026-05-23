@@ -1,0 +1,56 @@
+[versions]
+# Spring Boot 版本统一
+spring-boot = "3.4.3"
+
+# Spring Cloud
+spring-cloud = "2024.0.0"
+
+# 其他第三方库版本
+lombok = "1.18.30"
+protobuf-java = "4.33.1"
+mybatis-plus = "3.5.5"
+minio = "8.5.2"
+jjwt = "0.9.1"
+jaxb = "2.3.1"
+fastjson2 = "2.0.47"
+commons-lang3 = "3.14.0"
+commons-codec = "1.16.1"
+mysql-connector = "8.0.33"
+netty = "4.1.107.Final"
+
+[libraries]
+# Spring Boot Starters
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
+spring-boot-starter-data-redis = { module = "org.springframework.boot:spring-boot-starter-data-redis" }
+spring-boot-starter-amqp = { module = "org.springframework.boot:spring-boot-starter-amqp" }
+spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }
+spring-boot-starter-mail = { module = "org.springframework.boot:spring-boot-starter-mail" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+
+# Spring Cloud
+spring-cloud-dependencies = { module = "org.springframework.cloud:spring-cloud-dependencies", version.ref = "spring-cloud" }
+spring-cloud-starter-openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign" }
+spring-cloud-starter-loadbalancer = { module = "org.springframework.cloud:spring-cloud-starter-loadbalancer" }
+spring-cloud-starter-alibaba-sentinel = { module = "com.alibaba.cloud:spring-cloud-starter-alibaba-sentinel" }
+#implementation("com.alibaba.cloud:spring-cloud-starter-alibaba-sentinel:2025.1.0.0")
+
+# Database
+mybatis-plus-boot-starter = { module = "com.baomidou:mybatis-plus-spring-boot3-starter", version.ref = "mybatis-plus" }
+mysql-connector-j = { module = "com.mysql:mysql-connector-j", version.ref = "mysql-connector" }
+
+# Utils & Tools
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+fastjson2 = { module = "com.alibaba.fastjson2:fastjson2", version.ref = "fastjson2" }
+commons-lang3 = { module = "org.apache.commons:commons-lang3", version.ref = "commons-lang3" }
+commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }
+
+# Auth & Security
+jjwt = { module = "io.jsonwebtoken:jjwt", version.ref = "jjwt" }
+jaxb-api = { module = "javax.xml.bind:jaxb-api", version.ref = "jaxb" }
+
+# Storage
+minio = { module = "io.minio:minio", version.ref = "minio" }
+
+# Netty & Protocol
+netty-all = { module = "io.netty:netty-all", version.ref = "netty" }
+protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf-java" }

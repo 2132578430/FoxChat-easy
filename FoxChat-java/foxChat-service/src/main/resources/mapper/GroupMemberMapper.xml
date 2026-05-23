@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bedfox.service.mapper.GroupMemberMapper">
+
+    <resultMap id="BaseResultMap" type="com.bedfox.pojo.domain.GroupMember">
+            <id property="id" column="id" />
+            <result property="groupNickname" column="group_nickname" />
+            <result property="userId" column="user_id" />
+            <result property="groupId" column="group_id" />
+            <result property="role" column="role" />
+            <result property="joinTime" column="join_time" />
+            <result property="lastAckMsgId" column="last_ack_msg_id" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,group_nickname,user_id,group_id,role,join_time,
+        last_ack_msg_id
+    </sql>
+    <select id="queryGroupByUserId" resultType="com.bedfox.pojo.vo.GroupVo">
+        SELECT
+            chat_group.id AS id,
+            chat_group.owner_user_id AS ownerUserId,
+            chat_group.group_name AS groupName,
+            chat_group.face_image AS faceImage,
+            chat_group.create_time AS createTime,
+            group_member.role AS role
+        FROM group_member
+        LEFT JOIN chat_group
+        ON group_member.group_id = chat_group.id
+        WHERE group_member.user_id = #{userId}
+    </select>
+</mapper>

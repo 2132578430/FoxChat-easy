@@ -1,0 +1,18 @@
+
+dependencies {
+    implementation project(':foxChat-pojo')
+    implementation project(':foxChat-common')
+
+    implementation libs.spring.boot.starter.amqp
+    implementation libs.spring.boot.starter.web
+    implementation libs.spring.boot.starter.data.redis
+
+    implementation libs.spring.cloud.starter.openfeign
+    implementation libs.spring.cloud.starter.loadbalancer
+
+    implementation libs.mybatis.plus.boot.starter
+    runtimeOnly libs.mysql.connector.j
+
+    implementation libs.commons.codec
+    implementation libs.commons.lang3
+}

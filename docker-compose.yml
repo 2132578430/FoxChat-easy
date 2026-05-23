@@ -1,0 +1,76 @@
+# 定义全局日志配置模板
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "3"
+    compress: "true"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: fox-mysql
+    restart: no
+    logging: *default-logging
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - TZ=Asia/Shanghai 
+    volumes:
+      - ./mysql-docker/data:/var/lib/mysql
+      - ./mysql-docker/log:/var/log/mysql
+      - ./mysql-docker/conf:/etc/mysql/conf.d 
+    ports:
+      - "3306:3306"
+    networks:
+      - chat
+  redis:
+    image: redis:latest
+    container_name: fox-redis
+    restart: no
+    logging: *default-logging
+    ports:
+      - "6379:6379"  # 映射Redis端口
+    volumes:
+      - ./redis-docker/data:/data  # Redis数据持久化
+      - ./redis-docker/conf/redis.conf:/etc/redis/redis.conf 
+    environment:
+    - REDIS_PASSWORD=${REDIS_PASSWORD} 
+    networks:
+      - chat
+    command: redis-server /etc/redis/redis.conf
+  minio:
+    image: minio/minio:latest
+    container_name: fox-minio
+    restart: no
+    # logging: *default-logging
+    ports:
+      - "9000:9000"  # API 端口（代码连接用）
+      - "9001:9001"  # 控制台端口（浏览器访问用）
+    volumes:
+      - ./minio/data:/data  # 数据持久化
+    environment:
+      MINIO_ROOT_USER: minioadmin  # 账号
+      MINIO_ROOT_PASSWORD: minioadmin  # 密码（建议改成复杂的）
+    networks:
+      - chat
+    command: server /data --console-address ":9001"
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: fox-rabbitmq
+    restart: no
+    logging: *default-logging
+    ports:
+      - "5672:5672"   # 消息队列通信端口
+      - "15672:15672" # 管理界面端口
+    volumes:
+      - ./rabbitmq-docker/data:/var/lib/rabbitmq      # 数据持久化
+      - ./rabbitmq-docker/log:/var/log/rabbitmq       # 日志持久化
+      - ./rabbitmq-docker/conf/:/etc/rabbitmq/        # 配置文件路径
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBIT_USER:-admin}      # 默认用户名，如果没有变量就用admin
+      - RABBITMQ_DEFAULT_PASS=${RABBIT_PASSWORD:-admin}  # 默认密码，如果没有变量就用admin
+    networks:
+      - chat
+networks:
+  chat:
+    driver: bridge

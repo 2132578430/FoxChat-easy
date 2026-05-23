@@ -1,0 +1,10 @@
+{
+  "enable_orb": true,
+  "orb_position": {
+    "x": -691,
+    "y": -916
+  },
+  "orb_size": 120,
+  "wakeup_phrase": "你好狐狸",
+  "idle_timeout": 30
+}

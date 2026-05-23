@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bedfox.service.mapper.LlmChatMsgMapper">
+
+    <resultMap id="BaseResultMap" type="com.bedfox.pojo.domain.LlmChatMsg">
+            <id property="id" column="id" />
+            <result property="sendUserId" column="send_user_id" />
+            <result property="createTime" column="create_time" />
+            <result property="status" column="status" />
+            <result property="msgContent" column="msg_content" />
+            <result property="llmId" column="llm_id" />
+            <result property="isHuman" column="isHuman" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,send_user_id,create_time,status,msg_content,llm_id,
+        isHuman
+    </sql>
+    <select id="getMsgHistory" resultType="com.bedfox.pojo.domain.LlmChatMsg">
+        SELECT id, send_user_id, create_time, msg_content, llm_id, is_human
+        FROM llm_chat_msg
+        WHERE llm_id = #{llmId}
+        AND send_user_id = #{userId}
+        AND (
+             create_time &lt; #{lastTime}
+             OR (create_time = #{lastTime} AND id &lt; #{lastId})
+            )
+        ORDER BY create_time DESC, id DESC
+        LIMIT 20
+    </select>
+</mapper>

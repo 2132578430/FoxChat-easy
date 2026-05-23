@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bedfox.service.mapper.ChatGroupMapper">
+
+    <resultMap id="BaseResultMap" type="com.bedfox.pojo.domain.ChatGroup">
+            <id property="id" column="id" />
+            <result property="groupName" column="group_name" />
+            <result property="ownerUserId" column="owner_user_id" />
+            <result property="faceImage" column="face_image" />
+            <result property="createTime" column="create_time" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,group_name,owner_user_id,face_image,create_time
+    </sql>
+
+    <select id="searchGroupWithStatus" resultType="com.bedfox.pojo.vo.GroupVo">
+        SELECT
+            cg.id,
+            cg.group_name AS groupName,
+            cg.owner_user_id AS ownerUserId,
+            cg.face_image AS faceImage,
+            cg.create_time AS createTime,
+            gm.role AS role,
+            (CASE WHEN gm.user_id IS NOT NULL THEN 1 ELSE 0 END) AS isJoined
+        FROM chat_group cg
+        LEFT JOIN group_member gm
+        ON cg.id = gm.group_id AND gm.user_id = #{userId}
+        WHERE cg.group_name LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+</mapper>

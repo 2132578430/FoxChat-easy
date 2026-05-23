@@ -1,0 +1,7 @@
+# 语音模型文件（大文件，不提交）
+*.onnx
+sherpa-onnx-kws-*/
+sherpa-onnx-sensevoice-*/
+
+# 保留 models.md 下载说明
+!models.md

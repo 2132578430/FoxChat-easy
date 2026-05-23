@@ -1,0 +1,13 @@
+dependencies {
+    implementation project(':foxChat-pojo')
+    implementation project(':foxChat-common')
+    implementation project(':foxChat-service')
+
+    implementation libs.spring.boot.starter.data.redis
+
+    implementation libs.mybatis.plus.boot.starter
+
+    implementation libs.netty.all
+    implementation libs.protobuf.java
+    implementation libs.commons.lang3
+}

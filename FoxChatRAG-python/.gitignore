@@ -1,0 +1,32 @@
+# 环境配置（敏感数据）
+.env
+.env.local
+.env.*
+
+# Chroma 本地存储（已迁移到远程）
+store/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 日志
+*.log
+logs/
+
+# 临时文件
+*.tmp
+*.temp
+.cache/

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bedfox.service.mapper.LlmConfigMapper">
+
+    <resultMap id="BaseResultMap" type="com.bedfox.pojo.domain.LlmConfig">
+        <id property="id" column="id"/>
+        <result property="llmId" column="llm_id"/>
+        <result property="scenario" column="scenario"/>
+        <result property="modelName" column="model_name"/>
+        <result property="modelApiKey" column="model_api_key"/>
+        <result property="modelBaseUrl" column="model_base_url"/>
+        <result property="modelTemperature" column="model_temperature"/>
+        <result property="modelMaxTokens" column="model_max_tokens"/>
+        <result property="modelResponseFormat" column="model_response_format"/>
+        <result property="isDefault" column="is_default"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, llm_id, scenario, model_name, model_api_key, model_base_url,
+        model_temperature, model_max_tokens, model_response_format, is_default, created_at
+    </sql>
+
+    <!-- 根据 llmId 查询所有配置 -->
+    <select id="selectByLlmId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM llm_config
+        WHERE llm_id = #{llmId}
+    </select>
+
+    <!-- 根据 llmId 和 scenario 查询配置 -->
+    <select id="selectByLlmIdAndScenario" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM llm_config
+        WHERE llm_id = #{llmId} AND scenario = #{scenario}
+    </select>
+
+    <!-- 批量插入配置 -->
+    <insert id="insertBatch">
+        INSERT INTO llm_config (
+            id, llm_id, scenario, model_name, model_api_key, model_base_url,
+            model_temperature, model_max_tokens, model_response_format, is_default, created_at
+        ) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+                #{item.id}, #{item.llmId}, #{item.scenario}, #{item.modelName},
+                #{item.modelApiKey}, #{item.modelBaseUrl}, #{item.modelTemperature},
+                #{item.modelMaxTokens}, #{item.modelResponseFormat}, #{item.isDefault}, #{item.createdAt}
+            )
+        </foreach>
+    </insert>
+
+    <!-- 更新配置 -->
+    <update id="updateByLlmIdAndScenario">
+        UPDATE llm_config
+        SET
+            model_name = #{modelName},
+            model_api_key = #{modelApiKey},
+            model_base_url = #{modelBaseUrl},
+            model_temperature = #{modelTemperature},
+            model_max_tokens = #{modelMaxTokens},
+            model_response_format = #{modelResponseFormat}
+        WHERE llm_id = #{llmId} AND scenario = #{scenario}
+    </update>
+
+    <!-- 删除配置 -->
+    <delete id="deleteByLlmIdAndScenario">
+        DELETE FROM llm_config
+        WHERE llm_id = #{llmId} AND scenario = #{scenario}
+    </delete>
+
+    <!-- 统计配置数量 -->
+    <select id="countByLlmId" resultType="int">
+        SELECT COUNT(*)
+        FROM llm_config
+        WHERE llm_id = #{llmId}
+    </select>
+</mapper>

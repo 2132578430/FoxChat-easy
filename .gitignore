@@ -1,0 +1,69 @@
+
+.idea/
+.vscode/
+*.swp
+*.iml
+
+.DS_Store
+Thumbs.db
+
+**/node_modules/
+**/target/
+**/build/
+**/.gradle/
+**/.venv/
+**/__pycache__/
+FoxChat-vue/dist_electron/
+FoxChatRAG-python/store/
+
+# AI 工具
+.troe/*
+.trae/*
+.opencode/*
+.claude/*
+.agents/
+openspec/
+
+# 私密配置文件
+.env
+.env.local
+.env.development
+.env.production
+.env.staging
+*.env
+
+# Spring Boot 本地配置覆盖（包含数据库密码/JWT密钥等）
+**/application-local.yml
+**/application-local.yaml
+**/application-local.properties
+
+# API Keys 和敏感信息
+config/secrets.py
+config/local_settings.py
+
+# 日志文件
+*.log
+**/logs/
+
+# SQLite / ChromaDB 本地数据库
+*.db
+chromadb/
+
+# MinIO 本地数据
+minio/
+
+# Docker 本地数据
+mysql-docker/
+redis-docker/
+rabbitmq-docker/
+
+# nginx 本地配置（可能包含域名/IP）
+nginx/
+
+# Temp files
+*.tmp
+*.temp
+*.swp
+*~
+
+.aider*

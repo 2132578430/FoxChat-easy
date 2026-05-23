@@ -1,0 +1,18 @@
+# Build outputs
+bin/
+obj/
+
+# Logs
+*.log
+*.txt
+wakeup_log.txt
+
+# IDE
+.vs/
+*.user
+*.suo
+
+# Python
+__pycache__/
+*.pyc
+.env

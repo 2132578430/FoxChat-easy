@@ -1,0 +1,2 @@
+import"./decorate-C0oFmnNg.js";import{n as e,t}from"./dist-BMnS_qxa.js";import{DotLottieWC as n}from"./dotlottie-wc.js";import{DotLottieWorkerWC as r}from"./dotlottie-worker-wc.js";const i=n=>{e.setWasmUrl(n),t.setWasmUrl(n)};export{n as DotLottieWC,r as DotLottieWorkerWC,i as setWasmUrl};
+//# sourceMappingURL=index.js.map

@@ -1,0 +1,2 @@
+import{a as e,t}from"./decorate-C0oFmnNg.js";import{BaseDotLottieWC as n}from"./base-dotlottie-wc.js";import{t as r}from"./dist-BMnS_qxa.js";let i=class extends n{_createDotLottieInstance(e){return new r(e)}};i=t([e(`dotlottie-worker-wc`)],i);export{i as DotLottieWorkerWC};
+//# sourceMappingURL=dotlottie-worker-wc.js.map

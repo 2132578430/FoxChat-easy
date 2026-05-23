@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fox Assistant Orb</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            width: 120px;
+            height: 120px;
+            background: transparent;
+            overflow: hidden;
+            cursor: grab;
+        }
+        body:active { cursor: grabbing; }
+        dotlottie-wc {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <dotlottie-wc
+        id="lottie-player"
+        state-machine-id="StateMachine1"
+        autoplay
+        loop>
+    </dotlottie-wc>
+
+    <script>
+        ['log','warn','error','info'].forEach(level => {
+            const orig = console[level];
+            console[level] = function(...args) {
+                orig.apply(console, args);
+            };
+        });
+    </script>
+
+    <script type="module">
+        import './index.js';
+
+        const player = document.getElementById('lottie-player');
+
+        // 状态名 → 状态机事件映射
+        const STATE_EVENT_MAP = {
+            'idle': null,
+            'yes': 'yesClick',
+            'no': 'noClick',
+            'alert': 'alertClick',
+            'thinking': 'thinkClick',
+            'jump': 'jumpClick'
+        };
+
+        // 等待 dotLottie 加载完成
+        function waitForLoaded(timeout = 5000) {
+            return new Promise((resolve, reject) => {
+                const dl = player.dotLottie;
+                if (!dl) return reject(new Error('dotLottie 不存在'));
+                if (dl.isLoaded) return resolve();
+
+                const start = Date.now();
+                const check = () => {
+                    if (dl.isLoaded) return resolve();
+                    if (Date.now() - start > timeout) return reject(new Error('加载超时'));
+                    requestAnimationFrame(check);
+                };
+                check();
+            });
+        }
+
+        // 确保状态机已加载并启动
+        function ensureStateMachine() {
+            const dl = player.dotLottie;
+            if (!dl) return false;
+            const id = player.getAttribute('state-machine-id') || 'StateMachine1';
+            if (!dl.stateMachineLoad(id)) {
+                console.warn('[Orb] stateMachineLoad 失败');
+                return false;
+            }
+            dl.stateMachineStart();
+            console.log('[Orb] 状态机已启动');
+            return true;
+        }
+
+        // 加载 .lottie 文件
+        async function loadFile(filePath) {
+            console.log('[Orb] loadFile:', filePath);
+            try {
+                player.setAttribute('src', filePath);
+                await waitForLoaded();
+                ensureStateMachine();
+                console.log('[Orb] 动画加载完成');
+                return 'ok';
+            } catch (e) {
+                console.error('[Orb] 加载失败:', e.message);
+                return 'error:' + e.message;
+            }
+        }
+
+        // 切换状态
+        async function setState(stateName) {
+            console.log('[Orb] setState:', stateName);
+            try {
+                const eventName = STATE_EVENT_MAP[stateName];
+                if (!eventName) return;
+                const dl = player.dotLottie;
+                if (!dl) return;
+                await waitForLoaded();
+                ensureStateMachine();
+                dl.stateMachineFireEvent(eventName);
+            } catch (e) {
+                console.error('[Orb] setState 失败:', e.message);
+            }
+        }
+
+        // 暴露给 Python
+        window.loadFile = loadFile;
+        window.setOrbState = setState;
+
+        // 拖拽
+        document.addEventListener('mousedown', function() {
+            window.pywebview?.api?.end_drag();
+        });
+
+        // 启动加载
+        loadFile('./static/AI robo.lottie');
+
+        console.log('[Orb] dotlottie-wc 已加载');
+    </script>
+</body>
+</html>

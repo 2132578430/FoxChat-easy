@@ -1,0 +1,20 @@
+bootJar {
+    enabled = true
+}
+
+dependencies {
+    implementation project(':foxChat-common')
+    implementation project(':foxChat-pojo')
+    implementation project(':foxChat-service')
+    implementation project(':foxChat-netty')
+
+    implementation libs.spring.boot.starter.web
+    implementation libs.spring.boot.starter.security
+    implementation libs.spring.boot.starter.data.redis
+
+    implementation libs.spring.cloud.starter.openfeign
+
+    implementation libs.mybatis.plus.boot.starter
+
+    implementation libs.commons.lang3
+}

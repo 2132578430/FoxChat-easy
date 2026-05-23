@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bedfox.service.mapper.FriendsMapper">
+
+    <resultMap id="BaseResultMap" type="com.bedfox.pojo.domain.Friends">
+            <id property="id" column="id" />
+            <result property="userId" column="user_id" />
+            <result property="friendUserId" column="friend_user_id" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,friend_user_id
+    </sql>
+    <delete id="deleteFriend">
+        DELETE FROM friends
+        WHERE (user_id = #{userId} AND friend_user_id = #{friendUserId})
+        OR (user_id = #{friendUserId} AND friend_user_id = #{userId})
+    </delete>
+    <select id="listFriends" resultType="com.bedfox.pojo.vo.FriendVo">
+        SELECT u.id AS userId, u.username, u.nickname, u.face_image AS faceImage
+        FROM users AS u
+        INNER JOIN friends AS f
+        ON u.id = f.friend_user_id
+        WHERE f.user_id = #{userId}
+    </select>
+</mapper>

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package chat;
+
+message Message {
+  int32 type = 1;
+  string extend = 2;
+  ChatMsg chatMsg = 3;
+}
+
+message ChatMsg {
+  string id = 1;
+  string sendUserId = 2;
+  string acceptUserId = 3;
+  string msg = 4;
+  bool signFlag = 5;
+  int64 createTime = 6;
+}
