@@ -150,7 +150,7 @@ foxChat-java/
 | **FoxChat-vue** | Vue 3 + Vite 7 + Electron 40 | 5173 (Web) |
 | **FoxChat-java** | Spring Boot 3.5 + Netty + MySQL | 12000 (HTTP), 13000 (WebSocket) |
 | **FoxChatRAG-python** | FastAPI + LangChain + ChromaDB + FlashRank | 8000 |
-| **FoxAssistant** | Python 3.12 + FastAPI + Transformers | 9000 |
+| **FoxAssistant** | Python 3.12 + FastAPI + Transformers | 11000 |
 
 ### 中间件
 
@@ -198,11 +198,15 @@ npm run dev
 cd FoxAssistant/python-assistant
 pip install -r requirements.txt
 python main.py
+# 或使用启动脚本
+start_assistant.bat
 ```
+
+服务将在端口 **11000** 启动。
 
 测试命令：
 ```bash
-curl -X POST http://127.0.0.1:9000/command -H "Content-Type: application/json" -d '{"text": "放一首歌"}'
+curl -X POST http://127.0.0.1:11000/command -H "Content-Type: application/json" -d '{"text": "放一首歌"}'
 ```
 
 ### 6. 打包 Electron 桌面端
@@ -252,10 +256,12 @@ FoxChat/
 ├── FoxAssistant/         # 语音助手服务
 │   ├── python-assistant/ # Python 命令执行层
 │   │   ├── config/       # 命令规则配置
-│   │   ├── service/      # 意图分类、命令执行
+│   │   ├── service/      # 意图分类、命令执行、Pipe 通信
 │   │   ├── schemas/      # 请求/响应模型
-│   │   └── ui/           # Web UI 静态资源
-│   │   └── main.py       # 入口文件
+│   │   ├── ui/           # Web UI 静态资源
+│   │   ├── main.py       # FastAPI 入口 (端口 11000)
+│   │   ├── config.json   # 配置文件
+│   │   └── start_assistant.bat  # Windows 启动脚本
 │   ├── design.md         # 设计笔记
 │   └── README.md
 │
@@ -278,7 +284,24 @@ FoxChat/
 
 ## 🎤 FoxAssistant 语音助手
 
-轻量级语音唤醒助手，按需启动，自动休眠（30s 无请求自动退出）。
+轻量级语音唤醒助手，按需启动，自动休眠（默认禁用自动关闭）。
+
+### 架构
+
+```
+┌─────────────────────────────────────┐
+│        Python 命令层 (FastAPI)       │
+│                                     │
+│  /command API   命令意图分类         │
+│  /wakeup API    命令执行             │
+│  /preload API   向量模型预加载        │
+│                                     │
+│  Named Pipe ←→ C# Orb UI            │
+│  (状态同步: idle/thinking/yes/no)   │
+└─────────────────────────────────────┘
+```
+
+注：C# 唤醒服务已移除，认证改为 HTTPOnly Cookie。Python 服务可通过 Named Pipe 与 C# Orb UI 状态同步。
 
 ### 支持命令
 
@@ -293,8 +316,18 @@ FoxChat/
 
 | 变量 | 默认值 | 说明 |
 |------|--------|------|
-| PORT | 9000 | Python服务端口 |
-| IDLE_TIMEOUT | 30 | 无请求自动退出时间（秒） |
+| PORT | 11000 | Python 服务端口 |
+| IDLE_TIMEOUT | 0 | 无请求自动退出时间（秒），0 表示禁用 |
+| PIPE_NAME | FoxAssistant | Named Pipe 名称（用于与 C# Orb UI 通信） |
+
+### API 端点
+
+| 端点 | 说明 |
+|------|------|
+| `/command` | 处理语音命令，返回执行结果 |
+| `/wakeup` | 处理唤醒信号 |
+| `/preload` | 预加载向量模型（避免唤醒后等待） |
+| `/health` | 健康检查 |
 
 ### 响应格式
 
