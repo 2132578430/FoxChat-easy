@@ -1,20 +1,20 @@
 # FoxChat 🦊
 
-一个集成 **AI 对话记忆系统** 的即时通讯平台，配套 **语音助手** 实现智能语音控制。Java 负责核心 IM 架构，Python 端实现多阶段记忆与状态管理。
+一个集成 **AI 对话记忆系统** 的即时通讯平台。Java 负责核心 IM 架构，Python 端实现多阶段记忆与状态管理。
 
 ---
 
 ## 🌟 项目定位
 
 ```
-┌───────────────────────────────────────────────────────────────────────────────────┐
-│                              FoxChat 生态系统                                      │
-├──────────────────┬────────────────────────┬─────────────────────────┬────────────┤
-│    FoxChat-vue   │     FoxChat-java       │   FoxChatRAG-python     │ FoxAssistant│
-│    (前端/桌面端)  │    (IM 核心后端)        │   (AI 记忆对话服务)       │ (语音助手)  │
-└──────────────────┴────────────────────────┴─────────────────────────┴────────────┘
-         │                    │                          │                 │
-         └────────────────────┴──────────────────────────┴─────────────────┘
+┌─────────────────────────────────────────────────────────────────────────┐
+│                           FoxChat                                       │
+├──────────────────┬────────────────────────┬─────────────────────────────┤
+│    FoxChat-vue   │     FoxChat-java       │     FoxChatRAG-python       │
+│    (前端/桌面端)  │    (IM 核心后端)        │    (AI 记忆对话服务)         │
+└──────────────────┴────────────────────────┴─────────────────────────────┘
+         │                    │                          │
+         └────────────────────┴──────────────────────────┘
                               │
                  ┌────────────┼────────────┐
                  │   MySQL    │   Redis    │  ← 持久化 + 缓存
@@ -26,7 +26,6 @@
 **核心分工**：
 - **Java 端**：用户体系、好友关系、群组管理、WebSocket 长连接、Protobuf 二进制协议
 - **Python 端**：AI 对话、多阶段记忆架构、RAG 知识库、情绪状态管理
-- **FoxAssistant**：轻量级语音唤醒助手，按需启动，自动休眠（播放音乐、天气查询、时间查询等）
 
 ---
 
@@ -150,7 +149,6 @@ foxChat-java/
 | **FoxChat-vue** | Vue 3 + Vite 7 + Electron 40 | 5173 (Web) |
 | **FoxChat-java** | Spring Boot 3.5 + Netty + MySQL | 12000 (HTTP), 13000 (WebSocket) |
 | **FoxChatRAG-python** | FastAPI + LangChain + ChromaDB + FlashRank | 8000 |
-| **FoxAssistant** | Python 3.12 + FastAPI + Transformers | 11000 |
 
 ### 中间件
 
@@ -192,24 +190,7 @@ npm install
 npm run dev
 ```
 
-### 5. 启动语音助手 (FoxAssistant)
-
-```bash
-cd FoxAssistant/python-assistant
-pip install -r requirements.txt
-python main.py
-# 或使用启动脚本
-start_assistant.bat
-```
-
-服务将在端口 **11000** 启动。
-
-测试命令：
-```bash
-curl -X POST http://127.0.0.1:11000/command -H "Content-Type: application/json" -d '{"text": "放一首歌"}'
-```
-
-### 6. 打包 Electron 桌面端
+### 5. 打包 Electron 桌面端
 
 ```bash
 cd FoxChat-vue
@@ -253,97 +234,11 @@ FoxChat/
 │   ├── store/            # Chroma 向量库（本地）
 │   └── README.md
 │
-├── FoxAssistant/         # 语音助手服务
-│   ├── python-assistant/ # Python 命令执行层
-│   │   ├── config/       # 命令规则配置
-│   │   ├── service/      # 意图分类、命令执行、Pipe 通信
-│   │   ├── schemas/      # 请求/响应模型
-│   │   ├── ui/           # Web UI 静态资源
-│   │   ├── main.py       # FastAPI 入口 (端口 11000)
-│   │   ├── config.json   # 配置文件
-│   │   └── start_assistant.bat  # Windows 启动脚本
-│   ├── design.md         # 设计笔记
-│   └── README.md
-│
-├── openspec/             # OpenSpec 变更管理配置
-│   ├── archive/          # 已归档变更
-│   ├── changes/          # 进行中的变更
-│   ├── specs/            # 规范定义
-│   └── config.yaml       # 配置文件
-│
-├── docs/                 # 项目文档
-│   └── superpowers/      # AI 技能文档
-│
 ├── docker-compose.yml    # 中间件配置
 ├── FoxChat.sql           # 数据库初始化脚本
 ├── .env.example          # 环境变量模板
 └── README.md             # 本文件
 ```
-
----
-
-## 🎤 FoxAssistant 语音助手
-
-轻量级语音唤醒助手，按需启动，自动休眠（默认禁用自动关闭）。
-
-### 架构
-
-```
-┌─────────────────────────────────────┐
-│        Python 命令层 (FastAPI)       │
-│                                     │
-│  /command API   命令意图分类         │
-│  /wakeup API    命令执行             │
-│  /preload API   向量模型预加载        │
-│                                     │
-│  Named Pipe ←→ C# Orb UI            │
-│  (状态同步: idle/thinking/yes/no)   │
-└─────────────────────────────────────┘
-```
-
-注：C# 唤醒服务已移除，认证改为 HTTPOnly Cookie。Python 服务可通过 Named Pipe 与 C# Orb UI 状态同步。
-
-### 支持命令
-
-| 命令 | 口令示例 | 说明 |
-|------|----------|------|
-| play_music | 放歌、播放音乐、听歌 | 启动QQ音乐 |
-| pause_music | 暂停、停止播放 | 暂停音乐 |
-| query_time | 现在几点、时间 | 查询系统时间 |
-| query_weather | 天气、今天天气 | wttr.in 天气查询 |
-
-### 环境变量
-
-| 变量 | 默认值 | 说明 |
-|------|--------|------|
-| PORT | 11000 | Python 服务端口 |
-| IDLE_TIMEOUT | 0 | 无请求自动退出时间（秒），0 表示禁用 |
-| PIPE_NAME | FoxAssistant | Named Pipe 名称（用于与 C# Orb UI 通信） |
-
-### API 端点
-
-| 端点 | 说明 |
-|------|------|
-| `/command` | 处理语音命令，返回执行结果 |
-| `/wakeup` | 处理唤醒信号 |
-| `/preload` | 预加载向量模型（避免唤醒后等待） |
-| `/health` | 健康检查 |
-
-### 响应格式
-
-```json
-{
-  "code": 200,
-  "msg": "success",
-  "data": {
-    "command": "play_music",
-    "result": "已启动QQ音乐",
-    "success": true
-  }
-}
-```
-
-详见 [FoxAssistant 文档](./FoxAssistant/README.md)。
 
 ---
 
@@ -368,4 +263,3 @@ FoxChat/
 - [FoxChat-vue 前端文档](./FoxChat-vue/README.md)
 - [FoxChat-java 后端文档](./FoxChat-java/README.md)
 - [FoxChatRAG-python RAG 文档](./FoxChatRAG-python/README.md)
-- [FoxAssistant 语音助手文档](./FoxAssistant/README.md)

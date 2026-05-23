@@ -66,4 +66,15 @@ nginx/
 *.swp
 *~
 
+# Backup files
+*.bundle
+
+# Misc temp files
+pulls.json
+repo_info.json
+.github_guide.html
+
+# OpenCode tool directories
+.omo/
+
 .aider*
