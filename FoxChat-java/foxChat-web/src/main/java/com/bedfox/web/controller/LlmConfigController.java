@@ -67,8 +67,8 @@ public class LlmConfigController {
      */
     @DeleteMapping("/{llmId}/{scenario}")
     public R<Void> deleteConfig(
-            @PathVariable("llmId") String llmId,
-            @PathVariable("scenario") String scenario
+            @PathVariable String llmId,
+            @PathVariable String scenario
     ) {
         boolean success = llmConfigService.deleteConfig(llmId, scenario);
         if (success) {
@@ -115,7 +115,7 @@ public class LlmConfigController {
      * @return 验证结果
      */
     @GetMapping("/validate/{llmId}")
-    public R<Map<String, Object>> validateConfig(@PathVariable("llmId") String llmId) {
+    public R<Map<String, Object>> validateConfig(@PathVariable String llmId) {
         boolean isValid = llmConfigService.validateConfigCount(llmId);
         List<String> missingScenarios = llmConfigService.getMissingScenarios(llmId);
 
