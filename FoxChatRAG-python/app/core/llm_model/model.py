@@ -94,7 +94,7 @@ class ChromaModel:
 
     根据 MODEL__DEFAULT_EMBEDDING 配置选择:
     - dashscope: 阿里云 DashScope API
-    - ollama: 本地 Ollama 模型 (推荐，无网络延迟)
+    - ollama: 本地 Ollama 模型
     """
     def __init__(self):
         embedding_type = global_settings.model.default_embedding
