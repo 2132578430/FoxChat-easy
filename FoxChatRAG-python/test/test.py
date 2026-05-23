@@ -1,24 +1,30 @@
+from typing import List
+from collections import Counter
+
+
 class Solution:
-    def lengthOfLongestSubstring(self, s: str) -> int:
-        lookup = set()
-        n = len(s)
-        max_len = 0
-        l = 0
-        cur_len = 0
+    def minWindow(self, s: str, t: str) -> str:
+        map_t = Counter(t)
+        map_s = Counter()
+        ans_left = -1
+        ans_right = -1
+        left = 0
 
-        for r in range(n):
-            while s[r] in lookup:
-                lookup.remove(s[l])
-                l += 1
-                cur_len -= 1
-            lookup.add(s[r])
-            cur_len += 1
-            max_len = max(cur_len, max_len)
+        for right, c in enumerate(s):
+            map_s[c] += 1
+            while map_s >= map_t:
+                if right - left < ans_right - ans_left:
+                    ans_left, ans_right = left, right
+                map_s[s[left]] -= 1
+                left += 1
 
-        return max_len
+        return "" if ans_left == -1 else s[ans_left: ans_right + 1]
+
 
 if __name__ == '__main__':
-    s = Solution()
-    ans = s.lengthOfLongestSubstring("abcabcbb")
+    solution = Solution()
+    s = "ADOBECODEBANC"
+    t = "ABC"
+    ans = solution.minWindow(s, t)
 
     print(ans)

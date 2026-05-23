@@ -1,20 +1,20 @@
 # FoxChat 🦊
 
-一个集成 **AI 对话记忆系统** 的即时通讯平台。Java 负责核心 IM 架构，Python 端实现多阶段记忆与状态管理。
+一个集成 **AI 对话记忆系统** 的即时通讯平台，配套 **语音助手** 实现智能语音控制。Java 负责核心 IM 架构，Python 端实现多阶段记忆与状态管理。
 
 ---
 
 ## 🌟 项目定位
 
 ```
-┌─────────────────────────────────────────────────────────────────────────┐
-│                           FoxChat                                       │
-├──────────────────┬────────────────────────┬─────────────────────────────┤
-│    FoxChat-vue   │     FoxChat-java       │     FoxChatRAG-python       │
-│    (前端/桌面端)  │    (IM 核心后端)        │    (AI 记忆对话服务)         │
-└──────────────────┴────────────────────────┴─────────────────────────────┘
-         │                    │                          │
-         └────────────────────┴──────────────────────────┘
+┌───────────────────────────────────────────────────────────────────────────────────┐
+│                              FoxChat 生态系统                                      │
+├──────────────────┬────────────────────────┬─────────────────────────┬────────────┤
+│    FoxChat-vue   │     FoxChat-java       │   FoxChatRAG-python     │ FoxAssistant│
+│    (前端/桌面端)  │    (IM 核心后端)        │   (AI 记忆对话服务)       │ (语音助手)  │
+└──────────────────┴────────────────────────┴─────────────────────────┴────────────┘
+         │                    │                          │                 │
+         └────────────────────┴──────────────────────────┴─────────────────┘
                               │
                  ┌────────────┼────────────┐
                  │   MySQL    │   Redis    │  ← 持久化 + 缓存
@@ -26,6 +26,7 @@
 **核心分工**：
 - **Java 端**：用户体系、好友关系、群组管理、WebSocket 长连接、Protobuf 二进制协议
 - **Python 端**：AI 对话、多阶段记忆架构、RAG 知识库、情绪状态管理
+- **FoxAssistant**：轻量级语音唤醒助手，按需启动，自动休眠（播放音乐、天气查询、时间查询等）
 
 ---
 
@@ -146,9 +147,10 @@ foxChat-java/
 
 | 模块 | 技术 | 端口 |
 |:-----|:-----|:-----|
-| **FoxChat-vue** | Vue 3 + Vite + Electron | 5173 (Web) |
-| **FoxChat-java** | Spring Boot 3 + Netty + MySQL | 12000 (HTTP), 13000 (WebSocket) |
-| **FoxChatRAG-python** | FastAPI + LangChain + ChromaDB | 8000 |
+| **FoxChat-vue** | Vue 3 + Vite 7 + Electron 40 | 5173 (Web) |
+| **FoxChat-java** | Spring Boot 3.5 + Netty + MySQL | 12000 (HTTP), 13000 (WebSocket) |
+| **FoxChatRAG-python** | FastAPI + LangChain + ChromaDB + FlashRank | 8000 |
+| **FoxAssistant** | Python 3.12 + FastAPI + Transformers | 9000 |
 
 ### 中间件
 
@@ -190,7 +192,20 @@ npm install
 npm run dev
 ```
 
-### 5. 打包 Electron 桌面端
+### 5. 启动语音助手 (FoxAssistant)
+
+```bash
+cd FoxAssistant/python-assistant
+pip install -r requirements.txt
+python main.py
+```
+
+测试命令：
+```bash
+curl -X POST http://127.0.0.1:9000/command -H "Content-Type: application/json" -d '{"text": "放一首歌"}'
+```
+
+### 6. 打包 Electron 桌面端
 
 ```bash
 cd FoxChat-vue
@@ -234,9 +249,68 @@ FoxChat/
 │   ├── store/            # Chroma 向量库（本地）
 │   └── README.md
 │
+├── FoxAssistant/         # 语音助手服务
+│   ├── python-assistant/ # Python 命令执行层
+│   │   ├── config/       # 命令规则配置
+│   │   ├── service/      # 意图分类、命令执行
+│   │   ├── schemas/      # 请求/响应模型
+│   │   └── ui/           # Web UI 静态资源
+│   │   └── main.py       # 入口文件
+│   ├── design.md         # 设计笔记
+│   └── README.md
+│
+├── openspec/             # OpenSpec 变更管理配置
+│   ├── archive/          # 已归档变更
+│   ├── changes/          # 进行中的变更
+│   ├── specs/            # 规范定义
+│   └── config.yaml       # 配置文件
+│
+├── docs/                 # 项目文档
+│   └── superpowers/      # AI 技能文档
+│
 ├── docker-compose.yml    # 中间件配置
+├── FoxChat.sql           # 数据库初始化脚本
+├── .env.example          # 环境变量模板
 └── README.md             # 本文件
 ```
+
+---
+
+## 🎤 FoxAssistant 语音助手
+
+轻量级语音唤醒助手，按需启动，自动休眠（30s 无请求自动退出）。
+
+### 支持命令
+
+| 命令 | 口令示例 | 说明 |
+|------|----------|------|
+| play_music | 放歌、播放音乐、听歌 | 启动QQ音乐 |
+| pause_music | 暂停、停止播放 | 暂停音乐 |
+| query_time | 现在几点、时间 | 查询系统时间 |
+| query_weather | 天气、今天天气 | wttr.in 天气查询 |
+
+### 环境变量
+
+| 变量 | 默认值 | 说明 |
+|------|--------|------|
+| PORT | 9000 | Python服务端口 |
+| IDLE_TIMEOUT | 30 | 无请求自动退出时间（秒） |
+
+### 响应格式
+
+```json
+{
+  "code": 200,
+  "msg": "success",
+  "data": {
+    "command": "play_music",
+    "result": "已启动QQ音乐",
+    "success": true
+  }
+}
+```
+
+详见 [FoxAssistant 文档](./FoxAssistant/README.md)。
 
 ---
 
@@ -250,6 +324,7 @@ FoxChat/
 | `FoxChat-java/deploy/.env` | MySQL/Redis 密码 |
 | `FoxChat-java/**/application-local.yml` | 数据库密码、JWT 密钥、MinIO、邮件授权码 |
 | `FoxChat-vue/.env` | 本地 API 地址 |
+| `.env`（根目录） | 项目级环境变量（参考 `.env.example`） |
 
 首次配置时，参考各模块下的 `.env.example` 文件复制并填写实际值。
 
@@ -260,3 +335,4 @@ FoxChat/
 - [FoxChat-vue 前端文档](./FoxChat-vue/README.md)
 - [FoxChat-java 后端文档](./FoxChat-java/README.md)
 - [FoxChatRAG-python RAG 文档](./FoxChatRAG-python/README.md)
+- [FoxAssistant 语音助手文档](./FoxAssistant/README.md)
