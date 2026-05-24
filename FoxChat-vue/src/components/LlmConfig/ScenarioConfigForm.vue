@@ -343,9 +343,11 @@ defineExpose({ setConfig, getConfig });
 
 .param-hint {
   display: block;
+  width: 100%;
   font-size: 12px;
   color: #909399;
-  margin-top: 5px;
+  margin-top: 10px;
+  margin-left: 4px;
 }
 
 .save-hint {
@@ -385,5 +387,127 @@ defineExpose({ setConfig, getConfig });
 
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
+}
+
+/* ============================================
+   Form Input Field Polishing
+   ============================================ */
+
+/* --- Core input wrapper (shared by el-input, el-select, el-input-number) --- */
+:deep(.el-input__wrapper) {
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background-color: rgba(255, 255, 255, 0.85);
+  box-shadow: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+:deep(.el-input__wrapper:hover) {
+  border-color: rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+:deep(.el-input__wrapper.is-focus) {
+  border-color: #0084ff;
+  box-shadow: 0 0 0 3px rgba(0, 132, 255, 0.1);
+  background-color: #fff;
+}
+
+/* --- Inner input text --- */
+:deep(.el-input__inner) {
+  color: #303133;
+  font-size: 14px;
+}
+
+:deep(.el-input__inner::placeholder) {
+  color: #a8abb2;
+}
+
+/* --- Prepend icon area --- */
+:deep(.el-input-group__prepend) {
+  border-radius: 8px 0 0 8px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-right: none;
+  background-color: rgba(0, 0, 0, 0.025);
+  padding: 0 12px;
+  transition: border-color 0.25s ease, background-color 0.25s ease;
+  box-shadow: none;
+}
+
+:deep(.el-input-group__prepend .el-icon) {
+  color: #909399;
+  transition: color 0.25s ease;
+}
+
+/* Prepend border matches focus state */
+:deep(.el-input-group:focus-within .el-input-group__prepend) {
+  border-color: #0084ff;
+  background-color: rgba(0, 132, 255, 0.04);
+}
+
+:deep(.el-input-group:focus-within .el-input-group__prepend .el-icon) {
+  color: #0084ff;
+}
+
+/* --- Input wrapper inside a prepend group: left border-radius removed --- */
+:deep(.el-input-group .el-input__wrapper) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/* --- el-select --- */
+:deep(.el-select .el-input__wrapper) {
+  cursor: pointer;
+}
+
+:deep(.el-select .el-input__inner) {
+  cursor: pointer;
+}
+
+/* --- el-input-number --- */
+:deep(.el-input-number .el-input__wrapper) {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+:deep(.el-input-number.is-controls-right .el-input__wrapper) {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+/* --- el-input-number decrease/increase buttons --- */
+:deep(.el-input-number__decrease),
+:deep(.el-input-number__increase) {
+  background-color: rgba(0, 0, 0, 0.025);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  color: #606266;
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+:deep(.el-input-number__decrease:hover),
+:deep(.el-input-number__increase:hover) {
+  color: #0084ff;
+  background-color: rgba(0, 132, 255, 0.06);
+}
+
+:deep(.el-input-number__decrease.is-disabled),
+:deep(.el-input-number__increase.is-disabled) {
+  color: #c0c4cc;
+  background-color: rgba(0, 0, 0, 0.015);
+}
+
+/* --- el-slider polish (input area) --- */
+:deep(.el-slider__input) {
+  width: 64px;
+}
+
+:deep(.el-slider__input .el-input__wrapper) {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+/* --- Ensure el-form-item content wraps properly --- */
+:deep(.el-form-item__content) {
+  flex-wrap: wrap;
 }
 </style>

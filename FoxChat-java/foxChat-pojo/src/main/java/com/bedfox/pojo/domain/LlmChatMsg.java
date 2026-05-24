@@ -32,7 +32,7 @@ public class LlmChatMsg implements Serializable {
     private LocalDateTime createTime;
 
     /**
-     * 消息状态(0发送/1存入db/2存入rag)
+     * 消息状态(0发送/1存入db/2存入rag/3处理中/4失败)
      */
     private Integer status;
 

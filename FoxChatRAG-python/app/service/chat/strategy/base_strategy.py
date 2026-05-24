@@ -11,6 +11,7 @@ LLM 调用策略基类
 from typing import List, Dict
 from loguru import logger
 
+import asyncio
 import litellm
 
 
@@ -102,16 +103,33 @@ class LLMInvokeStrategy:
         try:
             logger.info(f"【LiteLLM调用】scenario={self.scenario}, model={params['model']}")
 
-            # 调用 LiteLLM（使用 acompletion 异步方法）
-            response = await litellm.acompletion(
-                model=params["model"],
-                messages=messages,
-                api_key=params["api_key"],
-                base_url=params["base_url"],
-                temperature=params.get("temperature", self.default_temperature),
-                max_tokens=params.get("max_tokens"),
-                response_format=params.get("response_format"),
-            )
+            # 调用 LiteLLM（使用 acompletion 异步方法，带超时和重试）
+            max_retries = 3
+            for attempt in range(max_retries):
+                try:
+                    response = await litellm.acompletion(
+                        model=params["model"],
+                        messages=messages,
+                        api_key=params["api_key"],
+                        base_url=params["base_url"],
+                        temperature=params.get("temperature", self.default_temperature),
+                        max_tokens=params.get("max_tokens"),
+                        response_format=params.get("response_format"),
+                        timeout=120,
+                    )
+                    break  # 成功，退出重试循环
+                except (litellm.exceptions.APIConnectionError, litellm.exceptions.APIStatusError) as e:
+                    # 仅重试瞬态网络错误（连接错误或 5xx）
+                    status_code = getattr(e, 'status_code', None)
+                    if status_code and status_code < 500:
+                        raise  # 4xx 错误不是瞬态的，直接抛出
+                    if attempt == max_retries - 1:
+                        raise  # 重试已用尽
+                    logger.warning(
+                        f"LLM 调用第 {attempt+1}/{max_retries} 次尝试失败: {e}，"
+                        f"{2**attempt}s 后重试..."
+                    )
+                    await asyncio.sleep(2 ** attempt)
 
             # 提取响应文本
             content = response.choices[0].message.content

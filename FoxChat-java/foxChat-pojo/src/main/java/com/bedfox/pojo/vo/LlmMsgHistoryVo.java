@@ -41,4 +41,9 @@ public class LlmMsgHistoryVo {
      * 是否是ai消息
      */
     private Boolean isHuman;
+
+    /**
+     * 消息状态(0发送/1存入db/2存入rag/3处理中/4失败)
+     */
+    private Integer status;
 }

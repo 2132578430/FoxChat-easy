@@ -593,7 +593,7 @@ watch(currentLlmId, (newLlmId) => {
   border-radius: 12px;
 }
 
-/* Scenario Tabs - Modern Minimalist */
+/* Scenario Tabs - Enhanced Card Navigation */
 .scenario-tabs {
   flex: 1;
   background: transparent;
@@ -601,13 +601,18 @@ watch(currentLlmId, (newLlmId) => {
   overflow: hidden;
 }
 
+/* Tab Header Bar */
 .scenario-tabs :deep(.el-tabs__header) {
   margin-bottom: 16px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .scenario-tabs :deep(.el-tabs__nav-wrap) {
-  padding: 0;
+  padding: 0 4px;
+}
+
+.scenario-tabs :deep(.el-tabs__nav-wrap::after) {
+  display: none;
 }
 
 .scenario-tabs :deep(.el-tabs__nav-scroll) {
@@ -615,43 +620,52 @@ watch(currentLlmId, (newLlmId) => {
   overflow-y: hidden;
 }
 
+.scenario-tabs :deep(.el-tabs__nav) {
+  border: none;
+}
+
+/* Tab Content Area */
 .scenario-tabs :deep(.el-tabs__content) {
   height: calc(100% - 48px);
   overflow-y: auto;
   padding-right: 4px;
 }
 
+/* Tab Item — Inactive State */
 .scenario-tabs :deep(.el-tabs__item) {
   font-size: 13px;
-  padding: 0 16px;
-  height: 38px;
-  line-height: 38px;
-  color: var(--text-secondary, #666);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-weight: 500;
+  color: #606266;
+  padding: 8px 20px;
+  height: 36px;
+  line-height: 36px;
+  background: rgba(245, 247, 250, 0.8);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-bottom: 2px solid transparent;
+  border-radius: 8px 8px 0 0;
+  margin-right: 4px;
+  transition: all 0.25s ease;
   letter-spacing: 0.5px;
 }
 
+.scenario-tabs :deep(.el-tabs__item:last-child) {
+  margin-right: 0;
+}
+
+/* Tab Item — Hover State */
 .scenario-tabs :deep(.el-tabs__item:hover) {
-  color: var(--accent-color, #0084ff);
+  color: #0084ff;
+  background: rgba(235, 240, 248, 0.9);
+  border-color: rgba(0, 132, 255, 0.12);
 }
 
+/* Tab Item — Active State */
 .scenario-tabs :deep(.el-tabs__item.is-active) {
-  color: var(--accent-color, #0084ff);
+  color: #0084ff;
   font-weight: 600;
-}
-
-.scenario-tabs :deep(.el-tabs--card > .el-tabs__header .el-tabs__item) {
-  background: rgba(255, 255, 255, 0.6);
-  border-radius: 8px 8px 0 0;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  margin-right: 4px;
-}
-
-.scenario-tabs :deep(.el-tabs--card > .el-tabs__header .el-tabs__item.is-active) {
-  background: rgba(0, 132, 255, 0.08);
-  border-bottom-color: var(--accent-color, #0084ff);
-  border-color: rgba(0, 132, 255, 0.15);
+  background: #fff;
+  border-color: rgba(0, 0, 0, 0.08);
+  border-bottom: 2px solid #0084ff;
 }
 
 /* Save Buttons Container - Flat Design Footer */

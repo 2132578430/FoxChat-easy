@@ -18,4 +18,5 @@ def register_exception_handlers(app: FastAPI):
         )
     @app.exception_handler(Exception)
     async def message_handler(request: Request, exc: Exception):
-        logging.error("未知异常，捕获到信息：" + str(exc))
+        logging.error("未知异常，捕获到信息：" + str(exc), exc_info=True)
+        return M.get_msg(data="Internal server error", msg_id="500")

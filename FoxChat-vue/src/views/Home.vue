@@ -107,6 +107,7 @@
           @open-upload="showUploadDialog = true"
           @reset-rag="resetRagResults"
           @file-click="handleFileClick"
+          @retry="retryLlmMessage"
         />
 
         <!-- Chat Input -->
@@ -1450,6 +1451,7 @@ const selectFriend = async (friend) => {
             content: content,
             blocks: blocks,
             emotion: emotion,
+            status: msg.status === 4 ? 'failed' : undefined,
             isMine: msg.isHuman,
             type: 'text',
             createTime: msg.createTime,
@@ -1757,6 +1759,7 @@ const sendMessage = async () => {
     const msgId = snowflake.nextId();
     const myId = String(userInfo.userId || '');
     const llmId = currentFriend.value.userId || currentFriend.value.id;
+    const isDirectorMode = currentFriend.value.directorMode === true;
     
     // 1. 立即渲染自己的消息
     messageList.value.push({
@@ -1783,7 +1786,6 @@ const sendMessage = async () => {
       const requestFriendId = llmId;
       
       // 根据导演模式状态选择不同的接口
-      const isDirectorMode = currentFriend.value.directorMode === true;
       const apiEndpoint = isDirectorMode ? '/llm/superChat' : '/llm/chat';
       console.log(`[LLM Chat] 使用${isDirectorMode ? '导演模式' : '普通模式'}接口: ${apiEndpoint}`);
 
@@ -1913,7 +1915,25 @@ const sendMessage = async () => {
         return;
       }
 
+      // 通用失败 → 显示重试气泡
       ElMessage.error('他/她好像暂时没法回应你，请稍后再试吧~');
+      
+      // 推入失败消息到当前对话（用户未切换好友时才推入）
+      if (currentFriend.value && (currentFriend.value.userId || currentFriend.value.id) === llmId) {
+        messageList.value.push({
+          id: 'failed-' + Date.now(),
+          content: '回复失败，点击重试',
+          status: 'failed',
+          msgContent: msgContent,
+          llmId: llmId,
+          isDirectorMode: isDirectorMode,
+          isMine: false,
+          createTime: new Date().toISOString(),
+          senderId: llmId,
+          senderName: currentFriend.value.nickname || currentFriend.value.username,
+          senderAvatar: resolveAvatarUrl(currentFriend.value.faceImage || currentFriend.value.face_image) || defaultUserAvatar
+        });
+      }
     } finally {
       llmPendingCount.value--;
       if (llmPendingCount.value <= 0) {
@@ -1923,6 +1943,116 @@ const sendMessage = async () => {
     }
     return;
   }
+
+  // 重试失败的 LLM 消息
+  const retryLlmMessage = async (failedMsg) => {
+    const originalContent = failedMsg.msgContent;
+    const llmId = failedMsg.llmId;
+    const directorMode = failedMsg.isDirectorMode;
+    const apiEndpoint = directorMode ? '/llm/superChat' : '/llm/chat';
+
+    // 1. 移除失败消息
+    messageList.value = messageList.value.filter(m => m.id !== failedMsg.id);
+
+    // 2. 添加"思考中..."占位
+    const placeholderId = 'retry-' + Date.now();
+    messageList.value.push({
+      id: placeholderId,
+      content: '思考中...',
+      status: 'thinking',
+      isMine: false,
+      createTime: new Date().toISOString(),
+      senderId: llmId,
+      senderName: currentFriend.value.nickname || currentFriend.value.username,
+      senderAvatar: resolveAvatarUrl(currentFriend.value.faceImage || currentFriend.value.face_image) || defaultUserAvatar
+    });
+
+    nextTick(() => scrollToBottom(true));
+
+    // 3. 重新发送请求
+    isLlmTyping.value = true;
+    try {
+      const res = await request.post(apiEndpoint, {
+        llmId: llmId,
+        msgContent: originalContent
+      }, {
+        silent: true,
+        timeout: 120000
+      });
+
+      // 4. 解析响应（复用现有的解析逻辑）
+      let actualResponse = res;
+      if (res && res.code === 1000 && res.data) {
+        actualResponse = res.data;
+      }
+
+      let replyBlocks = null;
+      let replyEmotion = null;
+
+      if (Array.isArray(actualResponse)) {
+        const aiMsg = actualResponse.find(m => m.isHuman === false);
+        if (aiMsg && aiMsg.msgContent) {
+          try {
+            const parsed = JSON.parse(aiMsg.msgContent);
+            replyBlocks = parsed.blocks || (Array.isArray(parsed) ? parsed : [{ type: 'text', text: aiMsg.msgContent }]);
+            replyEmotion = parsed.emotion;
+          } catch (e) {
+            replyBlocks = [{ type: 'text', text: aiMsg.msgContent }];
+          }
+        }
+      } else if (actualResponse && typeof actualResponse === 'string') {
+        replyBlocks = [{ type: 'text', text: actualResponse }];
+      } else if (actualResponse && actualResponse.msg) {
+        try {
+          const parsed = typeof actualResponse.msg === 'string' ? JSON.parse(actualResponse.msg) : actualResponse.msg;
+          replyBlocks = parsed?.blocks || (Array.isArray(parsed) ? parsed : [{ type: 'text', text: actualResponse.msg }]);
+          replyEmotion = parsed?.emotion;
+        } catch (e) {
+          replyBlocks = [{ type: 'text', text: actualResponse.msg }];
+        }
+      }
+
+      // 5. 移除占位消息，添加真实回复
+      messageList.value = messageList.value.filter(m => m.id !== placeholderId);
+      if (currentFriend.value && (currentFriend.value.userId || currentFriend.value.id) === llmId) {
+        messageList.value.push({
+          id: snowflake.nextId(),
+          content: null,
+          blocks: replyBlocks || [{ type: 'text', text: actualResponse?.msg || '回复成功' }],
+          emotion: replyEmotion,
+          isMine: false,
+          createTime: new Date().toISOString(),
+          senderId: llmId,
+          senderName: currentFriend.value.nickname || currentFriend.value.username,
+          senderAvatar: resolveAvatarUrl(currentFriend.value.faceImage || currentFriend.value.face_image) || defaultUserAvatar
+        });
+      }
+
+      nextTick(() => scrollToBottom(true));
+    } catch (error) {
+      console.error('重试 LLM 请求失败:', error);
+
+      // 移除占位消息，重新添加失败气泡
+      messageList.value = messageList.value.filter(m => m.id !== placeholderId);
+      if (currentFriend.value && (currentFriend.value.userId || currentFriend.value.id) === llmId) {
+        messageList.value.push({
+          id: 'failed-' + Date.now(),
+          content: '回复失败，点击重试',
+          status: 'failed',
+          msgContent: originalContent,
+          llmId: llmId,
+          isDirectorMode: directorMode,
+          isMine: false,
+          createTime: new Date().toISOString(),
+          senderId: llmId,
+          senderName: currentFriend.value.nickname || currentFriend.value.username,
+          senderAvatar: resolveAvatarUrl(currentFriend.value.faceImage || currentFriend.value.face_image) || defaultUserAvatar
+        });
+      }
+    } finally {
+      isLlmTyping.value = false;
+    }
+  };
 
   const myId = String(userInfo.userId || '');
   const msgContent = inputMessage.value;

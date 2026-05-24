@@ -81,7 +81,13 @@ public enum ResultStatusConstant {
     LLM_NOT_FOUND_EXCEPTION(15008, "创造物不存在"),
 
     /** 无权限操作该创造物 */
-    LLM_NOT_OWNER_EXCEPTION(15009, "无权限操作该创造物");
+    LLM_NOT_OWNER_EXCEPTION(15009, "无权限操作该创造物"),
+
+    /** 思考中 */
+    LLM_PROCESSING(20001, "思考中..."),
+
+    /** 回复失败 */
+    LLM_FAILED(20002, "回复失败");
 
     private Integer code;
     private String msg;

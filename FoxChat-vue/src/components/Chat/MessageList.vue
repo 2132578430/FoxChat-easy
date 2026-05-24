@@ -60,6 +60,21 @@
       <div v-if="msg.isWithdrawn" class="message-system">
         <span class="system-text">"{{ msg.isMine ? '你' : (props.currentFriend.nickname || props.currentFriend.username) }}" 撤回了一条消息</span>
       </div>
+      <!-- 失败消息（可重试） -->
+      <div v-else-if="msg.status === 'failed'" class="message-item-container">
+        <div class="message-item">
+          <el-avatar :size="38" :src="resolveAvatarUrl(props.currentFriend.faceImage || props.currentFriend.face_image) || defaultUserAvatar" class="msg-avatar"></el-avatar>
+          <div class="msg-bubble-wrapper">
+            <div class="msg-bubble failed-bubble">
+              <div class="bubble-content failed-content">
+                <span class="failed-text">回复失败，</span>
+                <span class="retry-link" @click="emit('retry', msg)">点击重试</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- 正常消息 -->
       <div v-else class="message-item-container" :class="{ 'selection-mode': props.isSelectionMode }">
         <el-checkbox v-if="props.isSelectionMode && msg.isMine" v-model="msg.selected" @change="handleSelectionChange(msg)"></el-checkbox>
@@ -114,7 +129,7 @@ const props = defineProps({
   hasRagSearchResults: Boolean
 });
 
-const emit = defineEmits(['select-message', 'load-more', 'scroll-bottom', 'open-upload', 'reset-rag', 'file-click']);
+const emit = defineEmits(['select-message', 'load-more', 'scroll-bottom', 'open-upload', 'reset-rag', 'file-click', 'retry']);
 
 const messageContainerRef = ref(null);
 const defaultUserAvatar = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png';
@@ -629,6 +644,36 @@ defineExpose({
   gap: 8px;
   font-size: 13px;
   color: var(--text-light);
+}
+
+/* Failed retry bubble */
+.failed-bubble {
+  background: rgba(245, 108, 108, 0.08) !important;
+  border: 1px solid rgba(245, 108, 108, 0.2) !important;
+}
+
+.failed-content {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #909399;
+  font-size: 13px;
+}
+
+.failed-text {
+  color: #909399;
+}
+
+.retry-link {
+  color: #0084ff;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.retry-link:hover {
+  color: #0066cc;
 }
 
 /* Custom Scrollbar */
