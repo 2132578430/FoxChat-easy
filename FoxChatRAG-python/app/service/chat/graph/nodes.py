@@ -95,7 +95,7 @@ async def parse_memory(state: ChatState) -> dict:
     """解析 5 种记忆 + 构建历史消息"""
     memories = state["memories"]
 
-    character_card_examples, character_card_detail = parse_character_card(memories.character_card_json)
+    character_card_examples, character_card_detail, behavior_guide_text, talkativeness = parse_character_card(memories.character_card_json)
     role_declaration, core_anchor_text = parse_core_anchor(memories.core_anchor_json)
     user_profile_summary = parse_user_profile(memories.user_profile_json)
     memory_bank_summary = parse_memory_bank(memories.memory_bank_json)
@@ -104,6 +104,8 @@ async def parse_memory(state: ChatState) -> dict:
     parsed = ParsedMemories(
         character_card_examples=character_card_examples,
         character_card_detail=character_card_detail,
+        behavior_guide_text=behavior_guide_text,
+        talkativeness=talkativeness,
         role_declaration=role_declaration,
         core_anchor_text=core_anchor_text,
         user_profile_summary=user_profile_summary,

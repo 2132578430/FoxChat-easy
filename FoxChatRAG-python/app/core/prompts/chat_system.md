@@ -9,3 +9,7 @@
 
 【当前状态】
 {current_state}
+
+{behavior_guide}
+
+{talkativeness_guidance}

@@ -17,23 +17,23 @@ from loguru import logger
 from app.service.chat.common import safe_json_parse, map_emotion_to_cn
 
 
-def parse_character_card(json_str: str) -> Tuple[str, str]:
+def parse_character_card(json_str: str) -> Tuple[str, str, str, float]:
     """
-    解析角色卡，返回 (示例对话, 详细描述)
+    解析角色卡，返回 (示例对话, 详细描述, 行为指南, 健谈程度)
 
     Args:
         json_str: 角色卡 JSON 字符串
 
     Returns:
-        (examples, detail): 示例对话和详细描述
+        (examples, detail, behavior_guide_text, talkativeness): 示例对话、详细描述、行为指南文本、健谈程度(0.0-1.0)
     """
     if not json_str:
-        return "", ""
+        return "", "", "", 0.5
 
     card = safe_json_parse(json_str, default={})
     if not card:
         logger.warning("角色卡JSON解析失败")
-        return "", ""
+        return "", "", "", 0.5
 
     examples = card.get("示例对话", "")
 
@@ -47,7 +47,29 @@ def parse_character_card(json_str: str) -> Tuple[str, str]:
     if card.get("核心描述"):
         parts.append(f"核心描述：{card['核心描述']}")
 
-    return examples, "\n".join(parts) if parts else ""
+    # 提取行为指南
+    behavior_guide = card.get("行为指南", {})
+    behavior_parts = []
+    if isinstance(behavior_guide, dict):
+        will_do = behavior_guide.get("会做的事", [])
+        if will_do and isinstance(will_do, list) and len(will_do) > 0:
+            behavior_parts.append(f"会做的事：{'、'.join(will_do)}")
+        wont_do = behavior_guide.get("不会做的事", [])
+        if wont_do and isinstance(wont_do, list) and len(wont_do) > 0:
+            behavior_parts.append(f"不会做的事：{'、'.join(wont_do)}")
+        catchphrases = behavior_guide.get("口头禅", [])
+        if catchphrases and isinstance(catchphrases, list) and len(catchphrases) > 0:
+            behavior_parts.append(f"口头禅：{'、'.join(catchphrases)}")
+    behavior_guide_text = "\n".join(behavior_parts) if behavior_parts else ""
+
+    # 提取健谈程度
+    try:
+        talkativeness = float(card.get("健谈程度", 0.5))
+        talkativeness = max(0.0, min(1.0, talkativeness))
+    except (TypeError, ValueError):
+        talkativeness = 0.5
+
+    return examples, "\n".join(parts) if parts else "", behavior_guide_text, talkativeness
 
 
 def parse_core_anchor(text: str) -> Tuple[str, str]:

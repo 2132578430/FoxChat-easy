@@ -40,6 +40,8 @@ class PromptPayload:
     user_profile_summary: str
     historical_context: str
     current_state: str
+    behavior_guide: str
+    talkativeness_guidance: str
     history_msg: List  # LangChain BaseMessage list
     user_message: str
 
@@ -264,6 +266,8 @@ def build_prompt_payload(
     user_profile_summary: str,
     historical_context: str,
     current_state: str,
+    behavior_guide: str,
+    talkativeness_guidance: str,
     history_msg: List,
     user_message: str,
     recent_messages: Optional[List[str]] = None,
@@ -278,6 +282,8 @@ def build_prompt_payload(
         user_profile_summary: A2 用户画像+硬边界内容
         historical_context: C 历史上下文内容
         current_state: B 当前状态内容
+        behavior_guide: 行为指南内容（会做的事/不会做的事/口头禅）
+        talkativeness_guidance: 健谈程度指导
         history_msg: D 最近窗口消息（LangChain BaseMessage list）
         user_message: 用户当前输入
         recent_messages: 最近窗口原始消息列表（用于去重）
@@ -324,6 +330,22 @@ def build_prompt_payload(
     else:
         blocks_injected.append("current_state")
 
+    final_behavior_guide = behavior_guide
+    if _is_empty_block(behavior_guide):
+        final_behavior_guide = ""
+        blocks_omitted.append("behavior_guide")
+        logger.debug("【空块抑制】behavior_guide 为空，已省略")
+    else:
+        blocks_injected.append("behavior_guide")
+
+    final_talkativeness_guidance = talkativeness_guidance
+    if _is_empty_block(talkativeness_guidance):
+        final_talkativeness_guidance = ""
+        blocks_omitted.append("talkativeness_guidance")
+        logger.debug("【空块抑制】talkativeness_guidance 为空，已省略")
+    else:
+        blocks_injected.append("talkativeness_guidance")
+
     # 2. 跨层去重
     if enable_dedup and (final_user_profile or final_current_state or final_historical_context):
         final_user_profile, final_current_state, final_historical_context, duplicates_removed = \
@@ -351,6 +373,8 @@ def build_prompt_payload(
         user_profile_summary=final_user_profile,
         historical_context=final_historical_context,
         current_state=final_current_state,
+        behavior_guide=final_behavior_guide,
+        talkativeness_guidance=final_talkativeness_guidance,
         history_msg=history_msg,
         user_message=user_message,
         blocks_injected=blocks_injected,
@@ -372,6 +396,8 @@ def payload_to_invoke_dict(payload: PromptPayload) -> dict:
         "user_profile_summary": payload.user_profile_summary,
         "historical_context": payload.historical_context,
         "current_state": payload.current_state,
+        "behavior_guide": payload.behavior_guide,
+        "talkativeness_guidance": payload.talkativeness_guidance,
         "history_msg": payload.history_msg,
         "user_message": payload.user_message,
     }

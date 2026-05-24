@@ -25,6 +25,8 @@ class ParsedMemories:
     """解析后的记忆数据容器"""
     character_card_examples: str
     character_card_detail: str
+    behavior_guide_text: str
+    talkativeness: float
     role_declaration: str
     core_anchor_text: str
     user_profile_summary: str

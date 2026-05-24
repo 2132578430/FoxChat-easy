@@ -72,7 +72,7 @@ async def invoke_llm_with_retrieval(
     prompt_text = await PromptManager.get_prompt("chat_system")
     prompt_text = escape_template(
         prompt_text,
-        ["static_anchors", "user_profile_summary", "historical_context", "current_state"],
+        ["static_anchors", "user_profile_summary", "historical_context", "current_state", "behavior_guide", "talkativeness_guidance"],
     )
 
     soul = await PromptManager.get_soul("soul")
@@ -88,11 +88,30 @@ async def invoke_llm_with_retrieval(
         mes_example=parsed.character_card_examples,
     )
 
+    # 构建行为指南注入文本
+    behavior_guide_text = ""
+    if parsed.behavior_guide_text and parsed.behavior_guide_text.strip():
+        behavior_guide_text = f"【行为指南】\n{parsed.behavior_guide_text.strip()}"
+
+    # 根据健谈程度构建长度指导
+    talkativeness = parsed.talkativeness
+    if talkativeness <= 0.3:
+        talkativeness_guidance = "【输出长度指导】当前角色话少寡言，回复应保持简短精炼，1-3句话即可。"
+    elif talkativeness <= 0.6:
+        talkativeness_guidance = "【输出长度指导】当前角色话量适中，回复自然即可，3-5句话为宜。"
+    elif talkativeness <= 0.8:
+        talkativeness_guidance = "【输出长度指导】当前角色较为健谈，回复可以适当展开，5-8句话，用动作和对话交替构建生动场景。"
+    else:
+        talkativeness_guidance = "【输出长度指导】当前角色非常健谈，回复应当丰富详细，多段展开，用动作与对话交替构建沉浸式互动体验。"
+    logger.debug(f"【健谈程度】talkativeness={talkativeness}, guidance={talkativeness_guidance}")
+
     payload = build_prompt_payload(
         static_anchors=static_anchors,
         user_profile_summary=parsed.user_profile_summary,
         historical_context=historical_context,
         current_state=parsed.current_state,
+        behavior_guide=behavior_guide_text,
+        talkativeness_guidance=talkativeness_guidance,
         history_msg=history_msg,
         user_message=msg_content,
         recent_messages=recent_messages,
@@ -127,6 +146,8 @@ async def invoke_llm_with_retrieval(
         user_profile_summary=payload.user_profile_summary,
         historical_context=payload.historical_context,
         current_state=payload.current_state,
+        behavior_guide=payload.behavior_guide,
+        talkativeness_guidance=payload.talkativeness_guidance,
     )
     messages.insert(0, {"role": "system", "content": system_prompt})
 
