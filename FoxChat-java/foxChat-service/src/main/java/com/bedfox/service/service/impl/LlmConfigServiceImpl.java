@@ -6,10 +6,12 @@ import com.bedfox.pojo.dto.LlmConfigDto;
 import com.bedfox.pojo.dto.TestConnectionDto;
 import com.bedfox.service.mapper.LlmConfigMapper;
 import com.bedfox.service.service.LlmConfigService;
+import com.bedfox.service.service.LlmUserService;
 import com.bedfox.service.remote.ChatClient;
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,6 +30,10 @@ public class LlmConfigServiceImpl extends ServiceImpl<LlmConfigMapper, LlmConfig
 
     @Autowired
     private ChatClient chatClient;
+
+    @Lazy
+    @Autowired
+    private LlmUserService llmUserService;
 
     private static final List<String> REQUIRED_SCENARIOS = Arrays.asList(
             "chat", "memory", "summary", "extraction", "emotion"
@@ -82,6 +88,10 @@ public class LlmConfigServiceImpl extends ServiceImpl<LlmConfigMapper, LlmConfig
         }
 
         log.info("【批量保存】llmId={}, 保存 {} 个配置", llmId, configIds.size());
+
+        Map<String, Object> activateResult = llmUserService.activateLlm(llmId);
+        log.info("【批量保存后激活】llmId={}, result={}", llmId, activateResult);
+
         return configIds;
     }
 

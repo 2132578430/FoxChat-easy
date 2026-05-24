@@ -41,6 +41,9 @@ def search_vector_score(chroma: Chroma, msg: str, metadata: dict | None = None):
 
 
 def get_ensemble_retriever(documents: list[Document], chroma: Chroma, metadata: dict | None = None) -> EnsembleRetriever:
+    """
+    获取两个结果的重排序模型
+    """
     bm25 = get_bm25_retriever(documents)
     vector = get_vector_retriever(chroma, metadata)
 

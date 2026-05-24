@@ -20,6 +20,7 @@ from loguru import logger
 
 from app.common.constant.LLMChatConstant import LLMChatConstant, build_memory_key
 from app.core.db.redis_client import redis_client
+from app.core.db.mysql_client import async_session_local
 from app.service.chat.strategy.base_strategy import MemoryJSONInvokeStrategy
 from app.core.prompts.prompt_manager import PromptManager
 from app.exception.BusinessException import BusinessException
@@ -126,11 +127,16 @@ async def _update_user_profile(current_profile: Dict, recent_msg_list: List[str]
             {"role": "user", "content": f"Current profile: {json.dumps(current_profile, ensure_ascii=False)}\nChat history: {json.dumps(recent_msg_list, ensure_ascii=False)}"}
         ]
 
-        # 获取配置
+        # 获取配置（如果没有传入 db，则自动创建 session）
         from app.service.llm_config_service import get_llm_configs_batch
-        config_map = {}
-        if llm_id and db:
-            config_map = await get_llm_configs_batch(llm_id, db)
+        if llm_id:
+            if db:
+                config_map = await get_llm_configs_batch(llm_id, db)
+            else:
+                async with async_session_local() as session:
+                    config_map = await get_llm_configs_batch(llm_id, session)
+        else:
+            config_map = {}
 
         result = await strategy.invoke(messages, config_map)
 

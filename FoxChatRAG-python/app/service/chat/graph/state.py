@@ -4,10 +4,9 @@ ChatState — LangGraph 主对话流程的状态定义
 每个字段对应 graph 中一个或多个节点的输入/输出。
 """
 
-from typing import TypedDict, List, Any
+from typing import TypedDict, List, Any, Dict
 
 from app.service.chat.types import ChatMemories, ParsedMemories
-from app.common.constant.intent_config import IntentResult
 
 
 class ChatState(TypedDict, total=False):
@@ -28,7 +27,7 @@ class ChatState(TypedDict, total=False):
     history_msg: List[Any]  # List[BaseMessage]
 
     # === Intent & Retrieval ===
-    intent_result: IntentResult
+    intent_result: Dict[str, Any]
     relevant_memories_text: str
 
     # === LLM ===

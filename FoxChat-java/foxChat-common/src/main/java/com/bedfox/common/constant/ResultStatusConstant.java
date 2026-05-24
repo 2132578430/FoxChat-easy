@@ -72,7 +72,16 @@ public enum ResultStatusConstant {
     LLM_RATE_LIMIT_EXCEPTION(15005, "API 配额已用尽，请检查您的账户"),
 
     /** 配置保存失败 */
-    LLM_CONFIG_SAVE_ERROR_EXCEPTION(15006, "配置保存失败");
+    LLM_CONFIG_SAVE_ERROR_EXCEPTION(15006, "配置保存失败"),
+
+    /** 创造物已激活或正在处理中 */
+    LLM_ALREADY_ACTIVATED_EXCEPTION(15007, "创造物已激活或正在处理中"),
+
+    /** 创造物不存在 */
+    LLM_NOT_FOUND_EXCEPTION(15008, "创造物不存在"),
+
+    /** 无权限操作该创造物 */
+    LLM_NOT_OWNER_EXCEPTION(15009, "无权限操作该创造物");
 
     private Integer code;
     private String msg;

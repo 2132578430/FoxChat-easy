@@ -122,7 +122,7 @@ CREATE TABLE `llm_user`  (
   `llm_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '模型昵称',
   `face_image` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '模型头像',
   `memory_content` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '初始化记忆',
-  `isApply` tinyint(1) NULL DEFAULT NULL COMMENT '是否启用（0禁止/1转化记忆中/2启用）',
+  `is_apply` tinyint(1) NULL DEFAULT NULL COMMENT '是否启用（0禁止/1转化记忆中/2启用）',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 

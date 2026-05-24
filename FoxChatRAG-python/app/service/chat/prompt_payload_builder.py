@@ -358,7 +358,6 @@ def build_prompt_payload(
         duplicates_removed=duplicates_removed,
     )
 
-    # 5. 日志输出（调试）
     logger.debug(f"【Payload构建】注入块: {blocks_injected}, 空块省略: {blocks_omitted}")
 
     return payload

@@ -176,7 +176,7 @@ def match_intent_by_semantic(
         scope=strategy.get("scope", []),
         top_k=strategy.get("top_k", 4),
         skip=strategy.get("skip", False),
-        confidence=best_score,
+        confidence=float(best_score),
     )
 
 

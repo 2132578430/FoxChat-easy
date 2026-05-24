@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
 import Home from '../views/Home.vue';
-import LlmConfig from '../views/LlmConfig.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,11 +20,6 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: Register
-    },
-    {
-      path: '/llm/config',
-      name: 'llm-config',
-      component: LlmConfig
     }
   ]
 });

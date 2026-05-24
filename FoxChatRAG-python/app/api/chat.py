@@ -28,10 +28,10 @@ async def chat_msg(chat_msg_to: ChatMsgTo, background_tasks: BackgroundTasks, re
     llm_id = chat_msg_to.llmId
 
     # 验证配置完整性
-    from app.core.db.mysql_client import get_db
+    from app.core.db.mysql_client import async_session_local
     from app.service.llm_config_service import validate_config_count, get_missing_scenarios
 
-    async with get_db() as db:
+    async with async_session_local() as db:
         is_valid = await validate_config_count(llm_id, db)
 
         if not is_valid:

@@ -39,7 +39,7 @@ qwen3_embed = OllamaEmbeddings(
 
 class DashScopeEmbeddings:
     """
-    自定义向量类
+    自定义向量类--封装阿里云向量模型
     由于封装的向量类都是会自动进行分词器分词，因此需要我们手写一个向量类
     同时，传入的文本和集合可以进行一次清洗然后转化为向量
     本质其实是写一个OpenAiEmbeddings类，来实现我们后面的类需求

@@ -8,6 +8,7 @@ import com.bedfox.pojo.vo.FriendVo;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 /**
 * @author 21325
@@ -30,4 +31,11 @@ public interface LlmUserService extends IService<LlmUser> {
 
     // 上传模型好友头像
     String uploadAvatar(MultipartFile file);
+
+    /**
+     * 激活创造物（发送MQ消息进行记忆初始化）
+     * @param llmId 创造物ID
+     * @return 激活结果Map，包含success/error/missingScenarios
+     */
+    Map<String, Object> activateLlm(String llmId);
 }

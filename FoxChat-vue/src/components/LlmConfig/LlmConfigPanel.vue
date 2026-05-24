@@ -97,7 +97,6 @@
             size="large"
             :icon="CopyDocument"
             @click="handleOneClickConfig"
-            :disabled="!canOneClickConfig"
           >
             一键配置
           </el-button>
@@ -106,12 +105,10 @@
             size="large"
             :icon="Finished"
             :loading="isSavingAll"
-            :disabled="!canSaveAll"
             @click="handleSaveAll"
           >
             {{ isSavingAll ? '保存中...' : '保存所有配置' }}
           </el-button>
-          <span class="save-all-hint" v-if="!canSaveAll">请先测试所有场景连接通过后再批量保存</span>
         </div>
       </div>
     </div>
@@ -331,21 +328,31 @@ const handleTestResult = ({ scenario, success, error }) => {
   }
 };
 
-// One-click config: copy chat config to all other scenarios
+// One-click config: copy current tab's config to all other scenarios
 const handleOneClickConfig = () => {
-  if (!configs.chat || !configs.chat.modelName) {
-    ElMessage.warning('请先配置并测试聊天对话场景');
+  // 从当前活动的 tab 获取配置
+  const currentFormRef = activeTab.value === 'chat' ? chatForm.value :
+                        activeTab.value === 'memory' ? memoryForm.value :
+                        activeTab.value === 'summary' ? summaryForm.value :
+                        activeTab.value === 'extraction' ? extractionForm.value :
+                        emotionForm.value;
+
+  const currentConfig = currentFormRef?.getConfig?.();
+  
+  if (!currentConfig || !currentConfig.modelName) {
+    ElMessage.warning('请先在当前场景填写配置');
     return;
   }
   
-  const chatConfig = {
-    modelName: configs.chat.modelName,
-    apiKey: configs.chat.apiKey,
-    baseUrl: configs.chat.baseUrl
+  const configToCopy = {
+    modelName: currentConfig.modelName,
+    apiKey: currentConfig.apiKey,
+    baseUrl: currentConfig.baseUrl
   };
   
   // Get scenario-specific defaults
   const scenarioDefaults = {
+    chat: { temperature: 0.8, maxTokens: 4096, responseFormat: 'text' },
     memory: { temperature: 0.3, maxTokens: 2048, responseFormat: 'text' },
     summary: { temperature: 0.5, maxTokens: 2048, responseFormat: 'text' },
     extraction: { temperature: 0.0, maxTokens: 2048, responseFormat: 'json_object' },
@@ -353,15 +360,16 @@ const handleOneClickConfig = () => {
   };
   
   // Apply to all forms
-  ['memory', 'summary', 'extraction', 'emotion'].forEach(scenario => {
-    const formRef = scenario === 'memory' ? memoryForm.value :
+  ['chat', 'memory', 'summary', 'extraction', 'emotion'].forEach(scenario => {
+    const formRef = scenario === 'chat' ? chatForm.value :
+                   scenario === 'memory' ? memoryForm.value :
                    scenario === 'summary' ? summaryForm.value :
                    scenario === 'extraction' ? extractionForm.value :
                    emotionForm.value;
     
     if (formRef) {
       const fullConfig = {
-        ...chatConfig,
+        ...configToCopy,
         ...scenarioDefaults[scenario]
       };
       formRef.setConfig(fullConfig);
@@ -369,47 +377,55 @@ const handleOneClickConfig = () => {
     
     // Update local configs state
     configs[scenario] = {
-      ...chatConfig,
+      ...configToCopy,
       ...scenarioDefaults[scenario]
     };
   });
   
-  ElMessage.success('已将聊天配置复制到其他场景，请逐个测试连接');
+  ElMessage.success('已将当前配置复制到所有场景');
 };
 
 const handleSaveAll = async () => {
-  if (!canSaveAll.value) {
-    ElMessage.warning('请先测试所有场景连接通过后再批量保存');
-    return;
-  }
-
   isSavingAll.value = true;
 
   try {
     const allConfigs = [];
+    const scenarios = ['chat', 'memory', 'summary', 'extraction', 'emotion'];
 
-    Object.keys(pendingConfigs).forEach(scenario => {
-      if (pendingConfigs[scenario]) {
+    scenarios.forEach(scenario => {
+      const pending = pendingConfigs[scenario];
+      const existing = configs[scenario];
+      const config = pending || existing;
+
+      if (config && config.modelName && config.apiKey && config.baseUrl) {
         allConfigs.push({
           scenario,
-          ...pendingConfigs[scenario]
+          modelName: config.modelName,
+          modelApiKey: config.apiKey,
+          modelBaseUrl: config.baseUrl,
+          modelTemperature: config.temperature || 0.5,
+          modelMaxTokens: config.maxTokens || 2048,
+          modelResponseFormat: config.responseFormat || 'text'
         });
       }
     });
 
-    Object.keys(configs).forEach(scenario => {
-      if (!pendingConfigs[scenario] && configs[scenario] && configs[scenario].modelName) {
-        allConfigs.push({
-          scenario,
-          ...configs[scenario]
-        });
-      }
-    });
+    if (allConfigs.length === 0) {
+      ElMessage.warning('没有可保存的配置');
+      return;
+    }
 
     const response = await saveConfigsBatch(currentLlmId.value, allConfigs);
 
     if (response.code === 1000) {
-      ElMessage.success('所有配置保存成功');
+      ElMessage.success('配置保存成功');
+
+      scenarios.forEach(scenario => {
+        if (pendingConfigs[scenario]) {
+          configs[scenario] = { ...pendingConfigs[scenario] };
+          pendingConfigs[scenario] = null;
+        }
+      });
     } else {
       ElMessage.error(response.msg || '保存失败');
     }
@@ -491,7 +507,9 @@ watch(currentLlmId, (newLlmId) => {
 
 /* Left: Friend List Panel - Flat Design Sidebar */
 .friend-list-panel {
-  width: 220px;
+  width: 30%;
+  min-width: 220px;
+  max-width: 320px;
   background: rgba(255, 255, 255, 0.5);
   border-radius: 12px;
   display: flex;
@@ -535,6 +553,7 @@ watch(currentLlmId, (newLlmId) => {
 .friend-item {
   display: flex;
   align-items: center;
+  gap: 12px;
   padding: 12px 15px;
   cursor: pointer;
   border-radius: 8px;

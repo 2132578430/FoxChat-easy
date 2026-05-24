@@ -25,6 +25,7 @@ from app.common.constant.ChromaTypeConstant import ChromaTypeConstant
 from app.common.constant.FileTypeConstant import FileTypeConstant
 from app.common.constant.LLMChatConstant import LLMChatConstant, build_memory_key
 from app.core.db.redis_client import redis_client
+from app.core.db.mysql_client import async_session_local
 from app.core.prompts.prompt_manager import PromptManager
 from app.service.chat.strategy.base_strategy import ExtractionInvokeStrategy, MemoryInvokeStrategy, SummaryInvokeStrategy
 from app.util import loader_util, chroma_util
@@ -165,11 +166,16 @@ async def _extract_memory_events(recent_msg_list: List[str], llm_id: str = None,
         {"role": "user", "content": f"Extract structured memory events from this conversation:\n{chat_history}"}
     ]
 
-    # 获取配置
+    # 获取配置（如果没有传入 db，则自动创建 session）
     from app.service.llm_config_service import get_llm_configs_batch
-    config_map = {}
-    if llm_id and db:
-        config_map = await get_llm_configs_batch(llm_id, db)
+    if llm_id:
+        if db:
+            config_map = await get_llm_configs_batch(llm_id, db)
+        else:
+            async with async_session_local() as session:
+                config_map = await get_llm_configs_batch(llm_id, session)
+    else:
+        config_map = {}
 
     result = await strategy.invoke(messages, config_map)
 
@@ -375,11 +381,16 @@ async def _compress_memory_bank_if_needed(user_id: str, llm_id: str, db = None) 
     # 使用 Memory 策略
     strategy = MemoryInvokeStrategy()
 
-    # 获取配置
+    # 获取配置（如果没有传入 db，则自动创建 session）
     from app.service.llm_config_service import get_llm_configs_batch
-    config_map = {}
-    if llm_id and db:
-        config_map = await get_llm_configs_batch(llm_id, db)
+    if llm_id:
+        if db:
+            config_map = await get_llm_configs_batch(llm_id, db)
+        else:
+            async with async_session_local() as session:
+                config_map = await get_llm_configs_batch(llm_id, session)
+    else:
+        config_map = {}
 
     result = await strategy.invoke(messages, config_map)
 
@@ -434,11 +445,16 @@ async def _summary_and_upload(recent_msg_list: List[str], user_id: str, llm_id: 
         {"role": "user", "content": f"The chat history between the user and the role currently played by the AI is:\n{'\n'.join(recent_msg_list)}"}
     ]
 
-    # 获取配置
+    # 获取配置（如果没有传入 db，则自动创建 session）
     from app.service.llm_config_service import get_llm_configs_batch
-    config_map = {}
-    if llm_id and db:
-        config_map = await get_llm_configs_batch(llm_id, db)
+    if llm_id:
+        if db:
+            config_map = await get_llm_configs_batch(llm_id, db)
+        else:
+            async with async_session_local() as session:
+                config_map = await get_llm_configs_batch(llm_id, session)
+    else:
+        config_map = {}
 
     summary = await strategy.invoke(messages, config_map)
 

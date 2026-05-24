@@ -15,18 +15,18 @@ import json
 from typing import List, Optional
 
 from loguru import logger
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain_core.runnables import RunnableLambda
 from langchain_core.language_models.chat_models import BaseMessage
 
 from app.common.constant.ChromaTypeConstant import ChromaTypeConstant
+from app.core.db.mysql_client import async_session_local
 from app.core.prompts.prompt_manager import PromptManager
-from app.service.chat.prompt_payload_builder import build_prompt_payload, payload_to_invoke_dict
+from app.service.chat.prompt_payload_builder import build_prompt_payload
 from app.service.chat.history_event_retrieval_service import (
     retrieve_history_events_v2,
     format_history_events,
 )
 from app.service.chat.strategy.base_strategy import ChatInvokeStrategy
+from app.service.llm_config_service import get_llm_configs_batch
 from app.util import chroma_util
 from app.util.template_util import escape_template
 
@@ -54,33 +54,25 @@ async def invoke_llm_with_retrieval(
         llm_id: 模型 ID（必需，用于查询用户配置）
         recent_messages: 最近消息列表
         relevant_memories_text: 预计算的检索结果文本（空字符串表示无检索结果）
-        db: 数据库会话（可选，用于查询配置）
+        db: 数据库会话（可选，如果没有传入则自动创建）
 
     Returns:
         LLM 响应文本
     """
     from app.service.chat.memory_parser import build_static_anchors
-    from app.service.llm_config_service import get_llm_configs_batch
 
     # 获取用户配置（批量查询）
+    # 如果没有传入 db，则自动创建 session
     if db:
         config_map = await get_llm_configs_batch(llm_id, db)
     else:
-        # 如果没有 db，使用默认配置（向后兼容）
-        logger.warning(f"【LLM调用】无 db session，使用默认配置")
-        config_map = {}
+        async with async_session_local() as session:
+            config_map = await get_llm_configs_batch(llm_id, session)
 
     prompt_text = await PromptManager.get_prompt("chat_system")
     prompt_text = escape_template(
         prompt_text,
         ["static_anchors", "user_profile_summary", "historical_context", "current_state"],
-    )
-    template = ChatPromptTemplate(
-        [
-            ("system", prompt_text),
-            MessagesPlaceholder("history_msg"),
-            ("human", "Reply with a response that matches the current memory and identity according to the above prompts and memory template:\n{user_message}")
-        ]
     )
 
     soul = await PromptManager.get_soul("soul")
@@ -118,18 +110,31 @@ async def invoke_llm_with_retrieval(
     # 构建消息列表（用于 LiteLLM）
     messages = []
     for msg in history_msg:
+        msg_type = msg.type if hasattr(msg, 'type') else "user"
+        role = {"human": "user", "ai": "assistant"}.get(msg_type, msg_type)
         messages.append({
-            "role": msg.type if hasattr(msg, 'type') else "user",
+            "role": role,
             "content": msg.content
         })
     messages.append({
         "role": "user",
-        "content": f"Reply with a response that matches the current memory and identity according to the above prompts and memory template:\n{msg_content}"
+        "content": msg_content
     })
 
     # 添加 system prompt 到消息开头
-    system_prompt = template.format(**payload_to_invoke_dict(payload))
+    system_prompt = prompt_text.format(
+        static_anchors=payload.static_anchors,
+        user_profile_summary=payload.user_profile_summary,
+        historical_context=payload.historical_context,
+        current_state=payload.current_state,
+    )
     messages.insert(0, {"role": "system", "content": system_prompt})
+
+    # 调试日志：打印完整 messages
+    logger.debug(f"【完整Messages】共 {len(messages)} 条消息")
+    for i, msg in enumerate(messages):
+        content_preview = msg["content"][:3000] if len(msg["content"]) > 3000 else msg["content"]
+        logger.debug(f"  [{i}] role={msg['role']}, content={content_preview}...")
 
     response_text = await strategy.invoke(messages, config_map)
     return response_text

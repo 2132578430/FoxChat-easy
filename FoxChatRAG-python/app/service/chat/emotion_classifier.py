@@ -21,6 +21,7 @@ from app.core.prompts.prompt_manager import PromptManager
 from app.service.chat.state_manager import update_current_state, get_current_state
 from app.schemas.current_state import UpdateSource
 from app.util.template_util import escape_template
+from app.core.db.mysql_client import async_session_local
 
 
 async def classify_emotion(model_reply: str, llm_id: str = None, db = None) -> tuple[str, str]:
@@ -30,7 +31,7 @@ async def classify_emotion(model_reply: str, llm_id: str = None, db = None) -> t
     Args:
         model_reply: 模型的回复文本
         llm_id: AI 朋友 ID（用于查询配置）
-        db: 数据库会话
+        db: 数据库会话（可选，如果没有传入则自动创建）
 
     Returns:
         (emotion_label, certainty): 情绪标签和确定性
@@ -47,11 +48,16 @@ async def classify_emotion(model_reply: str, llm_id: str = None, db = None) -> t
             {"role": "user", "content": model_reply}
         ]
 
-        # 获取配置
+        # 获取配置（如果没有传入 db，则自动创建 session）
         from app.service.llm_config_service import get_llm_configs_batch
-        config_map = {}
-        if llm_id and db:
-            config_map = await get_llm_configs_batch(llm_id, db)
+        if llm_id:
+            if db:
+                config_map = await get_llm_configs_batch(llm_id, db)
+            else:
+                async with async_session_local() as session:
+                    config_map = await get_llm_configs_batch(llm_id, session)
+        else:
+            config_map = {}
 
         result_text = await strategy.invoke(messages, config_map)
         

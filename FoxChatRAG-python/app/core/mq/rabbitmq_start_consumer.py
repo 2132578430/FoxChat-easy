@@ -1,6 +1,6 @@
 import aio_pika
 
-from app.core import get_db
+from app.core.db.mysql_client import async_session_local
 from app.core.mq.handler import rag_file_handler, chat_upload_handler
 
 
@@ -12,7 +12,7 @@ async def rag(queue: aio_pika.Queue):
     # 监控rag文件上传队列,手动ack
     async with queue.iterator() as queue_iter:
         async for message in queue_iter:
-            async with get_db() as db:
+            async with async_session_local() as db:
                 await rag_file_handler(message, db)
 
 async def chat(queue: aio_pika.Queue):

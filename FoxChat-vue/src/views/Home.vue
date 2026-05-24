@@ -609,7 +609,9 @@ onMounted(() => {
 
 const getUnreadCounts = async () => {
   try {
-    const countsMap = await messageApi.getUnreadCounts();
+    const response = await messageApi.getUnreadCounts();
+    // 适配拦截器返回的完整响应结构 {code, msg, data}
+    const countsMap = response.code === 1000 ? response.data : response;
     if (countsMap) {
       friendList.value.forEach(friend => {
         const fid = String(friend.userId || friend.id);
@@ -646,7 +648,9 @@ const toggleProfile = () => {
 
 const getUserInfo = async () => {
   try {
-    const data = await userApi.getUserInfo();
+    const response = await userApi.getUserInfo();
+    // 适配拦截器返回的完整响应结构 {code, msg, data}
+    const data = response.code === 1000 ? response.data : response;
     profileInfo.value = data;
     // 同步更新顶层展示用的 userInfo
     if (data.nickname) userInfo.nickname = data.nickname;
@@ -1184,16 +1188,21 @@ const handleMessage = async (rawInput) => {
 
 const getFriendList = async () => {
   try {
-    const data = await friendApi.getFriendList();
-    console.log('好友列表原始响应:', data);
+    const response = await friendApi.getFriendList();
+    console.log('好友列表原始响应:', response);
     
     let list = [];
-    if (Array.isArray(data)) {
-      list = data;
-    } else if (data && data.list) {
-      list = data.list;
-    } else if (data && (data.userId || data.id)) {
-      list = [data];
+    // 适配拦截器返回的完整响应结构 {code, msg, data}
+    if (response.code === 1000 && response.data) {
+      list = response.data;
+    } else if (Array.isArray(response)) {
+      // 兼容旧格式：直接返回数组
+      list = response;
+    } else if (response && response.list) {
+      // 兼容其他格式
+      list = response.list;
+    } else if (response && (response.userId || response.id)) {
+      list = [response];
     }
       
     // 确保每个好友对象都有 online 字段处理
@@ -1274,7 +1283,9 @@ const handleGroupSearch = async (text) => {
     if (localResult.length > 0) {
       groupListRef.value.searchResultList = localResult;
     } else {
-      const data = await groupApi.searchGroup(text);
+      const response = await groupApi.searchGroup(text);
+      // 适配拦截器返回的完整响应结构 {code, msg, data}
+      const data = response.code === 1000 ? response.data : response;
       let results = Array.isArray(data) ? data : (data && data.list ? data.list : (data ? [data] : []));
       groupListRef.value.searchResultList = results.map(g => ({
         ...g,
@@ -1310,7 +1321,9 @@ const handleFriendSearch = async (text) => {
     if (localResult.length > 0) {
       friendListRef.value.searchResultList = localResult;
     } else {
-      const data = await friendApi.searchFriend(text);
+      const response = await friendApi.searchFriend(text);
+      // 适配拦截器返回的完整响应结构 {code, msg, data}
+      const data = response.code === 1000 ? response.data : response;
       let results = Array.isArray(data) ? data : (data && data.list ? data.list : (data ? [data] : []));
       friendListRef.value.searchResultList = results.map(user => {
         const targetId = String(user.userId || user.id);
@@ -1566,18 +1579,23 @@ const getChatHistory = async (targetId, isFirstLoad = false) => {
         lastTime: lastTimestamp.value,
         lastId: lastMsgId.value
       });
-      data = (res && res.data) ? res.data : (Array.isArray(res) ? res : []);
+      // 适配拦截器返回的完整响应结构 {code, msg, data}
+      data = (res && res.code === 1000 && res.data) ? res.data : (res && res.data) ? res.data : (Array.isArray(res) ? res : []);
     } else if (currentChatType.value === 'group') {
       console.log('调用 groupApi.getGroupChatHistory...');
-      data = await groupApi.getGroupChatHistory({
+      const res = await groupApi.getGroupChatHistory({
         groupId: targetId,
         lastTimestamp: lastTimestamp.value
       });
+      // 适配拦截器返回的完整响应结构 {code, msg, data}
+      data = (res && res.code === 1000) ? res.data : res;
     } else {
-      data = await messageApi.getChatHistory({
+      const res = await messageApi.getChatHistory({
         friendId: targetId,
         lastTimestamp: lastTimestamp.value
       });
+      // 适配拦截器返回的完整响应结构 {code, msg, data}
+      data = (res && res.code === 1000) ? res.data : res;
     }
     
     // 因为拦截器已经处理了 code != 1000 的情况（抛出异常），所以能走到这里说明请求成功
@@ -1783,10 +1801,17 @@ const sendMessage = async () => {
       let replyBlocks = null;
       let replyEmotion = null;
 
+      // 拦截器现在返回完整响应 {code, msg, data}
+      // 需要先提取 res.data，然后处理
+      let actualResponse = res;
+      if (res && res.code === 1000 && res.data) {
+        actualResponse = res.data;
+      }
+
       // 后端返回的是消息列表数组，需要找到 AI 回复的那条
-      if (Array.isArray(res)) {
+      if (Array.isArray(actualResponse)) {
         // 找到 isHuman: false 的消息（AI回复）
-        const aiMsg = res.find(m => m.isHuman === false);
+        const aiMsg = actualResponse.find(m => m.isHuman === false);
         if (aiMsg && aiMsg.msgContent) {
           try {
             const parsed = JSON.parse(aiMsg.msgContent);
@@ -1802,11 +1827,11 @@ const sendMessage = async () => {
             replyBlocks = [{ type: 'text', text: aiMsg.msgContent }];
           }
         }
-      } else if (res && res.msgId && res.data) {
+      } else if (actualResponse && actualResponse.msgId && actualResponse.data) {
         // M.get_msg 包装格式 { msgId, data }
-        const actualData = res.data;
-        if (Array.isArray(actualData)) {
-          const aiMsg = actualData.find(m => m.isHuman === false);
+        const innerData = actualResponse.data;
+        if (Array.isArray(innerData)) {
+          const aiMsg = innerData.find(m => m.isHuman === false);
           if (aiMsg && aiMsg.msgContent) {
             try {
               const parsed = JSON.parse(aiMsg.msgContent);
@@ -1820,30 +1845,29 @@ const sendMessage = async () => {
               replyBlocks = [{ type: 'text', text: aiMsg.msgContent }];
             }
           }
-        } else if (actualData.blocks) {
-          replyBlocks = actualData.blocks;
-          replyEmotion = actualData.emotion;
+        } else if (innerData.blocks) {
+          replyBlocks = innerData.blocks;
+          replyEmotion = innerData.emotion;
         }
-      } else if (res && res.msg) {
-        // 拦截器已解包，res 是后端返回的 data 对象 { msg: "..." }
-        // res.msg 是 JSON 字符串，需要解析是否为 blocks 格式
+      } else if (actualResponse && actualResponse.msg) {
+        // actualResponse.msg 是 JSON 字符串，需要解析是否为 blocks 格式
         try {
-          const parsed = typeof res.msg === 'string' ? JSON.parse(res.msg) : res.msg;
+          const parsed = typeof actualResponse.msg === 'string' ? JSON.parse(actualResponse.msg) : actualResponse.msg;
           if (parsed && parsed.blocks && Array.isArray(parsed.blocks)) {
             replyBlocks = parsed.blocks;
             replyEmotion = parsed.emotion || null;
           } else if (Array.isArray(parsed)) {
             replyBlocks = parsed;
           } else {
-            replyBlocks = [{ type: 'text', text: res.msg }];
+            replyBlocks = [{ type: 'text', text: actualResponse.msg }];
           }
         } catch (e) {
-          replyBlocks = [{ type: 'text', text: res.msg }];
+          replyBlocks = [{ type: 'text', text: actualResponse.msg }];
         }
-      } else if (typeof res === 'string') {
-        replyBlocks = [{ type: 'text', text: res }];
+      } else if (typeof actualResponse === 'string') {
+        replyBlocks = [{ type: 'text', text: actualResponse }];
       } else {
-        replyBlocks = [{ type: 'text', text: JSON.stringify(res) }];
+        replyBlocks = [{ type: 'text', text: JSON.stringify(actualResponse) }];
       }
 
       // 只有当当前选中的好友还是刚才发请求的那位时，才把消息推入当前的 messageList
@@ -1879,8 +1903,7 @@ const sendMessage = async () => {
 
       // 处理配置不完整错误（15001）
       if (error && error.code === 15001) {
-        ElMessage.warning('请先完成模型配置后再开始聊天');
-        router.push(`/llm/config?llm_id=${llmId}`);
+        ElMessage.warning('请先完成模型配置后再开始聊天（点击侧边栏设置按钮进行配置）');
         return;
       }
 
@@ -2046,8 +2069,11 @@ const isGroupLoading = ref(false);
 const getGroupList = async () => {
   try {
     isGroupLoading.value = true;
-    const data = await groupApi.getGroupList();
-    console.log('群组列表原始响应:', data);
+    const response = await groupApi.getGroupList();
+    console.log('群组列表原始响应:', response);
+    
+    // 适配拦截器返回的完整响应结构 {code, msg, data}
+    const data = response.code === 1000 ? response.data : response;
     
     let list = [];
     if (Array.isArray(data)) {
@@ -2133,7 +2159,6 @@ const handleAddLlmFriend = async () => {
           experience: addLlmFriendForm.experience
         };
         const response = await request.post('/llm/add', dto);
-        const llmId = response.data; // 获取新创建的 AI friend ID
         ElMessage.success('陪伴者创建成功！请配置模型参数');
         showAddLlmFriendDialog.value = false;
         addLlmFriendForm.nickname = '';
@@ -2141,9 +2166,6 @@ const handleAddLlmFriend = async () => {
         addLlmFriendForm.partnerName = '';
         addLlmFriendForm.experience = '';
         getFriendList();
-
-        // 跳转到 LLM 配置页面
-        router.push(`/llm/config?llm_id=${llmId}`);
       } catch (error) {
         console.error('添加陪伴者失败:', error);
       } finally {

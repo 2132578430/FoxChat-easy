@@ -10,7 +10,7 @@
   - 初始记忆（统一提取器）
 
 重构说明：
-- 使用策略层替代 LLM_MAP 硬编码模型
+- 使用策略层替代 LLM_MAP 编码模型
 - 支持用户自定义模型配置（通过 llm_id）
 """
 
@@ -21,6 +21,7 @@ from loguru import logger
 
 from app.common.constant.LLMChatConstant import LLMChatConstant, build_memory_key
 from app.core import redis_client
+from app.core.db.mysql_client import async_session_local
 from app.service.chat.strategy.base_strategy import ExtractionInvokeStrategy, MemoryInvokeStrategy
 from app.core.prompts.prompt_manager import PromptManager
 from app.service.llm_config_service import get_llm_configs_batch
@@ -58,8 +59,15 @@ async def _call_llm(
         {"role": "user", "content": variables.get("input_content", "")}
     ]
 
-    # 获取用户配置
-    config_map = await get_llm_configs_batch(llm_id, db) if llm_id and db else {}
+    # 获取用户配置（如果没有传入 db，则自动创建 session）
+    if llm_id:
+        if db:
+            config_map = await get_llm_configs_batch(llm_id, db)
+        else:
+            async with async_session_local() as session:
+                config_map = await get_llm_configs_batch(llm_id, session)
+    else:
+        config_map = {}
 
     # 选择策略
     strategy = ExtractionInvokeStrategy() if use_json else MemoryInvokeStrategy()
@@ -127,7 +135,6 @@ async def _process_memory_task(
     user_id: str,
     llm_id: str,
     experience: str,
-    db,
     serialize_json: bool = False,
     write_to_chroma: bool = False,
 ):
@@ -135,11 +142,10 @@ async def _process_memory_task(
     并发处理单个记忆任务
 
     Args:
-        db: 数据库会话（用于查询用户配置）
         write_to_chroma: 是否写入 Chroma（用于初始记忆）
     """
     try:
-        result = await extractor_func(experience, llm_id, db)
+        result = await extractor_func(experience, llm_id, None)
 
         # 写入 Redis（如果指定了 constant_key）
         if constant_key:
@@ -159,13 +165,12 @@ async def _process_memory_task(
         return default
 
 
-async def chat_init(body: str, db = None):
+async def chat_init(body: str):
     """
     模型经历上传 - 多层记忆架构（并发处理）
 
     Args:
         body: 请求体 JSON 字符串
-        db: 数据库会话（用于查询用户配置）
     """
     msg_json = safe_json_parse(body)
     if not msg_json:
@@ -181,16 +186,22 @@ async def chat_init(body: str, db = None):
         logger.error("接收初始记忆有误")
         raise ValueError("接收初始记忆有误")
 
+    core_anchor_key = build_memory_key(LLMChatConstant.CORE_ANCHOR, user_id, llm_id)
+    existing_core_anchor = redis_client.get(core_anchor_key)
+    if existing_core_anchor:
+        logger.info(f"用户 {user_id} 的角色核心锚点已存在（llmId={llm_id}），跳过重复初始化")
+        return
+
     logger.info(f"开始处理用户 {user_id} 的初始记忆...")
 
     raw_key = build_memory_key(LLMChatConstant.RAW_EXPERIENCE, user_id, llm_id)
     redis_client.set(raw_key, experience)
 
     await asyncio.gather(
-        _process_memory_task("角色核心锚点", _extract_core_anchor, LLMChatConstant.CORE_ANCHOR, user_id, llm_id, experience, db),
-        _process_memory_task("用户画像", _generate_user_profile, LLMChatConstant.USER_PROFILE, user_id, llm_id, experience, db, serialize_json=True),
-        _process_memory_task("角色卡", _generate_character_card, LLMChatConstant.CHARACTER_CARD, user_id, llm_id, experience, db, serialize_json=True),
-        _process_memory_task("初始记忆", _extract_initial_memories, LLMChatConstant.MEMORY_BANK, user_id, llm_id, experience, db, serialize_json=True, write_to_chroma=True),
+        _process_memory_task("角色核心锚点", _extract_core_anchor, LLMChatConstant.CORE_ANCHOR, user_id, llm_id, experience),
+        _process_memory_task("用户画像", _generate_user_profile, LLMChatConstant.USER_PROFILE, user_id, llm_id, experience, serialize_json=True),
+        _process_memory_task("角色卡", _generate_character_card, LLMChatConstant.CHARACTER_CARD, user_id, llm_id, experience, serialize_json=True),
+        _process_memory_task("初始记忆", _extract_initial_memories, LLMChatConstant.MEMORY_BANK, user_id, llm_id, experience, serialize_json=True, write_to_chroma=True),
     )
 
     logger.info(f"用户 {user_id} 的初始记忆处理完成")

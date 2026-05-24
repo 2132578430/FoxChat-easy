@@ -44,7 +44,8 @@ const handleLogin = async () => {
   // loading 状态由 request.js 统一管理，或者保留这里以此禁用按钮
   loading.value = true;
   try {
-    const data = await login(loginForm);
+    const response = await login(loginForm);
+    const data = response.data;
     ElMessage.success('登录成功');
 
     // token 由 HTTPOnly Cookie 自动管理，无需存储到 localStorage

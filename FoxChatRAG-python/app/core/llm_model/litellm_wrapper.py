@@ -6,6 +6,7 @@ LiteLLM Wrapper
 """
 
 from loguru import logger
+from app.core.db.mysql_client import async_session_local
 
 
 def format_model_name(model_name: str) -> str:
@@ -41,21 +42,27 @@ def format_model_name(model_name: str) -> str:
     return model_name
 
 
-async def get_llm_config_for_scenario(llm_id: str, scenario: str, db) -> dict:
+async def get_llm_config_for_scenario(llm_id: str, scenario: str, db = None) -> dict:
     """
     获取指定场景的 LLM 配置
 
     Args:
         llm_id: AI 朋友 ID
         scenario: 场景名称 (chat, memory, summary, extraction, emotion)
-        db: 数据库会话
+        db: 数据库会话（可选，如果没有传入则自动创建）
 
     Returns:
         配置字典 (model_name, api_key, base_url, temperature, max_tokens, ...)
     """
     from app.service.llm_config_service import get_llm_configs_batch
 
-    config_map = await get_llm_configs_batch(llm_id, db)
+    # 如果没有传入 db，则自动创建 session
+    if db:
+        config_map = await get_llm_configs_batch(llm_id, db)
+    else:
+        async with async_session_local() as session:
+            config_map = await get_llm_configs_batch(llm_id, session)
+
     config = config_map.get(scenario)
 
     if not config:

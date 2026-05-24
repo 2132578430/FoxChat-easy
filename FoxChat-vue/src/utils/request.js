@@ -66,12 +66,9 @@ request.interceptors.response.use(
     const res = response.data;
 
     // 标准化响应处理：code 为 1000 表示成功
+    // 保留完整响应结构 {code, msg, data}，前端统一检查 response.code === 1000
     if (res.code === 1000) {
-      // 智能解包：如果有 data 字段就返回 data，否则返回整个 res 以便获取 code
-      if (res.data === null || res.data === undefined) {
-        return res;
-      }
-      return res.data;
+      return res;  // 返回完整响应，让调用方通过 response.data 访问数据
     } else {
       // 业务错误处理：展示 msg 中的错误信息
       const msg = res.msg || '哎呀，出错了呢... (未知错误)';

@@ -14,6 +14,18 @@ from loguru import logger
 import litellm
 
 
+def format_model_name(model_name: str) -> str:
+    """
+    格式化模型名称（添加 provider prefix）
+    
+    LiteLLM 要求模型名称包含 provider 前缀，如 'openai/gpt-4'
+    对于不包含前缀的模型名称，自动添加 'openai/' 前缀（OpenAI 兼容 API）
+    """
+    if "/" not in model_name:
+        return f"openai/{model_name}"
+    return model_name
+
+
 class LLMInvokeStrategy:
     """LLM 调用策略基类"""
 
@@ -33,8 +45,11 @@ class LLMInvokeStrategy:
         Returns:
             LiteLLM 参数字典
         """
+        # 格式化模型名称（添加 provider 前缀）
+        formatted_model = format_model_name(config["model_name"])
+        
         params = {
-            "model": config["model_name"],
+            "model": formatted_model,
             "api_key": config["model_api_key"],
             "base_url": config["model_base_url"],
             "temperature": config.get("model_temperature", self.default_temperature),
@@ -87,8 +102,8 @@ class LLMInvokeStrategy:
         try:
             logger.info(f"【LiteLLM调用】scenario={self.scenario}, model={params['model']}")
 
-            # 调用 LiteLLM
-            response = await litellm.completion_async(
+            # 调用 LiteLLM（使用 acompletion 异步方法）
+            response = await litellm.acompletion(
                 model=params["model"],
                 messages=messages,
                 api_key=params["api_key"],

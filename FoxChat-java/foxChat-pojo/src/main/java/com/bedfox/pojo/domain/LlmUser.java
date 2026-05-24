@@ -40,6 +40,12 @@ public class LlmUser implements Serializable {
      */
     private String memoryContent;
 
+    /**
+     * 是否启用（0禁止/1转化记忆中/2启用）
+     */
+    @TableField("isApply")
+    private Integer isApply;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

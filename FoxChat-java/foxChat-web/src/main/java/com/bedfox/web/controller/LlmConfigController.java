@@ -52,7 +52,7 @@ public class LlmConfigController {
      * @return 配置列表
      */
     @GetMapping("/{llmId}")
-    public R<List<LlmConfig>> getConfigsByLlmId(@PathVariable("llmId") String llmId) {
+    public R<List<LlmConfig>> getConfigsByLlmId(@PathVariable String llmId) {
         List<LlmConfig> configs = llmConfigService.getConfigsByLlmId(llmId);
         log.info("【获取配置】llmId={}, 配置数量={}", llmId, configs.size());
         return R.ok(configs);

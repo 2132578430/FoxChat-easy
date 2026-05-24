@@ -93,7 +93,7 @@
       <!-- Save Button -->
       <el-form-item>
         <el-button
-          type="success"
+          type="primary"
           :icon="Check"
           @click="handleSave"
           :disabled="!testResult.success"
@@ -250,15 +250,15 @@ const handleTestConnection = async () => {
       scenario: props.scenario
     });
 
-    // 拦截器已解包，response 是 data 内容
-    if (response.success) {
+    // 拦截器返回完整响应结构 {code, msg, data}
+    if (response.code === 1000 && response.data?.success) {
       testResult.success = true;
       testResult.message = '连接成功 ✓';
       emit('test', { scenario: props.scenario, success: true });
     } else {
       testResult.success = false;
-      testResult.message = response.message || '连接失败';
-      emit('test', { scenario: props.scenario, success: false, error: response.message });
+      testResult.message = response.data?.message || response.msg || '连接失败';
+      emit('test', { scenario: props.scenario, success: false, error: testResult.message });
     }
   } catch (error) {
     testResult.success = false;
@@ -320,7 +320,10 @@ const getConfig = () => {
   return {
     modelName: config.modelName,
     apiKey: config.apiKey,
-    baseUrl: config.baseUrl
+    baseUrl: config.baseUrl,
+    temperature: config.temperature,
+    maxTokens: config.maxTokens,
+    responseFormat: config.responseFormat
   };
 };
 

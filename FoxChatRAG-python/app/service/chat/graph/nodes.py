@@ -123,7 +123,13 @@ async def parse_memory(state: ChatState) -> dict:
 async def classify_intent_node(state: ChatState) -> dict:
     """两层意图分类（规则 + 语义），结果用于条件路由"""
     intent_result = classify_intent(state["msg_content"])
-    return {"intent_result": intent_result}
+    return {"intent_result": {
+        "intent": str(intent_result.intent),
+        "scope": [str(s) for s in intent_result.scope],
+        "top_k": int(intent_result.top_k),
+        "skip": bool(intent_result.skip),
+        "confidence": float(intent_result.confidence),
+    }}
 
 
 async def retrieve(state: ChatState) -> dict:

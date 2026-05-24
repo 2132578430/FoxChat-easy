@@ -107,4 +107,25 @@ public class LLMChatController {
         String fileUrl = llmUserService.uploadAvatar(file);
         return R.ok(fileUrl);
     }
+
+    /**
+     * 激活创造物
+     * @param llmId 创造物ID
+     * @return 激活结果，配置不完整时返回缺失场景列表
+     */
+    @PostMapping("/activate/{llmId}")
+    public R<Map<String, Object>> activateLlm(@PathVariable String llmId) {
+        Map<String, Object> result = llmUserService.activateLlm(llmId);
+
+        Boolean success = (Boolean) result.get("success");
+        if (Boolean.TRUE.equals(success)) {
+            return R.ok();
+        }
+
+        ResultStatusConstant error = (ResultStatusConstant) result.get("error");
+        if (result.containsKey("missingScenarios")) {
+            return R.error(error, result);
+        }
+        return R.error(error);
+    }
 }
