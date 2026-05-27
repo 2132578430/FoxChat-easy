@@ -1,0 +1,187 @@
+# ============================================
+# FoxChat Production Docker Compose
+# 一键启动：docker compose -f docker-compose.prod.yml up -d
+# ============================================
+
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "3"
+    compress: "true"
+
+services:
+  # ============================================
+  # Middleware
+  # ============================================
+  mysql:
+    image: mysql:8.0
+    container_name: fox-mysql
+    restart: always
+    logging: *default-logging
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./mysql-docker/data:/var/lib/mysql
+      - ./mysql-docker/log:/var/log/mysql
+      - ./mysql-docker/conf:/etc/mysql/conf.d
+    ports:
+      - "3306:3306"
+    networks:
+      - chat
+
+  redis:
+    image: redis:latest
+    container_name: fox-redis
+    restart: always
+    logging: *default-logging
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis-docker/data:/data
+      - ./redis-docker/conf/redis.conf:/etc/redis/redis.conf
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - TZ=Asia/Shanghai
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    networks:
+      - chat
+
+  minio:
+    image: minio/minio:latest
+    container_name: fox-minio
+    restart: always
+    ports:
+      - "9000:9000"   # API
+      - "9001:9001"   # Console
+    volumes:
+      - ./minio/data:/data
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+      TZ: Asia/Shanghai
+    command: server /data --console-address ":9001"
+    networks:
+      - chat
+
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: fox-rabbitmq
+    restart: always
+    logging: *default-logging
+    ports:
+      - "5672:5672"    # AMQP
+      - "15672:15672"  # Management UI
+    volumes:
+      - ./rabbitmq-docker/data:/var/lib/rabbitmq
+      - ./rabbitmq-docker/log:/var/log/rabbitmq
+      - ./rabbitmq-docker/conf/:/etc/rabbitmq/
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBIT_USER:-admin}
+      - RABBITMQ_DEFAULT_PASS=${RABBIT_PASSWORD:-admin}
+      - TZ=Asia/Shanghai
+    networks:
+      - chat
+
+  chroma:
+    image: chromadb/chroma:latest
+    container_name: fox-chroma
+    restart: always
+    ports:
+      - "18000:8000"   # ChromaDB API
+    volumes:
+      - ./chroma-data:/chroma/chroma
+    environment:
+      - IS_PERSISTENT=TRUE
+      - ANONYMIZED_TELEMETRY=FALSE
+    networks:
+      - chat
+
+  # ============================================
+  # Application Services
+  # ============================================
+  java-app:
+    build: ./FoxChat-java
+    container_name: fox-java
+    restart: always
+    ports:
+      - "12000:12000"   # HTTP API
+      - "13000:13000"   # WebSocket
+    environment:
+      # Override localhost → Docker service names
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/FoxChat
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - SPRING_REDIS_HOST=redis
+      - SPRING_REDIS_PASSWORD=${REDIS_PASSWORD}
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_USERNAME=${RABBIT_USER:-admin}
+      - SPRING_RABBITMQ_PASSWORD=${RABBIT_PASSWORD:-admin}
+      - MINIO_ENDPOINT=http://minio:9000
+      - MINIO_ACCESS_KEY=${MINIO_ROOT_USER:-minioadmin}
+      - MINIO_SECRET_KEY=${MINIO_ROOT_PASSWORD:-minioadmin}
+      - RAG_SERVICE_URL=http://python-app:8000
+      - SPRING_PROFILES_ACTIVE=prod
+      - TZ=Asia/Shanghai
+    depends_on:
+      - mysql
+      - redis
+      - minio
+      - rabbitmq
+    networks:
+      - chat
+
+  python-app:
+    build: ./FoxChatRAG-python
+    container_name: fox-python
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      # Override localhost → Docker service names
+      - MYSQL__HOST=mysql
+      - MYSQL__PORT=3306
+      - MYSQL__USER=root
+      - MYSQL__PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL__DATABASE=FoxChat
+      - REDIS__HOST=redis
+      - REDIS__PORT=6379
+      - REDIS__PASSWORD=${REDIS_PASSWORD}
+      - RABBITMQ__HOST=rabbitmq
+      - RABBITMQ__PORT=5672
+      - RABBITMQ__USER=${RABBIT_USER:-admin}
+      - RABBITMQ__PASSWORD=${RABBIT_PASSWORD:-admin}
+      - CHROMA_HOST=chroma
+      - CHROMA_PORT=8000
+      - SERVER__PORT=8000
+      - TZ=Asia/Shanghai
+      # LLM Keys (fill in production)
+      - KEY__DS_MODEL=${KEY__DS_MODEL:-}
+      - KEY__KIMI_MODEL=${KEY__KIMI_MODEL:-}
+      - KEY__QWEN_MODEL=${KEY__QWEN_MODEL:-}
+      - KEY__MiniMax_MODEL=${KEY__MiniMax_MODEL:-}
+    depends_on:
+      - mysql
+      - redis
+      - rabbitmq
+      - chroma
+    networks:
+      - chat
+
+  vue-nginx:
+    build: ./FoxChat-vue
+    container_name: fox-vue
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - java-app
+    networks:
+      - chat
+
+networks:
+  chat:
+    driver: bridge
