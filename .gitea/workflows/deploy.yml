@@ -10,7 +10,9 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        run: |
+          git clone --depth 1 http://gitea:3000/bedfox/FoxChat.git -b master .
+        working-directory: ${{ github.workspace }}
 
       - name: Pull Ollama embedding model
         run: |
