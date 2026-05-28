@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Checkout code
         run: |
-          git clone --depth 1 http://gitea:3000/bedfox/FoxChat.git -b master .
+          git clone --depth 1 http://localhost:3000/bedfox/FoxChat.git -b master .
         working-directory: ${{ github.workspace }}
 
       - name: Pull Ollama embedding model
