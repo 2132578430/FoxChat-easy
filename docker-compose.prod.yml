@@ -1,6 +1,6 @@
 # ============================================
 # FoxChat Production Docker Compose
-# 一键启动：docker compose -f docker-compose.prod.yml --env-file /root/home/docker-manager/docker-manager/.env up -d
+# 一键启动：docker compose -f docker-compose.prod.yml --env-file /root/home/docker-manager/.env up -d
 # ============================================
 
 x-logging: &default-logging
@@ -40,8 +40,6 @@ services:
     container_name: fox-redis
     restart: unless-stopped
     logging: *default-logging
-    env_file:
-      - /root/home/docker-manager/docker-manager/.env
     ports:
       - "6379:6379"
       - "8001:8001"
@@ -60,8 +58,6 @@ services:
     image: minio/minio:latest
     container_name: fox-minio
     restart: unless-stopped
-    env_file:
-      - /root/home/docker-manager/docker-manager/.env
     ports:
       - "9000:9000"
       - "9001:9001"
@@ -84,8 +80,6 @@ services:
     container_name: fox-rabbitmq
     restart: unless-stopped
     logging: *default-logging
-    env_file:
-      - /root/home/docker-manager/docker-manager/.env
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -150,8 +144,6 @@ services:
     build: ./FoxChat-java
     container_name: fox-java
     restart: unless-stopped
-    env_file:
-      - /root/home/docker-manager/docker-manager/.env
     ports:
       - "12000:12000"
       - "13000:13000"
@@ -187,8 +179,6 @@ services:
     build: ./FoxChatRAG-python
     container_name: fox-python
     restart: unless-stopped
-    env_file:
-      - /root/home/docker-manager/docker-manager/.env
     ports:
       - "8000:8000"
     environment:
