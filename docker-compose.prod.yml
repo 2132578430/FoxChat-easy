@@ -162,6 +162,8 @@ services:
       - MINIO_SECRET_KEY=${MINIO_ROOT_PASSWORD:-minioadmin}
       - RAG_SERVICE_URL=http://python-app:8000
       - SPRING_PROFILES_ACTIVE=prod
+      - SMTP_USERNAME=${SMTP_USERNAME:-}
+      - SMTP_PASSWORD=${SMTP_PASSWORD:-}
       - TZ=Asia/Shanghai
     depends_on:
       - mysql

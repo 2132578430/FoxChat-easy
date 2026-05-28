@@ -1,4 +1,4 @@
-name: Deploy FoxChat
+name: 部署 FoxChat
 
 on:
   push:
@@ -9,54 +9,48 @@ jobs:
   deploy:
     runs-on: self-hosted
     steps:
-      - name: Checkout / Update code
+      - name: 📥 拉取最新代码
         run: |
           if [ -d .git ]; then
-            echo "Existing repo found, pulling latest..."
+            echo "已有仓库，增量更新..."
             git pull origin master
           else
-            echo "Fresh checkout..."
+            echo "首次检出..."
             git clone http://localhost:3000/bedfox/FoxChat.git -b master .
           fi
         working-directory: ${{ github.workspace }}
 
-      - name: Pull Ollama embedding model
+      - name: 🤖 拉取 Ollama 嵌入模型
         run: |
-          docker exec fox-ollama ollama pull quentinz/bge-small-zh-v1.5 || echo "Model may already exist"
+          docker exec fox-ollama ollama pull quentinz/bge-small-zh-v1.5 || echo "模型已存在，跳过"
 
-      - name: Build base images
+      - name: 📦 构建基础镜像（依赖层）
         run: |
-          echo "Building base images (Docker cache will skip if unchanged)..."
+          echo "构建基础镜像（依赖未变则跳过）..."
           docker build -f FoxChatRAG-python/Dockerfile.base -t foxchat-python-base:latest FoxChatRAG-python
           docker build -f FoxChat-vue/Dockerfile.base -t foxchat-vue-build-base:latest FoxChat-vue
           docker build -f FoxChat-java/Dockerfile.base -t foxchat-java-build-base:latest FoxChat-java
 
-      - name: Build app images
+      - name: 🏗️ 构建应用镜像
         run: docker compose -f docker-compose.prod.yml build --parallel
 
-      - name: Deploy containers
+      - name: 🚀 部署容器
         run: docker compose -f docker-compose.prod.yml --env-file /root/home/docker-manager/.env up -d --remove-orphans
 
-      - name: Verify deployment
+      - name: ✅ 健康检查
         run: |
-          echo "===== Container Status ====="
+          echo "===== 容器状态 ====="
           docker compose -f docker-compose.prod.yml ps
           echo ""
-          echo "===== Health Check ====="
+          echo "===== 服务检查 ====="
           sleep 15
-          curl -sf http://localhost:8000/docs > /dev/null && echo "Python RAG: OK" || echo "Python RAG: FAIL"
-          curl -sf http://localhost:12000 > /dev/null && echo "Java API: OK" || echo "Java API: FAIL"
-          curl -sf http://localhost:80 > /dev/null && echo "Vue frontend: OK" || echo "Vue frontend: FAIL"
+          curl -sf http://localhost:8000/docs > /dev/null && echo "🟢 Python RAG: 正常" || echo "🔴 Python RAG: 异常"
+          curl -sf http://localhost:12000 > /dev/null && echo "🟢 Java API: 正常" || echo "🔴 Java API: 异常"
+          curl -sf http://localhost:80 > /dev/null && echo "🟢 Vue 前端: 正常" || echo "🔴 Vue 前端: 异常"
 
-      - name: Cleanup old images and build cache
+      - name: 🧹 清理旧镜像
         run: |
-          echo "===== Disk Before Cleanup ====="
-          df -h /
+          echo "===== 磁盘用量 ====="
+          df -h / | grep -E "Filesystem|/dev/"
           echo ""
-          echo "Cleaning dangling images..."
           docker image prune -f
-          echo "Cleaning build cache..."
-          docker builder prune -f
-          echo ""
-          echo "===== Disk After Cleanup ====="
-          df -h /

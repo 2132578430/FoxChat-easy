@@ -13,8 +13,9 @@ spring:
       port: 6379
   mail:
     host: smtp.qq.com
-    username: 2132578430@qq.com # 替换为你的邮箱
-    password: kxqbnxdkrqqrhfad # 替换为你的授权码
+    port: 587
+    username: ${SMTP_USERNAME:2132578430@qq.com}
+    password: ${SMTP_PASSWORD:xxx}
     default-encoding: UTF-8
     properties:
       mail:
