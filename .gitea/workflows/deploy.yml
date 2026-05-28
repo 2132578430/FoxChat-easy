@@ -35,7 +35,7 @@ jobs:
         run: docker compose -f docker-compose.prod.yml build --parallel
 
       - name: Deploy containers
-        run: docker compose -f docker-compose.prod.yml --env-file .env up -d --remove-orphans
+        run: docker compose -f docker-compose.prod.yml --env-file /root/home/docker-manager/.env up -d --remove-orphans
 
       - name: Verify deployment
         run: |
