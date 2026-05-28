@@ -19,8 +19,6 @@ services:
     container_name: fox-mysql
     restart: unless-stopped
     logging: *default-logging
-    env_file:
-      - /root/home/docker-manager/docker-manager/.env
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - TZ=Asia/Shanghai
