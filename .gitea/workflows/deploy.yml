@@ -47,3 +47,16 @@ jobs:
           curl -sf http://localhost:8000/docs > /dev/null && echo "Python RAG: OK" || echo "Python RAG: FAIL"
           curl -sf http://localhost:12000 > /dev/null && echo "Java API: OK" || echo "Java API: FAIL"
           curl -sf http://localhost:80 > /dev/null && echo "Vue frontend: OK" || echo "Vue frontend: FAIL"
+
+      - name: Cleanup old images and build cache
+        run: |
+          echo "===== Disk Before Cleanup ====="
+          df -h /
+          echo ""
+          echo "Cleaning dangling images..."
+          docker image prune -f
+          echo "Cleaning build cache..."
+          docker builder prune -f
+          echo ""
+          echo "===== Disk After Cleanup ====="
+          df -h /
