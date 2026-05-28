@@ -6,6 +6,13 @@ WORKDIR /app
 
 # Copy package files first (layer caching)
 COPY package*.json ./
+
+# 使用国内 npm 镜像加速
+RUN npm config set registry https://registry.npmmirror.com
+
+# 配置 Electron 二进制下载镜像（国内源）
+ENV ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/
+
 RUN npm ci
 
 # Copy source code
