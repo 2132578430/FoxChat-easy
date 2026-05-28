@@ -1,17 +1,8 @@
 # ============================================
-# Stage 1: Build fat JAR with Gradle
+# Stage 1: Build fat JAR with Gradle (deps from base)
 # ============================================
-FROM gradle:9.4.0-jdk17 AS build
+FROM foxchat-java-build-base:latest AS build
 WORKDIR /app
-
-# Copy build scripts first (layer caching)
-COPY gradle gradle
-COPY gradlew gradlew
-COPY build.gradle settings.gradle ./
-COPY gradle/libs.versions.toml gradle/libs.versions.toml
-
-# Pre-download dependencies (cacheable layer)
-RUN ./gradlew dependencies --no-daemon || true
 
 # Copy source code
 COPY foxChat-common foxChat-common

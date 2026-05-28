@@ -9,20 +9,33 @@ jobs:
   deploy:
     runs-on: self-hosted
     steps:
-      - name: Checkout code
+      - name: Checkout / Update code
         run: |
-          git clone --depth 1 http://localhost:3000/bedfox/FoxChat.git -b master .
+          if [ -d .git ]; then
+            echo "Existing repo found, pulling latest..."
+            git pull origin master
+          else
+            echo "Fresh checkout..."
+            git clone http://localhost:3000/bedfox/FoxChat.git -b master .
+          fi
         working-directory: ${{ github.workspace }}
 
       - name: Pull Ollama embedding model
         run: |
           docker exec fox-ollama ollama pull quentinz/bge-small-zh-v1.5 || echo "Model may already exist"
 
-      - name: Build Docker images
+      - name: Build base images
+        run: |
+          echo "Building base images (Docker cache will skip if unchanged)..."
+          docker build -f FoxChatRAG-python/Dockerfile.base -t foxchat-python-base:latest FoxChatRAG-python
+          docker build -f FoxChat-vue/Dockerfile.base -t foxchat-vue-build-base:latest FoxChat-vue
+          docker build -f FoxChat-java/Dockerfile.base -t foxchat-java-build-base:latest FoxChat-java
+
+      - name: Build app images
         run: docker compose -f docker-compose.prod.yml build --parallel
 
       - name: Deploy containers
-        run: docker compose -f docker-compose.prod.yml up -d --remove-orphans
+        run: docker compose -f docker-compose.prod.yml --env-file .env up -d --remove-orphans
 
       - name: Verify deployment
         run: |

@@ -1,19 +1,8 @@
 # ============================================
-# Stage 1: Build Vue app with Vite
+# Stage 1: Build Vue app with Vite (deps from base)
 # ============================================
-FROM node:20-alpine AS build
+FROM foxchat-vue-build-base:latest AS build
 WORKDIR /app
-
-# Copy package files first (layer caching)
-COPY package*.json ./
-
-# 使用国内 npm 镜像加速
-RUN npm config set registry https://registry.npmmirror.com
-
-# 配置 Electron 二进制下载镜像（国内源）
-ENV ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/
-
-RUN npm ci
 
 # Copy source code
 COPY . .

@@ -1,0 +1,16 @@
+# ============================================
+# Base image: npm dependencies only
+# Rebuild only when package.json changes
+# ============================================
+FROM node:20-alpine
+WORKDIR /app
+
+# 使用国内 npm 镜像加速
+RUN npm config set registry https://registry.npmmirror.com
+
+# 配置 Electron 二进制下载镜像（国内源）
+ENV ELECTRON_MIRROR=https://npmmirror.com/mirrors/electron/
+
+# Copy package files and install all dependencies
+COPY package*.json ./
+RUN npm ci
