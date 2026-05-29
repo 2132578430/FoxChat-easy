@@ -110,12 +110,6 @@ services:
     environment:
       - IS_PERSISTENT=TRUE
       - ANONYMIZED_TELEMETRY=FALSE
-    healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/v1/heartbeat')"]
-      interval: 5s
-      timeout: 3s
-      retries: 10
-      start_period: 10s
     networks:
       - chat
     deploy:
@@ -221,7 +215,7 @@ services:
       rabbitmq:
         condition: service_started
       chromadb:
-        condition: service_healthy
+        condition: service_started
       ollama:
         condition: service_started
     networks:
