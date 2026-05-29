@@ -77,4 +77,10 @@
         FROM llm_config
         WHERE llm_id = #{llmId}
     </select>
+
+    <!-- 根据 llmId 删除所有配置 -->
+    <delete id="deleteByLlmId">
+        DELETE FROM llm_config
+        WHERE llm_id = #{llmId}
+    </delete>
 </mapper>

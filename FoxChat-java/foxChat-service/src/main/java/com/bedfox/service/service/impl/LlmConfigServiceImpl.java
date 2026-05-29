@@ -112,6 +112,13 @@ public class LlmConfigServiceImpl extends ServiceImpl<LlmConfigMapper, LlmConfig
         }
     }
 
+    @Override
+    public int deleteByLlmId(String llmId) {
+        int result = llmConfigMapper.deleteByLlmId(llmId);
+        log.info("【删除配置】llmId={}, 删除 {} 条配置", llmId, result);
+        return result;
+    }
+
 @Override
     public Map<String, Object> testConnection(TestConnectionDto dto) {
         try {

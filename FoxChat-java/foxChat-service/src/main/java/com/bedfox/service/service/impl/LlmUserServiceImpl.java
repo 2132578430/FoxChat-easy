@@ -118,6 +118,9 @@ public class LlmUserServiceImpl extends ServiceImpl<LlmUserMapper, LlmUser>
         // 先删除向量库相关信息
         chatClient.deleteMsg(userId, llmId);
 
+        // 删除 LLM 配置（5 个场景）
+        llmConfigService.deleteByLlmId(llmId);
+
         // 删除数据库相关信息
         removeById(llmId);
 

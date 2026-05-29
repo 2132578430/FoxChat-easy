@@ -40,4 +40,9 @@ public interface LlmConfigMapper extends BaseMapper<LlmConfig> {
      * 统计配置数量
      */
     int countByLlmId(@Param("llmId") String llmId);
+
+    /**
+     * 根据 llmId 删除所有配置
+     */
+    int deleteByLlmId(@Param("llmId") String llmId);
 }

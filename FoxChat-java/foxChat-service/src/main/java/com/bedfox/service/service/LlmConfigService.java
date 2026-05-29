@@ -39,6 +39,14 @@ public interface LlmConfigService extends IService<LlmConfig> {
     boolean deleteConfig(String llmId, String scenario);
 
     /**
+     * 根据 llmId 删除所有配置
+     *
+     * @param llmId AI 朋友 ID
+     * @return 删除的记录数
+     */
+    int deleteByLlmId(String llmId);
+
+    /**
      * 测试连接（转发到 Python）
      *
      * @param dto 测试连接 DTO
