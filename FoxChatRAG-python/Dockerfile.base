@@ -22,3 +22,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 COPY requirements.txt .
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+
+# Pre-download FlashRank model (avoid runtime download in container)
+RUN python -c "from flashrank.Ranker import Ranker; Ranker(model_name='ms-marco-MiniLM-L-12-v2')"
