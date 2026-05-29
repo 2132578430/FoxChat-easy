@@ -11,8 +11,9 @@ COPY foxChat-service foxChat-service
 COPY foxChat-netty foxChat-netty
 COPY foxChat-web foxChat-web
 
-# Build fat JAR (skip tests for CI speed)
-RUN ./gradlew :foxChat-web:bootJar --no-daemon -x test
+# Build fat JAR (skip tests for CI speed, with Gradle cache mount)
+RUN --mount=type=cache,target=/root/.gradle \
+    ./gradlew :foxChat-web:bootJar --no-daemon -x test
 
 # ============================================
 # Stage 2: Minimal JRE runtime
