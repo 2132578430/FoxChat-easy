@@ -222,7 +222,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 64M
+          memory: 512M
 
   vue-nginx:
     build: ./FoxChat-vue
