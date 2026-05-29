@@ -52,13 +52,7 @@ class ChromaConfig(BaseModel):
 
 
 class ModelApiKey(BaseModel):
-    ds_model: str = ""
-    kimi_model: str = ""
-    qwen_model: str = ""
-    minimax_model: str = ""
-    claude_model: str = ""
-    glm_model: str = ""
-    astron_model: str = ""
+    qwen_model: str = ""  # DashScope 嵌入模型用
 
 
 class ModelConfig(BaseModel):

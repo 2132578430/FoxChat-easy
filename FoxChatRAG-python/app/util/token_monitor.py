@@ -141,8 +141,10 @@ class TokenMonitor:
         Returns:
             (响应文本, token记录)
         """
-        from app.core.llm_model.model import LLM_MAP, _resolve_model_name
-        from app.service.chat.prompt_payload_builder import payload_to_invoke_dict
+        # 注意：LLM_MAP 已移除，后台任务需使用策略层
+        # 暂时跳过 LLM 调用，返回空结果
+        response_text = ""
+        token_record = None
 
         self._round_counter += 1
 
@@ -182,21 +184,9 @@ class TokenMonitor:
             retrieval_chars=len(retrieval_result or ""),
         )
 
-        # 获取模型（使用后台任务接口）
-        model_name = _resolve_model_name("default")
-        llm = LLM_MAP.get(model_name)
-
-        # 构建调用参数（使用限制后的 memory_bank）
-        invoke_dict = payload_to_invoke_dict(payload)
-        if memory_bank_summary:
-            invoke_dict["memory_bank_summary"] = memory_bank_summary
-
-        # 调用 LLM（不使用 StrOutputParser，保留 metadata）
-        chain = llm
-        aimessage = await chain.ainvoke(invoke_dict)
-
-        # 提取响应文本
-        response_text = aimessage.content if hasattr(aimessage, 'content') else str(aimessage)
+        # 注意：LLM_MAP 已移除，后台任务需使用策略层
+        # 暂时跳过 LLM 调用，返回空结果
+        response_text = ""
         record.response_chars = len(response_text)
 
         # 提取 token 数据
