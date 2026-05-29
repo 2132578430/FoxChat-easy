@@ -197,8 +197,8 @@ services:
       - RABBITMQ__PORT=5672
       - RABBITMQ__USER=${RABBIT_USER:-admin}
       - RABBITMQ__PASSWORD=${RABBIT_PASSWORD:-admin}
-      - CHROMA_HOST=chromadb
-      - CHROMA_PORT=8000
+      - CHROMA__HOST=chromadb
+      - CHROMA__PORT=8000
       - SERVER__PORT=8000
       - TZ=Asia/Shanghai
       - KEY__QWEN_MODEL=${KEY__QWEN_MODEL:-}
