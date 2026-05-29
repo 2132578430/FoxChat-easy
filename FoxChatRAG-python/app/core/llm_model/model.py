@@ -139,7 +139,8 @@ nomic_embed = OllamaEmbeddings(
 
 rerank_model = FlashrankRerank(model="ms-marco-MiniLM-L-12-v2",
                                top_n=20,
-                               client=Ranker(model_name="ms-marco-MiniLM-L-12-v2"))
+                               client=Ranker(model_name="ms-marco-MiniLM-L-12-v2",
+                                             cache_dir="/app/models/flashrank"))
 
 # ============================================================
 # LLM 单例（后台任务接口）

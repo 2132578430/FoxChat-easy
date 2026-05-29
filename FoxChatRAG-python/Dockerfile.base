@@ -24,10 +24,11 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
 
 # Pre-download FlashRank model (huggingface.co blocked in China, use mirror)
-# FlashRank default cache dir: /tmp/<model_name>/
+# Stored in /app/models/flashrank/ (persistent, not /tmp)
 RUN apt-get update && apt-get install -y --no-install-recommends curl unzip && \
+    mkdir -p /app/models/flashrank/ms-marco-MiniLM-L-12-v2 && \
     curl -L -o /tmp/ms-marco-MiniLM-L-12-v2.zip \
       "https://hf-mirror.com/prithivida/flashrank/resolve/main/ms-marco-MiniLM-L-12-v2.zip" && \
-    unzip /tmp/ms-marco-MiniLM-L-12-v2.zip -d /tmp/ms-marco-MiniLM-L-12-v2 && \
+    unzip /tmp/ms-marco-MiniLM-L-12-v2.zip -d /app/models/flashrank/ms-marco-MiniLM-L-12-v2 && \
     rm /tmp/ms-marco-MiniLM-L-12-v2.zip && \
     apt-get purge -y curl unzip && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
