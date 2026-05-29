@@ -15,8 +15,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Layer 1: Core dependencies (heavy, ~15min, cache hit rate >99%)
 COPY requirements-core.txt .
-RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements-core.txt
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements-core.txt
 
 # Layer 2: Light dependencies (fast, ~30s, rebuilds when requirements.txt changes)
 COPY requirements.txt .
-RUN pip install --no-cache-dir -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+RUN --mount=type=cache,target=/root/.cache/pip \
+    pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt

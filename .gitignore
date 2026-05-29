@@ -17,10 +17,18 @@ FoxChat-vue/dist_electron/
 FoxChatRAG-python/store/
 
 # AI 工具
-.troe/*
-.trae/*
-.opencode/*
-.claude/*
+.troe/
+.trae/
+.trae-cn/
+.opencode/
+.claude/
+.cline/
+.anthropic/
+.cursor/
+.copilot/
+.continue/
+.aider/
+.ai_completion/
 .agents/
 openspec/
 
@@ -36,6 +44,8 @@ openspec/
 **/application-local.yml
 **/application-local.yaml
 **/application-local.properties
+**/application-secrets.yml
+**/deploy/.env
 
 # API Keys 和敏感信息
 config/secrets.py
