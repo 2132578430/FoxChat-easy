@@ -110,6 +110,12 @@ services:
     environment:
       - IS_PERSISTENT=TRUE
       - ANONYMIZED_TELEMETRY=FALSE
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
     networks:
       - chat
     deploy:
@@ -208,10 +214,14 @@ services:
       - MODEL__DEFAULT_JSON_LLM=${MODEL__DEFAULT_JSON_LLM:-astron_json_model}
       - MODEL__DEFAULT_EMBEDDING=ollama
     depends_on:
-      - mysql
-      - redis
-      - rabbitmq
-      - chromadb
+      mysql:
+        condition: service_started
+      redis:
+        condition: service_started
+      rabbitmq:
+        condition: service_started
+      chromadb:
+        condition: service_healthy
       - ollama
     networks:
       - chat
