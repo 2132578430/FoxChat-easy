@@ -1,0 +1,18 @@
+# ============================================
+# Core dependencies (heavy AI/ML packages, rarely changed)
+# Building this layer takes ~15min but cache hit rate >99%
+# ============================================
+pydantic
+sqlalchemy
+aiomysql
+langchain
+langchain-community
+langchain-core
+langchain-ollama
+langchain-openai
+langchain-chroma
+langchain-text-splitters
+langgraph
+flashrank
+unstructured[docx]
+litellm

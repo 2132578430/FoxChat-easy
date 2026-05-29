@@ -1,24 +1,14 @@
+# ============================================
+# Light dependencies (framework/utils, sometimes changed)
+# Adding/updating these → only this layer rebuilds → ~30 seconds
+# ============================================
 fastapi
 uvicorn
-pydantic
 loguru
-sqlalchemy
-aiomysql
 aio-pika
 pika
 python-dotenv
-langchain
-langchain-community
-langchain-core
-langchain-ollama
-langchain-openai
-langchain-chroma
-langchain-text-splitters
-langgraph
-flashrank
 requests
-unstructured[docx]
 pypdf
 python-multipart
 redis-lock
-litellm
