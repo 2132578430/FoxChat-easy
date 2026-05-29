@@ -11,7 +11,7 @@ python-dotenv
 requests
 pypdf
 python-multipart
-redis-lock
+python-redis-lock
 redis
 jieba
 numpy
