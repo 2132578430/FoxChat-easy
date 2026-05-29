@@ -46,7 +46,8 @@ services:
     volumes:
       - /root/home/docker-manager/redis-docker/data:/data
       - /root/home/docker-manager/redis-docker/conf/redis.conf:/etc/redis/redis.conf
-    command: redis-server --requirepass ${REDIS_PASSWORD:-}
+    environment:
+      - REDIS_ARGS=requirepass ${REDIS_PASSWORD:-}
     networks:
       - chat
     deploy:
