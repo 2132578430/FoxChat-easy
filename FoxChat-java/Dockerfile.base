@@ -11,5 +11,5 @@ COPY gradlew gradlew
 COPY build.gradle settings.gradle ./
 COPY gradle/libs.versions.toml gradle/libs.versions.toml
 
-# Pre-download all dependencies (cacheable layer)
-RUN ./gradlew dependencies --no-daemon || true
+# Pre-download ALL dependencies including Gradle plugins
+RUN ./gradlew buildEnvironment dependencies --no-daemon || true

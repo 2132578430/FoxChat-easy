@@ -20,4 +20,5 @@ requests
 unstructured[docx]
 pypdf
 python-multipart
+redis-lock
 litellm
