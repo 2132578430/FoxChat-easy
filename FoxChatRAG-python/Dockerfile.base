@@ -23,6 +23,10 @@ COPY requirements.txt .
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
 
-# Pre-download FlashRank model (use HuggingFace mirror for China)
-ENV HF_ENDPOINT=https://hf-mirror.com
-RUN python -c "from flashrank.Ranker import Ranker; Ranker(model_name='ms-marco-MiniLM-L-12-v2')"
+# Pre-download FlashRank model (huggingface.co blocked in China, use mirror)
+# FlashRank cache dir: /root/.cache/flashrank/
+RUN mkdir -p /root/.cache/flashrank && \
+    curl -L -o /tmp/ms-marco-MiniLM-L-12-v2.zip \
+      "https://hf-mirror.com/prithivida/flashrank/resolve/main/ms-marco-MiniLM-L-12-v2.zip" && \
+    unzip /tmp/ms-marco-MiniLM-L-12-v2.zip -d /root/.cache/flashrank/ms-marco-MiniLM-L-12-v2 && \
+    rm /tmp/ms-marco-MiniLM-L-12-v2.zip
