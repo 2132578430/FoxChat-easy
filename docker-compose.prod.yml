@@ -33,7 +33,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 256M
+          memory: 512M
 
   redis:
     image: redis/redis-stack:latest
