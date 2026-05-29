@@ -31,7 +31,7 @@ export function useWebSocket(options = {}) {
     currentGroup = ref({}),
     encodeProtocol,
     decodeProtocol,
-    CHAT_SERVICE_URL = 'ws://localhost:13000'
+    CHAT_SERVICE_URL = import.meta.env.VITE_WS_BASE_URL || 'ws://localhost:13000'
   } = options;
 
   const ws = ref(null);

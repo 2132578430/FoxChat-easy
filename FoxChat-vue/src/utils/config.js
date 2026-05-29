@@ -33,8 +33,8 @@ export const CHAT_SERVICE_URL = `${WS_BASE_URL}/chat`;
 // 文件服务器基础地址 (OSS)
 // 优先级: 环境变量 > 默认配置
 // 生产环境通常配置为 /oss (Nginx 转发)
-// 开发环境配置为 http://182.92.222.243/oss (直接访问)
-export const OSS_BASE_URL = import.meta.env.VITE_OSS_BASE_URL || (import.meta.env.PROD ? '/oss' : 'http://182.92.222.243/oss');
+// 开发环境配置为 http://localhost:9000 (直接访问 MinIO)
+export const OSS_BASE_URL = import.meta.env.VITE_OSS_BASE_URL || (import.meta.env.PROD ? '/oss' : 'http://localhost:9000');
 
 // WebTransport 配置 (暂时保留，以备后续切换回 QUIC)
 /*

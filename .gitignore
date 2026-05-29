@@ -35,10 +35,7 @@ openspec/
 # 私密配置文件
 .env
 .env.local
-.env.development
-.env.production
-.env.staging
-*.env
+.env.*.local
 
 # Spring Boot 本地配置覆盖（包含数据库密码/JWT密钥等）
 **/application-local.yml

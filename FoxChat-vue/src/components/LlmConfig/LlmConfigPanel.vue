@@ -137,7 +137,7 @@ const defaultAvatar = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726
 const resolveAvatarUrl = (url) => {
   if (!url) return null;
   if (url.startsWith('http://') || url.startsWith('https://')) return url;
-  return `http://localhost:12000${url}`;
+  return `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:12000'}${url}`;
 };
 
 // State variables
