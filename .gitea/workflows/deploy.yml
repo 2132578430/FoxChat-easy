@@ -48,9 +48,17 @@ jobs:
           curl -sf http://localhost:12000 > /dev/null && echo "🟢 Java API: 正常" || echo "🔴 Java API: 异常"
           curl -sf http://localhost:80 > /dev/null && echo "🟢 Vue 前端: 正常" || echo "🔴 Vue 前端: 异常"
 
-      - name: 🧹 清理旧镜像
+      - name: 🧹 清理旧镜像和构建缓存
         run: |
-          echo "===== 磁盘用量 ====="
+          echo "===== 磁盘用量（清理前）====="
           df -h / | grep -E "Filesystem|/dev/"
           echo ""
+          # 清理悬空镜像
           docker image prune -f
+          # 清理 7 天前的构建缓存（保留最近的）
+          docker builder prune -f --filter "until=168h"
+          # 清理未使用的卷
+          docker volume prune -f
+          echo ""
+          echo "===== 磁盘用量（清理后）====="
+          df -h / | grep -E "Filesystem|/dev/"

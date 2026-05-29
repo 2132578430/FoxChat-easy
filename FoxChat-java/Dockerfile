@@ -4,16 +4,12 @@
 FROM foxchat-java-build-base:latest AS build
 WORKDIR /app
 
-# Copy source code
-COPY foxChat-common foxChat-common
-COPY foxChat-pojo foxChat-pojo
-COPY foxChat-service foxChat-service
-COPY foxChat-netty foxChat-netty
-COPY foxChat-web foxChat-web
+# Copy ALL source code at once (single layer, faster context transfer)
+COPY foxChat-common foxChat-pojo foxChat-service foxChat-netty foxChat-web ./
 
-# Build fat JAR (skip tests for CI speed, with Gradle cache mount)
+# Build fat JAR with Gradle build cache + dependency cache mount
 RUN --mount=type=cache,target=/root/.gradle \
-    ./gradlew :foxChat-web:bootJar --no-daemon -x test
+    ./gradlew :foxChat-web:bootJar --no-daemon --build-cache -x test
 
 # ============================================
 # Stage 2: Minimal JRE runtime
