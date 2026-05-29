@@ -16,3 +16,7 @@ langgraph
 flashrank
 unstructured[docx]
 litellm
+pydantic-settings
+langchain-experimental
+langchain-classic
+dashscope

@@ -12,3 +12,6 @@ requests
 pypdf
 python-multipart
 redis-lock
+redis
+jieba
+numpy
