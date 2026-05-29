@@ -25,8 +25,10 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 # Pre-download FlashRank model (huggingface.co blocked in China, use mirror)
 # FlashRank cache dir: /root/.cache/flashrank/
-RUN mkdir -p /root/.cache/flashrank && \
+RUN apt-get update && apt-get install -y --no-install-recommends curl unzip && \
+    mkdir -p /root/.cache/flashrank && \
     curl -L -o /tmp/ms-marco-MiniLM-L-12-v2.zip \
       "https://hf-mirror.com/prithivida/flashrank/resolve/main/ms-marco-MiniLM-L-12-v2.zip" && \
     unzip /tmp/ms-marco-MiniLM-L-12-v2.zip -d /root/.cache/flashrank/ms-marco-MiniLM-L-12-v2 && \
-    rm /tmp/ms-marco-MiniLM-L-12-v2.zip
+    rm /tmp/ms-marco-MiniLM-L-12-v2.zip && \
+    apt-get purge -y curl unzip && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
