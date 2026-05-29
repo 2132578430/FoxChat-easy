@@ -119,24 +119,24 @@ services:
           memory: 64M
 
   # ============================================
-  # Ollama (embedding model)
+  # Ollama (embedding model) - 已禁用，改用 DashScope 云端
   # ============================================
-  ollama:
-    image: ollama/ollama:latest
-    container_name: fox-ollama
-    restart: unless-stopped
-    ports:
-      - "11434:11434"
-    volumes:
-      - /root/home/docker-manager/ollama-data:/root/.ollama
-    environment:
-      - TZ=Asia/Shanghai
-    networks:
-      - chat
-    deploy:
-      resources:
-        limits:
-          memory: 128M
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   container_name: fox-ollama
+  #   restart: unless-stopped
+  #   ports:
+  #     - "11434:11434"
+  #   volumes:
+  #     - /root/home/docker-manager/ollama-data:/root/.ollama
+  #   environment:
+  #     - TZ=Asia/Shanghai
+  #   networks:
+  #     - chat
+  #   deploy:
+  #     resources:
+  #       limits:
+  #         memory: 128M
 
   # ============================================
   # Application Services
@@ -203,11 +203,9 @@ services:
       - SERVER__PORT=8000
       - TZ=Asia/Shanghai
       - KEY__QWEN_MODEL=${KEY__QWEN_MODEL:-}
-      - OLLAMA__BASE_URL=http://ollama:11434
-      - OLLAMA__EMBEDDING_MODEL=quentinz/bge-small-zh-v1.5
       - MODEL__DEFAULT_LLM=${MODEL__DEFAULT_LLM:-astron_model}
       - MODEL__DEFAULT_JSON_LLM=${MODEL__DEFAULT_JSON_LLM:-astron_json_model}
-      - MODEL__DEFAULT_EMBEDDING=ollama
+      - MODEL__DEFAULT_EMBEDDING=dashscope
     depends_on:
       mysql:
         condition: service_started
@@ -216,8 +214,6 @@ services:
       rabbitmq:
         condition: service_started
       chromadb:
-        condition: service_started
-      ollama:
         condition: service_started
     networks:
       - chat
