@@ -68,6 +68,10 @@ Executor:
   maxPoolSize: 100
   queueCapacity: 1000
 
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+
 logging:
   level:
     com.bedfox.bedfoxchat: debug
