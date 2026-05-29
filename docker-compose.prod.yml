@@ -28,14 +28,6 @@ services:
       - /root/home/docker-manager/mysql-docker/conf:/etc/mysql/conf.d
     ports:
       - "3306:3306"
-    command:
-      - mysqld
-      - --innodb-buffer-pool-size=128M
-      - --innodb-log-buffer-size=16M
-      - --max-connections=50
-      - --table-open-cache=64
-      - --sort-buffer-size=256K
-      - --read-buffer-size=256K
     networks:
       - chat
     deploy:
