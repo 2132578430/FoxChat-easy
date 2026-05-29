@@ -222,7 +222,8 @@ services:
         condition: service_started
       chromadb:
         condition: service_healthy
-      - ollama
+      ollama:
+        condition: service_started
     networks:
       - chat
     deploy:
