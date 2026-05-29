@@ -54,10 +54,10 @@ server:
   port: 12000
 
 minio:
-  endpoint: http://localhost:9000  # API 地址
-  public-endpoint: http://localhost:9000 # 公网访问地址
-  username: minioadmin           # 账号
-  password: minioadmin           # 密码
+  endpoint: ${MINIO_ENDPOINT:http://localhost:9000}  # API 地址（容器内通信）
+  public-endpoint: ${MINIO_PUBLIC_ENDPOINT:http://localhost:9000} # 公网访问地址（返回给前端）
+  username: ${MINIO_ACCESS_KEY:minioadmin}           # 账号
+  password: ${MINIO_SECRET_KEY:minioadmin}           # 密码
   bucket-name: bedfox-chat         # 桶名字
 
 remote:
