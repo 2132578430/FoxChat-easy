@@ -258,20 +258,28 @@ watch(() => props.modelValue, (show) => {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  min-height: 0;
 }
 
 .memory-tabs :deep(.el-tabs__header) {
   margin: 0 16px;
+  flex-shrink: 0;
 }
 
 .memory-tabs :deep(.el-tabs__content) {
   flex: 1;
-  overflow: hidden;
+  min-height: 0;
+  overflow: visible;
+}
+
+.memory-tabs :deep(.el-tab-pane) {
+  height: 100%;
 }
 
 .tab-content {
   padding: 8px 16px 16px;
   height: 100%;
+  overflow-y: auto;
 }
 
 .section-title {

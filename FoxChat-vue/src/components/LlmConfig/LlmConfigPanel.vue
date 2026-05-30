@@ -278,6 +278,9 @@ const handleSelectFriendById = async (friendId) => {
   // Reset test results and pending configs
   Object.keys(testResults).forEach(key => { testResults[key] = false; });
   Object.keys(pendingConfigs).forEach(key => { pendingConfigs[key] = null; });
+
+  // Update selection
+  selectedFriendId.value = friendId;
 };
 
 const handleSaveConfig = ({ scenario, config }) => {
