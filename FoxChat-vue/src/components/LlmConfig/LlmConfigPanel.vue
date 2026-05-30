@@ -7,36 +7,25 @@
         <el-avatar :size="32" :src="resolveAvatarUrl(selectedFriend?.faceImage || selectedFriend?.face_image) || defaultAvatar"></el-avatar>
         <span class="header-title">{{ selectedFriend?.nickname || '创造物' }} 模型配置</span>
       </div>
+      <el-select
+        v-model="selectedFriendId"
+        class="friend-selector"
+        placeholder="选择创造物"
+        size="small"
+        @change="handleSelectFriendById"
+      >
+        <el-option
+          v-for="friend in friendList"
+          :key="friend.userId || friend.id || friend.llmId"
+          :label="friend.nickname || friend.username"
+          :value="String(friend.userId || friend.id || friend.llmId)"
+        />
+      </el-select>
     </div>
 
-    <!-- Split Panel Body -->
+    <!-- Panel Body -->
     <div class="config-panel-body">
-      <!-- Left: Friend List -->
-      <div class="friend-list-panel">
-        <div class="friend-list-header">
-          <span>创造物</span>
-        </div>
-        <div class="friend-list-content">
-          <div v-if="friendList.length === 0" class="empty-friend-tip">
-            <el-icon :size="24"><UserFilled /></el-icon>
-            <span>暂无创造物</span>
-          </div>
-          <div 
-            v-for="friend in friendList" 
-            :key="friend.userId || friend.id || friend.llmId"
-            class="friend-item"
-            :class="{ active: String(friend.userId || friend.id || friend.llmId) === String(selectedFriendId) }"
-            @click="handleSelectFriend(friend)"
-          >
-            <el-avatar :size="36" :src="resolveAvatarUrl(friend.faceImage || friend.face_image) || defaultAvatar"></el-avatar>
-            <div class="friend-item-info">
-              <span class="friend-item-name">{{ friend.nickname || friend.username }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right: Config Form -->
+      <!-- Config Form -->
       <div class="config-form-panel" v-loading="isLoadingConfig">
         <el-tabs v-model="activeTab" type="card" class="scenario-tabs">
           <el-tab-pane label="外观" name="appearance">
@@ -142,7 +131,7 @@
 <script setup>
 import { ref, reactive, computed, watch, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
-import { Back, Finished, UserFilled, CopyDocument, UploadFilled } from '@element-plus/icons-vue';
+import { Back, Finished, CopyDocument, UploadFilled } from '@element-plus/icons-vue';
 import ScenarioConfigForm from './ScenarioConfigForm.vue';
 import { saveConfigsBatch, getConfigs } from '@/api/llmConfig';
 import { updateLlmFriend } from '@/api/friend';
@@ -326,32 +315,23 @@ const loadConfigs = async (llmId) => {
   }
 };
 
-// Handle friend selection
-const handleSelectFriend = async (friend) => {
-  const friendId = friend.userId || friend.id || friend.llmId;
+// Handle friend selection (from dropdown)
+const handleSelectFriendById = async (friendId) => {
+  if (!friendId) return;
   
   // Skip if same friend selected
   if (String(friendId) === String(selectedFriendId.value)) {
     return;
   }
   
-  // Auto-save current config before switching (if has pending configs)
+  // Auto-save current config before switching
   if (selectedFriendId.value && hasPendingConfigs()) {
     await autoSaveCurrentConfig();
   }
   
-  // Reset test results when switching
-  Object.keys(testResults).forEach(key => {
-    testResults[key] = false;
-  });
-  
-  // Clear pending configs
-  Object.keys(pendingConfigs).forEach(key => {
-    pendingConfigs[key] = null;
-  });
-  
-  // Set new friend
-  selectedFriendId.value = friendId;
+  // Reset test results and pending configs
+  Object.keys(testResults).forEach(key => { testResults[key] = false; });
+  Object.keys(pendingConfigs).forEach(key => { pendingConfigs[key] = null; });
 };
 
 const handleSaveConfig = ({ scenario, config }) => {
@@ -555,24 +535,21 @@ const handleSaveAppearance = async () => {
 </script>
 
 <style scoped>
-/* Glass-morphism Design System - Matching Home.vue Profile Panel */
 .llm-config-panel {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: var(--bg-gradient, linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%));
+  background: var(--bg-panel, #f5f7fa);
   position: relative;
 }
 
-/* Header Panel - Flat Design */
 .config-panel-header {
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 16px 20px;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 12px;
-  margin: 12px;
+  background: var(--bg-card, #fff);
+  border-bottom: 1px solid var(--border-light, rgba(0,0,0,0.06));
 }
 
 .header-info {
@@ -591,184 +568,62 @@ const handleSaveAppearance = async () => {
 .config-panel-body {
   flex: 1;
   display: flex;
-  overflow: hidden;
-  padding: 0 12px 12px;
-  gap: 12px;
-}
-
-/* Left: Friend List Panel - Flat Design Sidebar */
-.friend-list-panel {
-  width: 30%;
-  min-width: 220px;
-  max-width: 320px;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 12px;
-  display: flex;
   flex-direction: column;
-  flex-shrink: 0;
   overflow: hidden;
 }
 
-.friend-list-header {
-  padding: 16px 20px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-primary, #262626);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-  background: rgba(255, 255, 255, 0.4);
-  letter-spacing: 0.5px;
+/* Friend selector dropdown in header */
+.friend-selector {
+  margin-left: auto;
+  width: 200px;
 }
 
-.friend-list-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 12px;
-}
-
-.empty-friend-tip {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 60px 20px;
-  color: var(--text-light, #909399);
-  font-size: 13px;
-}
-
-.empty-friend-tip .el-icon {
-  color: var(--text-secondary, #8e8e8e);
-}
-
-/* Friend Item - Flat Design List Style (Matching FriendList.vue) */
-.friend-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 15px;
-  cursor: pointer;
-  border-radius: 8px;
-  margin: 0 8px 4px;
-  transition: background-color 0.2s ease;
-}
-
-.friend-item:hover {
-  background-color: var(--accent-hover, rgba(0, 132, 255, 0.08));
-}
-
-.friend-item.active {
-  background-color: var(--accent-active, rgba(0, 132, 255, 0.12));
-}
-
-.friend-item-info {
-  flex: 1;
-  overflow: hidden;
-}
-
-.friend-item-name {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-primary, #333);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Right: Config Form Panel - Flat Design */
 .config-form-panel {
   flex: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 12px;
+  padding: 0 16px 16px;
 }
 
-/* Scenario Tabs - Enhanced Card Navigation */
+/* Scenario Tabs — clean default style */
 .scenario-tabs {
   flex: 1;
-  background: transparent;
-  margin: 16px;
   overflow: hidden;
+  margin: 12px 0 0;
 }
 
-/* Tab Header Bar */
 .scenario-tabs :deep(.el-tabs__header) {
-  margin-bottom: 16px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--border-light, rgba(0,0,0,0.06));
 }
 
-.scenario-tabs :deep(.el-tabs__nav-wrap) {
-  padding: 0 4px;
-}
-
-.scenario-tabs :deep(.el-tabs__nav-wrap::after) {
-  display: none;
-}
-
-.scenario-tabs :deep(.el-tabs__nav-scroll) {
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-
-.scenario-tabs :deep(.el-tabs__nav) {
-  border: none;
-}
-
-/* Tab Content Area */
-.scenario-tabs :deep(.el-tabs__content) {
-  height: calc(100% - 48px);
-  overflow-y: auto;
-  padding-right: 4px;
-}
-
-/* Tab Item — Inactive State */
 .scenario-tabs :deep(.el-tabs__item) {
   font-size: 13px;
-  font-weight: 500;
-  color: #606266;
-  padding: 8px 20px;
-  height: 36px;
-  line-height: 36px;
-  background: rgba(245, 247, 250, 0.8);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-bottom: 2px solid transparent;
-  border-radius: 8px 8px 0 0;
-  margin-right: 4px;
-  transition: all 0.25s ease;
-  letter-spacing: 0.5px;
+  padding: 8px 16px;
 }
 
-.scenario-tabs :deep(.el-tabs__item:last-child) {
-  margin-right: 0;
-}
-
-/* Tab Item — Hover State */
-.scenario-tabs :deep(.el-tabs__item:hover) {
-  color: #0084ff;
-  background: rgba(235, 240, 248, 0.9);
-  border-color: rgba(0, 132, 255, 0.12);
-}
-
-/* Tab Item — Active State */
 .scenario-tabs :deep(.el-tabs__item.is-active) {
-  color: #0084ff;
+  color: var(--accent-color, #0084ff);
   font-weight: 600;
-  background: #fff;
-  border-color: rgba(0, 0, 0, 0.08);
-  border-bottom: 2px solid #0084ff;
 }
 
-/* Save Buttons Container - Flat Design Footer */
+.scenario-tabs :deep(.el-tabs__active-bar) {
+  background-color: var(--accent-color, #0084ff);
+}
+
+.scenario-tabs :deep(.el-tabs__content) {
+  flex: 1;
+  overflow-y: auto;
+}
+
 .save-all-container {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
-  padding: 16px 20px;
-  background: rgba(255, 255, 255, 0.4);
-  margin: 0 16px 16px;
-  border-radius: 12px;
+  padding: 16px;
+  border-top: 1px solid var(--border-light, rgba(0,0,0,0.06));
   flex-shrink: 0;
 }
 
@@ -826,68 +681,14 @@ const handleSaveAppearance = async () => {
   max-width: 320px;
 }
 
-/* Custom Scrollbar */
-.friend-list-content::-webkit-scrollbar,
-.scenario-tabs :deep(.el-tabs__content)::-webkit-scrollbar {
-  width: 6px;
-}
-
-.friend-list-content::-webkit-scrollbar-thumb,
-.scenario-tabs :deep(.el-tabs__content)::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
-  border-radius: 3px;
-  transition: background 0.3s;
-}
-
-.friend-list-content::-webkit-scrollbar-thumb:hover,
-.scenario-tabs :deep(.el-tabs__content)::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.25);
-}
-
-.friend-list-content::-webkit-scrollbar-track,
-.scenario-tabs :deep(.el-tabs__content)::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-/* Override Element Plus Button Styles - Modern Minimalist */
+/* Buttons — use project CSS variables */
 :deep(.el-button--primary) {
-  background-color: var(--button-bg, #0084ff);
-  border-color: var(--button-bg, #0084ff);
-  color: var(--button-text, #fff);
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  border-radius: 8px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: var(--accent-color, #0084ff);
+  border-color: var(--accent-color, #0084ff);
 }
 
-:deep(.el-button--primary:hover),
-:deep(.el-button--primary:focus) {
-  background-color: var(--button-hover, #0066cc);
-  border-color: var(--button-hover, #0066cc);
-}
-
-:deep(.el-button--warning) {
-  background-color: #e6a23c;
-  border-color: #e6a23c;
-  color: #fff;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  border-radius: 8px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-:deep(.el-button--warning:hover),
-:deep(.el-button--warning:focus) {
-  background-color: #d09a30;
-  border-color: #d09a30;
-}
-
-:deep(.el-button.is-circle) {
-  border-radius: 50%;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-:deep(.el-button.is-circle:hover) {
-  opacity: 0.9;
+:deep(.el-button--primary:hover) {
+  background-color: var(--accent-hover, #0066cc);
+  border-color: var(--accent-hover, #0066cc);
 }
 </style>
