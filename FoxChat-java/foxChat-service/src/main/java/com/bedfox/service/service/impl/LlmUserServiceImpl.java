@@ -101,6 +101,7 @@ public class LlmUserServiceImpl extends ServiceImpl<LlmUserMapper, LlmUser>
                     friendVo.setUserId(llmUser.getId());
                     friendVo.setNickname(llmUser.getLlmName());
                     friendVo.setFaceImage(llmUser.getFaceImage());
+                    friendVo.setIsApply(llmUser.getIsApply());
 
                     return friendVo;
                 })

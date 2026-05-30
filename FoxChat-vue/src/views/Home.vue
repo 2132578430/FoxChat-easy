@@ -36,7 +36,10 @@
       <LlmConfigPanel
         v-if="showLlmConfigPanel"
         :friend-list="llmFriendList"
+        :preselected-friend-id="preselectedLlmFriendId"
+        :pending-llm-avatar-url="pendingLlmAvatarUrl"
         @close="showLlmConfigPanel = false"
+        @open-avatar-cropper="handleOpenLlmAvatarCropper"
       />
       
       <!-- Normal Chat Interface -->
@@ -205,28 +208,6 @@
       </template>
     </el-dialog>
 
-    <!-- Edit LLM Friend Dialog -->
-    <el-dialog v-model="showEditLlmFriendDialog" title="修改模型" width="400px" center destroy-on-close>
-      <div class="edit-llm-avatar-section">
-        <div class="edit-llm-avatar-wrapper" @click="openLlmAvatarCropper">
-          <el-avatar :size="100" :src="resolveAvatarUrl(editLlmFriendForm.faceImage) || defaultUserAvatar"></el-avatar>
-          <div class="edit-llm-avatar-mask">
-            <el-icon :size="24"><UploadFilled /></el-icon>
-            <span>修改头像</span>
-          </div>
-        </div>
-        <div class="edit-llm-nickname">
-          <el-input v-model="editLlmFriendForm.nickname" placeholder="模型昵称" maxlength="30" show-word-limit></el-input>
-        </div>
-      </div>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="showEditLlmFriendDialog = false">取消</el-button>
-          <el-button type="primary" @click="handleUpdateLlmFriend">保存</el-button>
-        </span>
-      </template>
-    </el-dialog>
-
     <!-- Upload Document Dialog -->
     <el-dialog v-model="showUploadDialog" title="狐狸知识库上传" width="500px" center destroy-on-close>
       <div class="upload-dialog-content">
@@ -361,13 +342,9 @@ const profileInfo = ref({
 });
 const showCreateGroupDialog = ref(false);
 const showAddLlmFriendDialog = ref(false);
-const showEditLlmFriendDialog = ref(false);
 const showLlmConfigPanel = ref(false);
-const editLlmFriendForm = reactive({
-  llmId: '',
-  nickname: '',
-  faceImage: ''
-});
+const preselectedLlmFriendId = ref(null);
+const pendingLlmAvatarUrl = ref(null);
 const showRag = ref(false);
 const ragFiles = ref([]); // RAG 文件列表
 const showUploadDialog = ref(false);
@@ -392,37 +369,18 @@ const handleDeleteFriend = async (friend) => {
 };
 
 const handleEditLlmFriend = (friend) => {
-  const f = friend;
-  if (!f) return;
-  editLlmFriendForm.llmId = f.userId || f.id || f.llmId;
-  editLlmFriendForm.nickname = f.nickname || '';
-  editLlmFriendForm.faceImage = f.faceImage || f.face_image || '';
-  isAvatarCropperForLlm.value = true;
-  showEditLlmFriendDialog.value = true;
+  if (!friend) return;
+  const friendId = friend.userId || friend.id || friend.llmId;
+  preselectedLlmFriendId.value = friendId;
+  // 关闭可能冲突的面板
+  showFriendList.value = false;
+  showGroupList.value = false;
+  showProfile.value = false;
+  showRag.value = false;
+  showLlmConfigPanel.value = true;
 };
 
-const handleUpdateLlmFriend = async () => {
-  try {
-    await friendApi.updateLlmFriend({
-      llmId: editLlmFriendForm.llmId,
-      nickname: editLlmFriendForm.nickname,
-      faceImage: editLlmFriendForm.faceImage
-    });
-    ElMessage.success('模型已更新');
-    getFriendList();
-    // 如果当前聊天对象就是这个模型，刷新当前好友信息
-    const currentId = currentFriend.value?.userId || currentFriend.value?.id;
-    if (currentId && String(currentId) === String(editLlmFriendForm.llmId)) {
-      currentFriend.value.nickname = editLlmFriendForm.nickname;
-      currentFriend.value.faceImage = editLlmFriendForm.faceImage;
-    }
-  } catch (error) {
-    console.error('更新模型失败:', error);
-    ElMessage.error('更新模型失败');
-  } finally {
-    showEditLlmFriendDialog.value = false;
-  }
-};
+
 
 const isSearchingRag = ref(false); // RAG 搜索状态
 const hasRagSearchResults = ref(false); // 是否显示搜索结果
@@ -510,6 +468,8 @@ const toggleRag = () => {
 const toggleLlmConfigPanel = () => {
   showLlmConfigPanel.value = !showLlmConfigPanel.value;
   if (showLlmConfigPanel.value) {
+    // 从侧边栏打开时清空预选，让面板默认选第一个
+    preselectedLlmFriendId.value = null;
     // Close other panels when opening config
     showFriendList.value = false;
     showGroupList.value = false;
@@ -723,7 +683,8 @@ const handleEditAvatar = () => {
   showAvatarCropper.value = true;
 };
 
-const openLlmAvatarCropper = () => {
+const handleOpenLlmAvatarCropper = () => {
+  pendingLlmAvatarUrl.value = null;
   isAvatarCropperForLlm.value = true;
   showAvatarCropper.value = true;
 };
@@ -731,8 +692,8 @@ const openLlmAvatarCropper = () => {
 const handleAvatarSuccess = (newAvatarUrl) => {
   if (!newAvatarUrl) return;
   if (isAvatarCropperForLlm.value) {
-    // 模型编辑头像更新
-    editLlmFriendForm.faceImage = newAvatarUrl;
+    // 模型编辑头像更新 → 传给 LlmConfigPanel
+    pendingLlmAvatarUrl.value = newAvatarUrl;
   } else {
     // 个人资料头像更新
     userInfo.faceImage = newAvatarUrl;
@@ -754,10 +715,10 @@ const handleAvatarBlob = async (blob) => {
     uploadingAvatar.value = false;
     
     if (res && typeof res === 'string' && res.startsWith('http')) {
-      editLlmFriendForm.faceImage = res;
+      pendingLlmAvatarUrl.value = res;
       ElMessage.success('模型头像上传成功啦 ✨');
     } else if (res && res.data) {
-      editLlmFriendForm.faceImage = res.data;
+      pendingLlmAvatarUrl.value = res.data;
       ElMessage.success('模型头像上传成功啦 ✨');
     } else {
       ElMessage.error('上传失败');
@@ -2967,55 +2928,6 @@ const handleLogout = () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.edit-llm-avatar-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 10px 0 30px;
-}
-
-.edit-llm-avatar-wrapper {
-  position: relative;
-  cursor: pointer;
-  border-radius: 50%;
-}
-
-.edit-llm-avatar-wrapper .el-avatar {
-  display: block;
-}
-
-.edit-llm-avatar-mask {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.5);
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.2s;
-  font-size: 13px;
-}
-
-.edit-llm-avatar-wrapper:hover .edit-llm-avatar-mask {
-  opacity: 1;
-}
-
-.edit-llm-avatar-mask .el-icon {
-  margin-bottom: 4px;
-}
-
-.edit-llm-nickname {
-  margin-top: 16px;
-  width: 200px;
-  text-align: center;
 }
 
 .info-list {

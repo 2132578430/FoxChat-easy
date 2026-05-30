@@ -39,6 +39,30 @@
       <!-- Right: Config Form -->
       <div class="config-form-panel" v-loading="isLoadingConfig">
         <el-tabs v-model="activeTab" type="card" class="scenario-tabs">
+          <el-tab-pane label="外观" name="appearance">
+            <div class="appearance-form">
+              <div class="appearance-avatar-section">
+                <div class="appearance-avatar-wrapper" @click="handleOpenAvatarCropper">
+                  <el-avatar :size="100" :src="resolveAvatarUrl(appearanceForm.faceImage) || defaultAvatar"></el-avatar>
+                  <div class="appearance-avatar-mask">
+                    <el-icon :size="24"><UploadFilled /></el-icon>
+                    <span>修改头像</span>
+                  </div>
+                </div>
+              </div>
+              <div class="appearance-nickname">
+                <el-form label-position="top">
+                  <el-form-item label="昵称">
+                    <el-input v-model="appearanceForm.nickname" placeholder="模型昵称" maxlength="30" show-word-limit></el-input>
+                  </el-form-item>
+                  <el-form-item>
+                    <el-button type="primary" :loading="isSavingAppearance" @click="handleSaveAppearance">保存外观</el-button>
+                  </el-form-item>
+                </el-form>
+              </div>
+            </div>
+          </el-tab-pane>
+
           <el-tab-pane label="聊天对话" name="chat">
             <ScenarioConfigForm
               scenario="chat"
@@ -118,19 +142,28 @@
 <script setup>
 import { ref, reactive, computed, watch, onMounted } from 'vue';
 import { ElMessage } from 'element-plus';
-import { Back, Finished, UserFilled, CopyDocument } from '@element-plus/icons-vue';
+import { Back, Finished, UserFilled, CopyDocument, UploadFilled } from '@element-plus/icons-vue';
 import ScenarioConfigForm from './ScenarioConfigForm.vue';
 import { saveConfigsBatch, getConfigs } from '@/api/llmConfig';
+import { updateLlmFriend } from '@/api/friend';
 
 const props = defineProps({
   friendList: {
     type: Array,
     required: true,
     default: () => []
+  },
+  preselectedFriendId: {
+    type: [String, Number],
+    default: null
+  },
+  pendingLlmAvatarUrl: {
+    type: String,
+    default: null
   }
 });
 
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'open-avatar-cropper']);
 
 const defaultAvatar = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png';
 
@@ -144,6 +177,13 @@ const resolveAvatarUrl = (url) => {
 const selectedFriendId = ref(null);
 const isLoadingConfig = ref(false);
 const activeTab = ref('chat');
+
+// Appearance form state
+const appearanceForm = reactive({
+  nickname: '',
+  faceImage: ''
+});
+const isSavingAppearance = ref(false);
 
 // Computed properties
 const selectedFriend = computed(() => {
@@ -461,6 +501,57 @@ watch(currentLlmId, (newLlmId) => {
     loadConfigs(newLlmId);
   }
 }, { immediate: true });
+
+// Watch preselectedFriendId to auto-select
+watch(() => props.preselectedFriendId, (newId) => {
+  if (newId && props.friendList.length > 0) {
+    const friend = props.friendList.find(f =>
+      String(f.userId || f.id || f.llmId) === String(newId)
+    );
+    if (friend) {
+      selectedFriendId.value = newId;
+    }
+  }
+}, { immediate: true });
+
+// Watch selectedFriend to populate appearance form
+watch(selectedFriend, (friend) => {
+  if (friend) {
+    appearanceForm.nickname = friend.nickname || '';
+    appearanceForm.faceImage = friend.faceImage || friend.face_image || '';
+  }
+}, { immediate: true });
+
+// Watch pendingLlmAvatarUrl to update faceImage in appearance form
+watch(() => props.pendingLlmAvatarUrl, (newUrl) => {
+  if (newUrl) {
+    appearanceForm.faceImage = newUrl;
+  }
+});
+
+// Open avatar cropper (emit to parent)
+const handleOpenAvatarCropper = () => {
+  emit('open-avatar-cropper');
+};
+
+// Save appearance
+const handleSaveAppearance = async () => {
+  if (!currentLlmId.value) return;
+  isSavingAppearance.value = true;
+  try {
+    await updateLlmFriend({
+      llmId: currentLlmId.value,
+      nickname: appearanceForm.nickname,
+      faceImage: appearanceForm.faceImage
+    });
+    ElMessage.success('外观已保存');
+  } catch (error) {
+    console.error('保存外观失败:', error);
+    ElMessage.error('保存外观失败');
+  } finally {
+    isSavingAppearance.value = false;
+  }
+};
 </script>
 
 <style scoped>
@@ -685,6 +776,54 @@ watch(currentLlmId, (newLlmId) => {
   font-size: 12px;
   color: var(--text-light, #909399);
   margin-left: 8px;
+}
+
+/* Appearance Form */
+.appearance-form {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.appearance-avatar-section {
+  display: flex;
+  justify-content: center;
+}
+
+.appearance-avatar-wrapper {
+  position: relative;
+  cursor: pointer;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.appearance-avatar-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  border-radius: 50%;
+}
+
+.appearance-avatar-wrapper:hover .appearance-avatar-mask {
+  opacity: 1;
+}
+
+.appearance-nickname {
+  width: 100%;
+  max-width: 320px;
 }
 
 /* Custom Scrollbar */

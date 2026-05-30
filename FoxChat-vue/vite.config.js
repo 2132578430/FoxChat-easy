@@ -17,28 +17,38 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         '/api': {
-          target: env.VITE_API_BASE_URL || 'http://localhost:12000',
+          target: env.VITE_PROXY_TARGET || 'http://localhost:12000',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, '')
         },
         '/chat': {
-          target: env.VITE_WS_BASE_URL || 'ws://localhost:13000',
+          target: env.VITE_WS_TARGET || 'ws://localhost:13000',
           changeOrigin: true,
           ws: true
+        },
+        '/oss': {
+          target: env.VITE_OSS_TARGET || 'http://localhost:9000',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/oss/, '')
         }
       }
     },
     preview: {
       proxy: {
         '/api': {
-          target: env.VITE_API_BASE_URL || 'http://localhost:12000',
+          target: env.VITE_PROXY_TARGET || 'http://localhost:12000',
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, '')
         },
         '/chat': {
-          target: env.VITE_WS_BASE_URL || 'ws://localhost:13000',
+          target: env.VITE_WS_TARGET || 'ws://localhost:13000',
           changeOrigin: true,
           ws: true
+        },
+        '/oss': {
+          target: env.VITE_OSS_TARGET || 'http://localhost:9000',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/oss/, '')
         }
       }
     }

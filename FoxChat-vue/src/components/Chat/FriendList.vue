@@ -51,6 +51,9 @@
 
           <!-- AI Icon & Director Mode Switch -->
           <div v-if="friend.role === 1" class="ai-features">
+            <el-tooltip v-if="friend.isApply === 0 || friend.isApply === 1" content="模型初始化中，暂时无法使用" placement="top">
+              <span class="ai-status-badge creating">创造中</span>
+            </el-tooltip>
             <el-tooltip content="导演模式" placement="top">
               <el-switch
                 v-model="friend.directorMode"
@@ -404,6 +407,21 @@ defineExpose({
 
 .friend-status.online {
   color: #67c23a;
+}
+
+/* AI 状态角标 */
+.ai-status-badge {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.ai-status-badge.creating {
+  background: #fdf6ec;
+  color: #e6a23c;
+  border: 1px solid #faecd8;
 }
 
 /* 好友右键菜单样式 */

@@ -190,6 +190,24 @@ async def chat_init(body: str):
     existing_core_anchor = redis_client.get(core_anchor_key)
     if existing_core_anchor:
         logger.info(f"用户 {user_id} 的角色核心锚点已存在（llmId={llm_id}），跳过重复初始化")
+        # 确保 is_apply 为 2（可能上次初始化完成后没更新成功）
+        try:
+            from sqlalchemy import text
+            async with async_session_local() as session:
+                result = await session.execute(
+                    text("SELECT is_apply FROM llm_user WHERE id = :llm_id"),
+                    {"llm_id": llm_id}
+                )
+                row = result.fetchone()
+                if row and row[0] != 2:
+                    await session.execute(
+                        text("UPDATE llm_user SET is_apply = 2 WHERE id = :llm_id"),
+                        {"llm_id": llm_id}
+                    )
+                    await session.commit()
+                    logger.info(f"【激活完成-补偿】llmId={llm_id}, is_apply已更新为2")
+        except Exception as e:
+            logger.error(f"【激活完成-补偿】llmId={llm_id}, 更新is_apply失败: {e}", exc_info=True)
         return
 
     logger.info(f"开始处理用户 {user_id} 的初始记忆...")
@@ -203,5 +221,18 @@ async def chat_init(body: str):
         _process_memory_task("角色卡", _generate_character_card, LLMChatConstant.CHARACTER_CARD, user_id, llm_id, experience, serialize_json=True),
         _process_memory_task("初始记忆", _extract_initial_memories, LLMChatConstant.MEMORY_BANK, user_id, llm_id, experience, serialize_json=True, write_to_chroma=True),
     )
+
+    # 更新 MySQL：标记创造物已启用（is_apply = 2）
+    try:
+        from sqlalchemy import text
+        async with async_session_local() as session:
+            await session.execute(
+                text("UPDATE llm_user SET is_apply = 2 WHERE id = :llm_id"),
+                {"llm_id": llm_id}
+            )
+            await session.commit()
+        logger.info(f"【激活完成】llmId={llm_id}, is_apply已更新为2")
+    except Exception as e:
+        logger.error(f"【激活完成】llmId={llm_id}, 更新is_apply失败: {e}", exc_info=True)
 
     logger.info(f"用户 {user_id} 的初始记忆处理完成")

@@ -13,4 +13,9 @@ public class FriendVo {
     String faceImage;
     Boolean online;
     Integer role;
+
+    /**
+     * 是否启用（0禁止/1转化记忆中/2启用）
+     */
+    Integer isApply;
 }
