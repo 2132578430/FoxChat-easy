@@ -1,125 +1,71 @@
 <template>
   <div class="llm-config-panel">
     <!-- Header -->
-    <div class="config-panel-header">
-      <el-button :icon="Back" @click="handleClose" circle size="small"></el-button>
-      <div class="header-info">
-        <el-avatar :size="32" :src="resolveAvatarUrl(selectedFriend?.faceImage || selectedFriend?.face_image) || defaultAvatar"></el-avatar>
-        <span class="header-title">{{ selectedFriend?.nickname || '创造物' }} 模型配置</span>
-      </div>
-      <el-select
-        v-model="selectedFriendId"
-        class="friend-selector"
-        placeholder="选择创造物"
-        size="small"
-        @change="handleSelectFriendById"
-      >
-        <el-option
-          v-for="friend in friendList"
-          :key="friend.userId || friend.id || friend.llmId"
-          :label="friend.nickname || friend.username"
-          :value="String(friend.userId || friend.id || friend.llmId)"
-        />
-      </el-select>
+    <div class="panel-header">
+      <el-button :icon="Back" @click="handleClose" circle size="small" class="back-btn" />
+      <span class="header-title">模型配置</span>
     </div>
 
-    <!-- Panel Body -->
-    <div class="config-panel-body">
-      <!-- Config Form -->
-      <div class="config-form-panel" v-loading="isLoadingConfig">
-        <el-tabs v-model="activeTab" type="card" class="scenario-tabs">
+    <!-- Body: left list + right form -->
+    <div class="panel-body">
+      <!-- Left: Friend List -->
+      <div class="friend-sidebar">
+        <div class="sidebar-label">创造物</div>
+        <div class="friend-list">
+          <div
+            v-for="friend in friendList"
+            :key="friend.userId || friend.id || friend.llmId"
+            class="friend-item"
+            :class="{ active: String(friend.userId || friend.id || friend.llmId) === String(selectedFriendId) }"
+            @click="handleSelectFriendById(String(friend.userId || friend.id || friend.llmId))"
+          >
+            <el-avatar :size="36" :src="resolveAvatarUrl(friend.faceImage || friend.face_image) || defaultAvatar" />
+            <span class="friend-name">{{ friend.nickname || friend.username }}</span>
+          </div>
+          <div v-if="friendList.length === 0" class="friend-empty">暂无创造物</div>
+        </div>
+      </div>
+
+      <!-- Right: Config Form -->
+      <div class="config-main" v-loading="isLoadingConfig">
+        <el-tabs v-model="activeTab" class="config-tabs">
           <el-tab-pane label="外观" name="appearance">
             <div class="appearance-form">
-              <div class="appearance-avatar-section">
-                <div class="appearance-avatar-wrapper" @click="handleOpenAvatarCropper">
-                  <el-avatar :size="100" :src="resolveAvatarUrl(appearanceForm.faceImage) || defaultAvatar"></el-avatar>
-                  <div class="appearance-avatar-mask">
-                    <el-icon :size="24"><UploadFilled /></el-icon>
-                    <span>修改头像</span>
-                  </div>
-                </div>
+              <div class="avatar-upload" @click="handleOpenAvatarCropper">
+                <el-avatar :size="80" :src="resolveAvatarUrl(appearanceForm.faceImage) || defaultAvatar" />
+                <div class="avatar-overlay"><el-icon :size="20"><UploadFilled /></el-icon></div>
               </div>
-              <div class="appearance-nickname">
-                <el-form label-position="top">
-                  <el-form-item label="昵称">
-                    <el-input v-model="appearanceForm.nickname" placeholder="模型昵称" maxlength="30" show-word-limit></el-input>
-                  </el-form-item>
-                  <el-form-item>
-                    <el-button type="primary" :loading="isSavingAppearance" @click="handleSaveAppearance">保存外观</el-button>
-                  </el-form-item>
-                </el-form>
-              </div>
+              <el-form label-position="top" class="nickname-form">
+                <el-form-item label="昵称">
+                  <el-input v-model="appearanceForm.nickname" placeholder="模型昵称" maxlength="30" show-word-limit />
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary" :loading="isSavingAppearance" @click="handleSaveAppearance">保存外观</el-button>
+                </el-form-item>
+              </el-form>
             </div>
           </el-tab-pane>
 
           <el-tab-pane label="聊天对话" name="chat">
-            <ScenarioConfigForm
-              scenario="chat"
-              :initial-config="configs.chat || {}"
-              @save="handleSaveConfig"
-              @test="handleTestResult"
-              ref="chatForm"
-            />
+            <ScenarioConfigForm scenario="chat" :initial-config="configs.chat || {}" @save="handleSaveConfig" @test="handleTestResult" ref="chatForm" />
           </el-tab-pane>
-
           <el-tab-pane label="记忆存储" name="memory">
-            <ScenarioConfigForm
-              scenario="memory"
-              :initial-config="configs.memory || {}"
-              @save="handleSaveConfig"
-              @test="handleTestResult"
-              ref="memoryForm"
-            />
+            <ScenarioConfigForm scenario="memory" :initial-config="configs.memory || {}" @save="handleSaveConfig" @test="handleTestResult" ref="memoryForm" />
           </el-tab-pane>
-
           <el-tab-pane label="对话总结" name="summary">
-            <ScenarioConfigForm
-              scenario="summary"
-              :initial-config="configs.summary || {}"
-              @save="handleSaveConfig"
-              @test="handleTestResult"
-              ref="summaryForm"
-            />
+            <ScenarioConfigForm scenario="summary" :initial-config="configs.summary || {}" @save="handleSaveConfig" @test="handleTestResult" ref="summaryForm" />
           </el-tab-pane>
-
           <el-tab-pane label="信息提取" name="extraction">
-            <ScenarioConfigForm
-              scenario="extraction"
-              :initial-config="configs.extraction || {}"
-              @save="handleSaveConfig"
-              @test="handleTestResult"
-              ref="extractionForm"
-            />
+            <ScenarioConfigForm scenario="extraction" :initial-config="configs.extraction || {}" @save="handleSaveConfig" @test="handleTestResult" ref="extractionForm" />
           </el-tab-pane>
-
           <el-tab-pane label="情绪识别" name="emotion">
-            <ScenarioConfigForm
-              scenario="emotion"
-              :initial-config="configs.emotion || {}"
-              @save="handleSaveConfig"
-              @test="handleTestResult"
-              ref="emotionForm"
-            />
+            <ScenarioConfigForm scenario="emotion" :initial-config="configs.emotion || {}" @save="handleSaveConfig" @test="handleTestResult" ref="emotionForm" />
           </el-tab-pane>
         </el-tabs>
 
-        <!-- Save Buttons -->
-        <div class="save-all-container">
-          <el-button
-            type="warning"
-            size="large"
-            :icon="CopyDocument"
-            @click="handleOneClickConfig"
-          >
-            一键配置
-          </el-button>
-          <el-button
-            type="primary"
-            size="large"
-            :icon="Finished"
-            :loading="isSavingAll"
-            @click="handleSaveAll"
-          >
+        <div class="form-footer">
+          <el-button :icon="CopyDocument" @click="handleOneClickConfig">一键配置</el-button>
+          <el-button type="primary" :icon="Finished" :loading="isSavingAll" @click="handleSaveAll">
             {{ isSavingAll ? '保存中...' : '保存所有配置' }}
           </el-button>
         </div>
@@ -539,154 +485,164 @@ const handleSaveAppearance = async () => {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: var(--bg-panel, #f5f7fa);
-  position: relative;
+  background: var(--bg-panel, #f8f9fa);
 }
 
-.config-panel-header {
+/* Header */
+.panel-header {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 16px 20px;
+  padding: 14px 20px;
   background: var(--bg-card, #fff);
-  border-bottom: 1px solid var(--border-light, rgba(0,0,0,0.06));
+  border-bottom: 1px solid var(--border-light, #eee);
+  flex-shrink: 0;
+}
+.back-btn { flex-shrink: 0; }
+.header-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary, #303133);
 }
 
-.header-info {
+/* Body: split pane */
+.panel-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* Left sidebar */
+.friend-sidebar {
+  width: 200px;
+  flex-shrink: 0;
+  background: var(--bg-sidebar, #fafbfc);
+  border-right: 1px solid var(--border-light, #eee);
+  display: flex;
+  flex-direction: column;
+}
+.sidebar-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary, #909399);
+  text-transform: uppercase;
+  padding: 16px 16px 8px;
+}
+.friend-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 4px 8px;
+}
+.friend-item {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
 }
-
-.header-title {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text-primary, #262626);
-  letter-spacing: 0.5px;
-}
-
-.config-panel-body {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+.friend-item:hover { background: var(--accent-hover, rgba(0,132,255,0.06)); }
+.friend-item.active { background: var(--accent-active, rgba(0,132,255,0.1)); }
+.friend-name {
+  font-size: 14px;
+  color: var(--text-primary, #303133);
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-
-/* Friend selector dropdown in header */
-.friend-selector {
-  margin-left: auto;
-  width: 200px;
-}
-
-.config-form-panel {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  padding: 0 16px 16px;
-}
-
-/* Scenario Tabs — clean default style */
-.scenario-tabs {
-  flex: 1;
-  overflow: hidden;
-  margin: 12px 0 0;
-}
-
-.scenario-tabs :deep(.el-tabs__header) {
-  margin-bottom: 12px;
-  border-bottom: 1px solid var(--border-light, rgba(0,0,0,0.06));
-}
-
-.scenario-tabs :deep(.el-tabs__item) {
+.friend-empty {
+  padding: 32px 16px;
+  text-align: center;
   font-size: 13px;
-  padding: 8px 16px;
+  color: var(--text-secondary, #909399);
 }
 
-.scenario-tabs :deep(.el-tabs__item.is-active) {
+/* Right main */
+.config-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg-card, #fff);
+}
+
+/* Tabs */
+.config-tabs {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.config-tabs :deep(.el-tabs__header) {
+  margin: 0 20px;
+  border-bottom: 1px solid var(--border-light, #eee);
+}
+.config-tabs :deep(.el-tabs__item) {
+  font-size: 13px;
+  padding: 10px 16px;
+  color: var(--text-secondary, #606266);
+}
+.config-tabs :deep(.el-tabs__item.is-active) {
   color: var(--accent-color, #0084ff);
   font-weight: 600;
 }
-
-.scenario-tabs :deep(.el-tabs__active-bar) {
+.config-tabs :deep(.el-tabs__active-bar) {
   background-color: var(--accent-color, #0084ff);
 }
-
-.scenario-tabs :deep(.el-tabs__content) {
+.config-tabs :deep(.el-tabs__content) {
   flex: 1;
   overflow-y: auto;
+  padding: 0 20px;
 }
 
-.save-all-container {
+/* Footer */
+.form-footer {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 16px;
-  border-top: 1px solid var(--border-light, rgba(0,0,0,0.06));
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 20px;
+  border-top: 1px solid var(--border-light, #eee);
+  background: var(--bg-card, #fff);
   flex-shrink: 0;
 }
 
-.save-all-hint {
-  font-size: 12px;
-  color: var(--text-light, #909399);
-  margin-left: 8px;
-}
-
-/* Appearance Form */
+/* Appearance tab */
 .appearance-form {
-  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  padding: 24px 0;
+  gap: 24px;
 }
-
-.appearance-avatar-section {
-  display: flex;
-  justify-content: center;
-}
-
-.appearance-avatar-wrapper {
+.avatar-upload {
   position: relative;
   cursor: pointer;
   border-radius: 50%;
-  overflow: hidden;
 }
-
-.appearance-avatar-mask {
+.avatar-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.35);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   color: #fff;
-  font-size: 12px;
   opacity: 0;
-  transition: opacity 0.3s;
-  border-radius: 50%;
+  transition: opacity 0.2s;
 }
-
-.appearance-avatar-wrapper:hover .appearance-avatar-mask {
-  opacity: 1;
-}
-
-.appearance-nickname {
+.avatar-upload:hover .avatar-overlay { opacity: 1; }
+.nickname-form {
   width: 100%;
   max-width: 320px;
 }
 
-/* Buttons — use project CSS variables */
+/* Buttons */
 :deep(.el-button--primary) {
   background-color: var(--accent-color, #0084ff);
   border-color: var(--accent-color, #0084ff);
 }
-
 :deep(.el-button--primary:hover) {
   background-color: var(--accent-hover, #0066cc);
   border-color: var(--accent-hover, #0066cc);
