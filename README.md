@@ -263,10 +263,13 @@ FoxChat/
 | 文件 | 说明 |
 |------|------|
 | `FoxChatRAG-python/.env` | LLM API Key、MySQL/Redis/RabbitMQ 密码 |
-| `FoxChat-java/deploy/.env` | MySQL/Redis 密码 |
+| `FoxChat-java/**/application.yaml` | JWT Secret 通过 `${FOX_JWT_SECRET}` 注入 |
 | `FoxChat-java/**/application-local.yml` | 数据库密码、JWT 密钥、MinIO、邮件授权码 |
 | `FoxChat-vue/.env` | 本地 API 地址 |
 | `.env`（根目录） | 项目级环境变量（参考 `.env.example`） |
+| `deploy/frp/frps.toml` | FRP token、dashboard 密码（参考 `.example`） |
+| `deploy/frp/frpc.toml` | FRP token、服务器 IP（参考 `.example`） |
+| `deploy/local-middleware/frpc-docker.toml` | FRP token（参考 `.example`） |
 
 首次配置时，参考各模块下的 `.env.example` 文件复制并填写实际值。
 

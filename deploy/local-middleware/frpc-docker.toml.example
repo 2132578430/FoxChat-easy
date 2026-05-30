@@ -1,64 +1,60 @@
 # ============================================
-# frpc 客户端配置 — 部署在本机 WSL
-# frp version >= 0.61 (TOML 格式)
+# frpc Docker 版配置 — 使用 Docker 网络内服务名
+# 部署在本机 WSL Docker，与中间件在同一 compose
+# 复制为 frpc-docker.toml 并填写实际值：cp frpc-docker.toml.example frpc-docker.toml
 # ============================================
 
-# 连接服务器 frps
-serverAddr = "123.57.175.65"
+serverAddr = "your-server-ip-here"
 serverPort = 7000
 
-# 认证令牌（与 frps.toml 一致）
-auth.token = "045da11ec55cbc56afe7c5f4c56aaa8a"
+auth.token = "change-me-to-a-random-string"
 
-# ============================================
-# TCP 端口映射
-# ============================================
-
+# Docker 网络内可直接用 service name
 [[proxies]]
 name = "mysql"
 type = "tcp"
-localIP = "127.0.0.1"
+localIP = "mysql"
 localPort = 3306
 remotePort = 13306
 
 [[proxies]]
 name = "redis"
 type = "tcp"
-localIP = "127.0.0.1"
+localIP = "redis"
 localPort = 6379
 remotePort = 16379
 
 [[proxies]]
 name = "chromadb"
 type = "tcp"
-localIP = "127.0.0.1"
+localIP = "chromadb"
 localPort = 8000
 remotePort = 18000
 
 [[proxies]]
 name = "minio-api"
 type = "tcp"
-localIP = "127.0.0.1"
+localIP = "minio"
 localPort = 9000
 remotePort = 19000
 
 [[proxies]]
 name = "minio-console"
 type = "tcp"
-localIP = "127.0.0.1"
+localIP = "minio"
 localPort = 9001
 remotePort = 19001
 
 [[proxies]]
 name = "rabbitmq-amqp"
 type = "tcp"
-localIP = "127.0.0.1"
+localIP = "rabbitmq"
 localPort = 5672
 remotePort = 15672
 
 [[proxies]]
 name = "rabbitmq-mgmt"
 type = "tcp"
-localIP = "127.0.0.1"
+localIP = "rabbitmq"
 localPort = 15672
 remotePort = 25672

@@ -38,7 +38,7 @@
 
 - [ ] 本机 WSL 已安装 Docker Desktop 并正常运行
 - [ ] 能 SSH 到服务器（`ssh root@<SERVER_IP>`）
-- [ ] 知道服务器 IP（假设 `123.57.175.65`，下面用 `<SERVER_IP>` 代替）
+- [ ] 知道服务器 IP（下面用 `<SERVER_IP>` 代替）
 - [ ] 服务器 `.env` 文件路径：`/root/home/docker-manager/.env`
 
 ---

@@ -1,13 +1,14 @@
 # ============================================
 # frps 服务端配置 — 部署在服务器
 # frp version >= 0.61 (TOML 格式)
+# 复制为 frps.toml 并填写实际值：cp frps.toml.example frps.toml
 # ============================================
 
 # frpc 连接端口
 bindPort = 7000
 
 # 认证令牌（请替换为随机字符串）
-auth.token = "045da11ec55cbc56afe7c5f4c56aaa8a"
+auth.token = "change-me-to-a-random-string"
 
 # 允许 frpc 开放的端口范围（安全限制）
 allowPorts = [
@@ -23,4 +24,4 @@ allowPorts = [
 webServer.addr = "0.0.0.0"
 webServer.port = 7500
 webServer.user = "admin"
-webServer.password = "admin123"
+webServer.password = "change-me"

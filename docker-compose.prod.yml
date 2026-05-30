@@ -38,11 +38,12 @@ services:
       - SPRING_RABBITMQ_USERNAME=${RABBIT_USER:-admin}
       - SPRING_RABBITMQ_PASSWORD=${RABBIT_PASSWORD:-admin}
       - MINIO_ENDPOINT=http://host.docker.internal:19000
-      - MINIO_PUBLIC_ENDPOINT=http://${SERVER_IP:-123.57.175.65}:19000
+      - MINIO_PUBLIC_ENDPOINT=http://${SERVER_IP}:19000
       - MINIO_ACCESS_KEY=${MINIO_ROOT_USER:-minioadmin}
       - MINIO_SECRET_KEY=${MINIO_ROOT_PASSWORD:-minioadmin}
       - RAG_SERVICE_URL=http://python-app:8000
       - SPRING_PROFILES_ACTIVE=prod
+      - FOX_JWT_SECRET=${FOX_JWT_SECRET}
       - SMTP_USERNAME=${SMTP_USERNAME:-}
       - SMTP_PASSWORD=${SMTP_PASSWORD:-}
       - TZ=Asia/Shanghai

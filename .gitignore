@@ -48,6 +48,11 @@ openspec/
 config/secrets.py
 config/local_settings.py
 
+# FRP 隧道配置（包含 token / 服务器 IP）
+deploy/frp/frps.toml
+deploy/frp/frpc.toml
+deploy/local-middleware/frpc-docker.toml
+
 # 日志文件
 *.log
 **/logs/
