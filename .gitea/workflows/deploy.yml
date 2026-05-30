@@ -20,10 +20,6 @@ jobs:
           fi
         working-directory: ${{ github.workspace }}
 
-      - name: 🤖 拉取 Ollama 嵌入模型
-        run: |
-          docker exec fox-ollama ollama pull quentinz/bge-small-zh-v1.5 || echo "模型已存在，跳过"
-
       - name: 📦 构建基础镜像（依赖层）
         run: |
           echo "构建基础镜像（依赖未变则跳过）..."
@@ -42,11 +38,20 @@ jobs:
           echo "===== 容器状态 ====="
           docker compose -f docker-compose.prod.yml ps
           echo ""
+          echo "===== 中间件隧道检查 ====="
+          # 检查 frp 转发的端口是否可达（frps 在本机 → 服务器端口）
+          (echo > /dev/tcp/127.0.0.1/13306 && echo "🟢 MySQL 隧道: 可达") || echo "🔴 MySQL 隧道: 不可达"
+          (echo > /dev/tcp/127.0.0.1/16379 && echo "🟢 Redis 隧道: 可达") || echo "🔴 Redis 隧道: 不可达"
+          (echo > /dev/tcp/127.0.0.1/15672 && echo "🟢 RabbitMQ 隧道: 可达") || echo "🔴 RabbitMQ 隧道: 不可达"
+          echo ""
           echo "===== 服务检查 ====="
           sleep 15
           curl -sf http://localhost:8000/docs > /dev/null && echo "🟢 Python RAG: 正常" || echo "🔴 Python RAG: 异常"
           curl -sf http://localhost:12000 > /dev/null && echo "🟢 Java API: 正常" || echo "🔴 Java API: 异常"
           curl -sf http://localhost:80 > /dev/null && echo "🟢 Vue 前端: 正常" || echo "🔴 Vue 前端: 异常"
+          echo ""
+          echo "===== 内存用量 ====="
+          free -h
 
       - name: 🧹 清理旧镜像和构建缓存
         run: |

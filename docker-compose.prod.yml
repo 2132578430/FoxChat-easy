@@ -1,6 +1,9 @@
 # ============================================
-# FoxChat Production Docker Compose
+# FoxChat Production Docker Compose (中间件已迁出)
 # 一键启动：docker compose -f docker-compose.prod.yml --env-file /root/home/docker-manager/.env up -d
+#
+# 中间件 (mysql/redis/minio/rabbitmq/chromadb) 已迁至本机 WSL
+# 通过 frp 隧道连接 — 所有中间件地址指向 host.docker.internal
 # ============================================
 
 x-logging: &default-logging
@@ -12,154 +15,30 @@ x-logging: &default-logging
 
 services:
   # ============================================
-  # Middleware (from /root/home)
-  # ============================================
-  mysql:
-    image: mysql:8.0
-    container_name: fox-mysql
-    restart: unless-stopped
-    logging: *default-logging
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - TZ=Asia/Shanghai
-    volumes:
-      - /root/home/docker-manager/mysql-docker/data:/var/lib/mysql
-      - /root/home/docker-manager/mysql-docker/log:/var/log/mysql
-      - /root/home/docker-manager/mysql-docker/conf:/etc/mysql/conf.d
-    ports:
-      - "3306:3306"
-    networks:
-      - chat
-    deploy:
-      resources:
-        limits:
-          memory: 512M
-
-  redis:
-    image: redis/redis-stack:latest
-    container_name: fox-redis
-    restart: unless-stopped
-    logging: *default-logging
-    ports:
-      - "6379:6379"
-      - "8001:8001"
-    volumes:
-      - /root/home/docker-manager/redis-docker/data:/data
-      - /root/home/docker-manager/redis-docker/conf/redis.conf:/etc/redis/redis.conf
-    environment:
-      - REDIS_ARGS=requirepass ${REDIS_PASSWORD:-}
-    networks:
-      - chat
-    deploy:
-      resources:
-        limits:
-          memory: 96M
-
-  minio:
-    image: minio/minio:latest
-    container_name: fox-minio
-    restart: unless-stopped
-    ports:
-      - "9000:9000"
-      - "9001:9001"
-    volumes:
-      - /root/home/docker-manager/minio/data:/data
-    environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
-      TZ: Asia/Shanghai
-    command: server /data --console-address ":9001"
-    networks:
-      - chat
-    deploy:
-      resources:
-        limits:
-          memory: 128M
-
-  rabbitmq:
-    image: rabbitmq:3.12-management
-    container_name: fox-rabbitmq
-    restart: unless-stopped
-    logging: *default-logging
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    volumes:
-      - /root/home/docker-manager/rabbitmq-docker/data:/var/lib/rabbitmq
-      - /root/home/docker-manager/rabbitmq-docker/log:/var/log/rabbitmq
-      - /root/home/docker-manager/rabbitmq-docker/conf/:/etc/rabbitmq/
-    environment:
-      - RABBITMQ_DEFAULT_USER=${RABBIT_USER:-admin}
-      - RABBITMQ_DEFAULT_PASS=${RABBIT_PASSWORD:-admin}
-      - TZ=Asia/Shanghai
-    networks:
-      - chat
-    deploy:
-      resources:
-        limits:
-          memory: 96M
-
-  chromadb:
-    image: chromadb/chroma:latest
-    container_name: fox-chromadb
-    restart: unless-stopped
-    logging: *default-logging
-    ports:
-      - "18000:8000"
-    volumes:
-      - /root/home/docker-manager/chroma-docker/data:/chroma/chroma
-    environment:
-      - IS_PERSISTENT=TRUE
-      - ANONYMIZED_TELEMETRY=FALSE
-    networks:
-      - chat
-    deploy:
-      resources:
-        limits:
-          memory: 64M
-
-  # ============================================
-  # Ollama (embedding model) - 已禁用，改用 DashScope 云端
-  # ============================================
-  # ollama:
-  #   image: ollama/ollama:latest
-  #   container_name: fox-ollama
-  #   restart: unless-stopped
-  #   ports:
-  #     - "11434:11434"
-  #   volumes:
-  #     - /root/home/docker-manager/ollama-data:/root/.ollama
-  #   environment:
-  #     - TZ=Asia/Shanghai
-  #   networks:
-  #     - chat
-  #   deploy:
-  #     resources:
-  #       limits:
-  #         memory: 128M
-
-  # ============================================
   # Application Services
   # ============================================
   java-app:
     build: ./FoxChat-java
     container_name: fox-java
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - "12000:12000"
       - "13000:13000"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/FoxChat
+      - SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:13306/FoxChat
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_HOST=host.docker.internal
+      - SPRING_DATA_REDIS_PORT=16379
       - SPRING_DATA_REDIS_PASSWORD=${REDIS_PASSWORD:-}
-      - SPRING_RABBITMQ_HOST=rabbitmq
-      - SPRING_RABBITMQ_PORT=5672
+      - SPRING_RABBITMQ_HOST=host.docker.internal
+      - SPRING_RABBITMQ_PORT=15672
       - SPRING_RABBITMQ_USERNAME=${RABBIT_USER:-admin}
       - SPRING_RABBITMQ_PASSWORD=${RABBIT_PASSWORD:-admin}
-      - MINIO_ENDPOINT=http://minio:9000
-      - MINIO_PUBLIC_ENDPOINT=http://${SERVER_IP:-123.57.175.65}:9000
+      - MINIO_ENDPOINT=http://host.docker.internal:19000
+      - MINIO_PUBLIC_ENDPOINT=http://${SERVER_IP:-123.57.175.65}:19000
       - MINIO_ACCESS_KEY=${MINIO_ROOT_USER:-minioadmin}
       - MINIO_SECRET_KEY=${MINIO_ROOT_PASSWORD:-minioadmin}
       - RAG_SERVICE_URL=http://python-app:8000
@@ -167,11 +46,6 @@ services:
       - SMTP_USERNAME=${SMTP_USERNAME:-}
       - SMTP_PASSWORD=${SMTP_PASSWORD:-}
       - TZ=Asia/Shanghai
-    depends_on:
-      - mysql
-      - redis
-      - minio
-      - rabbitmq
     networks:
       - chat
     deploy:
@@ -183,38 +57,31 @@ services:
     build: ./FoxChatRAG-python
     container_name: fox-python
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - "8000:8000"
     environment:
-      - MYSQL__HOST=mysql
-      - MYSQL__PORT=3306
+      - MYSQL__HOST=host.docker.internal
+      - MYSQL__PORT=13306
       - MYSQL__USER=root
       - MYSQL__PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL__DATABASE=FoxChat
-      - REDIS__HOST=redis
-      - REDIS__PORT=6379
+      - REDIS__HOST=host.docker.internal
+      - REDIS__PORT=16379
       - REDIS__PASSWORD=${REDIS_PASSWORD:-}
-      - RABBITMQ__HOST=rabbitmq
-      - RABBITMQ__PORT=5672
+      - RABBITMQ__HOST=host.docker.internal
+      - RABBITMQ__PORT=15672
       - RABBITMQ__USER=${RABBIT_USER:-admin}
       - RABBITMQ__PASSWORD=${RABBIT_PASSWORD:-admin}
-      - CHROMA__HOST=chromadb
-      - CHROMA__PORT=8000
+      - CHROMA__HOST=host.docker.internal
+      - CHROMA__PORT=18000
       - SERVER__PORT=8000
       - TZ=Asia/Shanghai
       - KEY__QWEN_MODEL=${KEY__QWEN_MODEL:-}
       - MODEL__DEFAULT_LLM=${MODEL__DEFAULT_LLM:-astron_model}
       - MODEL__DEFAULT_JSON_LLM=${MODEL__DEFAULT_JSON_LLM:-astron_json_model}
       - MODEL__DEFAULT_EMBEDDING=dashscope
-    depends_on:
-      mysql:
-        condition: service_started
-      redis:
-        condition: service_started
-      rabbitmq:
-        condition: service_started
-      chromadb:
-        condition: service_started
     networks:
       - chat
     deploy:
@@ -226,6 +93,8 @@ services:
     build: ./FoxChat-vue
     container_name: fox-vue
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - "80:80"
       - "443:443"

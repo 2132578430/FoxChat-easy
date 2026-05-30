@@ -1,0 +1,26 @@
+# ============================================
+# frps 服务端配置 — 部署在服务器
+# frp version >= 0.61 (TOML 格式)
+# ============================================
+
+# frpc 连接端口
+bindPort = 7000
+
+# 认证令牌（请替换为随机字符串）
+auth.token = "045da11ec55cbc56afe7c5f4c56aaa8a"
+
+# 允许 frpc 开放的端口范围（安全限制）
+allowPorts = [
+  { start = 13306, end = 13306 },
+  { start = 16379, end = 16379 },
+  { start = 18000, end = 18000 },
+  { start = 19000, end = 19001 },
+  { start = 15672, end = 15672 },
+  { start = 25672, end = 25672 },
+]
+
+# Dashboard 监控（可选）
+webServer.addr = "0.0.0.0"
+webServer.port = 7500
+webServer.user = "admin"
+webServer.password = "admin123"

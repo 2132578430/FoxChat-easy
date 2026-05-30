@@ -1,0 +1,59 @@
+# ============================================
+# frpc Docker 版配置 — 使用 Docker 网络内服务名
+# 部署在本机 WSL Docker，与中间件在同一 compose
+# ============================================
+
+serverAddr = "服务器IP填这里"
+serverPort = 7000
+
+auth.token = "FoxChat-frp-token-change-me-2024"
+
+# Docker 网络内可直接用 service name
+[[proxies]]
+name = "mysql"
+type = "tcp"
+localIP = "mysql"
+localPort = 3306
+remotePort = 13306
+
+[[proxies]]
+name = "redis"
+type = "tcp"
+localIP = "redis"
+localPort = 6379
+remotePort = 16379
+
+[[proxies]]
+name = "chromadb"
+type = "tcp"
+localIP = "chromadb"
+localPort = 8000
+remotePort = 18000
+
+[[proxies]]
+name = "minio-api"
+type = "tcp"
+localIP = "minio"
+localPort = 9000
+remotePort = 19000
+
+[[proxies]]
+name = "minio-console"
+type = "tcp"
+localIP = "minio"
+localPort = 9001
+remotePort = 19001
+
+[[proxies]]
+name = "rabbitmq-amqp"
+type = "tcp"
+localIP = "rabbitmq"
+localPort = 5672
+remotePort = 15672
+
+[[proxies]]
+name = "rabbitmq-mgmt"
+type = "tcp"
+localIP = "rabbitmq"
+localPort = 15672
+remotePort = 25672

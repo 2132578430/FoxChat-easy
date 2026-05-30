@@ -1,0 +1,118 @@
+# ============================================
+# FoxChat 本机中间件 (WSL Docker)
+# 启动: docker compose -f docker-compose.yml up -d
+# ============================================
+
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "3"
+    compress: "true"
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: fox-mysql
+    restart: unless-stopped
+    logging: *default-logging
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./mysql-docker/data:/var/lib/mysql
+      - ./mysql-docker/log:/var/log/mysql
+      - ./mysql-docker/conf:/etc/mysql/conf.d
+    ports:
+      - "3306:3306"
+    networks:
+      - chat
+
+  redis:
+    image: redis/redis-stack:latest
+    container_name: fox-redis
+    restart: unless-stopped
+    logging: *default-logging
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+    volumes:
+      - ./redis-docker/data:/data
+      - ./redis-docker/conf/redis.conf:/etc/redis/redis.conf
+    environment:
+      - REDIS_ARGS=requirepass ${REDIS_PASSWORD:-}
+    networks:
+      - chat
+
+  minio:
+    image: minio/minio:latest
+    container_name: fox-minio
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - ./minio/data:/data
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+      TZ: Asia/Shanghai
+    command: server /data --console-address ":9001"
+    networks:
+      - chat
+
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: fox-rabbitmq
+    restart: unless-stopped
+    logging: *default-logging
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ./rabbitmq-docker/data:/var/lib/rabbitmq
+      - ./rabbitmq-docker/log:/var/log/rabbitmq
+      - ./rabbitmq-docker/conf/:/etc/rabbitmq/
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBIT_USER:-admin}
+      - RABBITMQ_DEFAULT_PASSWORD=${RABBIT_PASSWORD:-admin}
+      - TZ=Asia/Shanghai
+    networks:
+      - chat
+
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: fox-chromadb
+    restart: unless-stopped
+    logging: *default-logging
+    ports:
+      - "18000:8000"
+    volumes:
+      - ./chroma-docker/data:/chroma/chroma
+    environment:
+      - IS_PERSISTENT=TRUE
+      - ANONYMIZED_TELEMETRY=FALSE
+    networks:
+      - chat
+
+  # ============================================
+  # frp 隧道客户端 — 连接服务器 frps，转发本机中间件端口
+  # ============================================
+  frpc:
+    image: snowdreamtech/frpc:latest
+    container_name: fox-frpc
+    restart: unless-stopped
+    volumes:
+      - ./frpc-docker.toml:/etc/frp/frpc.toml
+    networks:
+      - chat
+    depends_on:
+      - mysql
+      - redis
+      - minio
+      - rabbitmq
+      - chromadb
+
+networks:
+  chat:
+    driver: bridge
