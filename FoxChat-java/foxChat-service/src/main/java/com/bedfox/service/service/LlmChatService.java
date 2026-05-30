@@ -11,7 +11,4 @@ public interface LlmChatService {
 
     // 模型聊天主逻辑
     LlmChatMsgVo llmChat(String llmId, String msgContent, String userId);
-
-    // 导演模式聊天
-    LlmChatMsgVo llmSuperChat(String llmId, String msgContent, String userId);
 }

@@ -49,18 +49,10 @@
             </div>
           </div>
 
-          <!-- AI Icon & Director Mode Switch -->
+          <!-- AI Icon -->
           <div v-if="friend.role === 1" class="ai-features">
             <el-tooltip v-if="friend.isApply === 0 || friend.isApply === 1" content="模型初始化中，暂时无法使用" placement="top">
               <span class="ai-status-badge creating">创造中</span>
-            </el-tooltip>
-            <el-tooltip content="导演模式" placement="top">
-              <el-switch
-                v-model="friend.directorMode"
-                size="small"
-                @click.stop
-                @change="handleDirectorModeChange(friend)"
-              />
             </el-tooltip>
             <span class="ai-tag-icon">🦊</span>
           </div>
@@ -142,8 +134,7 @@ const emit = defineEmits([
   'search',
   'context-menu',
   'delete-friend',
-  'edit-llm-friend',
-  'director-mode-change'
+  'edit-llm-friend'
 ]);
 
 const defaultUserAvatar = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png';
@@ -211,10 +202,6 @@ const handleSearchInput = (value) => {
 const handleSelectFriend = (friend) => {
   if (friend.isRequest) return;
   emit('select-friend', friend);
-};
-
-const handleDirectorModeChange = (friend) => {
-  emit('director-mode-change', friend);
 };
 
 const showFriendContextMenu = (event, friend) => {

@@ -20,9 +20,6 @@ public interface ChatClient {
     @PostMapping("/chat/msg")
     String chatMsg(ChatMsgTo chatMsgTo);
 
-    @PostMapping("/chat/superMsg")
-    String superChatMsg(ChatMsgTo chatMsgTo);
-
     @PostMapping("/chat/delete")
     void deleteMsg(@RequestParam("userId") String userId, @RequestParam("llmId") String llmId);
 

@@ -58,23 +58,6 @@ public class LLMChatController {
         return R.ok(chatMsgVo);
     }
 
-    @PostMapping("/superChat")
-    public R<LlmChatMsgVo> llmSuperChat(@RequestBody Map<String, Object> requestMap) {
-        String llmId = (String) requestMap.get("llmId");
-        String msgContent = (String) requestMap.get("msgContent");
-        String userId = LoginUserHolder.getUserId();
-
-        // 验证配置完整性
-        boolean isValid = llmConfigService.validateConfigCount(llmId);
-        if (!isValid) {
-            log.warn("【导演模式聊天】llmId={}, 配置不完整", llmId);
-            return R.error(ResultStatusConstant.LLM_CONFIG_INCOMPLETE_EXCEPTION);
-        }
-
-        LlmChatMsgVo chatMsgVo = llmChatService.llmSuperChat(llmId, msgContent, userId);
-        return R.ok(chatMsgVo);
-    }
-
     @PostMapping("/add")
     public R<String> addLlm(@RequestBody AddLlmFriendDto friendDto) {
         String llmId = llmUserService.saveFriend(friendDto);

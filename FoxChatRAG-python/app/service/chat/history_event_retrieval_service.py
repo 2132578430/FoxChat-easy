@@ -199,14 +199,15 @@ def format_history_events(events: List[MemoryEvent]) -> str:
         event_type_str = event.event_type.value if event.event_type else "other"
         type_label = EVENT_TYPE_LABELS.get(event_type_str, "其他")
 
-        # 格式：- [类型标签] actor内容
-        event_line = f"- [{type_label}] {actor_prefix}{event.content}"
+        # 格式：- [类型标签] content
+        # content 已由 extractor 内置主语（如"用户的名字是悲狐"），避免与 actor_prefix 双写
+        event_line = f"- [{type_label}] {event.content}"
 
         # 如果有明确时间锚点，可选择性加上
         if event.occurred_at and len(event.occurred_at) >= 10:
             time_hint = event.occurred_at[:10]  # YYYY-MM-DD
             if time_hint != datetime.now().strftime("%Y-%m-%d"):
-                event_line = f"- [{time_hint}] [{type_label}] {actor_prefix}{event.content}"
+                event_line = f"- [{time_hint}] [{type_label}] {event.content}"
 
         lines.append(event_line)
 

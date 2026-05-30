@@ -255,7 +255,6 @@
       @delete-friend="handleDeleteFriend"
       @edit-llm-friend="handleEditLlmFriend"
       @search="handleFriendSearch"
-      @director-mode-change="handleDirectorModeChange"
     />
     <!-- Avatar Cropper Dialog -->
     <AvatarCropper v-model:visible="showAvatarCropper" :type="isAvatarCropperForLlm ? 'llm' : 'user'" @success="handleAvatarSuccess" @blob="handleAvatarBlob" />
@@ -1172,30 +1171,12 @@ const getFriendList = async () => {
       ...f,
       // 如果后端没传 online，默认为 false，否则保留后端的值
       online: f.online !== undefined ? f.online : false,
-      unreadCount: 0, // 初始化未读数为 0
-      directorMode: f.directorMode !== undefined ? f.directorMode : false // 初始化导演模式为关闭
+      unreadCount: 0 // 初始化未读数为 0
     }));
     // 获取好友列表后，立即去查未读数
     getUnreadCounts();
   } catch (error) {
     console.error('获取好友列表出错:', error);
-  }
-};
-
-// 处理导演模式切换
-const handleDirectorModeChange = (friend) => {
-  const friendId = String(friend.userId || friend.id);
-  const targetFriend = friendList.value.find(f => String(f.userId || f.id) === friendId);
-  
-  if (targetFriend) {
-    targetFriend.directorMode = friend.directorMode;
-    console.log(`导演模式切换: ${friend.nickname || friend.username} -> ${friend.directorMode ? '开启' : '关闭'}`);
-  }
-  
-  // 如果当前正在和这个模型聊天，也更新 currentFriend 的状态
-  const currentId = String(currentFriend.value?.userId || currentFriend.value?.id || '');
-  if (currentId === friendId) {
-    currentFriend.value.directorMode = friend.directorMode;
   }
 };
 
@@ -1720,7 +1701,6 @@ const sendMessage = async () => {
     const msgId = snowflake.nextId();
     const myId = String(userInfo.userId || '');
     const llmId = currentFriend.value.userId || currentFriend.value.id;
-    const isDirectorMode = currentFriend.value.directorMode === true;
     
     // 1. 立即渲染自己的消息
     messageList.value.push({
@@ -1745,12 +1725,8 @@ const sendMessage = async () => {
     try {
       // 记录发送请求时的好友 ID
       const requestFriendId = llmId;
-      
-      // 根据导演模式状态选择不同的接口
-      const apiEndpoint = isDirectorMode ? '/llm/superChat' : '/llm/chat';
-      console.log(`[LLM Chat] 使用${isDirectorMode ? '导演模式' : '普通模式'}接口: ${apiEndpoint}`);
 
-      const res = await request.post(apiEndpoint, {
+      const res = await request.post('/llm/chat', {
         llmId: llmId,
         msgContent: msgContent
       }, {
@@ -1887,7 +1863,6 @@ const sendMessage = async () => {
           status: 'failed',
           msgContent: msgContent,
           llmId: llmId,
-          isDirectorMode: isDirectorMode,
           isMine: false,
           createTime: new Date().toISOString(),
           senderId: llmId,
@@ -1909,8 +1884,6 @@ const sendMessage = async () => {
   const retryLlmMessage = async (failedMsg) => {
     const originalContent = failedMsg.msgContent;
     const llmId = failedMsg.llmId;
-    const directorMode = failedMsg.isDirectorMode;
-    const apiEndpoint = directorMode ? '/llm/superChat' : '/llm/chat';
 
     // 1. 移除失败消息
     messageList.value = messageList.value.filter(m => m.id !== failedMsg.id);
@@ -1933,7 +1906,7 @@ const sendMessage = async () => {
     // 3. 重新发送请求
     isLlmTyping.value = true;
     try {
-      const res = await request.post(apiEndpoint, {
+      const res = await request.post('/llm/chat', {
         llmId: llmId,
         msgContent: originalContent
       }, {
@@ -2002,7 +1975,6 @@ const sendMessage = async () => {
           status: 'failed',
           msgContent: originalContent,
           llmId: llmId,
-          isDirectorMode: directorMode,
           isMine: false,
           createTime: new Date().toISOString(),
           senderId: llmId,

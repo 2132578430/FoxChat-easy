@@ -96,13 +96,13 @@ async def invoke_llm_with_retrieval(
     # 根据健谈程度构建长度指导
     talkativeness = parsed.talkativeness
     if talkativeness <= 0.3:
-        talkativeness_guidance = "【输出长度指导】当前角色话少寡言，回复应保持简短精炼，1-3句话即可。"
+        talkativeness_guidance = "【输出长度指导】当前角色话少寡言，每次只回应必要内容，用最少的词表达。不要展开，不要多说一句废话。"
     elif talkativeness <= 0.6:
-        talkativeness_guidance = "【输出长度指导】当前角色话量适中，回复自然即可，3-5句话为宜。"
+        talkativeness_guidance = "【输出长度指导】当前角色话量适中，像日常聊天一样自然回应，不刻意压缩也不刻意拉长。"
     elif talkativeness <= 0.8:
-        talkativeness_guidance = "【输出长度指导】当前角色较为健谈，回复可以适当展开，5-8句话，用动作和对话交替构建生动场景。"
+        talkativeness_guidance = "【输出长度指导】当前角色较为健谈，展开你的想法，用动作与对话交替表达，构建生动的互动。禁止只回一句话就结束，至少要有2-3轮对话内容的量。"
     else:
-        talkativeness_guidance = "【输出长度指导】当前角色非常健谈，回复应当丰富详细，多段展开，用动作与对话交替构建沉浸式互动体验。"
+        talkativeness_guidance = "【输出长度指导】当前角色非常健谈，尽情表达，多段展开。用丰富的动作和对话交替构建沉浸式互动体验。禁止简短回应，每次回复要像真正健谈的人一样说很多。"
     logger.debug(f"【健谈程度】talkativeness={talkativeness}, guidance={talkativeness_guidance}")
 
     payload = build_prompt_payload(

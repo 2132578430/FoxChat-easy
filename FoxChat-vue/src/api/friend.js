@@ -41,7 +41,3 @@ export function uploadLlmAvatar(formData) {
   });
 }
 
-// 导演模式聊天
-export function directorModeChat(data) {
-  return request.post('/llm/superChat', data);
-}

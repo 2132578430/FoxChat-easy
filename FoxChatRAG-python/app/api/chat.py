@@ -7,7 +7,6 @@ from app.schemas.M import M
 from app.service.chat import clear_chat_memory
 from app.service.chat.session_lock import acquire_session_lock, release_session_lock
 from app.service.chat.graph.graph import main_graph
-from app.service import super_chat_service
 
 chat_router = APIRouter(prefix="/chat", tags=["chat"])
 
@@ -64,21 +63,6 @@ async def chat_msg(chat_msg_to: ChatMsgTo, background_tasks: BackgroundTasks, re
         return M.get_msg(response)
     finally:
         release_session_lock(lock)
-
-
-@chat_router.post("/superMsg")
-async def super_chat_msg(chat_msg_to: ChatMsgTo, background_tasks: BackgroundTasks, request: Request):
-    logger.info(f"【导演模式】API层接收到请求：user_id={chat_msg_to.user_id}, llm_id={chat_msg_to.llm_id}, msg_content={chat_msg_to.msg_content}")
-
-    result = await super_chat_service.director_mode_chat(
-        user_id=chat_msg_to.userId,
-        llm_id=chat_msg_to.llmId,
-        msg_content=chat_msg_to.msgContent,
-        background_tasks=background_tasks
-    )
-
-    logger.info(f"【导演模式】API层返回结果：{result}")
-    return M.get_msg(result)
 
 
 @chat_router.post("/delete")
