@@ -9,13 +9,13 @@
         <div class="username">{{ userInfo.nickname || '未设置昵称' }}</div>
       </div>
       <div class="menu-items">
-        <div class="menu-item" :class="{ active: !showFriendList && !showGroupList && !showProfile && !showRag }" @click="showFriendList = false; showGroupList = false; showProfile = false; showRag = false">
+        <div class="menu-item" :class="{ active: !showFriendList && !showGroupList && !showProfile && !showRag && !showMemoryPanel }" @click="showFriendList = false; showGroupList = false; showProfile = false; showRag = false; showMemoryPanel = false">
           <el-icon><ChatDotRound /></el-icon>
         </div>
-        <div class="menu-item" :class="{ active: showFriendList }" @click="showFriendList = !showFriendList; showGroupList = false; showProfile = false;">
+        <div class="menu-item" :class="{ active: showFriendList }" @click="showFriendList = !showFriendList; showGroupList = false; showProfile = false; showMemoryPanel = false;">
           <el-icon><User /></el-icon>
         </div>
-        <div class="menu-item" :class="{ active: showGroupList }" @click="showGroupList = !showGroupList; showFriendList = false; showProfile = false;">
+        <div class="menu-item" :class="{ active: showGroupList }" @click="showGroupList = !showGroupList; showFriendList = false; showProfile = false; showMemoryPanel = false;">
           <el-icon><ChatSquare /></el-icon>
         </div>
         <div class="menu-item" :class="{ active: showRag }" @click="toggleRag">
@@ -24,6 +24,9 @@
         <div class="menu-item" :class="{ active: showLlmConfigPanel }" @click="toggleLlmConfigPanel">
           <el-icon><Setting /></el-icon>
         </div>
+        <div class="menu-item" :class="{ active: showMemoryPanel }" @click="toggleMemoryPanel">
+          <el-icon><Opportunity /></el-icon>
+        </div>
         <div class="menu-item" @click="handleLogout">
           <el-icon><SwitchButton /></el-icon>
         </div>
@@ -31,7 +34,7 @@
     </div>
 
     <!-- Chat Area -->
-    <div class="chat-area" :class="{ 'shrink-right': showFriendList || showGroupList || showProfile }">
+    <div class="chat-area" :class="{ 'shrink-right': showFriendList || showGroupList || showProfile || showMemoryPanel }">
       <!-- LLM Config Panel -->
       <LlmConfigPanel
         v-if="showLlmConfigPanel"
@@ -256,6 +259,11 @@
       @edit-llm-friend="handleEditLlmFriend"
       @search="handleFriendSearch"
     />
+    <!-- Model Memory Panel -->
+    <ModelMemoryPanel
+      v-model="showMemoryPanel"
+      :llm-id="currentFriend.role === 1 ? currentFriend.userId || currentFriend.id : null"
+    />
     <!-- Avatar Cropper Dialog -->
     <AvatarCropper v-model:visible="showAvatarCropper" :type="isAvatarCropperForLlm ? 'llm' : 'user'" @success="handleAvatarSuccess" @blob="handleAvatarBlob" />
   </div>
@@ -264,7 +272,7 @@
 <script setup>
 import { ref, reactive, computed, onMounted, nextTick, onUnmounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { ChatDotRound, User, SwitchButton, Select, ChatSquare, Reading, Setting } from '@element-plus/icons-vue';
+import { ChatDotRound, User, SwitchButton, Select, ChatSquare, Reading, Setting, Opportunity } from '@element-plus/icons-vue';
 import { ElMessage } from 'element-plus';
 import { encodeProtocol, decodeProtocol } from '@/utils/protocol'; // 引入协议编解码器
 import snowflake from '@/utils/snowflake'; // 引入雪花ID生成器
@@ -279,6 +287,7 @@ import ChatInput from '@/components/Chat/ChatInput.vue';
 import MessageList from '@/components/Chat/MessageList.vue';
 import FriendList from '@/components/Chat/FriendList.vue';
 import GroupList from '@/components/Chat/GroupList.vue';
+import ModelMemoryPanel from '@/components/Chat/ModelMemoryPanel.vue';
 import LlmConfigPanel from '@/components/LlmConfig/LlmConfigPanel.vue';
 
 const defaultUserAvatar = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png';
@@ -342,6 +351,7 @@ const profileInfo = ref({
 const showCreateGroupDialog = ref(false);
 const showAddLlmFriendDialog = ref(false);
 const showLlmConfigPanel = ref(false);
+const showMemoryPanel = ref(false);
 const preselectedLlmFriendId = ref(null);
 const pendingLlmAvatarUrl = ref(null);
 const showRag = ref(false);
@@ -457,6 +467,7 @@ const toggleRag = () => {
   if (showRag.value) {
     // 开启 RAG 时，不强制关闭侧边栏，但需要重置当前选中的聊天
     showLlmConfigPanel.value = false;
+    showMemoryPanel.value = false;
     currentFriend.value = {};
     currentGroup.value = {};
     // 开启 RAG 时拉取文件列表
@@ -474,6 +485,18 @@ const toggleLlmConfigPanel = () => {
     showGroupList.value = false;
     showProfile.value = false;
     showRag.value = false;
+    showMemoryPanel.value = false;
+  }
+};
+
+const toggleMemoryPanel = () => {
+  showMemoryPanel.value = !showMemoryPanel.value;
+  if (showMemoryPanel.value) {
+    // Close other panels
+    showLlmConfigPanel.value = false;
+    showFriendList.value = false;
+    showGroupList.value = false;
+    showProfile.value = false;
   }
 };
 

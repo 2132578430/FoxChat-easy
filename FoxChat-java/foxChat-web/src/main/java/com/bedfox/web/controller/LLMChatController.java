@@ -5,12 +5,14 @@ import com.bedfox.pojo.dto.LlmFriendUpdateDto;
 import com.bedfox.pojo.dto.LlmMsgHistoryReqDto;
 import com.bedfox.service.service.LlmChatMsgService;
 import com.bedfox.service.service.LlmChatService;
+import com.bedfox.service.service.LlmMemoryService;
 import com.bedfox.service.service.LlmUserService;
 import com.bedfox.service.service.LlmConfigService;
 import com.bedfox.common.util.LoginUserHolder;
 import com.bedfox.common.util.R;
 import com.bedfox.common.constant.ResultStatusConstant;
 import com.bedfox.pojo.vo.LlmChatMsgVo;
+import com.bedfox.pojo.vo.LlmMemoryVo;
 import com.bedfox.pojo.vo.LlmMsgHistoryVo;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +43,9 @@ public class LLMChatController {
     @Resource
     LlmConfigService llmConfigService;
 
+    @Resource
+    LlmMemoryService llmMemoryService;
+
     @PostMapping("/chat")
     public R<LlmChatMsgVo> llmChat(@RequestBody Map<String, Object> requestMap) {
         String llmId = (String) requestMap.get("llmId");
@@ -56,6 +61,15 @@ public class LLMChatController {
 
         LlmChatMsgVo chatMsgVo = llmChatService.llmChat(llmId, msgContent, userId);
         return R.ok(chatMsgVo);
+    }
+
+    /**
+     * 获取模型记忆面板数据（角色卡+锚点+画像+记忆银行）
+     */
+    @GetMapping("/{llmId}/memory")
+    public R<LlmMemoryVo> getMemory(@PathVariable String llmId) {
+        LlmMemoryVo vo = llmMemoryService.getMemory(llmId);
+        return R.ok(vo);
     }
 
     @PostMapping("/add")

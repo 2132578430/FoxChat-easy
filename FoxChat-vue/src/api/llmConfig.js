@@ -37,3 +37,8 @@ export function testConnection(config) {
 export function validateConfig(llmId) {
   return request.get(`/llm/config/validate/${llmId}`);
 }
+
+// 获取模型记忆面板数据
+export function getModelMemory(llmId) {
+  return request.get(`/llm/${llmId}/memory`);
+}
