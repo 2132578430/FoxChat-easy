@@ -168,8 +168,8 @@ public class LlmChatServiceImpl implements LlmChatService {
                         fallbackToRest(llmId, msgContent, userId, aiPlaceholder, emitter);
                     }
                 );
-            } catch (Exception e) {
-                log.error("[SSE] gRPC 异常，降级 REST: {}", e.getMessage());
+            } catch (Throwable e) {
+                log.error("[SSE] gRPC 异常({})，降级 REST: {}", e.getClass().getName(), e.getMessage(), e);
                 fallbackToRest(llmId, msgContent, userId, aiPlaceholder, emitter);
             }
         });
