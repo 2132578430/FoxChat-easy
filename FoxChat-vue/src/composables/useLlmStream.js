@@ -86,7 +86,7 @@ export function useLlmStream() {
   let abortController = null;
 
   async function sendStreamMessage(llmId, msgContent, callbacks = {}) {
-    const { onToken, onEmotion, onDone, onError } = callbacks;
+    const { onToken, onBlocks, onEmotion, onDone, onError } = callbacks;
 
     isStreaming.value = true;
     abortController = new AbortController();
@@ -151,8 +151,19 @@ export function useLlmStream() {
 
     function handleEvent(event, data) {
       switch (event) {
+        case 'blocks': {
+          // 新格式: [{"type":"action","content":"红光持续"},{"type":"text","content":"你好"}]
+          try {
+            const blocks = JSON.parse(data);
+            onBlocks?.(blocks);
+          } catch {
+            // 解析失败，回退到旧格式
+            onToken?.(data, 'text');
+          }
+          break;
+        }
         case 'token': {
-          // 格式: "token_text|block_type"
+          // 旧格式: "token_text|block_type"（兼容）
           const sepIdx = data.lastIndexOf('|');
           const token = sepIdx >= 0 ? data.slice(0, sepIdx) : data;
           const blockType = sepIdx >= 0 ? data.slice(sepIdx + 1) : 'text';
@@ -168,9 +179,23 @@ export function useLlmStream() {
           fullText = data;
           onToken?.(data, 'text');
           // fall through to done
-        case 'done':
-          onDone?.(fullText);
+        case 'done': {
+          // 新格式: {"blocks":[...],"emotion":"..."}
+          try {
+            const result = JSON.parse(data);
+            if (result.blocks) {
+              onBlocks?.(result.blocks);
+            }
+            if (result.emotion) {
+              onEmotion?.(result.emotion);
+            }
+            onDone?.(result);
+          } catch {
+            // 旧格式: 纯文本
+            onDone?.(data || fullText);
+          }
           break;
+        }
       }
     }
   }

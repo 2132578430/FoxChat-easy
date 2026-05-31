@@ -1781,22 +1781,18 @@ const sendMessage = async () => {
     let hasError = false;
 
     await sendStreamMessage(llmId, msgContent, {
-      onToken: (token, blockType) => {
+      onBlocks: (blocks) => {
         if (currentFriend.value && (currentFriend.value.userId || currentFriend.value.id) !== requestFriendId) return;
-        pushBubble(); // 第一个 token 才推气泡
+        pushBubble(); // 第一个 block 才推气泡
 
-        if (blockType === 'action') {
-          replyBlocks.push({ type: 'action', action: token, text: null });
-          currentBlockType = 'action';
-        } else {
-          const lastBlock = replyBlocks[replyBlocks.length - 1];
-          if (!lastBlock || lastBlock.type !== 'text') {
-            replyBlocks.push({ type: 'text', text: token });
+        // 将后端 blocks [{type, content}] 转为前端格式 [{type, action/text, text}]
+        replyBlocks = blocks.map(b => {
+          if (b.type === 'action') {
+            return { type: 'action', action: b.content, text: null };
           } else {
-            lastBlock.text += token;
+            return { type: 'text', text: b.content };
           }
-          currentBlockType = 'text';
-        }
+        });
         const idx = messageList.value.findIndex(m => m.id === aiPlaceholderId);
         if (idx >= 0) {
           messageList.value[idx].blocks = [...replyBlocks];
