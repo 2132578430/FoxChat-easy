@@ -5,7 +5,6 @@ package foxchat.ai;
 option java_package = "com.bedfox.proto.ai";
 option java_multiple_files = false;
 option java_outer_classname = "AiChatProto";
-option python_package = "foxchat.proto.ai";
 
 
 // ═══════════════════════════════════════════════════════

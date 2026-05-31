@@ -19,7 +19,7 @@ from loguru import logger
 
 # proto 生成的 stub —— 需先运行 protoc 编译
 try:
-    from app.grpc.foxchat.proto.ai import ai_chat_pb2, ai_chat_pb2_grpc
+    from app.grpc.foxchat.ai import ai_chat_pb2, ai_chat_pb2_grpc
 except ImportError:
     # 提供占位，避免 import 时崩溃（实际运行前必须生成）
     ai_chat_pb2 = None
