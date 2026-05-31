@@ -1414,9 +1414,6 @@ const selectFriend = async (friend) => {
             // 解析失败，保持原有 content 格式
           }
 
-          if (blocks && blocks.length > 0) {
-            console.log('[HISTORY DEBUG] msg.id=' + msg.id + ' blocks=' + JSON.stringify(blocks).slice(0, 200));
-          }
           return {
             id: msg.id,
             content: content,

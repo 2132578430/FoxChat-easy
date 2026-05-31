@@ -90,7 +90,7 @@
 
             <!-- 普通文本消息 -->
             <div v-if="!msg.blocks" class="msg-bubble">
-              <div class="bubble-content">{{ msg.content || msg.msg || '(empty)' }}</div>
+              <div class="bubble-content">{{ msg.content || msg.msg }}</div>
             </div>
 
             <!-- 结构化消息块（AI回复） -->
