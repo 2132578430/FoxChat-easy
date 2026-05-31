@@ -115,14 +115,14 @@ async def stream_llm_response(
         behavior_guide_text = f"【行为指南】\n{parsed.behavior_guide_text.strip()}"
 
     talkativeness = parsed.talkativeness
-    if talkativeness <= 0.3:
-        talkativeness_guidance = "【输出长度指导】当前角色话少寡言，每次只回应必要内容，用最少的词表达。不要展开，不要多说一句废话。"
-    elif talkativeness <= 0.5:
-        talkativeness_guidance = "【输出长度指导】当前角色话量适中，像日常聊天一样自然回应，不刻意压缩也不刻意拉长。"
-    elif talkativeness <= 0.75:
-        talkativeness_guidance = "【输出长度指导】当前角色较为健谈，展开你的想法，用动作与对话交替表达，构建生动的互动。禁止只回一句话就结束，至少要有2-3轮对话内容的量。"
+    if talkativeness <= 0.25:
+        talkativeness_guidance = "【输出长度指导】当前角色极度寡言，每次只回应最必要的词，几乎不展开。越短越好。"
+    elif talkativeness <= 0.55:
+        talkativeness_guidance = "【输出长度指导】当前角色话量适中，像日常聊天一样自然回应，可以适当展开但不要过度。"
+    elif talkativeness <= 0.85:
+        talkativeness_guidance = "【输出长度指导】当前角色健谈，欢迎多段展开，用动作与对话交替构建生动互动。多说话，不要简短回应，至少3-4轮对话内容的量。"
     else:
-        talkativeness_guidance = "【输出长度指导】当前角色非常健谈，尽情表达，多段展开。用丰富的动作和对话交替构建沉浸式互动体验。禁止简短回应，每次回复要像真正健谈的人一样说很多。"
+        talkativeness_guidance = "【输出长度指导】当前角色话痨，尽情表达，连续说很多很多话。用丰富的动作和对话交替构建沉浸式互动体验。禁止简短回应，每次回复要像真正话痨的人一样长篇大论。"
 
     payload = build_prompt_payload(
         static_anchors=static_anchors,
