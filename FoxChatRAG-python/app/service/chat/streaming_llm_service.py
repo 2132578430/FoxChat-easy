@@ -36,10 +36,11 @@ from app.service.chat.history_event_retrieval_service import (
     retrieve_history_events_v2,
     format_history_events,
 )
-from app.service.chat.emotion_classifier import classify_and_update_emotion
+from app.service.chat.emotion_classifier import classify_emotion
 from app.service.llm_config_service import get_llm_configs_batch
 from app.service.chat.strategy.base_strategy import format_model_name
 from app.service.chat.common import build_recent_msg_key
+from app.service.chat.types import ParsedMemories
 from app.util.template_util import escape_template
 
 
@@ -64,13 +65,25 @@ async def stream_llm_response(
     clean_expired_unfinished_items(user_id, llm_id, current_round)
 
     recent_msg_key = build_recent_msg_key(user_id, llm_id)
-    memories = fetch_all_memories(user_id, llm_id, recent_msg_key)
+    memories = await fetch_all_memories(user_id, llm_id)
 
-    parsed = parse_character_card(memories.init_memory)
-    parsed = parse_core_anchor(parsed)
-    parsed = parse_user_profile(memories, parsed)
-    parsed = parse_memory_bank(memories, parsed)
-    parsed = parse_current_state(memories, parsed)
+    character_card_examples, character_card_detail, behavior_guide_text, talkativeness = parse_character_card(memories.character_card_json)
+    role_declaration, core_anchor_text = parse_core_anchor(memories.core_anchor_json)
+    user_profile_summary = parse_user_profile(memories.user_profile_json)
+    memory_bank_summary = parse_memory_bank(memories.memory_bank_json)
+    current_state_text = parse_current_state(memories.current_state_json, current_round)
+
+    parsed = ParsedMemories(
+        character_card_examples=character_card_examples,
+        character_card_detail=character_card_detail,
+        behavior_guide_text=behavior_guide_text,
+        talkativeness=talkativeness,
+        role_declaration=role_declaration,
+        core_anchor_text=core_anchor_text,
+        user_profile_summary=user_profile_summary,
+        memory_bank_summary=memory_bank_summary,
+        current_state=current_state_text,
+    )
 
     # ── 2. 意图分类 ──
     intent_result = classify_intent(msg_content)
@@ -149,7 +162,7 @@ async def stream_llm_response(
         talkativeness_guidance=payload.talkativeness_guidance,
     )
 
-    history_msg = build_history_message(memories.recent_msg, recent_msg_key)
+    history_msg = build_history_message(memories.recent_msg)
     messages = [{"role": "system", "content": system_prompt}]
     for msg in history_msg:
         msg_type = msg.type if hasattr(msg, 'type') else "user"
@@ -198,10 +211,9 @@ async def stream_llm_response(
             logger.warning(f"[StreamLLM] 保存消息失败（非致命）: {e}")
 
         try:
-            emotion = await classify_and_update_emotion(
-                user_id=user_id,
-                llm_id=llm_id,
+            emotion, certainty = await classify_emotion(
                 model_reply=full_response,
+                llm_id=llm_id,
             )
             # 把 emotion 存起来，gRPC 层会在 is_final 包里带出去
             stream_llm_response._last_emotion = emotion
