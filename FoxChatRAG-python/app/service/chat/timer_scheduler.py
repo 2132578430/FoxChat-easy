@@ -65,7 +65,8 @@ def reset_timer(user_id: str, llm_id: str) -> None:
 
 def get_active_sessions() -> List[Tuple[str, str]]:
     """
-    Discover all active conversations by scanning Redis keys.
+    Discover all active conversations by scanning Redis keys using SCAN (non-blocking).
+    KEYS command blocks Redis for O(N) — using SCAN instead for production safety.
 
     Pattern: chat:memory:*:recent_msg
 
@@ -73,12 +74,16 @@ def get_active_sessions() -> List[Tuple[str, str]]:
         List of (user_id, llm_id) tuples for active sessions
     """
     pattern = "chat:memory:*:recent_msg"
-    keys = redis_client.keys(pattern)
-
     sessions = []
-    for key in keys:
+
+    for key in redis_client.scan_iter(match=pattern):
+        try:
+            key_str = key.decode("utf-8") if isinstance(key, bytes) else key
+        except (UnicodeDecodeError, AttributeError):
+            continue
+
         # Parse key format: chat:memory:{user_id}:{llm_id}:recent_msg
-        parts = key.split(":")
+        parts = key_str.split(":")
         if len(parts) >= 4:
             user_id = parts[2]
             llm_id = parts[3]

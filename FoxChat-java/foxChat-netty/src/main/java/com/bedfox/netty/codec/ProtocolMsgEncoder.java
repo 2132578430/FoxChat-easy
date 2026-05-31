@@ -46,7 +46,7 @@ public class ProtocolMsgEncoder extends MessageToMessageEncoder<ChatProtocol.Mes
             buffer = null;
         } finally {
             if (buffer != null) {
-                buffer = null;
+                buffer.release();
             }
         }
     }

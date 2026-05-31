@@ -28,18 +28,13 @@ public class GroupChannelRelation {
         return groupManager.get(groupId);
     }
     /**
-     * 向管理器中放入用户Channel
+     * 向管理器中放入用户Channel（原子操作，避免多线程并发创建重复 ChannelGroup）
      */
     public static void addUser(String groupId, Channel userChannel) {
-        ChannelGroup group = groupManager.get(groupId);
-
-        // 没有group就创建出来
-        if (group == null) {
-            group = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-
-            groupManager.put(groupId, group);
-        }
-
+        ChannelGroup group = groupManager.computeIfAbsent(
+            groupId,
+            k -> new DefaultChannelGroup(GlobalEventExecutor.INSTANCE)
+        );
         group.add(userChannel);
     }
 
