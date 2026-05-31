@@ -20,6 +20,21 @@ jobs:
           fi
         working-directory: ${{ github.workspace }}
 
+      - name: 🔧 编译 Proto（gRPC stub）
+        run: |
+          pip install grpcio-tools 2>/dev/null || pip3 install grpcio-tools
+          cd FoxChatRAG-python
+          python -m grpc_tools.protoc \
+            -Iproto \
+            --python_out=app/grpc \
+            --grpc_python_out=app/grpc \
+            proto/ai_chat.proto
+          # 修复 grpc_tools 的 import 路径 bug
+          sed -i 's/import ai_chat_pb2/import app.grpc.foxchat.proto.ai.ai_chat_pb2 as ai_chat_pb2/' \
+            app/grpc/foxchat/proto/ai/ai_chat_pb2_grpc.py
+          echo "✅ Proto 编译完成"
+        working-directory: ${{ github.workspace }}
+
       - name: 📦 构建基础镜像（依赖层）
         run: |
           echo "构建基础镜像（依赖未变则跳过）..."

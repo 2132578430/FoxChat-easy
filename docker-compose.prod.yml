@@ -42,6 +42,8 @@ services:
       - MINIO_ACCESS_KEY=${MINIO_ROOT_USER:-minioadmin}
       - MINIO_SECRET_KEY=${MINIO_ROOT_PASSWORD:-minioadmin}
       - RAG_SERVICE_URL=http://python-app:8000
+      - GRPC_PYTHON_HOST=python-app
+      - GRPC_PYTHON_PORT=50051
       - SPRING_PROFILES_ACTIVE=prod
       - FOX_JWT_SECRET=${FOX_JWT_SECRET}
       - SMTP_USERNAME=${SMTP_USERNAME:-}
@@ -62,7 +64,9 @@ services:
       - "host.docker.internal:host-gateway"
     ports:
       - "8000:8000"
+      - "50051:50051"
     environment:
+      - GRPC_PORT=50051
       - MYSQL__HOST=host.docker.internal
       - MYSQL__PORT=13306
       - MYSQL__USER=root
