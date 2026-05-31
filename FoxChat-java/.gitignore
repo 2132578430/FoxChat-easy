@@ -57,3 +57,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Protobuf generated stubs ###
+**/proto/ai/*.java

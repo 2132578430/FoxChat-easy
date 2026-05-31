@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 dist_electron/
+
+# Protobuf generated stubs
+src/proto/*.js
