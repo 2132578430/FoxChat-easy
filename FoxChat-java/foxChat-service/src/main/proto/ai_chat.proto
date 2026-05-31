@@ -1,0 +1,79 @@
+syntax = "proto3";
+
+package foxchat.ai;
+
+option java_package = "com.bedfox.proto.ai";
+option java_multiple_files = false;
+option java_outer_classname = "AiChatProto";
+option python_package = "foxchat.proto.ai";
+
+
+// ═══════════════════════════════════════════════════════
+// AI 聊天流式服务
+// ═══════════════════════════════════════════════════════
+
+service AIChatService {
+  // 核心：服务端流式 RPC
+  // Java 发一个 ChatRequest，Python 逐个 StreamToken 推回来
+  rpc Chat(ChatRequest) returns (stream ChatResponse);
+
+  // 非流式：删除记忆（兼容旧接口）
+  rpc DeleteMemory(DeleteRequest) returns (DeleteResponse);
+}
+
+
+// ═══════════════════════════════════════════════════════
+// Chat 流式
+// ═══════════════════════════════════════════════════════
+
+message ChatRequest {
+  string user_id = 1;
+  string llm_id = 2;
+  string msg_content = 3;
+}
+
+message ChatResponse {
+  // 文本内容：
+  //   text block → 单个 token（如 "今"）
+  //   action block → 完整动作文本（如 "站起身来"）
+  string content = 1;
+
+  // 是否为这条消息的最后一个包
+  bool is_final = 2;
+
+  // block_type:
+  //   "text"   - 对话文字
+  //   "action" - 动作描写
+  string block_type = 3;
+
+  // 是否为一个新块的第一个 token（前端据此判断渲染分隔）
+  bool is_block_start = 4;
+
+  // 是否为一个块的最后一个 token
+  bool is_block_end = 5;
+
+  // 情感标签（仅 is_final=true 时附带）
+  string emotion = 6;
+
+  // 错误信息
+  int32 error_code = 7;
+  string error_msg = 8;
+
+  // Token 序号（用于断流恢复定位）
+  int32 sequence = 9;
+}
+
+
+// ═══════════════════════════════════════════════════════
+// 记忆管理
+// ═══════════════════════════════════════════════════════
+
+message DeleteRequest {
+  string user_id = 1;
+  string llm_id = 2;
+}
+
+message DeleteResponse {
+  bool success = 1;
+  string message = 2;
+}

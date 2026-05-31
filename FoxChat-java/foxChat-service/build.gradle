@@ -15,4 +15,10 @@ dependencies {
 
     implementation libs.commons.codec
     implementation libs.commons.lang3
+
+    // gRPC
+    implementation libs.grpc.netty.shaded
+    implementation libs.grpc.protobuf
+    implementation libs.grpc.stub
+    implementation libs.javax.annotation.api
 }

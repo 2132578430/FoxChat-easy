@@ -23,6 +23,15 @@ async def lifespan(app: FastAPI):
     asyncio.create_task(timer_scheduler())
     logger.info("[Timer Scheduler] Timer summary scheduler started")
 
+    # 启动 gRPC 流式服务（端口 50051）
+    grpc_port = int(os.getenv("GRPC_PORT", "50051"))
+    try:
+        from app.grpc.ai_chat_server import start_grpc_server
+        grpc_task = asyncio.create_task(start_grpc_server(grpc_port))
+        logger.info(f"[gRPC] 启动中: 0.0.0.0:{grpc_port}")
+    except ImportError as e:
+        logger.warning(f"[gRPC] 跳过启动（未生成 stub 或缺少 grpcio）: {e}")
+
     yield
 
     # 关闭rabbitmq监听后台

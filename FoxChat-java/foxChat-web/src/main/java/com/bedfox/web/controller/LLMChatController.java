@@ -18,6 +18,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 import java.util.Map;
@@ -61,6 +62,38 @@ public class LLMChatController {
 
         LlmChatMsgVo chatMsgVo = llmChatService.llmChat(llmId, msgContent, userId);
         return R.ok(chatMsgVo);
+    }
+
+    /**
+     * 流式聊天（SSE）
+     * 前端通过 EventSource 或 fetch + ReadableStream 连接此端点，
+     * 接收逐 token 的 AI 回复。
+     *
+     * SSE 事件：
+     *   event: token   data: <token>|<block_type>   -- 增量文本
+     *   event: emotion data: <emotion_label>         -- 情感标签
+     *   event: done    data: ""                      -- 流结束
+     *   event: full    data: <full_response>         -- 降级时整段推送
+     */
+    @PostMapping("/stream")
+    public SseEmitter llmChatStream(@RequestBody Map<String, Object> requestMap) {
+        String llmId = (String) requestMap.get("llmId");
+        String msgContent = (String) requestMap.get("msgContent");
+        String userId = LoginUserHolder.getUserId();
+
+        // 验证配置完整性
+        boolean isValid = llmConfigService.validateConfigCount(llmId);
+        if (!isValid) {
+            log.warn("【流式请求】llmId={}, 配置不完整", llmId);
+            SseEmitter errorEmitter = new SseEmitter();
+            errorEmitter.completeWithError(
+                new RuntimeException("LLM配置不完整，请前往设置页面配置")
+            );
+            return errorEmitter;
+        }
+
+        log.info("[SSE Stream] llmId={}, msg={}", llmId, msgContent.substring(0, Math.min(30, msgContent.length())));
+        return llmChatService.llmChatStream(llmId, msgContent, userId);
     }
 
     /**

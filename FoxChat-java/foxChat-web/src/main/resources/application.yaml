@@ -70,6 +70,11 @@ minio:
 remote:
   python-url: ${RAG_SERVICE_URL:http://localhost:8000}
 
+# gRPC 流式通信
+grpc:
+  python-host: ${GRPC_PYTHON_HOST:localhost}
+  python-port: ${GRPC_PYTHON_PORT:50051}
+
 Executor:
   corePoolSize: 10
   maxPoolSize: 100

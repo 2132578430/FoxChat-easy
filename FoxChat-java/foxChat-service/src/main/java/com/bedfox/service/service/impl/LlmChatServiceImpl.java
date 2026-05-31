@@ -9,13 +9,17 @@ import com.bedfox.pojo.domain.LlmChatMsg;
 import com.bedfox.pojo.to.ChatMsgTo;
 import com.bedfox.pojo.vo.LlmChatMsgVo;
 import com.bedfox.service.remote.ChatClient;
+import com.bedfox.service.grpc.GrpcChatClient;
 import com.bedfox.service.service.LlmChatMsgService;
 import com.bedfox.service.service.LlmChatService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author 21325
@@ -28,6 +32,9 @@ public class LlmChatServiceImpl implements LlmChatService {
 
     @Resource
     ChatClient chatClient;
+
+    @Resource
+    GrpcChatClient grpcChatClient;
 
     @Resource
     LlmChatMsgService llmChatMsgService;
@@ -84,6 +91,113 @@ public class LlmChatServiceImpl implements LlmChatService {
 
             // 7. 抛出异常让Controller返回错误给前端
             throw new BusinessException(ResultStatusConstant.LLM_FAILED);
+        }
+    }
+
+    /**
+     * 流式聊天（SSE）
+     * 内部使用 gRPC streaming 调用 Python，逐 token 推给前端。
+     * gRPC 失败时自动降级到 Feign REST 非流式调用。
+     */
+    @Override
+    public SseEmitter llmChatStream(String llmId, String msgContent, String userId) {
+        SseEmitter emitter = new SseEmitter(120_000L); // 120秒超时
+
+        // 1. 保存用户消息
+        LlmChatMsg llmChatMsgHuman = buildLlmChatMsg(msgContent, llmId, userId, true, 0);
+        llmChatMsgService.save(llmChatMsgHuman);
+
+        // 2. 保存AI占位消息
+        LlmChatMsg aiPlaceholder = buildLlmChatMsg("", llmId, userId, false, 3);
+        llmChatMsgService.save(aiPlaceholder);
+
+        StringBuilder fullResponse = new StringBuilder();
+
+        // 3. 尝试 gRPC 流式调用
+        CompletableFuture.runAsync(() -> {
+            try {
+                grpcChatClient.streamChat(
+                    userId, llmId, msgContent,
+
+                    // onToken: 每个 ChatResponse → SSE event
+                    response -> {
+                        try {
+                            if (response.getIsFinal()) {
+                                if (!response.getEmotion().isEmpty()) {
+                                    emitter.send(SseEmitter.event()
+                                        .name("emotion")
+                                        .data(response.getEmotion()));
+                                }
+                                // 更新并完成
+                                aiPlaceholder.setMsgContent(fullResponse.toString());
+                                aiPlaceholder.setStatus(1);
+                                llmChatMsgService.updateById(aiPlaceholder);
+                                emitter.send(SseEmitter.event().name("done").data(""));
+                                emitter.complete();
+                            } else {
+                                // 流式 token
+                                String content = response.getContent();
+                                if (content != null && !content.isEmpty()) {
+                                    fullResponse.append(content);
+                                    emitter.send(SseEmitter.event()
+                                        .name("token")
+                                        .data(content + "|" + response.getBlockType()));
+                                }
+                            }
+                        } catch (IOException e) {
+                            log.error("[SSE] 发送失败: {}", e.getMessage());
+                        }
+                    },
+
+                    // onComplete
+                    () -> log.debug("[SSE] 流完成"),
+
+                    // onError: 降级到 Feign REST
+                    error -> {
+                        log.warn("[SSE] gRPC 失败，降级 REST: {}", error.getMessage());
+                        fallbackToRest(llmId, msgContent, userId, aiPlaceholder, emitter);
+                    }
+                );
+            } catch (Exception e) {
+                log.error("[SSE] gRPC 异常，降级 REST: {}", e.getMessage());
+                fallbackToRest(llmId, msgContent, userId, aiPlaceholder, emitter);
+            }
+        });
+
+        return emitter;
+    }
+
+    /**
+     * 降级：使用旧 Feign REST 非流式调用
+     */
+    private void fallbackToRest(String llmId, String msgContent, String userId,
+                                 LlmChatMsg aiPlaceholder, SseEmitter emitter) {
+        try {
+            ChatMsgTo chatMsg = new ChatMsgTo();
+            chatMsg.setLlmId(llmId);
+            chatMsg.setMsgContent(msgContent);
+            chatMsg.setUserId(userId);
+
+            String resultJson = chatClient.chatMsg(chatMsg);
+            resultJson = resultJson.replaceAll("</?[a-zA-Z_]+>", "");
+
+            M<String> msg = JSON.parseObject(resultJson, new TypeReference<>() {});
+            String data = msg.getData();
+
+            aiPlaceholder.setMsgContent(data);
+            aiPlaceholder.setStatus(1);
+            llmChatMsgService.updateById(aiPlaceholder);
+
+            // SSE 整段推
+            emitter.send(SseEmitter.event().name("full").data(data));
+            emitter.send(SseEmitter.event().name("done").data(""));
+            emitter.complete();
+        } catch (Exception ex) {
+            log.error("[SSE] REST 降级也失败: {}", ex.getMessage());
+            aiPlaceholder.setStatus(4);
+            aiPlaceholder.setMsgContent("回复失败，请重试");
+            llmChatMsgService.updateById(aiPlaceholder);
+            emitter.completeWithError(ex);
         }
     }
 

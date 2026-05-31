@@ -13,6 +13,7 @@ import lombok.Getter;
  *  05 - 拉取好友
  *  06 - 好友上线
  *  07 - 用户离线
+ *  08 - 流式AI回复Token
  * 12 - netty群聊服务
  *  01 - 群聊信息发送
  */
@@ -27,6 +28,7 @@ public enum MsgTypeConstant {
     PULL_FRIEND(1105, "拉取好友"),
     FRIEND_ONLINE(1106,"好友上线"),
     USER_LOGOUT(1107, "用户离线"),
+    STREAM_TOKEN(1108, "流式AI回复Token"),
 
     // 群聊信息
     GROUP_CHAT(1201, "群聊信息发送");

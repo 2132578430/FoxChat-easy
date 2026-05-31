@@ -20,3 +20,5 @@ pydantic-settings
 langchain-experimental
 langchain-classic
 dashscope
+grpcio>=1.68.0
+grpcio-tools>=1.68.0

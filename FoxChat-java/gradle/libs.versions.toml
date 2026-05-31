@@ -54,3 +54,9 @@ minio = { module = "io.minio:minio", version.ref = "minio" }
 # Netty & Protocol
 netty-all = { module = "io.netty:netty-all", version.ref = "netty" }
 protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf-java" }
+
+# gRPC
+grpc-netty-shaded = { module = "io.grpc:grpc-netty-shaded", version = "1.68.1" }
+grpc-protobuf = { module = "io.grpc:grpc-protobuf", version = "1.68.1" }
+grpc-stub = { module = "io.grpc:grpc-stub", version = "1.68.1" }
+javax-annotation-api = { module = "javax.annotation:javax.annotation-api", version = "1.3.2" }
