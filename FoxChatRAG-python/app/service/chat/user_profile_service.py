@@ -140,7 +140,7 @@ async def _update_user_profile(current_profile: Dict, recent_msg_list: List[str]
 
         result = await strategy.invoke(messages, config_map)
 
-        updated_profile = json.loads(result.content)
+        updated_profile = json.loads(result)
 
         if not _validate_profile_structure(updated_profile):
             logger.warning("user_profile 更新后的结构不完整，保留原数据")
