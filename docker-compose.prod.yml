@@ -87,6 +87,8 @@ services:
       - MODEL__DEFAULT_LLM=${MODEL__DEFAULT_LLM:-astron_model}
       - MODEL__DEFAULT_JSON_LLM=${MODEL__DEFAULT_JSON_LLM:-astron_json_model}
       - MODEL__DEFAULT_EMBEDDING=dashscope
+    volumes:
+      - chroma-onnx-cache:/root/.cache/chroma/onnx_models
     networks:
       - chat
     deploy:
@@ -111,6 +113,9 @@ services:
       resources:
         limits:
           memory: 32M
+
+volumes:
+  chroma-onnx-cache:
 
 networks:
   chat:
