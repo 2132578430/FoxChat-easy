@@ -112,7 +112,10 @@ public class LlmChatServiceImpl implements LlmChatService {
         LlmChatMsg aiPlaceholder = buildLlmChatMsg("", llmId, userId, false, 3);
         llmChatMsgService.save(aiPlaceholder);
 
-        StringBuilder fullResponse = new StringBuilder();
+        // Block 增量构建器：用 is_block_start / is_block_end 拼装结构化 blocks
+        java.util.List<java.util.Map<String, String>> blocks = new java.util.ArrayList<>();
+        StringBuilder currentBlockContent = new StringBuilder();
+        String[] currentBlockType = {null};  // 数组绕过 lambda effectively-final 限制
 
         // 3. 尝试 gRPC 流式调用
         // [DIAG] 检查 ForkJoinPool 并行度 + 当前线程
@@ -129,30 +132,45 @@ public class LlmChatServiceImpl implements LlmChatService {
                 grpcChatClient.streamChat(
                     userId, llmId, msgContent,
 
-                    // onToken: 每个 ChatResponse → SSE event
+                    // onToken: 每个 ChatResponse → 增量构建 blocks → SSE event
                     response -> {
                         try {
                             if (response.getIsFinal()) {
-                                if (!response.getEmotion().isEmpty()) {
-                                    emitter.send(SseEmitter.event()
-                                        .name("emotion")
-                                        .data(response.getEmotion()));
-                                }
-                                // 更新并完成
-                                aiPlaceholder.setMsgContent(fullResponse.toString());
+                                // 收尾当前 block
+                                flushCurrentBlock(blocks, currentBlockContent, currentBlockType);
+
+                                // 构建最终 JSON：{"blocks":[...],"emotion":"..."}
+                                java.util.Map<String, Object> result = new java.util.LinkedHashMap<>();
+                                result.put("blocks", blocks);
+                                result.put("emotion", response.getEmotion().isEmpty() ? "neutral" : response.getEmotion());
+                                String resultJson = JSON.toJSONString(result);
+
+                                // 存入 MySQL（与 REST 路径格式一致）
+                                aiPlaceholder.setMsgContent(resultJson);
                                 aiPlaceholder.setStatus(1);
                                 llmChatMsgService.updateById(aiPlaceholder);
-                                emitter.send(SseEmitter.event().name("done").data(""));
+
+                                // 通知前端
+                                emitter.send(SseEmitter.event().name("done").data(resultJson));
                                 emitter.complete();
                             } else {
-                                // 流式 token
+                                // 流式 token — 增量构建 block
+                                if (response.getIsBlockStart()) {
+                                    flushCurrentBlock(blocks, currentBlockContent, currentBlockType);
+                                    currentBlockType[0] = response.getBlockType();
+                                }
+
                                 String content = response.getContent();
                                 if (content != null && !content.isEmpty()) {
-                                    fullResponse.append(content);
-                                    emitter.send(SseEmitter.event()
-                                        .name("token")
-                                        .data(content + "|" + response.getBlockType()));
+                                    currentBlockContent.append(content);
                                 }
+
+                                // 实时推送当前 blocks 状态给前端
+                                java.util.List<java.util.Map<String, String>> snapshot = buildBlockSnapshot(
+                                    blocks, currentBlockContent, currentBlockType);
+                                emitter.send(SseEmitter.event()
+                                    .name("blocks")
+                                    .data(JSON.toJSONString(snapshot)));
                             }
                         } catch (IOException e) {
                             log.error("[SSE] 发送失败: {}", e.getMessage());
@@ -189,8 +207,7 @@ public class LlmChatServiceImpl implements LlmChatService {
             chatMsg.setUserId(userId);
 
             String resultJson = chatClient.chatMsg(chatMsg);
-            resultJson = resultJson.replaceAll("</?[a-zA-Z_]+>", "");
-
+            // REST 路径返回的是结构化 JSON（含 blocks + emotion），不需要 strip XML 标签
             M<String> msg = JSON.parseObject(resultJson, new TypeReference<>() {});
             String data = msg.getData();
 
@@ -220,5 +237,40 @@ public class LlmChatServiceImpl implements LlmChatService {
         chatMsg.setStatus(status);
         chatMsg.setCreateTime(LocalDateTime.now());
         return chatMsg;
+    }
+
+    /**
+     * 将当前正在构建的 block 收入 blocks 列表并清空 buffer
+     */
+    private static void flushCurrentBlock(
+        java.util.List<java.util.Map<String, String>> blocks,
+        StringBuilder currentBlockContent,
+        String[] currentBlockType
+    ) {
+        if (currentBlockType[0] != null && currentBlockContent.length() > 0) {
+            java.util.Map<String, String> block = new java.util.LinkedHashMap<>();
+            block.put("type", currentBlockType[0]);
+            block.put("content", currentBlockContent.toString());
+            blocks.add(block);
+            currentBlockContent.setLength(0);
+        }
+    }
+
+    /**
+     * 构建当前 blocks 快照（含尚未 flush 的 current block）
+     */
+    private static java.util.List<java.util.Map<String, String>> buildBlockSnapshot(
+        java.util.List<java.util.Map<String, String>> blocks,
+        StringBuilder currentBlockContent,
+        String[] currentBlockType
+    ) {
+        java.util.List<java.util.Map<String, String>> snapshot = new java.util.ArrayList<>(blocks);
+        if (currentBlockType[0] != null && currentBlockContent.length() > 0) {
+            java.util.Map<String, String> current = new java.util.LinkedHashMap<>();
+            current.put("type", currentBlockType[0]);
+            current.put("content", currentBlockContent.toString());
+            snapshot.add(current);
+        }
+        return snapshot;
     }
 }
