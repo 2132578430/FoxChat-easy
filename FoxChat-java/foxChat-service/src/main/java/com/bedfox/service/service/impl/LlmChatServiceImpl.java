@@ -9,7 +9,7 @@ import com.bedfox.pojo.domain.LlmChatMsg;
 import com.bedfox.pojo.to.ChatMsgTo;
 import com.bedfox.pojo.vo.LlmChatMsgVo;
 import com.bedfox.service.remote.ChatClient;
-import com.bedfox.service.grpc.GrpcChatClient;
+import com.bedfox.service.client.grpc.GrpcChatClient;
 import com.bedfox.service.service.LlmChatMsgService;
 import com.bedfox.service.service.LlmChatService;
 import jakarta.annotation.Resource;

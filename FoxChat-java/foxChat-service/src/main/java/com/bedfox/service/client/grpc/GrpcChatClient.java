@@ -1,8 +1,7 @@
-package com.bedfox.service.grpc;
+package com.bedfox.service.client.grpc;
 
-import com.alibaba.fastjson2.JSON;
-import com.bedfox.proto.ai.AiChatProto;
-import com.bedfox.proto.ai.AIChatServiceGrpc;
+import com.bedfox.pojo.proto.ai.AiChatProto;
+import com.bedfox.pojo.proto.ai.AIChatServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.stub.StreamObserver;

@@ -1,6 +1,11 @@
 dependencies {
     implementation libs.protobuf.java
 
+    // gRPC stub 依赖（AiChatProto / AIChatServiceGrpc）
+    implementation libs.grpc.protobuf
+    implementation libs.grpc.stub
+    implementation libs.javax.annotation.api
+
     implementation libs.mybatis.plus.boot.starter
     implementation libs.spring.boot.starter.web
 }

@@ -16,9 +16,6 @@ dependencies {
     implementation libs.commons.codec
     implementation libs.commons.lang3
 
-    // gRPC
+    // gRPC（stub 在 foxChat-pojo，这里只需要 netty transport）
     implementation libs.grpc.netty.shaded
-    implementation libs.grpc.protobuf
-    implementation libs.grpc.stub
-    implementation libs.javax.annotation.api
 }
