@@ -55,10 +55,10 @@ def ensure_collection_dimensions():
                         f"[ChromaDB] {name} 维度不匹配: 现有={actual_dim}, 期望={expected_dim}，重建集合"
                     )
                     chroma.delete_collection()
-                    # 用当前 embedding_function 重建集合（刷新 _collection 引用）
-                    chroma._collection = chroma_client.get_or_create_collection(
+                    # 用当前 embedding 模型重建集合
+                    chroma._collection = chroma_client.create_collection(
                         name=name,
-                        embedding_function=model.chroma_model,
+                        metadata={"embedding_dim": expected_dim},
                     )
                     logger.info(f"[ChromaDB] {name} 集合已重建（{actual_dim}→{expected_dim}维）")
         except Exception as e:
