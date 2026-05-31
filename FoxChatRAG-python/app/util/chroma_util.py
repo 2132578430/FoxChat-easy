@@ -52,42 +52,33 @@ async def search(
 
     chroma: Chroma = CHROMA_MAP[chroma_type]
 
-    # 检查 collection 大小，为空则直接返回
-    count = chroma._collection.count()
-    logger.info(f"[PERF] collection count: {count}")
-    if count == 0:
-        logger.info("[PERF] collection 为空，跳过搜索")
-        return []
-
     # 拆分计时：embedding vs chroma search
     t0 = time.time()
     embedding = chroma._embedding_function.embed_query(msg_content)
     t1 = time.time()
     logger.info(f"[PERF] embed_query: {t1 - t0:.3f}s")
 
-    # 用预计算的 embedding 做搜索，避免重复调 API
+    # 用预计算的 embedding 做搜索，使用 LangChain 公开 API（避免直接访问 _collection 内部接口）
     chroma_filter = _build_chroma_filter(metadata)
-    results = chroma._collection.query(
-        query_embeddings=[embedding],
-        n_results=limit,  # ChromaDB 使用 n_results，不是 k
-        where=chroma_filter,
-    )
-    t2 = time.time()
-    logger.info(f"[PERF] chroma query: {t2 - t1:.3f}s, total: {t2 - t0:.3f}s")
+    try:
+        scored_docs: list[tuple[Document, float]] = chroma.similarity_search_by_vector_with_relevance_scores(
+            embedding=embedding,
+            k=limit,
+            filter=chroma_filter,
+        )
+    except Exception as e:
+        logger.error(f"[PERF] chroma query 失败: {e}")
+        return []
 
-    # 转换为 Document 列表，保留相似度分数
+    t2 = time.time()
+    logger.info(f"[PERF] chroma query: {t2 - t1:.3f}s, total: {t2 - t0:.3f}s, results={len(scored_docs)}")
+
+    # 附加 _chroma_distance 到 metadata（保持与旧代码兼容）
     documents = []
-    if results and results['documents'] and results['documents'][0]:
-        distances = results.get('distances', [[]])[0] if 'distances' in results else []
-        for i, (doc_data, meta_data) in enumerate(zip(results['documents'][0], results['metadatas'][0])):
-            # 将 L2 距离转为 0-1 相似度（归一化向量 L2 范围 [0, 2]）
-            if i < len(distances):
-                score = max(0.0, min(1.0, 1.0 - distances[i] / 2.0))
-            else:
-                score = 1.0
-            meta_data = dict(meta_data) if meta_data else {}
-            meta_data["_chroma_distance"] = score
-            documents.append(Document(page_content=doc_data, metadata=meta_data))
+    for doc, score in scored_docs:
+        meta = dict(doc.metadata) if doc.metadata else {}
+        meta["_chroma_distance"] = score
+        documents.append(Document(page_content=doc.page_content, metadata=meta))
 
     return documents
 
