@@ -45,7 +45,7 @@ public class GrpcChatClient {
             .usePlaintext()
             .keepAliveTime(30, TimeUnit.SECONDS)
             .keepAliveTimeout(10, TimeUnit.SECONDS)
-            .keepAliveWithoutCalls(true)
+            .idleTimeout(60, TimeUnit.SECONDS)  // 空闲 60s 断开，下次调用自动重连
             .maxInboundMessageSize(10 * 1024 * 1024)
             .build();
 
@@ -82,7 +82,9 @@ public class GrpcChatClient {
             llmId.substring(0, Math.min(8, llmId.length())),
             message.substring(0, Math.min(30, message.length())));
 
-        asyncStub.chat(request, new StreamObserver<>() {
+        asyncStub
+            .withDeadlineAfter(120, TimeUnit.SECONDS)  // 总超时 120s（含 LLM 推理时间）
+            .chat(request, new StreamObserver<>() {
             @Override
             public void onNext(AiChatProto.ChatResponse response) {
                 if (response.getIsFinal()) {
