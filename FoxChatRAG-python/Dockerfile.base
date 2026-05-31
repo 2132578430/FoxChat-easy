@@ -31,8 +31,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl unzip && \
     unzip /tmp/ms-marco-MiniLM-L-12-v2.zip -d /app/models/flashrank && \
     rm /tmp/ms-marco-MiniLM-L-12-v2.zip && \
     mkdir -p /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx && \
-    curl -L --retry 3 --retry-delay 5 -o /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx/model.onnx \
+    curl -fL --retry 3 --retry-delay 5 -o /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx/model.onnx \
       "https://hf-mirror.com/sentence-transformers/all-MiniLM-L6-v2/resolve/main/onnx/model.onnx" && \
-    curl -L --retry 3 --retry-delay 5 -o /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx/tokenizer.json \
+    curl -fL --retry 3 --retry-delay 5 -o /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx/tokenizer.json \
       "https://hf-mirror.com/sentence-transformers/all-MiniLM-L6-v2/resolve/main/onnx/tokenizer.json" && \
+    echo "Verifying ONNX model files..." && \
+    MODEL_SIZE=$(stat -c%s /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx/model.onnx) && \
+    TOKENIZER_SIZE=$(stat -c%s /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx/tokenizer.json) && \
+    echo "model.onnx: ${MODEL_SIZE} bytes, tokenizer.json: ${TOKENIZER_SIZE} bytes" && \
+    if [ "$MODEL_SIZE" -lt 50000000 ]; then echo "ERROR: model.onnx too small (${MODEL_SIZE} bytes), download likely failed"; exit 1; fi && \
     apt-get purge -y curl unzip && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
