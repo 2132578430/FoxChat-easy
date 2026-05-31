@@ -281,6 +281,8 @@ import * as friendApi from '@/api/friend';
 import * as messageApi from '@/api/message';
 import * as groupApi from '@/api/group';
 import request from '@/utils/request';
+import { useLlmStream } from '@/composables/useLlmStream';
+import { fallbackLlmRest } from '@/composables/useLlmFallback';
 
 import AvatarCropper from '@/components/AvatarCropper.vue';
 import ChatInput from '@/components/Chat/ChatInput.vue';
@@ -293,6 +295,7 @@ import LlmConfigPanel from '@/components/LlmConfig/LlmConfigPanel.vue';
 const defaultUserAvatar = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png';
 
 const router = useRouter();
+const { sendStreamMessage } = useLlmStream();
 const userInfo = reactive(JSON.parse(localStorage.getItem('userInfo') || '{}'));
 const showAvatarCropper = ref(false);
 
@@ -1742,140 +1745,85 @@ const sendMessage = async () => {
       scrollToBottom(true);
     });
 
-    // 2. 发送 HTTP POST 请求给 LLM 接口，静默模式不触发全局 loading
+    // 2. SSE 流式请求：推空占位气泡 → 逐 token 填充
     llmPendingCount.value++;
     isLlmTyping.value = true;
-    try {
-      // 记录发送请求时的好友 ID
-      const requestFriendId = llmId;
+    const requestFriendId = llmId;
 
-      const res = await request.post('/llm/chat', {
-        llmId: llmId,
-        msgContent: msgContent
-      }, {
-        silent: true, // 告诉 request.js 拦截器：这个请求悄悄发，不要全屏加载
-        timeout: 120000 // 针对大模型单独设置 120 秒超时时间
-      });
+    // 2a. 推入空的 AI 占位消息到 messageList
+    const aiPlaceholderId = snowflake.nextId();
+    const aiPlaceholder = {
+      id: aiPlaceholderId,
+      content: null,
+      blocks: [{ type: 'text', text: '' }],
+      emotion: null,
+      isMine: false,
+      type: 'text',
+      isStreaming: true,
+      createTime: new Date().toISOString(),
+      senderId: llmId,
+      senderName: currentFriend.value.nickname || currentFriend.value.username,
+      senderAvatar: resolveAvatarUrl(currentFriend.value.faceImage || currentFriend.value.face_image) || defaultUserAvatar
+    };
+    messageList.value.push(aiPlaceholder);
+    nextTick(() => scrollToBottom(true));
 
-      console.log('[LLM Chat] 原始响应 res:', res, typeof res);
+    // 2b. 流式调用
+    let replyBlocks = [{ type: 'text', text: '' }];
+    let replyEmotion = null;
+    let currentBlockType = 'text';
+    let hasError = false;
 
-      // 3. 渲染回复
-      let replyBlocks = null;
-      let replyEmotion = null;
+    await sendStreamMessage(llmId, msgContent, {
+      onToken: (token, blockType) => {
+        if (currentFriend.value && (currentFriend.value.userId || currentFriend.value.id) !== requestFriendId) return;
 
-      // 拦截器现在返回完整响应 {code, msg, data}
-      // 需要先提取 res.data，然后处理
-      let actualResponse = res;
-      if (res && res.code === 1000 && res.data) {
-        actualResponse = res.data;
-      }
-
-      // 后端返回的是消息列表数组，需要找到 AI 回复的那条
-      if (Array.isArray(actualResponse)) {
-        // 找到 isHuman: false 的消息（AI回复）
-        const aiMsg = actualResponse.find(m => m.isHuman === false);
-        if (aiMsg && aiMsg.msgContent) {
-          try {
-            const parsed = JSON.parse(aiMsg.msgContent);
-            if (parsed.blocks) {
-              replyBlocks = parsed.blocks;
-              replyEmotion = parsed.emotion;
-            } else if (Array.isArray(parsed)) {
-              replyBlocks = parsed;
-            } else {
-              replyBlocks = [{ type: 'text', text: aiMsg.msgContent }];
-            }
-          } catch (e) {
-            replyBlocks = [{ type: 'text', text: aiMsg.msgContent }];
-          }
-        }
-      } else if (actualResponse && actualResponse.msgId && actualResponse.data) {
-        // M.get_msg 包装格式 { msgId, data }
-        const innerData = actualResponse.data;
-        if (Array.isArray(innerData)) {
-          const aiMsg = innerData.find(m => m.isHuman === false);
-          if (aiMsg && aiMsg.msgContent) {
-            try {
-              const parsed = JSON.parse(aiMsg.msgContent);
-              if (parsed.blocks) {
-                replyBlocks = parsed.blocks;
-                replyEmotion = parsed.emotion;
-              } else {
-                replyBlocks = [{ type: 'text', text: aiMsg.msgContent }];
-              }
-            } catch (e) {
-              replyBlocks = [{ type: 'text', text: aiMsg.msgContent }];
-            }
-          }
-        } else if (innerData.blocks) {
-          replyBlocks = innerData.blocks;
-          replyEmotion = innerData.emotion;
-        }
-      } else if (actualResponse && actualResponse.msg) {
-        // actualResponse.msg 是 JSON 字符串，需要解析是否为 blocks 格式
-        try {
-          const parsed = typeof actualResponse.msg === 'string' ? JSON.parse(actualResponse.msg) : actualResponse.msg;
-          if (parsed && parsed.blocks && Array.isArray(parsed.blocks)) {
-            replyBlocks = parsed.blocks;
-            replyEmotion = parsed.emotion || null;
-          } else if (Array.isArray(parsed)) {
-            replyBlocks = parsed;
+        if (blockType === 'action') {
+          replyBlocks.push({ type: 'action', action: token, text: null });
+          currentBlockType = 'action';
+        } else {
+          const lastBlock = replyBlocks[replyBlocks.length - 1];
+          if (!lastBlock || lastBlock.type !== 'text') {
+            replyBlocks.push({ type: 'text', text: token });
           } else {
-            replyBlocks = [{ type: 'text', text: actualResponse.msg }];
+            lastBlock.text += token;
           }
-        } catch (e) {
-          replyBlocks = [{ type: 'text', text: actualResponse.msg }];
+          currentBlockType = 'text';
         }
-      } else if (typeof actualResponse === 'string') {
-        replyBlocks = [{ type: 'text', text: actualResponse }];
-      } else {
-        replyBlocks = [{ type: 'text', text: JSON.stringify(actualResponse) }];
-      }
-
-      // 只有当当前选中的好友还是刚才发请求的那位时，才把消息推入当前的 messageList
-      if (currentFriend.value && (currentFriend.value.userId || currentFriend.value.id) === requestFriendId) {
-        messageList.value.push({
-          id: snowflake.nextId(),
-          content: null,
-          blocks: replyBlocks,
-          emotion: replyEmotion,
-          isMine: false,
-          type: 'text',
-          createTime: new Date().toISOString(),
-          senderId: llmId,
-          senderName: currentFriend.value.nickname || currentFriend.value.username,
-          senderAvatar: resolveAvatarUrl(currentFriend.value.faceImage || currentFriend.value.face_image) || defaultUserAvatar
-        });
-
-        // 更新好友列表中的emotion
-        if (replyEmotion) {
-          currentFriend.value.emotion = replyEmotion;
-          const friend = friendList.value.find(f => String(f.userId || f.id) === String(requestFriendId));
-          if (friend) {
-            friend.emotion = replyEmotion;
-          }
+        // 原地更新占位消息
+        const idx = messageList.value.findIndex(m => m.id === aiPlaceholderId);
+        if (idx >= 0) {
+          messageList.value[idx].blocks = [...replyBlocks];
         }
+        nextTick(() => scrollToBottom(true));
+      },
+      onEmotion: (emotion) => {
+        replyEmotion = emotion;
+        currentFriend.value.emotion = emotion;
+        const friend = friendList.value.find(f => String(f.userId || f.id) === String(requestFriendId));
+        if (friend) friend.emotion = emotion;
+      },
+      onDone: () => {
+        const idx = messageList.value.findIndex(m => m.id === aiPlaceholderId);
+        if (idx >= 0) {
+          messageList.value[idx].emotion = replyEmotion;
+          messageList.value[idx].isStreaming = false;
+        }
+        isLlmTyping.value = false;
+        llmPendingCount.value--;
+      },
+      onError: (err) => {
+        console.warn('[SSE] 流失败，降级 REST:', err);
+        hasError = true;
+        // 从 messageList 移除占位消息
+        const idx = messageList.value.findIndex(m => m.id === aiPlaceholderId);
+        if (idx >= 0) messageList.value.splice(idx, 1);
+        // 降级走老 REST
+        fallbackLlmRest(llmId, msgContent, currentFriend, friendList, messageList);
+      },
+    });
 
-        nextTick(() => {
-          scrollToBottom(true);
-        });
-      }
-    } catch (error) {
-      console.error('LLM 聊天请求失败:', error);
-
-      // 处理配置不完整错误（15001）
-      if (error && error.code === 15001) {
-        ElMessage.warning('请先完成模型配置后再开始聊天（点击侧边栏设置按钮进行配置）');
-        return;
-      }
-
-      // 处理其他 LLM 配置错误
-      if (error && error.code >= 15002 && error.code <= 15005) {
-        ElMessage.error(error.msg || '模型调用失败，请检查配置');
-        return;
-      }
-
-      // 通用失败 → 显示重试气泡
+    if (hasError) return; // 降级已接管，跳过后续
       ElMessage.error('他/她好像暂时没法回应你，请稍后再试吧~');
       
       // 推入失败消息到当前对话（用户未切换好友时才推入）
