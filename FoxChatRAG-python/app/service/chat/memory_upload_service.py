@@ -212,6 +212,28 @@ async def chat_init(body: str):
 
     logger.info(f"开始处理用户 {user_id} 的初始记忆...")
 
+    # ── 预校验：测试 LLM 模型连接 ──
+    from app.service.llm_config_service import get_llm_configs_batch, test_llm_connection
+    async with async_session_local() as db:
+        config_map = await get_llm_configs_batch(llm_id, db)
+    chat_config = config_map.get("chat", {})
+    if not chat_config or not chat_config.get("model_api_key"):
+        logger.error(f"【激活预校验失败】llmId={llm_id}, chat 场景未配置 api_key")
+        await _reset_apply_status(llm_id, 0)
+        return
+
+    logger.info(f"【激活预校验】测试模型连接: model={chat_config.get('model_name')}")
+    conn_result = await test_llm_connection(
+        model_name=chat_config["model_name"],
+        api_key=chat_config["model_api_key"],
+        base_url=chat_config["model_base_url"],
+    )
+    if not conn_result.get("success"):
+        logger.error(f"【激活预校验失败】llmId={llm_id}, 模型不可用: {conn_result.get('message')}")
+        await _reset_apply_status(llm_id, 0)
+        return
+    logger.info(f"【激活预校验通过】llmId={llm_id}")
+
     raw_key = build_memory_key(LLMChatConstant.RAW_EXPERIENCE, user_id, llm_id)
     redis_client.set(raw_key, experience)
 
@@ -236,3 +258,18 @@ async def chat_init(body: str):
         logger.error(f"【激活完成】llmId={llm_id}, 更新isApply失败: {e}", exc_info=True)
 
     logger.info(f"用户 {user_id} 的初始记忆处理完成")
+
+
+async def _reset_apply_status(llm_id: str, status: int):
+    """重置创造物激活状态"""
+    try:
+        from sqlalchemy import text
+        async with async_session_local() as session:
+            await session.execute(
+                text("UPDATE llm_user SET isApply = :status WHERE id = :llm_id"),
+                {"llm_id": llm_id, "status": status}
+            )
+            await session.commit()
+        logger.info(f"【激活状态重置】llmId={llm_id}, isApply={status}")
+    except Exception as e:
+        logger.error(f"【激活状态重置失败】llmId={llm_id}: {e}", exc_info=True)
