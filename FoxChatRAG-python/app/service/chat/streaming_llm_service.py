@@ -14,20 +14,22 @@ from loguru import logger
 from app.core.db.mysql_client import async_session_local
 from app.core.prompts.prompt_manager import PromptManager
 from app.service.chat.prompt_payload_builder import build_prompt_payload
-from app.service.chat.memory_parser import build_static_anchors
-from app.service.chat.state_manager import (
-    increment_round_counter,
-    clean_expired_unfinished_items,
-    fetch_all_memories,
-    save_chat_to_redis,
-    build_history_message,
-)
 from app.service.chat.memory_parser import (
+    build_static_anchors,
     parse_character_card,
     parse_core_anchor,
     parse_user_profile,
     parse_memory_bank,
     parse_current_state,
+)
+from app.service.chat.state_manager import (
+    increment_round_counter,
+    clean_expired_unfinished_items,
+)
+from app.service.chat.chat_redis_service import (
+    fetch_all_memories,
+    save_chat_to_redis,
+    build_history_message,
 )
 from app.service.chat.intent_classifier import classify_intent
 from app.service.chat.history_event_retrieval_service import (
