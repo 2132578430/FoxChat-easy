@@ -1824,30 +1824,7 @@ const sendMessage = async () => {
     });
 
     if (hasError) return; // 降级已接管，跳过后续
-      ElMessage.error('他/她好像暂时没法回应你，请稍后再试吧~');
-      
-      // 推入失败消息到当前对话（用户未切换好友时才推入）
-      if (currentFriend.value && (currentFriend.value.userId || currentFriend.value.id) === llmId) {
-        messageList.value.push({
-          id: 'failed-' + Date.now(),
-          content: '回复失败，点击重试',
-          status: 'failed',
-          msgContent: msgContent,
-          llmId: llmId,
-          isMine: false,
-          createTime: new Date().toISOString(),
-          senderId: llmId,
-          senderName: currentFriend.value.nickname || currentFriend.value.username,
-          senderAvatar: resolveAvatarUrl(currentFriend.value.faceImage || currentFriend.value.face_image) || defaultUserAvatar
-        });
-      }
-    } finally {
-      llmPendingCount.value--;
-      if (llmPendingCount.value <= 0) {
-        llmPendingCount.value = 0;
-        isLlmTyping.value = false;
-      }
-    }
+
     return;
   }
 
