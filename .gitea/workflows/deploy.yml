@@ -22,10 +22,17 @@ jobs:
 
       - name: 📦 构建基础镜像（依赖层）
         run: |
-          echo "构建基础镜像（依赖未变则跳过）..."
+          set -e  # 任何命令失败立即退出
+          echo "构建基础镜像..."
           docker build -f FoxChatRAG-python/Dockerfile.base -t foxchat-python-base:latest FoxChatRAG-python
           docker build -f FoxChat-vue/Dockerfile.base -t foxchat-vue-build-base:latest FoxChat-vue
           docker build -f FoxChat-java/Dockerfile.base -t foxchat-java-build-base:latest FoxChat-java
+          echo "✅ 基础镜像构建完成"
+          # 验证 ONNX 模型已预缓存（防止 chromadb 运行时下载 S3）
+          docker run --rm foxchat-python-base:latest ls -lh \
+            /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx/model.onnx \
+            /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx/tokenizer.json \
+            && echo "✅ ONNX 模型已预缓存"
 
       - name: 🏗️ 构建应用镜像
         run: docker compose -f docker-compose.prod.yml build --parallel
