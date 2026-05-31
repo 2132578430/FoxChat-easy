@@ -1,10 +1,9 @@
 dependencies {
-    implementation libs.protobuf.java
-
-    // gRPC stub 依赖（AiChatProto / AIChatServiceGrpc）
-    implementation libs.grpc.protobuf
-    implementation libs.grpc.stub
-    implementation libs.javax.annotation.api
+    // api: 所有模块通过 project(':foxChat-pojo') 自动传递拿到
+    api libs.protobuf.java
+    api libs.grpc.protobuf
+    api libs.grpc.stub
+    api libs.javax.annotation.api
 
     implementation libs.mybatis.plus.boot.starter
     implementation libs.spring.boot.starter.web
