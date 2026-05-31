@@ -1745,28 +1745,34 @@ const sendMessage = async () => {
       scrollToBottom(true);
     });
 
-    // 2. SSE 流式请求：推空占位气泡 → 逐 token 填充
+    // 2. SSE 流式请求：收到第一个 token 时才推气泡，避免闪现空白头像
     llmPendingCount.value++;
     isLlmTyping.value = true;
     const requestFriendId = llmId;
 
-    // 2a. 推入空的 AI 占位消息到 messageList
-    const aiPlaceholderId = snowflake.nextId();
-    const aiPlaceholder = {
-      id: aiPlaceholderId,
-      content: null,
-      blocks: [{ type: 'text', text: '' }],
-      emotion: null,
-      isMine: false,
-      type: 'text',
-      isStreaming: true,
-      createTime: new Date().toISOString(),
-      senderId: llmId,
-      senderName: currentFriend.value.nickname || currentFriend.value.username,
-      senderAvatar: resolveAvatarUrl(currentFriend.value.faceImage || currentFriend.value.face_image) || defaultUserAvatar
+    // 推送推迟到收到第一个 token
+    let aiPlaceholderId = null;
+    let bubblePushed = false;
+
+    const pushBubble = () => {
+      if (bubblePushed) return;
+      aiPlaceholderId = snowflake.nextId();
+      messageList.value.push({
+        id: aiPlaceholderId,
+        content: null,
+        blocks: [{ type: 'text', text: '' }],
+        emotion: null,
+        isMine: false,
+        type: 'text',
+        isStreaming: true,
+        createTime: new Date().toISOString(),
+        senderId: llmId,
+        senderName: currentFriend.value.nickname || currentFriend.value.username,
+        senderAvatar: resolveAvatarUrl(currentFriend.value.faceImage || currentFriend.value.face_image) || defaultUserAvatar
+      });
+      bubblePushed = true;
+      nextTick(() => scrollToBottom(true));
     };
-    messageList.value.push(aiPlaceholder);
-    nextTick(() => scrollToBottom(true));
 
     // 2b. 流式调用
     let replyBlocks = [{ type: 'text', text: '' }];
@@ -1777,6 +1783,7 @@ const sendMessage = async () => {
     await sendStreamMessage(llmId, msgContent, {
       onToken: (token, blockType) => {
         if (currentFriend.value && (currentFriend.value.userId || currentFriend.value.id) !== requestFriendId) return;
+        pushBubble(); // 第一个 token 才推气泡
 
         if (blockType === 'action') {
           replyBlocks.push({ type: 'action', action: token, text: null });
@@ -1790,7 +1797,6 @@ const sendMessage = async () => {
           }
           currentBlockType = 'text';
         }
-        // 原地更新占位消息
         const idx = messageList.value.findIndex(m => m.id === aiPlaceholderId);
         if (idx >= 0) {
           messageList.value[idx].blocks = [...replyBlocks];
@@ -1815,10 +1821,12 @@ const sendMessage = async () => {
       onError: (err) => {
         console.warn('[SSE] 流失败，降级 REST:', err);
         hasError = true;
-        // 从 messageList 移除占位消息
-        const idx = messageList.value.findIndex(m => m.id === aiPlaceholderId);
-        if (idx >= 0) messageList.value.splice(idx, 1);
-        // 降级走老 REST
+        if (bubblePushed) {
+          const idx = messageList.value.findIndex(m => m.id === aiPlaceholderId);
+          if (idx >= 0) messageList.value.splice(idx, 1);
+        }
+        isLlmTyping.value = false;
+        llmPendingCount.value--;
         fallbackLlmRest(llmId, msgContent, currentFriend, friendList, messageList);
       },
     });
