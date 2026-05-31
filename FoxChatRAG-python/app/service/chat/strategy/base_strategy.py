@@ -118,7 +118,7 @@ class LLMInvokeStrategy:
                         timeout=120,
                     )
                     break  # 成功，退出重试循环
-                except (litellm.exceptions.APIConnectionError, litellm.exceptions.APIStatusError) as e:
+                except (litellm.exceptions.APIConnectionError, litellm.exceptions.APIError) as e:
                     # 仅重试瞬态网络错误（连接错误或 5xx）
                     status_code = getattr(e, 'status_code', None)
                     if status_code and status_code < 500:
