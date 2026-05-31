@@ -155,7 +155,9 @@ public class LlmChatServiceImpl implements LlmChatService {
                                 emitter.complete();
                             } else {
                                 // 流式 token — 增量构建 block
-                                if (response.getIsBlockStart()) {
+                                // 不用 is_block_start（parser 对 text 块设 false 有 bug），直接比较 block_type 判变
+                                if (currentBlockType[0] == null
+                                    || !response.getBlockType().equals(currentBlockType[0])) {
                                     flushCurrentBlock(blocks, currentBlockContent, currentBlockType);
                                     currentBlockType[0] = response.getBlockType();
                                 }
