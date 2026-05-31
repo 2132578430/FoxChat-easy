@@ -2,8 +2,10 @@ package com.bedfox.service.client.grpc;
 
 import com.bedfox.pojo.proto.ai.AiChatProto;
 import com.bedfox.pojo.proto.ai.AIChatServiceGrpc;
+import io.grpc.ConnectivityState;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
@@ -77,16 +79,27 @@ public class GrpcChatClient {
             .setMsgContent(message)
             .build();
 
-        log.info("[gRPC Chat] 发起流式请求: user={}, llm={}, msg={}",
+        // [DIAG] 记录 channel 状态（true = 等待连接就绪）
+        ConnectivityState state = channel.getState(true);
+        log.info("[gRPC Chat] 发起流式请求: user={}, llm={}, msg={}, channelState={}, thread={}",
             userId.substring(0, Math.min(8, userId.length())),
             llmId.substring(0, Math.min(8, llmId.length())),
-            message.substring(0, Math.min(30, message.length())));
+            message.substring(0, Math.min(30, message.length())),
+            state,
+            Thread.currentThread().getName());
 
         asyncStub
             .withDeadlineAfter(120, TimeUnit.SECONDS)  // 总超时 120s（含 LLM 推理时间）
             .chat(request, new StreamObserver<>() {
+            private boolean firstTokenReceived = false;
+
             @Override
             public void onNext(AiChatProto.ChatResponse response) {
+                // [DIAG] 首 token 延迟
+                if (!firstTokenReceived) {
+                    firstTokenReceived = true;
+                    log.info("[gRPC Chat] 收到首 token: seq={}", response.getSequence());
+                }
                 if (response.getIsFinal()) {
                     log.debug("[gRPC Chat] 收到最终包: emotion={}", response.getEmotion());
                 }
@@ -98,7 +111,14 @@ public class GrpcChatClient {
 
             @Override
             public void onError(Throwable t) {
-                log.error("[gRPC Chat] 流式错误: {}", t.getMessage());
+                // [DIAG] 追加 gRPC 状态码和 channel 状态
+                String statusCode = "UNKNOWN";
+                if (t instanceof StatusRuntimeException sre) {
+                    statusCode = sre.getStatus().getCode().name();
+                }
+                ConnectivityState cs = channel.getState(false);
+                log.error("[gRPC Chat] 流式错误: status={}, channelState={}, msg={}",
+                    statusCode, cs, t.getMessage());
                 onError.accept(t);
             }
 
@@ -107,6 +127,8 @@ public class GrpcChatClient {
                 log.debug("[gRPC Chat] 流结束");
             }
         });
+
+        log.info("[gRPC Chat] asyncStub.chat() 已派发, thread={}", Thread.currentThread().getName());
     }
 
     @PreDestroy

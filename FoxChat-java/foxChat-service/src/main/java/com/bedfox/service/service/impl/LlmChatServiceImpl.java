@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ForkJoinPool;
 
 /**
  * @author 21325
@@ -114,7 +115,16 @@ public class LlmChatServiceImpl implements LlmChatService {
         StringBuilder fullResponse = new StringBuilder();
 
         // 3. 尝试 gRPC 流式调用
+        // [DIAG] 检查 ForkJoinPool 并行度 + 当前线程
+        int parallelism = ForkJoinPool.commonPool().getParallelism();
+        int poolSize = ForkJoinPool.commonPool().getPoolSize();
+        int activeThreads = ForkJoinPool.commonPool().getActiveThreadCount();
+        long queuedTasks = ForkJoinPool.commonPool().getQueuedTaskCount();
+        log.info("[SSE DIAG] ForkJoinPool: parallelism={}, poolSize={}, active={}, queued={}, thread={}",
+            parallelism, poolSize, activeThreads, queuedTasks, Thread.currentThread().getName());
+
         CompletableFuture.runAsync(() -> {
+            log.info("[SSE DIAG] 进入 runAsync: thread={}", Thread.currentThread().getName());
             try {
                 grpcChatClient.streamChat(
                     userId, llmId, msgContent,
