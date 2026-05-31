@@ -32,6 +32,13 @@ async def lifespan(app: FastAPI):
     except ImportError as e:
         logger.warning(f"[gRPC] 跳过启动（未生成 stub 或缺少 grpcio）: {e}")
 
+    # 校验 ChromaDB 集合维度（切换 embedding 模型时自动迁移）
+    try:
+        from app.chroma.chroma import ensure_collection_dimensions
+        ensure_collection_dimensions()
+    except Exception as e:
+        logger.warning(f"[ChromaDB] 维度校验失败（非致命）: {e}")
+
     yield
 
     # 关闭rabbitmq监听后台

@@ -27,3 +27,34 @@ CHROMA_MAP = {
     ChromaTypeConstant.RAG: rag_chroma,
     ChromaTypeConstant.CHAT: chat_chroma,
 }
+
+
+def ensure_collection_dimensions():
+    """
+    启动时校验 ChromaDB 集合维度是否与当前 embedding 模型匹配。
+    不匹配则删除重建（切换 embedding 模型时自动迁移）。
+    """
+    import numpy as np
+    from loguru import logger
+
+    # 用一条短文本测出当前模型输出维度
+    test_embedding = model.chroma_model.embed_query("test")
+    expected_dim = len(test_embedding)
+
+    for name, chroma in [("rag_collection", rag_chroma), ("chat_collection", chat_chroma)]:
+        try:
+            count = chroma._collection.count()
+            if count == 0:
+                continue  # 空集合，无所谓维度
+            # 取第一条记录的 embedding 比对维度
+            sample = chroma._collection.get(limit=1, include=["embeddings"])
+            if sample and sample.get("embeddings") and sample["embeddings"][0]:
+                actual_dim = len(sample["embeddings"][0])
+                if actual_dim != expected_dim:
+                    logger.warning(
+                        f"[ChromaDB] {name} 维度不匹配: 现有={actual_dim}, 期望={expected_dim}，重建集合"
+                    )
+                    chroma.delete_collection()
+                    # 重新 get_or_create（下次访问时自动触发）
+        except Exception as e:
+            logger.warning(f"[ChromaDB] {name} 维度校验跳过: {e}")
