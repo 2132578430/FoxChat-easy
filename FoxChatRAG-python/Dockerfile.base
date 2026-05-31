@@ -34,7 +34,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl unzip && \
     curl -fL --retry 3 --retry-delay 5 -o /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx/model.onnx \
       "https://hf-mirror.com/sentence-transformers/all-MiniLM-L6-v2/resolve/main/onnx/model.onnx" && \
     curl -fL --retry 3 --retry-delay 5 -o /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx/tokenizer.json \
-      "https://hf-mirror.com/sentence-transformers/all-MiniLM-L6-v2/resolve/main/onnx/tokenizer.json" && \
+      "https://hf-mirror.com/sentence-transformers/all-MiniLM-L6-v2/resolve/main/tokenizer.json" && \
     echo "Verifying ONNX model files..." && \
     MODEL_SIZE=$(stat -c%s /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx/model.onnx) && \
     TOKENIZER_SIZE=$(stat -c%s /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx/tokenizer.json) && \
