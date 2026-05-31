@@ -23,20 +23,16 @@ COPY requirements.txt .
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
 
-# Pre-download FlashRank model (huggingface.co blocked in China, use mirror)
-# Zip内部有 ms-marco-MiniLM-L-12-v2/ 目录，解压到 /app/models/flashrank/ 即可
+# Pre-download models (hf-mirror, S3 国内不通)
 RUN apt-get update && apt-get install -y --no-install-recommends curl unzip && \
     mkdir -p /app/models/flashrank && \
     curl -L -o /tmp/ms-marco-MiniLM-L-12-v2.zip \
       "https://hf-mirror.com/prithivida/flashrank/resolve/main/ms-marco-MiniLM-L-12-v2.zip" && \
     unzip /tmp/ms-marco-MiniLM-L-12-v2.zip -d /app/models/flashrank && \
     rm /tmp/ms-marco-MiniLM-L-12-v2.zip && \
-    apt-get purge -y curl unzip && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
-
-# Pre-download ChromaDB ONNX 嵌入模型 (chromadb 1.5.x 客户端需要)
-# 结构: ~/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx/model.onnx + tokenizer.json
-RUN mkdir -p /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx && \
+    mkdir -p /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx && \
     curl -L --retry 3 --retry-delay 5 -o /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx/model.onnx \
       "https://hf-mirror.com/sentence-transformers/all-MiniLM-L6-v2/resolve/main/onnx/model.onnx" && \
     curl -L --retry 3 --retry-delay 5 -o /root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx/tokenizer.json \
-      "https://hf-mirror.com/sentence-transformers/all-MiniLM-L6-v2/resolve/main/onnx/tokenizer.json"
+      "https://hf-mirror.com/sentence-transformers/all-MiniLM-L6-v2/resolve/main/onnx/tokenizer.json" && \
+    apt-get purge -y curl unzip && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
