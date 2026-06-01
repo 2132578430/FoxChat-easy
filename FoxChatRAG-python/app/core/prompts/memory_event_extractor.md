@@ -74,7 +74,7 @@
 - **occurred_at**：事件发生日期（YYYY-MM-DD格式）
 - **last_seen_at**：最近一次出现日期（YYYY-MM-DD格式）
 - **actor**：USER（用户）或 AI（角色）
-- **category**：`event`（事件）或 `state`（状态）← **新增字段**
+- **category**：`event`（事件）或 `state`（状态）
 - **type**：必须是 "event"
 - **event_type**：内容细类，用于分类检索
 - **content**：内容描述，30-50字
