@@ -1,6 +1,5 @@
 package com.bedfox.web.controller;
 
-import com.bedfox.pojo.dto.CodeDto;
 import com.bedfox.pojo.dto.RegisterDto;
 import com.bedfox.pojo.dto.UserDto;
 import com.bedfox.service.service.AuthService;
@@ -54,17 +53,6 @@ public class AuthController {
         // 调用认证服务完成用户注册逻辑
         authService.register(registerDto);
         // 返回注册成功的响应结果
-        return R.ok();
-    }
-
-    /**
-     * 发送验证码
-     * @param codeDto
-     * @return
-     */
-    @PostMapping("/sendCode")
-    public R<String> sendCode(@RequestBody CodeDto codeDto) {
-        authService.sendCode(codeDto.getEmail());
         return R.ok();
     }
 

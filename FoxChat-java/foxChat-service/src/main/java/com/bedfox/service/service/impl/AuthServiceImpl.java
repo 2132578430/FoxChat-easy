@@ -9,16 +9,13 @@ import com.bedfox.pojo.dto.UserDto;
 import com.bedfox.common.exception.BusinessException;
 import com.bedfox.service.service.AuthService;
 import com.bedfox.service.service.UsersService;
-import com.bedfox.common.util.CodeUtil;
 import com.bedfox.common.util.CookieUtil;
-import com.bedfox.common.util.EmailUtil;
 import com.bedfox.common.util.JwtUtil;
 import com.bedfox.pojo.vo.UserInfo;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,9 +42,6 @@ public class AuthServiceImpl implements AuthService {
     @Resource
     JwtUtil jwtUtil;
 
-    @Resource
-    EmailUtil emailUtil;
-
     /**
      * 登录接口
      * @param userDto
@@ -73,7 +67,6 @@ public class AuthServiceImpl implements AuthService {
             throw new BusinessException(ResultStatusConstant.LOGIN_ACCOUNT_NOT_EXIST_EXCEPTION);
         }
 
-        String dbUsersId = users.getId();
         String dbPassword = users.getPassword();
         String dbUserId = users.getId();
 
@@ -92,10 +85,10 @@ public class AuthServiceImpl implements AuthService {
         String tokenKey = AuthConstant.PRE_LOGIN_AUTH + token;
         redisTemplate.opsForValue().set(tokenKey, username, 24, TimeUnit.HOURS);
 
-        // 设置 HTTPOnly cookie
+        // 为响应值设置 HTTPOnly cookie
         CookieUtil.setTokenCookie(response, token);
 
-        // 组合结果 (不返回 token 字段)
+        // 组合结果
         userInfo.setUserId(dbUserId);
         userInfo.setUsername(username);
         userInfo.setToken(null);
@@ -113,71 +106,27 @@ public class AuthServiceImpl implements AuthService {
         String nickName = registerDto.getNickname();
         String userName = registerDto.getUsername();
         String password = registerDto.getPassword();
-        String email = registerDto.getEmail();
-        String code = registerDto.getCode();
-        String redisCodeKey = AuthConstant.PRE_CODE + DigestUtils.md5Hex(email);
 
         // 检验数据完整符合规定
-        if (StringUtils.isAnyEmpty(nickName, userName, password, email, code)) {
+        if (StringUtils.isAnyEmpty(nickName, userName, password)) {
             throw new BusinessException(ResultStatusConstant.REGISTER_FORMAT_ERROR_EXCEPTION);
         }
 
-        // 检查用户名或邮箱是否重复
-        long count = usersService.count(new LambdaQueryWrapper<Users>().eq(Users::getUsername, userName).or().eq(Users::getEmail, email));
+        // 检查用户名是否重复
+        long count = usersService.count(new LambdaQueryWrapper<Users>().eq(Users::getUsername, userName));
 
         if (count > 0) {
             throw new BusinessException(ResultStatusConstant.REGISTER_USER_REPEAT_EXCEPTION);
         }
 
-        // 校验验证码是否正确
-        String redisCode = redisTemplate.opsForValue().get(redisCodeKey);
-
-        if (StringUtils.isEmpty(redisCode) || !redisCode.equals(code)) {
-            throw new BusinessException(ResultStatusConstant.LOGIN_CODE_ERROR_EXCEPTION);
-        }
-
         users.setUsername(userName);
         users.setNickname(nickName);
-        users.setEmail(email);
 
         // 密码加密
         String encodePassword = passwordEncoder.encode(password);
         users.setPassword(encodePassword);
 
         usersService.save(users);
-    }
-
-    /**
-     * 发送验证码
-     * @param email
-     */
-    @Override
-    public void sendCode(String email) {
-        if (StringUtils.isEmpty(email)) {
-            throw new BusinessException(ResultStatusConstant.REGISTER_FORMAT_ERROR_EXCEPTION);
-        }
-
-        // 校验邮箱是否重复
-        long count = usersService.count(new LambdaQueryWrapper<Users>().eq(Users::getEmail, email));
-
-        if (count > 0) {
-            throw new BusinessException(ResultStatusConstant.REGISTER_USER_REPEAT_EXCEPTION);
-        }
-
-        String code = CodeUtil.generateCode();
-        String hexEmail = DigestUtils.md5Hex(email);
-        String redisKey = AuthConstant.PRE_CODE + hexEmail;
-
-        // 储存验证码
-        log.info("获得邮箱验证码：{}", code);
-        Boolean absent = redisTemplate.opsForValue()
-                .setIfAbsent(redisKey, code, AuthConstant.CODE_EXPIRATION, TimeUnit.SECONDS);
-
-        if (absent == null || !absent) {
-            throw new BusinessException(ResultStatusConstant.REGISTER_CODE_REPEAT_EXCEPTION);
-        }
-
-        emailUtil.sendCodeToUser(email, code);
     }
 
     /**

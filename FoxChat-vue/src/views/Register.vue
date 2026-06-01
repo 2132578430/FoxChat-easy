@@ -7,23 +7,11 @@
         </div>
       </template>
       <el-form :model="registerForm" ref="registerFormRef" label-width="0px">
-        <el-form-item prop="username">
-          <el-input v-model="registerForm.username" placeholder="用户名" prefix-icon="User"></el-input>
-        </el-form-item>
         <el-form-item prop="nickname">
           <el-input v-model="registerForm.nickname" placeholder="昵称" prefix-icon="UserFilled"></el-input>
         </el-form-item>
-        <el-form-item prop="email">
-          <el-input v-model="registerForm.email" placeholder="邮箱" prefix-icon="Message"></el-input>
-        </el-form-item>
-        <el-form-item prop="code">
-          <el-input v-model="registerForm.code" placeholder="验证码" prefix-icon="Key">
-            <template #append>
-              <el-button @click="handleSendCode" :loading="codeLoading" :disabled="isCountingDown">
-                {{ codeText }}
-              </el-button>
-            </template>
-          </el-input>
+        <el-form-item prop="username">
+          <el-input v-model="registerForm.username" placeholder="用户名" prefix-icon="User"></el-input>
         </el-form-item>
         <el-form-item prop="password">
           <el-input v-model="registerForm.password" type="password" placeholder="密码" prefix-icon="Lock" show-password></el-input>
@@ -45,62 +33,20 @@
 <script setup>
 import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import { User, Lock, UserFilled, Message, Key } from '@element-plus/icons-vue';
-import { register, sendCode } from '../api/auth';
+import { User, Lock, UserFilled } from '@element-plus/icons-vue';
+import { register } from '../api/auth';
 import { ElMessage } from 'element-plus';
 
 const router = useRouter();
 const registerFormRef = ref(null);
 const loading = ref(false);
-const codeLoading = ref(false);
-const codeText = ref('获取验证码');
-const countdown = ref(60);
-const isCountingDown = ref(false);
-let timer = null;
 
 const registerForm = reactive({
   nickname: '',
   username: '',
   password: '',
-  confirmPassword: '',
-  email: '',
-  code: ''
+  confirmPassword: ''
 });
-
-const handleSendCode = async () => {
-  if (!registerForm.email) {
-    ElMessage.warning('请先输入邮箱');
-    return;
-  }
-  if (isCountingDown.value) return;
-  
-  codeLoading.value = true;
-  try {
-    await sendCode({ email: registerForm.email });
-    ElMessage.success('验证码已发送');
-    startCountdown();
-  } catch (error) {
-    console.error(error);
-  } finally {
-    codeLoading.value = false;
-  }
-};
-
-const startCountdown = () => {
-  countdown.value = 60;
-  isCountingDown.value = true;
-  codeText.value = `${countdown.value}s后重新获取`;
-  timer = setInterval(() => {
-    countdown.value--;
-    codeText.value = `${countdown.value}s后重新获取`;
-    if (countdown.value <= 0) {
-      clearInterval(timer);
-      timer = null;
-      isCountingDown.value = false;
-      codeText.value = '获取验证码';
-    }
-  }, 1000);
-};
 
 const handleRegister = async () => {
   loading.value = true;
@@ -108,9 +54,7 @@ const handleRegister = async () => {
     await register({
         nickname: registerForm.nickname,
         username: registerForm.username,
-        password: registerForm.password,
-        email: registerForm.email,
-        code: registerForm.code
+        password: registerForm.password
     });
     ElMessage.success('注册成功，请登录');
     router.push('/login');

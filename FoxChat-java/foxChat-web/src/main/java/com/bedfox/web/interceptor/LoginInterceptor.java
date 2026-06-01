@@ -38,12 +38,13 @@ public class LoginInterceptor implements HandlerInterceptor {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        // 预检请求全部通过
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             return true;
         }
 
         CurrentUser currentUser = new CurrentUser();
-        // 从 Cookie 获取 token (HTTPOnly cookie)
+        // 从 Cookie 获取 token
         String token = CookieUtil.getTokenFromCookie(request);
         String authKey = AuthConstant.PRE_LOGIN_AUTH + token;
 

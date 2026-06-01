@@ -14,7 +14,5 @@ public interface AuthService {
 
     void register(RegisterDto registerDto);
 
-    void sendCode(String email);
-
     void logout(HttpServletRequest request, HttpServletResponse response);
 }

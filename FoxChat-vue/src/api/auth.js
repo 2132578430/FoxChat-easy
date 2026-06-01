@@ -8,6 +8,3 @@ export function register(data) {
   return request.post('/auth/register', data);
 }
 
-export function sendCode(data) {
-  return request.post('/auth/sendCode', data);
-}

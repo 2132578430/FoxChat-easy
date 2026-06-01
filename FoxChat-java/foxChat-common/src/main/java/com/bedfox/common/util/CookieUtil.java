@@ -13,7 +13,8 @@ import org.springframework.http.ResponseCookie;
 public class CookieUtil {
 
     private static final String TOKEN_COOKIE_NAME = "token";
-    private static final int COOKIE_MAX_AGE = 24 * 60 * 60; // 24小时
+    // Cookie 最大有效期（单位：秒）
+    private static final int COOKIE_MAX_AGE = 24 * 60 * 60;
 
     /**
      * 从 HttpServletRequest 的 Cookie 中获取 token
@@ -37,7 +38,7 @@ public class CookieUtil {
     public static void setTokenCookie(HttpServletResponse response, String token) {
         ResponseCookie cookie = ResponseCookie.from(TOKEN_COOKIE_NAME, token)
                 .httpOnly(true)
-                .secure(false)       // 开发环境 false，生产环境应改为 true
+                .secure(false)
                 .path("/")
                 .maxAge(COOKIE_MAX_AGE)
                 .sameSite("Lax")

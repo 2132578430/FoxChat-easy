@@ -42,9 +42,7 @@
     {
       "nickname": "测试用户",
       "username": "testuser",
-      "password": "password123",
-      "email": "test@example.com",
-      "code": "123456"
+      "password": "password123"
     }
     ```
 *   **Response (Success)**:
@@ -59,33 +57,14 @@
     ```json
     {
       "code": 12000,
-      "msg": "账号或密码格式错误",
+      "msg": "账号或密码不符合格式",
       "data": {}
     }
     ```
     ```json
     {
-      "code": 12001,
-      "msg": "验证码错误",
-      "data": {}
-    }
-    ```
-
-### 1.3 发送验证码 (Send Code)
-*   **URL**: `/auth/sendCode`
-*   **Method**: `POST`
-*   **Content-Type**: `application/json`
-*   **Request Body**:
-    ```json
-    {
-      "email": "test@example.com"
-    }
-    ```
-*   **Response (Success)**:
-    ```json
-    {
-      "code": 1000,
-      "msg": "验证码发送成功",
+      "code": 12003,
+      "msg": "用户名重复",
       "data": {}
     }
     ```

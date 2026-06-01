@@ -41,6 +41,7 @@ public class ProtocolMsgDecoder extends MessageToMessageDecoder<BinaryWebSocketF
              return ;
         }
 
+        // 虽然没用，但是仍需要保留，为了保证游标正确移动
         byte version = byteBuf.readByte();
         byte serialization = byteBuf.readByte();
         short type = byteBuf.readShort();

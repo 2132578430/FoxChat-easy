@@ -24,7 +24,7 @@ spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-start
 spring-boot-starter-data-redis = { module = "org.springframework.boot:spring-boot-starter-data-redis" }
 spring-boot-starter-amqp = { module = "org.springframework.boot:spring-boot-starter-amqp" }
 spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }
-spring-boot-starter-mail = { module = "org.springframework.boot:spring-boot-starter-mail" }
+
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
 
 # Spring Cloud

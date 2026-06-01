@@ -10,6 +10,4 @@ public class RegisterDto {
     String nickname;
     String username;
     String password;
-    String email;
-    String code;
 }
