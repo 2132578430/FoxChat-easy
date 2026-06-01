@@ -23,11 +23,6 @@ def build_current_state_key(user_id: str, llm_id: str) -> str:
     return build_memory_key(LLMChatConstant.ROLE_CURRENT_STATE, user_id, llm_id)
 
 
-def build_time_nodes_key(user_id: str, llm_id: str) -> str:
-    """构建时间节点 key"""
-    return build_memory_key(LLMChatConstant.ROLE_TIME_NODES, user_id, llm_id)
-
-
 def build_round_counter_key(user_id: str, llm_id: str) -> str:
     """构建轮次计数器 key"""
     return f"chat:memory:{user_id}:{llm_id}:round_counter"

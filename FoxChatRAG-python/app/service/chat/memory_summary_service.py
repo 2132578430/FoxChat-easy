@@ -192,6 +192,11 @@ async def _extract_memory_events(recent_msg_list: List[str], llm_id: str = None,
                 event["actor"] = "UNKNOWN"
             if "keywords" not in event:
                 event["keywords"] = []
+            # 统一分类器覆盖 event_type：消除 LLM 判断与检索 scope 的不一致
+            content = event.get("content", "")
+            if content:
+                from app.service.chat.intent_classifier import classify_event_type
+                event["event_type"] = classify_event_type(content)
             # 覆盖 LLM 生成的 event_id，防止跨轮次 ID 碰撞导致 ChromaDB upsert 覆盖
             content_hash = hashlib.md5(event.get("content", "").encode()).hexdigest()[:12]
             event["event_id"] = f"evt_{ts}_{i}_{content_hash}"

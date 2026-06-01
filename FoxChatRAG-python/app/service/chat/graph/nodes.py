@@ -8,15 +8,12 @@ Chat Graph 节点函数
 from typing import List
 
 from loguru import logger
-from app.schemas.current_state import UnfinishedItem, ItemStatus
 from app.service.chat.graph.state import ChatState
 from app.service.chat.state_manager import (
     increment_round_counter,
     clean_expired_unfinished_items,
-    update_unfinished_items,
     get_current_state,
 )
-from app.service.chat.time_node_service import route_due_time_nodes
 from app.service.chat.chat_redis_service import (
     fetch_all_memories,
     save_chat_to_redis,
@@ -48,30 +45,12 @@ from app.service.chat.types import ParsedMemories
 # ============================================================
 
 async def pre_flight(state: ChatState) -> dict:
-    """轮数初始化 + 清理过期 + 时间节点路由（lock 由 API 层管理）"""
+    """轮数初始化 + 清理过期（lock 由 API 层管理）"""
     user_id = state["user_id"]
     llm_id = state["llm_id"]
 
     current_round = increment_round_counter(user_id, llm_id) - 1
     clean_expired_unfinished_items(user_id, llm_id, current_round)
-
-    routing = route_due_time_nodes(user_id, llm_id, current_round)
-    if routing["unfinished_items"]:
-        activated_items = [
-            UnfinishedItem(
-                content=item["content"],
-                status=ItemStatus.PENDING,
-                confidence=item.get("confidence", 0.9),
-                expire_rounds=item.get("expire_rounds", 6),
-                update_round=current_round,
-                update_reason="时间节点到期激活",
-                created_at=item.get("created_at"),
-                due_at=item.get("due_at"),
-            )
-            for item in routing["unfinished_items"]
-        ]
-        update_unfinished_items(user_id, llm_id, activated_items, current_round)
-        logger.info(f"【时间节点激活】B层: {len(activated_items)} 条事项写入 unfinished_items")
 
     recent_msg_key = build_recent_msg_key(user_id, llm_id)
 

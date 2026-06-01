@@ -17,8 +17,6 @@ class LLMChatConstant(StrEnum):
 
     # 阶段2新增：当前状态容器与时间节点
     ROLE_CURRENT_STATE = "role_current_state"
-    ROLE_TIME_NODES = "role_time_nodes"
-
 
 def build_memory_key(suffix: str, user_id: str, llm_id: str) -> str:
     return f"{LLMChatConstant.CHAT_MEMORY}{user_id}:{llm_id}:{suffix}"

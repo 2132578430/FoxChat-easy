@@ -4,7 +4,6 @@
 职责：
 - 对话主流程编排（LangGraph Graph）
 - 状态管理（current_state）
-- 时间节点管理（time_node）
 - 情绪分类
 - 记忆总结
 """
@@ -19,12 +18,6 @@ from app.service.chat.state_manager import (
     check_and_expire_fields,
     increment_round_counter,
     get_current_round,
-)
-from app.service.chat.time_node_service import (
-    create_time_node,
-    get_all_time_nodes,
-    check_and_activate_due_time_nodes,
-    extract_time_node_from_text,
 )
 from app.service.chat.memory_summary_service import async_summary_msg_parallel
 from app.service.chat.user_profile_service import update_user_profile_in_summary
@@ -48,11 +41,6 @@ __all__ = [
     "check_and_expire_fields",
     "increment_round_counter",
     "get_current_round",
-    # 时间节点
-    "create_time_node",
-    "get_all_time_nodes",
-    "check_and_activate_due_time_nodes",
-    "extract_time_node_from_text",
     # 后台任务
     "async_summary_msg_parallel",
     "update_user_profile_in_summary",

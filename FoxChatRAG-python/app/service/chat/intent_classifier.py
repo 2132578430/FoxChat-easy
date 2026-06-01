@@ -19,6 +19,7 @@ from app.common.constant.intent_config import (
     INTENT_RULES,
     INTENT_EXAMPLES,
     RETRIEVAL_STRATEGY,
+    INTENT_TO_EVENT_TYPE,
     IntentResult,
     IntentType,
 )
@@ -226,6 +227,38 @@ def classify_intent(
         skip=default_strategy.get("skip", False),
         confidence=0.0,
     )
+
+
+# ============================================================
+# classify_event_type：提取侧统一分类（V4新增）
+# ============================================================
+
+def classify_event_type(
+    content: str,
+    query_embedding: Optional[np.ndarray] = None,
+) -> str:
+    """
+    对提取后的记忆 content 做 event_type 分类
+
+    复用现有两层意图分类器（规则+语义），
+    使提取和检索共用同一套类型空间。
+
+    Args:
+        content: 记忆内容（如 "用户的名字是悲狐"）
+        query_embedding: 可选，预计算的 embedding
+
+    Returns:
+        event_type 字符串（如 "identity", "preference" 等）
+    """
+    intent_result = classify_intent(content, query_embedding)
+    event_type = INTENT_TO_EVENT_TYPE.get(intent_result.intent, "other")
+
+    logger.debug(
+        f"【事件分类】content={content[:30]}..., "
+        f"intent={intent_result.intent}, event_type={event_type}, "
+        f"confidence={intent_result.confidence:.2f}"
+    )
+    return event_type
 
 
 # ============================================================

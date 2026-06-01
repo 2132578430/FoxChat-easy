@@ -1,0 +1,209 @@
+Coffee consumption and cardiometabolic health: a comprehensive review of the evidence - PMC
+https://pmc.ncbi.nlm.nih.gov/articles/PMC11493900/
+
+<!DOCTYPE html>
+
+Coffee consumption and cardiometabolic health: a comprehensive review of the evidence - PMC
+
+Skip to main content
+
+An official website of the United States government
+
+Here's how you know
+
+Here's how you know
+
+Official websites use .gov
+
+A
+.gov website belongs to an official
+government organization in the United States.
+
+Secure .gov websites use HTTPS
+
+A lock (
+
+) or https:// means you've safely
+connected to the .gov website. Share sensitive
+information only on official, secure websites.
+
+Search
+
+Log in
+
+Dashboard
+
+Publications
+
+Account settings
+
+Log out
+
+Search…
+
+Search NCBI
+
+Search PMC Full-Text Archive
+
+Search in PMC
+
+Journal List
+
+User Guide
+
+PERMALINK
+
+Copy
+
+As a library, NLM provides access to scientific literature. Inclusion in an NLM database does not imply endorsement of, or agreement with,
+the contents by NLM or the National Institutes of Health.
+
+Learn more:
+PMC Disclaimer
+|
+
+PMC Copyright Notice
+
+GeroScience
+. 2024 Jul 4;46(6):6473–6510. doi: 10.1007/s11357-024-01262-5
+
+Coffee consumption and cardiometabolic health: a comprehensive review of the evidence
+
+Zoltan Ungvari
+
+Zoltan Ungvari
+
+1Vascular Cognitive Impairment, Neurodegeneration and Healthy Brain Aging Program, Department of Neurosurgery, University of Oklahoma Health Sciences Center, Oklahoma City, OK USA 
+
+2Stephenson Cancer Center, University of Oklahoma, Oklahoma City, OK USA 
+
+3Oklahoma Center for Geroscience and Healthy Brain Aging, University of Oklahoma Health Sciences Center, Oklahoma City, OK USA 
+
+4Department of Health Promotion Sciences, College of Public Health, University of Oklahoma Health Sciences Center, Oklahoma City, OK USA 
+
+5International Training Program in Geroscience, Doctoral College/Department of Preventive Medicine and Public Health, Semmelweis University, Budapest, Hungary 
+
+Find articles by Zoltan Ungvari
+
+1,2,3,4,5, Setor K Kunutsor
+
+Setor K Kunutsor
+
+6Leicester Real World Evidence Unit, Diabetes Research Centre, University of Leicester, Leicester General Hospital, Gwendolen Road, Leicester, LE5 4WP UK 
+
+7Section of Cardiology, Department of Internal Medicine, Rady Faculty of Health Sciences, University of Manitoba, Saint Boniface Hospital, Winnipeg, MB R2H 2A6 Canada 
+
+Find articles by Setor K Kunutsor
+
+6,7,✉
+
+Author information
+
+Article notes
+
+Copyright and License information
+
+1Vascular Cognitive Impairment, Neurodegeneration and Healthy Brain Aging Program, Department of Neurosurgery, University of Oklahoma Health Sciences Center, Oklahoma City, OK USA 
+
+2Stephenson Cancer Center, University of Oklahoma, Oklahoma City, OK USA 
+
+3Oklahoma Center for Geroscience and Healthy Brain Aging, University of Oklahoma Health Sciences Center, Oklahoma City, OK USA 
+
+4Department of Health Promotion Sciences, College of Public Health, University of Oklahoma Health Sciences Center, Oklahoma City, OK USA 
+
+5International Training Program in Geroscience, Doctoral College/Department of Preventive Medicine and Public Health, Semmelweis University, Budapest, Hungary 
+
+6Leicester Real World Evidence Unit, Diabetes Research Centre, University of Leicester, Leicester General Hospital, Gwendolen Road, Leicester, LE5 4WP UK 
+
+7Section of Cardiology, Department of Internal Medicine, Rady Faculty of Health Sciences, University of Manitoba, Saint Boniface Hospital, Winnipeg, MB R2H 2A6 Canada 
+
+✉
+Corresponding author.
+
+Received 2024 May 17; Accepted 2024 Jun 21; Collection date 2024 Dec.
+
+© The Author(s) 2024
+
+Open Access This article is licensed under a Creative Commons Attribution 4.0 International License, which permits use, sharing, adaptation, distribution and reproduction in any medium or format, as long as you give appropriate credit to the original author(s) and the source, provide a link to the Creative Commons licence, and indicate if changes were made. The images or other third party material in this article are included in the article's Creative Commons licence, unless indicated otherwise in a credit line to the material. If material is not included in the article's Creative Commons licence and your intended use is not permitted by statutory regulation or exceeds the permitted use, you will need to obtain permission directly from the copyright holder. To view a copy of this licence, visit http://creativecommons.org/licenses/by/4.0/.
+
+PMC Copyright notice
+
+PMCID: PMC11493900  PMID: 38963648
+
+Abstract
+
+This review provides a comprehensive synthesis of longitudinal observational and interventional studies on the cardiometabolic effects of coffee consumption. It explores biological mechanisms, and clinical and policy implications, and highlights gaps in the evidence while suggesting future research directions. It also reviews evidence on the causal relationships between coffee consumption and cardiometabolic outcomes from Mendelian randomization (MR) studies. Findings indicate that while coffee may cause short-term increases in blood pressure, it does not contribute to long-term hypertension risk. There is limited evidence indicating that coffee intake might reduce the risk of metabolic syndrome and non-alcoholic fatty liver disease. Furthermore, coffee consumption is consistently linked with reduced risks of type 2 diabetes (T2D) and chronic kidney disease (CKD), showing dose-response relationships. The relationship between coffee and cardiovascular disease is complex, showing potential stroke prevention benefits but ambiguous effects on coronary heart disease. Moderate coffee consumption, typically ranging from 1 to 5 cups per day, is linked to a reduced risk of heart failure, while its impact on atrial fibrillation remains inconclusive. Furthermore, coffee consumption is associated with a lower risk of all-cause mortality, following a U-shaped pattern, with the largest risk reduction observed at moderate consumption levels. Except for T2D and CKD, MR studies do not robustly support a causal link between coffee consumption and adverse cardiometabolic outcomes. The potential beneficial effects of coffee on cardiometabolic health are consistent across age, sex, geographical regions, and coffee subtypes and are multi-dimensional, involving antioxidative, anti-inflammatory, lipid-modulating, insulin-sensitizing, and thermogenic effects. Based on its beneficial effects on cardiometabolic health and fundamental biological processes involved in aging, moderate coffee consumption has the potential to contribute to extending the healthspan and increasing longevity. The findings underscore the need for future research to understand the underlying mechanisms and refine health recommendations regarding coffee consumption.
+
+Keywords: Coffee consumption, Caffeine, Cardiometabolic, Type 2 diabetes, Hypertension, Chronic kidney disease, Cardiovascular disease, Mortality
+
+Introduction
+
+Adverse cardiometabolic outcomes, encompassing hypertension, metabolic syndrome (MetS), nonalcoholic fatty liver disease (NAFLD), type 2 diabetes (T2D), chronic kidney disease (CKD), and cardiovascular diseases (CVDs), represent a significant public health burden globally. These diseases significantly impact morbidity, life expectancy, quality of life, and mortality. Hypertension, a leading risk factor for CVD and stroke, affects an estimated 1.28 billion adults globally, with a higher prevalence in low- and middle-income countries [1, 2]. Metabolic syndrome, a complex of interconnected metabolic risk factors that include abdominal obesity, insulin resistance, high blood pressure, and atherogenic dyslipidemia (consists of an aggregation of lipoprotein abnormalities including elevated serum triglyceride and apolipoprotein B (apoB), increased small low-density lipoprotein (LDL) particles, and a reduced level of high-density lipoprotein cholesterol (HDL-C)) [3, 4], is an important contributor to T2D, CVD, and premature death [5–8]. Nonalcoholic fatty liver disease is a cardiometabolic condition which is characterized by hepatic steatosis with varying degrees of necroinflammation and fibrosis [9]. It is a major cause of cirrhosis and hepatocellular carcinoma [9]. Type 2 diabetes, characterized by elevated blood sugar levels, is a common condition contributing to various health complications, including kidney failure, heart disease, and stroke [10]. Chronic kidney disease reveals a troubling burden, in terms of both morbidity and mortality, as well as substantial economic costs associated with its diagnosis and management [11, 12]. Cardiovascular disease, with its major manifestations being coronary heart disease (CHD) and stroke, is the leading cause of death globally [13]. Together, these diseases pose a substantial burden on healthcare systems and global economies. The rising prevalence of these conditions is linked to aging populations[14] and increased exposure to modifiable lifestyle risk factors such as tobacco use, physical inactivity, unhealthy diet, and harmful alcohol consumption [15–17]. These lifestyle choices play a pivotal role in the development and progression of these diseases, highlighting the importance of preventive strategies in public health [18].
+
+The role of dietary factors in mitigating the risk of these cardiometabolic diseases is increasingly recognized. A balanced diet, rich in fruits, vegetables, whole grains, and lean proteins, has been shown to have protective effects against these conditions [19–22]. Amidst various dietary components, coffee consumption emerges as a topic of growing interest due to its widespread use and potential health implications. Coffee, a beverage with a rich history and cultural significance and the most popular and widely consumed beverage in the world [23], has been a subject of numerous studies examining its impact on health [24].
+
+The history of coffee is as rich and robust as the beverage itself, spanning centuries and cultures, with its roots deeply embedded in both social and medicinal contexts [25, 26]. Coffee is believed to have originated in Ethiopia around the ninth century, where its beans were initially chewed for energy by local tribes. The use of coffee as a drink spread to the Arabian Peninsula, and by the sixteenth century, it was known in Persia, Egypt, Syria, and Turkey. Historically, coffee was not only consumed for pleasure but also valued for its medicinal properties [26]. In Arabian culture, coffee was prescribed as a medicine for a variety of ailments from simple headaches to more complex conditions like depression [26]. By the seventeeth century, coffee had made its way to Europe and was sold by apothecaries as a remedy for digestive disorders, a practice that was particularly common in Germany and France. In the 1600s, detailed medicinal reports began appearing on coffee’s beneficial effects, such as its ability to cure certain diseases, aid in digestion, excite mental prowess, and act as a stimulant [26].
+
+The journey of coffee through medical scrutiny has a colorful past [26], highlighted by what might be considered one of the earliest instances of a controlled clinical trial. This experimental approach to understanding coffee’s health effects dates back to the eighteeth century under the rule of Gustav III of Sweden (1746–1792 AD), who had a complex view on the beverage’s safety [27]. The King’s skepticism towards coffee was inherited from a backdrop of stringent regulations instigated by his father, Adolph Frederick, who enacted the “Misuse and Excesses Tea and Coffee Drinking Edict” [28]. This law not only imposed heavy taxes on coffee but also penalized its consumption. In a bold move to investigate health implications of coffee consumption, Gustav III initiated an experiment involving two identical twins convicted of a crime. Their death sentences were commuted to life imprisonment on the condition that they participate in his study, with one twin consuming three pots of coffee daily and the other the same amount of tea. The results were clear when the coffee-drinking twin outlived his tea-consuming counterpart, dying at a later age [27]. This outcome eventually contributed to the lifting of the coffee ban in Sweden during the 1820s.
+
+In modern times, the majority of health practitioners have recommended avoiding coffee in patients with CVD [29], due to side effects such as increased blood pressure (BP) and cardiac arrhythmias [30, 31], that may adversely impact cardiovascular outcomes. In fact, in the 1960s, coffee consumption was proposed as a cardiovascular risk factor [32]. However, recent evidence suggests that coffee consumption may exert beneficial effects on several cardiometabolic outcomes [33, 34]. Studies have shown associations between coffee intake and reduced risk of outcomes such as T2D, CVD, and mortality.[33, 35, 36] However, the evidence has not always been consistent, with some studies suggesting neutral or even adverse effects [33, 37, 38].
+
+Given the extensive literature and several inconsistencies in findings, there is a pressing need to summarize and appraise the evidence surrounding coffee consumption and cardiometabolic health in one single investigation. This will enable patients, clinicians, researchers, and policy makers to make the appropriate interpretations, which can optimally impact on public health and clinical practice. This review aims to provide a comprehensive overview of the current state of evidence, delve into the biological mechanisms through which coffee may exert its cardiometabolic health effects, and discuss the health, clinical, and policy implications. The following adverse cardiometabolic outcomes are evaluated: hypertension, MetS, NAFLD, T2D, CKD, composite CVD, and specific endpoints such as CHD, stroke, heart failure (HF), and atrial fibrillation (AF), and all-cause mortality. This review also discusses the potential of coffee consumption to contribute to the extension of healthspan and improve longevity, based on its benefits to cardiometabolic health. The review also highlights gaps in the existing evidence and suggests future research directions in this area. Additionally, this study reviews evidence on the causal relationships between coffee consumption and these cardiometabolic outcomes using Mendelian randomization (MR) studies. Such a synthesis is very relevant, considering the substantial public health burden attributed to adverse cardiometabolic outcomes and the widespread consumption of coffee globally.
+
+Methods
+
+A search of MEDLINE and Embase was conducted up to May 2024 for randomized controlled trials (RCTs), non-RCTs, and observational studies, including prospective cohort, nested case-control, case-cohort, or retrospective cohort studies, with a particular focus on systematic reviews and meta-analyses of these study designs, based on the hierarchy of evidence [39]. Search terms or keywords related to coffee consumption (“coffee,” “coffee consumption”) and cardiometabolic outcomes (“hypertension,” “metabolic syndrome,” “NAFLD,” type 2 diabetes,” “chronic kidney disease,” “cardiovascular disease,” “coronary heart disease,” “stroke,” “heart failure,” “atrial fibrillation,” “mortality”) were combined. The review was restricted to studies conducted in human population, reported in English, and in adults. For observational studies, the focus was particularly on longitudinal cohort studies given that they address the issue of temporality. Studies that studied the effect of the combination of coffee and tea/cocoa-based beverages were not evaluated. In a separate search, MR studies on coffee consumption and cardiometabolic outcomes were identified.
+
+Types of coffee
+
+Coffee is a complex beverage composed of over 100 biological and chemical components, including carbohydrates, lipids, nitrogenous compounds, vitamins, minerals, and a variety of bioactive compounds such as diterpenes, magnesium, trigonelline, quinides, lignans, alkaloids, and phenolic compounds [40]. The principal active ingredient in coffee, caffeine, is the most widely consumed psychostimulant in the world [41]. The composition of these components can vary significantly depending on the coffee bean variety, roasting degree, and brewing method.
+
+There are two primary types of coffee beans: Arabica and Robusta. Arabica beans, which constitute about 70% of the world’s coffee production, are prized for their smooth flavor and aromatic qualities. Robusta beans, making up the remaining 30%, are more robust and bitter, often used in blends for added body and crema. They contain higher levels of caffeine compared to Arabica beans [42].
+
+Coffee can be classified into two subtypes: instant coffee and ground coffee, which differ in preparation, taste, and caffeine content [42]. Instant coffee is created from brewed coffee that has been freeze-dried or spray-dried into soluble powder or granules. To prepare, you simply dissolve it in hot water, making it a quick and convenient option. Instant coffee typically contains between 60 and 80 mg of caffeine per 8-oz cup. It is often made from lower-grade coffee beans. Ground coffee is made from coffee beans that have been roasted and then ground. It is used in various brewing methods, such as drip brewing, French press, or espresso machines. The caffeine content in ground coffee can vary widely, depending on the bean type, roast level, and brewing method. Generally, an 8-oz cup of ground coffee can contain anywhere between 70 and 140mg of caffeine.
+
+Globally, coffee is enjoyed in numerous forms, ranging from traditional brews like espresso, Americano, and French press to more contemporary styles such as latte, cappuccino, macchiato, mocha, flat white, iced coffee, and cold brew [43]. Each preparation method influences the composition as well as the flavor and texture of the final product. Espresso coffee traces its origins back to Turin in 1884, with the invention of the machine known as “La Brasiliana,” patented by Angelo Moriondo (patent No. 33/256 dated May 16, 1884, and later patent No. 34/381 dated November 20, 1884). This innovation was internationally patented in Paris on October 23, 1885 [44]. The term “espresso coffee” first emerged at the 1906 Milan Fair, coined by Desiderio Pavoni to describe this new coffee preparation method [45]. In 1936, Antonio Cremonese officially included “espresso coffee” in a patent (patent No. 343230). This patent was subsequently purchased and enhanced by Achille Gaggia, who marketed the machine as a “crema coffee” machine. The name “crema coffee” referred to the distinctive layer of crema that differentiated it from instant coffees. Thus, crema coffee evolved into the espresso coffee we recognize today [46]. In 1938, Gaggia filed patent No. 365726, which marked a significant advancement in coffee extraction technology. His machine employed a piston system to push high-temperature water through the coffee powder, creating the first pressurized espresso extraction method. This innovation resulted in espresso coffee that was free from traditional bitterness and burnt aftertaste, characterized instead by a thick, creamy texture [45]. In 1947, Gaggia registered a second patent, introducing a lever system that replaced the press mechanism. This lever pushed water at a pressure of 9/10 atmospheres into the ground coffee, allowing for the extraction of aromatic compounds and the formation of crema. The result was a coffee that retained its full olfactory and taste characteristics. The intense aroma and rich flavor profile contributed to the rapid popularity of “crema espresso,” solidifying it as a celebrated symbol of Italian coffee culture [44].
+
+Coffee can also be categorized based on its caffeine content into caffeinated and decaffeinated varieties. The caffeine extraction involves various methods that reduce caffeine levels while attempting to maintain the original flavor profile.
+
+Coffee can broadly be classified into three preparation styles based on how it is brewed. Boiled coffee is one of the oldest methods, where ground coffee is boiled in water, typically in a pot or kettle. This method does not use a filter, allowing the grounds to naturally settle at the bottom.
+
+Unfiltered coffee is a brewing method in which coffee grounds are steeped in hot water and then separated from the liquid using a method that allows some fine particles to remain in the final brew. This method encompasses styles such as Turkish coffee and French press. In Turkish coffee, the finely ground coffee is simmered in a pot with water and often sugar, then served into cups where the grounds are allowed to settle. In the French press, coarser grounds are steeped in hot water, and then a plunger is used to press the grounds to the bottom of the pot, allowing the brewed coffee to remain above the mesh filter.
+
+The filtered coffee method involves brewing by pouring hot water over coffee grounds contained within a filter. As the water percolates through the grounds, it extracts flavors and compounds, but leaves behind most of the coffee particles and oils, thanks to the filter. This process produces a coffee that is lighter in body and cleaner in taste compared to unfiltered coffee methods. One significant characteristic of filtered coffee is that it lacks the rich diterpene compounds found in unfiltered coffee, such as cafestol and kahweol, which are known to contribute to the oiliness and robust flavor of coffees like those made from a French press or Turkish brewing method. The absence of these diterpenes makes filtered coffee a healthier choice for those concerned about cholesterol, as diterpenes have been shown to elevate LDL cholesterol levels [47].
+
+Coffee consumption and impact on adverse cardiometabolic outcomes
+
+Blood pressure and hypertension
+
+The relationship between coffee consumption and blood pressure (BP)/hypertension is complex. Coffee consumption has been linked to increases in BP or risk of hypertension, whereas some studies suggest a protective effect of coffee intake. A large number of RCTs and observational cohort studies of the effect of coffee or caffeine consumption on BP or hypertension have been conducted, and there have been several efforts to aggregate the evidence using systematic reviews and meta-analyses. Jee and colleagues [48] in their 1999 meta-analysis of 11 RCTs showed that coffee consumption (median dose of 5 cups/day) was associated with increases in systolic and diastolic blood pressure (SBP and DBP, respectively) (2.4 and 1.2 mmHg, respectively) following a median duration of 56 days. The effect of coffee consumption on SBP and DBP was greater in trials with younger participants [48]. In a meta-analysis of 16 caffeine and coffee consumption RCTs of 42 days median duration published by Noordzij and colleagues [49] in 2005, SBP and DBP were shown to increase by 2.04 and 0.73 mmHg, respectively. When coffee and caffeine trials were analyzed separately, BP elevations appeared to be larger for caffeine (SBP 4.16 mmHg (2.13–6.20) and DBP 2.41 mmHg (0.98–3.84)) than for coffee consumption (SBP 1.22 mmHg (0.52–1.92) and DBP 0.49 mmHg (−0.06–1.04)) [49]. In a 2021 meta-analysis of RCTs to evaluate the effects of coffee consumption on MeTS parameters, Ramli and colleagues [50] showed that green coffee extract supplementation reduced SBP and DBP. Mesas and colleagues [51] in 2011 conducted a meta-analysis of five RCTs to summarize the evidence on the acute and longer-term effects of caffeine and coffee intake on BP in hypertensive individuals. Results showed that the administration of 200–300 mg caffeine produced a mean increase of 8.1 mmHg in SBP and of 5.7 mmHg in DBP. The increase in BP was observed in the first hour after caffeine intake and lasted ≥3 h [51]. In three studies of the longer-term effect (2 weeks) of coffee, no increase in BP was observed after coffee was compared with a caffeine-free diet or was compared with decaffeinated coffee [51].
+
+In a 2017 dose-response meta-analysis of seven observational cohort studies by Grosso and colleagues [52], the nonlinear analysis showed a 9% significant decreased risk of hypertension per 7 cups of coffee a day, while, in the linear dose–response analysis, there was a 1% decreased risk of hypertension for each additional cup of coffee per day. In stratified analysis, significant inverse associations were observed in females, but not in males; however, these analyses need to be interpreted with caution given the limited number of studies for the stratified analysis [52]. In a 2018 dose-response meta-analysis of ten observational cohort studies, Xie and colleagues [53] showed that coffee consumption was weakly and inversely associated with the risk of hypertension in a linear dose-response manner. For the dose-response curve, the relative risks (RRs) of hypertension risk were 0.97 (95% CI, 0.95–0.99), 0.95 (95% CI, 0.91–0.99), 0.92 (95% CI, 0.87–0.98), and 0.90 (95% CI, 0.83–0.97) for 2, 4, 6, and 8 cups/day, respectively, compared with individuals with no coffee intakes [53]. The associations did not vary significantly by age and sex in stratified analyses [53]. In a 2019 meta-analysis by D’Elia and colleagues [54] involving four prospective cohort studies, a nonlinear inverse dose-response relationship was demonstrated between coffee consumption and the risk of hypertension. Compared with no coffee consumption, the RRs of hypertension were 1.00 (95% CI, 0.99–1.01) for 1 cup/day, 0.99 (95% CI, 0.97–1.02) for 2 cups/day, 0.97 (95% CI, 0.94–0.99) for 3–4 cups/day, 0.94 (95% CI, 0.91–0.97) for >4–5 cups/day, 0.90 (95% CI, 0.86–0.93) for >5–6 cups/day, and 0.86 (95% CI, 0.82–0.91) for >6–7 cups/day compared with no coffee consumption [54]. The associations did not vary by age categories [54]. In a 2023 meta-analysis of 12 observational cohort studies by Haghighatdoost and colleagues [55], comparing the highest category of coffee consumption with the lowest intake was associated with a 7% reduction in the risk of hypertension (RR=0.93, 95% CI, 0.88–0.97). The associations did not differ significantly by age and sex [55].
+
+Although the precise nature of the relation between coffee and BP is still unclear, most of evidence suggests that coffee consumption may cause short-term increases in BP, with no effect on long-term BP levels. Furthermore, coffee consumption does not increase the risk of hypertension; a weak association between moderate to high (range 2–8 cups/day) coffee consumption and decreased risk of hypertension cannot be ruled out (Fig. 1), and this does not appear to be modified significantly by age or sex.
+
+Fig. 1.
+
+Open in a new tab
+
+Coffee consumption and adverse cardiometabolic outcomes: summary of effects. AF, atrial fibrillation; BP, blood pressure; CHD, coronary heart disease; CKD, chronic kidney disease; CVD, cardiovascular disease; HF, heart failure; HYPT, hypertension; MetS, metabolic syndrome; NAFLD, nonalcoholic fatty liver disease; T2D, type 2 diabetes
+
+Metabolic syndrome
+
+The relationship between coffee consumption and MetS has mostly been investigated using cross-sectional study designs, with relatively few based on observational prospective cohort studies. Among 93,179 individuals from two large general population cohorts in a MR study, Nordestgaard and colleagues [56] in 2015 showed that coffee intake was associated with a lower risk of MetS observationally. Compared with individuals with no coffee intake, odds ratios (ORs) for MetS were 0.91 (95% CI, 0.86–0.97) for 0.1–1 cup/day, 0.89 (95% CI, 0.84–0.94) for 1.1–2 cups/day, 0.88 (95% CI, 0.83–0.93) for 2.1–3 cups/day, 0.83 (95% CI, 0.78–0.89) for 3.1–4 cups/ day, 0.84 (95% CI, 0.79–0.90) for 4.1–5 cups/day, and 0.89 (95% CI, 0.83–0.95) for >5 cups/day [56]. The inverse associations did not vary significantly by age or sex [56]. Among 2554 older Australian adults followed over a 10-year period, Wong and colleagues [57] in 2022 showed that coffee consumption was not associated with the incidence of MetS. In a cohort of 10,253 participants without MetS at baseline, Corbi-Cobo-Losey and colleagues [58] in 2023 investigated the association between coffee consumption and incident MetS and showed that coffee consumption of ≥1 to <4 cups/day (moderate consumption) was associated with a significantly lower odds of developing MetS compared to consumption of <1 cup/month [58]. Compared with <1 cup/month, ORs were 0.79 (95% CI, 0.53–1.16) for ≥1 cup/month to <1 cup/day, 0.71 (95% CI, 0.50–0.99) for ≥1 cup/day to <4 cups/day, and 0.73 (95% CI, 0.42–1.29) for ≥4 cups/day [58]. There was no significant evidence of interactions by age or sex [58]. In a 2021 meta-analysis that pooled data separately on 13 cross-sectional studies and 2 observational cohort studies, none of the summary estimates showed evidence of an association between coffee consumption and the MetS [59]. In a 2021 systematic review and meta-analysis of RCTs to evaluate the effects of coffee consumption on MetS parameters, Ramli and colleagues [50] showed that green coffee extract supplementation reduced waist circumference, triglyceride levels, HDL-C levels, SBP, and DBP, whereas decaffeinated coffee reduced fasting blood glucose levels.
+
+Limited prospective evidence suggests that moderate to high coffee consumption might be associated with a reduced risk of MetS (Fig. 1).
+
+Nonalcoholic fatty liver disease
+
+Only few prospective studies have evaluated the association between coffee consumption and the risk of NAFLD; most of the evidence is based on cross-sectional study designs, which lack temporality.
+
+Zelber-Sagi and colleagues [60] prospectively evaluated the association between coffee consumption and onset of NAFLD in the general population and demonstrated no evidence of an association. In a 2017 prospective analysis of a multiethnic cohort, Setiawan and colleagues [61] showed evidence of an inverse association between coffee consumption and the risk of NAFLD, consistent with a dose-response relationship. Compared with individuals with never drinkers, ORs were 1.00 (95% CI, 0.89–1.12) for <1 cup/day, 0.93 (95% CI, 0.84–1.03) for 1 cup/day, 0.85 (95% CI, 0.75–0.96) for 2–3 cups/day, and 0.66 (95% CI, 0.53–0.83) for ≥4 cups/day. Chung and colleagues [62] in 2020 evaluated the association between coffee consumption and fatty liver disease in a large Korean cohort and demonstrated that the incidence of fatty liver was not associated with the amount of coffee consumption at baseline, but was lowered with an increment in the amount of coffee consumption at the follow-up period overall and in males but not in females [62]. Multiple meta-analyses have demonstrated a protective association of coffee intake with the development of NAFLD, but they mostly combined observational cross-sectional, case-control and cohort studies [63–65].
+
+In summary, coffee consumption might be associated with a reduced risk of NAFLD in a dose-response manner, but this is based on limited prospective evidence (Fig. 1).
+
+Type 2 diabetes
+
+Numerous individual studies have shown that long-term coffee consumption is consistently associated with a significantly lower risk of developing T2D. Using the Nurses’ Health Study (NHS) and Health Professionals’ Follow-up Study (HPFS), Salazar-Martinez and colleagues [66] in 2004 evaluated the long-term relationship between coffee consumption and other caffeinated beverages and the incidence of T2D. Coffee consumption was assessed every 2 to 4 years. Compared to no coffee consumption, the RRs of T2D risk in men were 0.98 (95% CI, 0.84–1.15) for <1 cup/day, 0.93 (95% CI, 0.80–1.08) for 1–3 cups/day, 0.71 (95% CI, 0.53–0.94) for 4–5 cups/day, and 0.46 (95% CI, 0.26–0.82) for ≥6 cups/day. The results were similar for women and were not modified by smoking or body mass index [66]. The associations between decaffeinated coffee and T2D risk were inverse and modest [66]. In a 2006 prospective analysis of the Iowa Women’s Health Study, which included 28,812 postmenopausal women who were free of diabetes and CVD, compared with women who reported 0 cups of coffee/day,
+
+[… truncated 150064 chars …]

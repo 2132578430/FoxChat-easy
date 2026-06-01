@@ -24,7 +24,6 @@ async def clear_chat_memory(user_id: str, llm_id: str) -> None:
         build_memory_key(LLMChatConstant.ROLE_EMOTION_STATE, user_id, llm_id),
         build_memory_key(LLMChatConstant.ROLE_EMOTION_LOG, user_id, llm_id),
         build_memory_key(LLMChatConstant.ROLE_CURRENT_STATE, user_id, llm_id),
-        build_memory_key(LLMChatConstant.ROLE_TIME_NODES, user_id, llm_id),
     ]
 
     from app.service.chat.common import build_round_counter_key
