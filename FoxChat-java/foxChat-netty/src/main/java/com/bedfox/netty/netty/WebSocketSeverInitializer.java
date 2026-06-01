@@ -36,7 +36,7 @@ public class WebSocketSeverInitializer extends ChannelInitializer<SocketChannel>
           心跳机制设置
          */
         pipeline.addLast(new IdleStateHandler(40, 50, 2*60));
-        pipeline.addLast(new HeartBeatHandler());
+        pipeline.addLast("HeartBeatHandler", new HeartBeatHandler());
 
         /*
           webSocket协议
@@ -45,9 +45,9 @@ public class WebSocketSeverInitializer extends ChannelInitializer<SocketChannel>
            ping+pong组合成心跳
          */
         pipeline.addLast(new WebSocketServerProtocolHandler("/chat"));
-        pipeline.addLast(new ProtocolMsgDecoder());
-        pipeline.addLast(new ProtocolMsgEncoder());
-        pipeline.addLast(new ChatWebSocketHandler());
+        pipeline.addLast("ProtocolMsgDecoder", new ProtocolMsgDecoder());
+        pipeline.addLast("ProtocolMsgEncoder", new ProtocolMsgEncoder());
+        pipeline.addLast("ChatWebSocketHandler", new ChatWebSocketHandler());
 
     }
 }
