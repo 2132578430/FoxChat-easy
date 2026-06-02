@@ -15,6 +15,9 @@ import java.util.Map;
 public class ChatHandlerFactory implements ApplicationContextAware {
     public static final Map<Integer, MsgHandler> beanMap = new HashMap<>();
 
+    /**
+     * 在Aware回调阶段的ApplicationContext直接把Bean拿出来
+     */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         Map<String, MsgHandler> beans = applicationContext.getBeansOfType(MsgHandler.class);

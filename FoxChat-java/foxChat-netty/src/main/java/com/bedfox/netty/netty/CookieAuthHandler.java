@@ -21,6 +21,10 @@ public class CookieAuthHandler extends ChannelInboundHandlerAdapter {
 
     private static final String TOKEN_COOKIE_NAME = "token";
 
+    /**
+     * 校验Cookie中的Token判断
+     * 但是，非统一端口会导致Cookie无法发出
+     */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof FullHttpRequest) {

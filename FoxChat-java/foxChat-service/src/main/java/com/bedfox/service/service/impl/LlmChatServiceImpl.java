@@ -45,7 +45,7 @@ public class LlmChatServiceImpl implements LlmChatService {
      */
     @Override
     public LlmChatMsgVo llmChat(String llmId, String msgContent, String userId) {
-        // 1. 保存用户消息 status=SENT(0)
+        // 1. 保存用户消息
         LlmChatMsg llmChatMsgHuman = buildLlmChatMsg(msgContent, llmId, userId, true, 0);
         llmChatMsgService.save(llmChatMsgHuman);
         log.debug("用户消息已保存，status=SENT(0)");
