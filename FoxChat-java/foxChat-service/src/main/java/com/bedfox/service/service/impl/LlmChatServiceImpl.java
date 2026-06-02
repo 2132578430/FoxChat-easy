@@ -45,15 +45,16 @@ public class LlmChatServiceImpl implements LlmChatService {
      */
     @Override
     public LlmChatMsgVo llmChat(String llmId, String msgContent, String userId) {
+        // 优先创建两个消息，保证消息发送
         // 1. 保存用户消息
         LlmChatMsg llmChatMsgHuman = buildLlmChatMsg(msgContent, llmId, userId, true, 0);
         llmChatMsgService.save(llmChatMsgHuman);
-        log.debug("用户消息已保存，status=SENT(0)");
+        // log.debug("用户消息已保存，status=SENT(0)");
 
-        // 2. 创建并保存AI占位消息 status=PROCESSING(3)
-        LlmChatMsg aiPlaceholder = buildLlmChatMsg("思考中...", llmId, userId, false, 3);
+        // 2. 创建并保存AI占位消息
+        LlmChatMsg aiPlaceholder = buildLlmChatMsg("抱歉，角色回复异常，请稍后重试", llmId, userId, false, 3);
         llmChatMsgService.save(aiPlaceholder);
-        log.debug("AI占位消息已保存，status=PROCESSING(3)");
+        // log.debug("AI占位消息已保存，status=PROCESSING(3)");
 
         ChatMsgTo chatMsg = new ChatMsgTo();
         chatMsg.setLlmId(llmId);
@@ -65,6 +66,7 @@ public class LlmChatServiceImpl implements LlmChatService {
             String resultJson = chatClient.chatMsg(chatMsg);
             log.info("接收到消息：{}", resultJson);
 
+            // 防止多余标签影响结果解析
             resultJson = resultJson.replaceAll("</?[a-zA-Z_]+>", "");
 
             M<String> msg = JSON.parseObject(resultJson, new TypeReference<>() {});
