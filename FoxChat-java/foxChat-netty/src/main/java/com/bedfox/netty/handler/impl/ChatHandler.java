@@ -9,8 +9,8 @@ import com.bedfox.netty.handler.MsgHandler;
 import com.bedfox.netty.netty.ChatWebSocketHandler;
 import com.bedfox.netty.netty.UserChannelRelation;
 import com.bedfox.service.service.ChatMsgService;
-import com.bedfox.common.util.ProtocolUtil;
 import com.bedfox.common.util.SpringUtil;
+import com.bedfox.netty.publisher.MsgPublisher;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import jakarta.annotation.Resource;
@@ -28,6 +28,9 @@ public class ChatHandler implements MsgHandler {
     @Resource(name = "stringRedisTemplate")
     StringRedisTemplate redisTemplate;
 
+    @Resource
+    MsgPublisher msgPublisher;
+
     @Override
     public MsgTypeConstant getMsgType() {
         return MsgTypeConstant.CHAT;
@@ -39,7 +42,7 @@ public class ChatHandler implements MsgHandler {
         String acceptUserId = chatMsg.getAcceptUserId();
         String sendUserId = chatMsg.getSendUserId();
 
-        log.info("用户ID{}：发送信息：{}", ctx.channel().attr(ChatWebSocketHandler.USER_ID_KEY).get(), chatMsg.getMsg());
+        // log.info("用户ID{}：发送信息：{}", ctx.channel().attr(ChatWebSocketHandler.USER_ID_KEY).get(), chatMsg.getMsg());
         // 构建并保存ChatMsg（createTime，signFlag自动赋值）
         ChatMsgService chatMsgService = (ChatMsgService) SpringUtil.getBean(ChatMsgService.class);
         // 保存信息数据到数据库中
@@ -52,7 +55,7 @@ public class ChatHandler implements MsgHandler {
         Channel acceptChannel = UserChannelRelation.get(acceptUserId);
         if (isOnline(acceptChannel)) {
             // 通过通道发送信息给用户
-            log.info("发送信息：{}", JSON.toJSONString(msgDto));
+            // log.info("发送信息：{}", JSON.toJSONString(msgDto));
 
             // 校验用户是否已经发过该信息
             String msgKey = RedisConstant.MSG_PRE + sendUserId;
@@ -63,8 +66,7 @@ public class ChatHandler implements MsgHandler {
 
             // 将该信息储存到redis中
             redisTemplate.opsForSet().add(msgKey, msgId);
-
-            redisTemplate.convertAndSend(RedisConstant.CHANNEL, ProtocolUtil.toProtocolBase64(msgDto));
+            msgPublisher.publish(msgDto);
         }
     }
 

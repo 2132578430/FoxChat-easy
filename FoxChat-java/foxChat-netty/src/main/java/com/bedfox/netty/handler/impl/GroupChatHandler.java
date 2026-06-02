@@ -2,7 +2,7 @@ package com.bedfox.netty.handler.impl;
 
 import com.bedfox.common.constant.MsgTargetTypeConstant;
 import com.bedfox.common.constant.MsgTypeConstant;
-import com.bedfox.common.constant.RedisConstant;
+
 import com.bedfox.pojo.domain.GroupMsg;
 import com.bedfox.pojo.domain.Users;
 import com.bedfox.pojo.dto.MsgDto;
@@ -11,7 +11,7 @@ import com.bedfox.netty.netty.ChatWebSocketHandler;
 import com.bedfox.netty.netty.GroupChannelRelation;
 import com.bedfox.service.service.GroupMsgService;
 import com.bedfox.service.service.UsersService;
-import com.bedfox.common.util.ProtocolUtil;
+import com.bedfox.netty.publisher.MsgPublisher;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.group.ChannelGroup;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +36,9 @@ public class GroupChatHandler implements MsgHandler {
 
     @Autowired
     UsersService usersService;
+
+    @Autowired
+    MsgPublisher msgPublisher;
 
     @Override
     public MsgTypeConstant getMsgType() {
@@ -65,6 +68,6 @@ public class GroupChatHandler implements MsgHandler {
         // 发送信息
         ChannelGroup channelGroup = GroupChannelRelation.get(groupId);
 
-        redisTemplate.convertAndSend(RedisConstant.CHANNEL, ProtocolUtil.toProtocolBase64(msgDto));
+        msgPublisher.publish(msgDto);
     }
 }

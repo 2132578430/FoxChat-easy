@@ -1,7 +1,6 @@
 package com.bedfox.netty.handler.impl;
 
 import com.bedfox.common.constant.MsgTypeConstant;
-import com.bedfox.common.constant.RedisConstant;
 import com.bedfox.pojo.domain.ChatMsg;
 import com.bedfox.pojo.domain.FriendsRequest;
 import com.bedfox.pojo.domain.Users;
@@ -9,13 +8,12 @@ import com.bedfox.pojo.dto.MsgDto;
 import com.bedfox.netty.handler.MsgHandler;
 import com.bedfox.netty.netty.UserChannelRelation;
 import com.bedfox.service.service.FriendsRequestService;
-import com.bedfox.common.util.ProtocolUtil;
+import com.bedfox.netty.publisher.MsgPublisher;
 import com.bedfox.common.util.SpringUtil;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -27,8 +25,8 @@ import java.time.LocalDateTime;
 @Slf4j
 public class RequestFriendHandler implements MsgHandler {
 
-    @Autowired
-    StringRedisTemplate redisTemplate;
+    @Resource
+    MsgPublisher msgPublisher;
 
     @Override
     public MsgTypeConstant getMsgType() {
@@ -38,7 +36,6 @@ public class RequestFriendHandler implements MsgHandler {
     @Override
     public void handler(ChannelHandlerContext ctx, MsgDto msgDto) {
         ChatMsg chatMsg = msgDto.getChatMsg();
-
         String acceptUserId = chatMsg.getAcceptUserId();
         String sendUserId = chatMsg.getSendUserId();
 
@@ -59,7 +56,7 @@ public class RequestFriendHandler implements MsgHandler {
         // 判断是否在线
         if (isOnline(acceptChannel)) {
             msgDto.setType(MsgTypeConstant.PULL_FRIEND.getCode());
-            redisTemplate.convertAndSend(RedisConstant.CHANNEL, ProtocolUtil.toProtocolBase64(msgDto));
+            msgPublisher.publish(msgDto);
         }
     }
 

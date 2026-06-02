@@ -3,12 +3,12 @@ package com.bedfox.netty.netty;
 import com.bedfox.common.constant.AuthConstant;
 import com.bedfox.common.constant.FriendConstant;
 import com.bedfox.common.constant.MsgTypeConstant;
-import com.bedfox.common.constant.RedisConstant;
 import com.bedfox.pojo.domain.ChatMsg;
 import com.bedfox.pojo.domain.ChatProtocol;
 import com.bedfox.pojo.dto.MsgDto;
 import com.bedfox.netty.handler.ChatHandlerFactory;
 import com.bedfox.netty.handler.MsgHandler;
+import com.bedfox.netty.publisher.MsgPublisher;
 import com.bedfox.common.util.ProtocolUtil;
 import com.bedfox.common.util.SpringUtil;
 import io.netty.channel.Channel;
@@ -36,18 +36,22 @@ public class ChatWebSocketHandler extends SimpleChannelInboundHandler<ChatProtoc
 
     public static final AttributeKey<String> USER_ID_KEY = AttributeKey.valueOf("userId");
 
+    /**
+     * 对客户端发送的消息处理
+     */
     @Transactional
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ChatProtocol.Message text) throws Exception {
         MsgDto msgDto = ProtocolUtil.protocolToMsgDto(text);
 
-        // 信息类型分发
+        // 获取相关消息类型的handler
         MsgHandler handler = ChatHandlerFactory.getHandler(msgDto.getType());
 
         if (handler != null) {
             handler.handler(ctx, msgDto);
         }
     }
+
     /**
      * 建立连接就将通道加入到通道管理器
      * @param ctx
@@ -58,18 +62,9 @@ public class ChatWebSocketHandler extends SimpleChannelInboundHandler<ChatProtoc
         userChannel.add(ctx.channel());
     }
 
-
     /**
-     * 移除Channel
-     * @param ctx
-     * @throws Exception
+     * Channel断开
      */
-    @Override
-    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-        // 清除channelGroup中的连接
-        onlineClear(ctx);
-    }
-
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         // 广播用户下线通知
@@ -80,6 +75,7 @@ public class ChatWebSocketHandler extends SimpleChannelInboundHandler<ChatProtoc
     private void boardLogOut(Channel channel) {
         try {
             StringRedisTemplate redisTemplate = (StringRedisTemplate) SpringUtil.getBean(StringRedisTemplate.class);
+            MsgPublisher msgPublisher = (MsgPublisher) SpringUtil.getBean(MsgPublisher.class);
             String userKey = FriendConstant.USER_FRIEND_PRE + channel.attr(USER_ID_KEY).get();
 
             // 检索到所有好友的Id
@@ -96,13 +92,24 @@ public class ChatWebSocketHandler extends SimpleChannelInboundHandler<ChatProtoc
                     chatMsg.setAcceptUserId(friendId);
                     msgDto.setChatMsg(chatMsg);
 
-                    redisTemplate.convertAndSend(RedisConstant.CHANNEL, ProtocolUtil.toProtocolBase64(msgDto));
+                    msgPublisher.publish(msgDto);
                 }
             }
         } catch (IllegalStateException e) {
             // Redis连接工厂已停止（应用关闭时），忽略此异常
             log.warn("Redis连接已关闭，跳过广播下线通知: {}", e.getMessage());
         }
+    }
+
+    /**
+     * 移除Channel
+     * @param ctx
+     * @throws Exception
+     */
+    @Override
+    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+        // 清除channelGroup中的连接
+        onlineClear(ctx);
     }
 
     /**

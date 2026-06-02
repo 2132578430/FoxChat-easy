@@ -10,8 +10,8 @@ import com.bedfox.netty.netty.GroupChannelRelation;
 import com.bedfox.netty.netty.UserChannelRelation;
 import com.bedfox.service.service.GroupMemberService;
 import com.bedfox.common.util.JwtUtil;
-import com.bedfox.common.util.ProtocolUtil;
 import com.bedfox.common.util.SpringUtil;
+import com.bedfox.netty.publisher.MsgPublisher;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import jakarta.annotation.Resource;
@@ -36,6 +36,9 @@ public class ConnectHandler implements MsgHandler {
     @Resource
     GroupMemberService groupMemberService;
 
+    @Resource
+    MsgPublisher msgPublisher;
+
     @Override
     public MsgTypeConstant getMsgType() {
         return MsgTypeConstant.CONNECT;
@@ -50,6 +53,7 @@ public class ConnectHandler implements MsgHandler {
             // 未通过 Cookie 验证，使用 auth message 验证
             JwtUtil jwtUtil = (JwtUtil) SpringUtil.getBean(JwtUtil.class);
             String extend = msgDto.getExtend();
+            
             userId = jwtUtil.getUserIdFromToken(extend);
             ctx.channel().attr(ChatWebSocketHandler.USER_ID_KEY).set(userId);
             log.info("用户{}通过auth message连接websocket服务器", userId);
@@ -106,7 +110,7 @@ public class ConnectHandler implements MsgHandler {
                 msgDto.setChatMsg(chatMsg);
 
                 // 通过redis广播
-                redisTemplate.convertAndSend(RedisConstant.CHANNEL, ProtocolUtil.toProtocolBase64(msgDto));
+                msgPublisher.publish(msgDto);
                 log.info("为好友：{}发送上线信息:{}",friendId, JSON.toJSONString(msgDto));
             }
         }
