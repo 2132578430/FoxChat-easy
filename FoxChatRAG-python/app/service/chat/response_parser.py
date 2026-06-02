@@ -51,9 +51,8 @@ def parse_action_tags(content: str) -> List[MessageBlock]:
         else:
             after_text = content[match_end:].strip()
 
+        blocks.append(MessageBlock(type="action", action=action_text, text=None))
         if after_text:
-            blocks.append(MessageBlock(type="action_text", action=action_text, text=after_text))
-        else:
-            blocks.append(MessageBlock(type="action", action=action_text, text=None))
+            blocks.append(MessageBlock(type="text", text=after_text))
 
     return blocks

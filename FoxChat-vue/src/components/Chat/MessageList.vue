@@ -96,11 +96,11 @@
             <!-- 结构化消息块（AI回复） -->
             <template v-else v-for="(block, blockIndex) in msg.blocks" :key="blockIndex">
               <!-- 动作标签 -->
-              <div v-if="block.type === 'action' || block.type === 'action_text'" class="action-tag">
+              <div v-if="block.type === 'action'" class="action-tag">
                 ○ {{ block.action || block.content }}
               </div>
               <!-- 文字内容 -->
-              <div v-if="(block.type === 'text' || block.type === 'action_text') && (block.text || block.content)" class="msg-bubble">
+              <div v-if="block.type === 'text' && (block.text || block.content)" class="msg-bubble">
                 <div class="bubble-content">{{ block.text || block.content }}</div>
               </div>
             </template>
