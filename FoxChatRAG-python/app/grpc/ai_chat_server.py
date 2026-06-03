@@ -34,6 +34,7 @@ from app.service.chat.streaming_tag_parser import StreamingTagParser, StreamToke
 from app.service.chat.chat_msg_service import clear_chat_memory
 from app.service.chat.session_lock import acquire_session_lock, release_session_lock
 from app.service.chat.graph.graph import main_graph
+from app.service.chat.graph.nodes import _stream_queue_ctx
 
 
 class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_grpc else object):
@@ -104,12 +105,15 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
         config = {
             "configurable": {
                 "thread_id": f"{user_id}:{llm_id}",
-                "stream_queue": stream_queue,
             }
         }
 
-        # 启动 graph（后台运行，后处理并行执行）
-        graph_task = asyncio.create_task(main_graph.ainvoke(initial_state, config))
+        # 通过 contextvars 传递 stream_queue（绕过 LangGraph checkpointer 序列化）
+        token = _stream_queue_ctx.set(stream_queue)
+        try:
+            graph_task = asyncio.create_task(main_graph.ainvoke(initial_state, config))
+        finally:
+            _stream_queue_ctx.reset(token)
 
         # 读取流式 token，逐 token 喂给 parser 并 yield
         seq = 0

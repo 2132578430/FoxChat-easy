@@ -5,9 +5,14 @@ Chat Graph 节点函数
 不包含业务逻辑，只做参数传递和状态更新。
 """
 
+import contextvars
 from typing import List
 
 from loguru import logger
+
+# 流式 token 传递通道（绕过 LangGraph checkpointer 序列化）
+# ai_chat_server._stream_chat 写入，invoke_llm 节点读取
+_stream_queue_ctx: contextvars.ContextVar = contextvars.ContextVar("stream_queue", default=None)
 from app.service.chat.graph.state import ChatState
 from app.service.chat.state_manager import (
     increment_round_counter,
@@ -138,11 +143,9 @@ async def invoke_llm(state: ChatState, config: dict = None) -> dict:
 
     双模式：
     - 非流式（默认）：invoke_llm_with_retrieval → 返回完整响应
-    - 流式：通过 config.configurable.stream_queue 逐 token 推送，同时积累完整响应
+    - 流式：通过 contextvars._stream_queue_ctx 逐 token 推送（绕过 checkpointer 序列化）
     """
-    stream_queue = None
-    if config and config.get("configurable"):
-        stream_queue = config["configurable"].get("stream_queue")
+    stream_queue = _stream_queue_ctx.get(None)
 
     if stream_queue is not None:
         # ── 流式模式：逐 token yield 到 queue ──
