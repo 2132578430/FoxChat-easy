@@ -21,8 +21,8 @@ from typing import List
 
 
 class ParseState(Enum):
-    TEXT = auto()          # 正在积累普通文本
-    INSIDE_ACTION = auto() # 正在积累 <action> 标签内的动作文本
+    TEXT = auto()
+    INSIDE_ACTION = auto()
 
 
 @dataclass
@@ -42,22 +42,12 @@ _CLOSE_TAG = "</action>"
 class StreamingTagParser:
     """
     流式标签解析器
-
-    使用示例:
-        parser = StreamingTagParser()
-        for llm_token in llm_stream:
-            for st in parser.feed(llm_token):
-                yield grpc_response(st)   # 推送给 Java
-        for st in parser.flush():
-            yield grpc_response(st)       # 流结束，刷新残留
     """
 
     def __init__(self):
         self.buffer = ""
         self.state = ParseState.TEXT
         self.block_seq: int = 0
-
-    # ── 公开 API ──────────────────────────────────
 
     def feed(self, token: str) -> List[StreamToken]:
         """
@@ -86,8 +76,7 @@ class StreamingTagParser:
             self.buffer = ""
         return results
 
-    # ── 状态机核心 ────────────────────────────────
-
+    # 状态机核心
     def _process(self, results: List[StreamToken]) -> None:
         """循环处理 buffer，直到无法继续（需要更多字符）"""
         while self.buffer:

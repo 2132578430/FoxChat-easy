@@ -108,7 +108,7 @@ public class LlmChatServiceImpl implements LlmChatService {
         // Block 增量构建器：用 is_block_start / is_block_end 拼装结构化 blocks
         List<Map<String, String>> blocks = new ArrayList<>();
         StringBuilder currentBlockContent = new StringBuilder();
-        String[] currentBlockType = {};  // 数组绕过 lambda effectively-final 限制
+        String[] currentBlockType = {null};  // 数组绕过 lambda effectively-final 限制
 
         // 3. 发送 SSE 心跳（防止代理/浏览器在首 token 到达前超时断开）
         try {
