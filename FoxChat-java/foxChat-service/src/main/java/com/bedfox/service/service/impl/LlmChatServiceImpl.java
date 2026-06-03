@@ -137,9 +137,10 @@ public class LlmChatServiceImpl implements LlmChatService {
                                 flushCurrentBlock(blocks, currentBlockContent, currentBlockType);
 
                                 // 构建最终 JSON：{"blocks":[...],"emotion":"..."}
+                                String emotionVal = response.getEmotion().isEmpty() ? "neutral" : response.getEmotion();
                                 Map<String, Object> result = new LinkedHashMap<>();
                                 result.put("blocks", blocks);
-                                result.put("emotion", response.getEmotion().isEmpty() ? "neutral" : response.getEmotion());
+                                result.put("emotion", emotionVal);
                                 String resultJson = JSON.toJSONString(result);
 
                                 // 存入 MySQL（与 REST 路径格式一致）
@@ -147,7 +148,9 @@ public class LlmChatServiceImpl implements LlmChatService {
                                 aiPlaceholder.setStatus(1);
                                 llmChatMsgService.updateById(aiPlaceholder);
 
-                                // 通知前端
+                                // 先发独立的 emotion 事件（前端可提前更新情绪 UI，不依赖 done）
+                                emitter.send(SseEmitter.event().name("emotion").data(emotionVal));
+                                // 再发 done 事件（含完整 blocks）
                                 emitter.send(SseEmitter.event().name("done").data(resultJson));
                                 emitter.complete();
                             } else {
