@@ -89,10 +89,6 @@ def get_active_sessions() -> List[Tuple[str, str]]:
             llm_id = parts[3]
             sessions.append((user_id, llm_id))
 
-    # Only log when sessions found (avoid spamming empty checks)
-    if sessions:
-        logger.debug(f"[Timer] Found {len(sessions)} active sessions")
-
     return sessions
 
 
