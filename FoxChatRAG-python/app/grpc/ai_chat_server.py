@@ -90,9 +90,11 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
             release_session_lock(lock)
 
     async def _stream_chat(self, user_id: str, llm_id: str, msg_content: str, parser: StreamingTagParser):
-        """流式 Chat：graph + stream_queue"""
+        """流式 Chat：graph + stream_queue（带超时保护，防止 graph 挂死）"""
 
         stream_queue = asyncio.Queue()
+        FIRST_TOKEN_TIMEOUT = 60  # 首 token 超时（秒）
+        INTER_TOKEN_TIMEOUT = 15  # token 间超时（秒）
 
         initial_state = {
             "user_id": user_id,
@@ -111,9 +113,29 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
 
         # 读取流式 token，逐 token 喂给 parser 并 yield
         seq = 0
+        first_token = True
         try:
             while True:
-                token = await stream_queue.get()
+                # 带超时的 queue.get，防止 graph 挂掉后永久阻塞
+                timeout = FIRST_TOKEN_TIMEOUT if first_token else INTER_TOKEN_TIMEOUT
+                try:
+                    token = await asyncio.wait_for(stream_queue.get(), timeout=timeout)
+                except asyncio.TimeoutError:
+                    # 超时：检查 graph 是否已失败
+                    if graph_task.done():
+                        exc = graph_task.exception()
+                        if exc:
+                            logger.error(f"[gRPC Chat] Graph 执行失败: {exc}")
+                            raise exc
+                        else:
+                            raise RuntimeError("Graph completed without producing any tokens")
+                    else:
+                        logger.error(f"[gRPC Chat] 首 token 超时 ({timeout}s)，取消 graph")
+                        graph_task.cancel()
+                        raise TimeoutError(f"LLM streaming timed out waiting for {'first' if first_token else 'next'} token ({timeout}s)")
+
+                first_token = False
+
                 if token is None:  # Sentinel: streaming done
                     break
                 for st in parser.feed(token):
@@ -127,7 +149,7 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
 
             # 等待 graph 完成（后处理 4 路并行）
             result = await graph_task
-            emotion = result.get("emotion", "neutral")
+            emotion = result.get("emotion", "normal")
 
             # 最终包
             yield ai_chat_pb2.ChatResponse(

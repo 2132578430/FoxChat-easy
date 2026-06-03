@@ -1,7 +1,5 @@
 /**
- * LLM REST 降级函数（gRPC 流失败时自动回退到 Python LangGraph REST）
- *
- * 2026-05-21: 降级目标从 Java /llm/chat 迁移到 Python /chat/msg（同一张 LangGraph）
+ * LLM REST 降级函数（SSE 流失败时自动回退）
  *
  * 用法：在 sendMessage 的 onError 回调中调用
  */
@@ -11,36 +9,48 @@ export async function fallbackLlmRest(llmId, msgContent, currentFriend, friendLi
   const requestFriendId = llmId;
 
   try {
-    // 调用 Python /chat/msg（LangGraph 非流式，逻辑与流式完全一致）
-    const res = await request.post('/chat/msg', {
-      userId: llmId,
+    const res = await request.post('/llm/chat', {
       llmId,
       msgContent
     }, { silent: true, timeout: 120000 });
 
+    let actualResponse = res;
+    if (res && res.code === 1000 && res.data) {
+      actualResponse = res.data;
+    }
+
     let replyBlocks = null;
     let replyEmotion = null;
 
-    // Python /chat/msg 响应格式: { msgId, data: { blocks, emotion } }
-    const data = res?.data;
-    if (data && data.blocks) {
-      replyBlocks = data.blocks.map(block => ({
-        type: block.type || 'text',
-        text: block.text || '',
-        action: block.action || null,
-      }));
-      replyEmotion = data.emotion;
-    }
-
-    // 兼容其他可能的响应格式
-    if (!replyBlocks) {
-      if (Array.isArray(res)) {
-        replyBlocks = res;
-      } else if (typeof res === 'string') {
-        replyBlocks = [{ type: 'text', text: res }];
-      } else {
-        replyBlocks = [{ type: 'text', text: JSON.stringify(res) }];
+    if (Array.isArray(actualResponse)) {
+      const aiMsg = actualResponse.find(m => m.isHuman === false);
+      if (aiMsg && aiMsg.msgContent) {
+        try {
+          const parsed = JSON.parse(aiMsg.msgContent);
+          replyBlocks = parsed.blocks || (Array.isArray(parsed) ? parsed : [{ type: 'text', text: aiMsg.msgContent }]);
+          replyEmotion = parsed.emotion;
+        } catch (e) {
+          replyBlocks = [{ type: 'text', text: aiMsg.msgContent }];
+        }
       }
+    } else if (actualResponse && actualResponse.msgId && actualResponse.data) {
+      const innerData = actualResponse.data;
+      if (Array.isArray(innerData)) {
+        const aiMsg = innerData.find(m => m.isHuman === false);
+        if (aiMsg && aiMsg.msgContent) {
+          try {
+            const parsed = JSON.parse(aiMsg.msgContent);
+            replyBlocks = parsed.blocks || (Array.isArray(parsed) ? parsed : [{ type: 'text', text: aiMsg.msgContent }]);
+            replyEmotion = parsed.emotion;
+          } catch (e) {
+            replyBlocks = [{ type: 'text', text: aiMsg.msgContent }];
+          }
+        }
+      }
+    } else if (typeof actualResponse === 'string') {
+      replyBlocks = [{ type: 'text', text: actualResponse }];
+    } else {
+      replyBlocks = [{ type: 'text', text: JSON.stringify(actualResponse) }];
     }
 
     if (currentFriend.value && (currentFriend.value.userId || currentFriend.value.id) === requestFriendId) {
