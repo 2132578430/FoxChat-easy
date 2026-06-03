@@ -72,6 +72,10 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
                 yield response
         except asyncio.CancelledError:
             logger.warning(f"[gRPC Chat] 流式被取消 (客户端断开或 deadline)，降级到非流式")
+            # Python 3.9+: 必须 uncancel，否则后续 await 持续抛 CancelledError，fallback 无法执行
+            task = asyncio.current_task()
+            if task:
+                task.uncancel()
             # ── 降级 ──
             try:
                 async for response in self._fallback_chat(user_id, llm_id, msg_content, parser):
