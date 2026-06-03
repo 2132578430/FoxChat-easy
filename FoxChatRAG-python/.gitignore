@@ -33,5 +33,5 @@ logs/
 /proto
 /test
 
-# gRPC 生成的 Python stub（由 protoc 自动生成）
-app/grpc/foxchat/
+# # gRPC 生成的 Python stub（由 protoc 自动生成）
+# app/grpc/foxchat/

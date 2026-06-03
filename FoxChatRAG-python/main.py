@@ -21,7 +21,7 @@ async def lifespan(app: FastAPI):
 
     # 启动定时总结调度器
     asyncio.create_task(timer_scheduler())
-    logger.info("[Timer Scheduler] Timer summary scheduler started")
+    logger.info("[定时任务] 记忆总结定时调度器开启")
 
     # 启动 gRPC 流式服务（端口 50051）
     grpc_port = int(os.getenv("GRPC_PORT", "50051"))

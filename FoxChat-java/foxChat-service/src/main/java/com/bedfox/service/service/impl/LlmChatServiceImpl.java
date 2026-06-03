@@ -19,6 +19,10 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ForkJoinPool;
 
@@ -46,15 +50,8 @@ public class LlmChatServiceImpl implements LlmChatService {
     @Override
     public LlmChatMsgVo llmChat(String llmId, String msgContent, String userId) {
         // 优先创建两个消息，保证消息发送
-        // 1. 保存用户消息
-        LlmChatMsg llmChatMsgHuman = buildLlmChatMsg(msgContent, llmId, userId, true, 0);
-        llmChatMsgService.save(llmChatMsgHuman);
-        // log.debug("用户消息已保存，status=SENT(0)");
-
-        // 2. 创建并保存AI占位消息
-        LlmChatMsg aiPlaceholder = buildLlmChatMsg("抱歉，角色回复异常，请稍后重试", llmId, userId, false, 3);
-        llmChatMsgService.save(aiPlaceholder);
-        // log.debug("AI占位消息已保存，status=PROCESSING(3)");
+        // 1. 保存占位信息
+        LlmChatMsg aiPlaceholder = SavePlaceHolderMsg(msgContent, llmId, userId);
 
         ChatMsgTo chatMsg = new ChatMsgTo();
         chatMsg.setLlmId(llmId);
@@ -72,11 +69,10 @@ public class LlmChatServiceImpl implements LlmChatService {
             M<String> msg = JSON.parseObject(resultJson, new TypeReference<>() {});
             String data = msg.getData();
 
-            // 4. 更新占位消息为 SAVED(1)，填入真实AI回复
+            // 4. 更新占位消息状态，填入真实AI回复
             aiPlaceholder.setStatus(1);
             aiPlaceholder.setMsgContent(data);
             llmChatMsgService.updateById(aiPlaceholder);
-            log.info("AI回复已更新，status=SAVED(1)");
 
             // 5. 返回成功VO
             LlmChatMsgVo chatMsgVo = new LlmChatMsgVo();
@@ -86,11 +82,10 @@ public class LlmChatServiceImpl implements LlmChatService {
         } catch (Exception e) {
             log.error("Python调用失败", e);
 
-            // 6. 更新占位消息为 FAILED(4)
+            // 6. 更新占位消息状态
             aiPlaceholder.setStatus(4);
             aiPlaceholder.setMsgContent("回复失败，请重试");
             llmChatMsgService.updateById(aiPlaceholder);
-            log.warn("AI占位消息已标记为 FAILED(4)");
 
             // 7. 抛出异常让Controller返回错误给前端
             throw new BusinessException(ResultStatusConstant.LLM_FAILED);
@@ -104,20 +99,16 @@ public class LlmChatServiceImpl implements LlmChatService {
      */
     @Override
     public SseEmitter llmChatStream(String llmId, String msgContent, String userId) {
-        SseEmitter emitter = new SseEmitter(120_000L); // 120秒超时
+        // 开启sse连接
+        SseEmitter emitter = new SseEmitter(120_000L);
 
-        // 1. 保存用户消息
-        LlmChatMsg llmChatMsgHuman = buildLlmChatMsg(msgContent, llmId, userId, true, 0);
-        llmChatMsgService.save(llmChatMsgHuman);
-
-        // 2. 保存AI占位消息
-        LlmChatMsg aiPlaceholder = buildLlmChatMsg("", llmId, userId, false, 3);
-        llmChatMsgService.save(aiPlaceholder);
+        // 1. 保存占位信息
+        LlmChatMsg aiPlaceholder = SavePlaceHolderMsg(msgContent, llmId, userId);
 
         // Block 增量构建器：用 is_block_start / is_block_end 拼装结构化 blocks
-        java.util.List<java.util.Map<String, String>> blocks = new java.util.ArrayList<>();
+        List<Map<String, String>> blocks = new ArrayList<>();
         StringBuilder currentBlockContent = new StringBuilder();
-        String[] currentBlockType = {null};  // 数组绕过 lambda effectively-final 限制
+        String[] currentBlockType = {};  // 数组绕过 lambda effectively-final 限制
 
         // 3. 尝试 gRPC 流式调用
         // [DIAG] 检查 ForkJoinPool 并行度 + 当前线程
@@ -133,7 +124,6 @@ public class LlmChatServiceImpl implements LlmChatService {
             try {
                 grpcChatClient.streamChat(
                     userId, llmId, msgContent,
-
                     // onToken: 每个 ChatResponse → 增量构建 blocks → SSE event
                     response -> {
                         try {
@@ -142,7 +132,7 @@ public class LlmChatServiceImpl implements LlmChatService {
                                 flushCurrentBlock(blocks, currentBlockContent, currentBlockType);
 
                                 // 构建最终 JSON：{"blocks":[...],"emotion":"..."}
-                                java.util.Map<String, Object> result = new java.util.LinkedHashMap<>();
+                                Map<String, Object> result = new LinkedHashMap<>();
                                 result.put("blocks", blocks);
                                 result.put("emotion", response.getEmotion().isEmpty() ? "neutral" : response.getEmotion());
                                 String resultJson = JSON.toJSONString(result);
@@ -197,6 +187,19 @@ public class LlmChatServiceImpl implements LlmChatService {
         });
 
         return emitter;
+    }
+
+    // 保存用户和模型占位信息
+    private LlmChatMsg SavePlaceHolderMsg(String msgContent, String llmId, String userId) {
+        // 1. 保存用户消息
+        LlmChatMsg llmChatMsgHuman = buildLlmChatMsg(msgContent, llmId, userId, true, 0);
+        llmChatMsgService.save(llmChatMsgHuman);
+
+        // 2. 保存AI占位消息
+        LlmChatMsg aiPlaceholder = buildLlmChatMsg("抱歉，角色回复异常，请稍后重试", llmId, userId, false, 3);
+        llmChatMsgService.save(aiPlaceholder);
+
+        return aiPlaceholder;
     }
 
     /**
