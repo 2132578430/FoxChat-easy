@@ -62,11 +62,20 @@ class LLMInvokeStrategy:
             params["max_tokens"] = max_tokens
 
         # JSON 模式处理
-        if self.force_json or config.get("model_response_format") == "json":
+        use_json_mode = self.force_json or config.get("model_response_format") == "json"
+        if use_json_mode:
             params["response_format"] = {"type": "json_object"}
 
         # 合并额外 kwargs (kwargs 优先级最高)
         params.update(kwargs)
+
+        # [DIAG] 情绪场景：记录是否启用 JSON 模式（排查 MIMO 空响应问题）
+        if self.scenario == "emotion":
+            logger.info(
+                f"【情绪分类诊断】model={formatted_model}, "
+                f"response_format={'json_object' if use_json_mode else '未设置'}, "
+                f"model_response_format配置={config.get('model_response_format', '未配置')}"
+            )
 
         logger.debug(f"【策略参数】scenario={self.scenario}, params={params}")
         return params
@@ -134,8 +143,15 @@ class LLMInvokeStrategy:
             # 提取响应文本
             content = response.choices[0].message.content
 
-            logger.info(f"【LiteLLM响应】scenario={self.scenario}, length={len(content)}")
-            return content
+            if not content:
+                logger.warning(
+                    f"【LiteLLM空响应】scenario={self.scenario}, model={params.get('model')}, "
+                    f"response_format={params.get('response_format', '未设置')}, "
+                    f"finish_reason={response.choices[0].finish_reason if response.choices else 'N/A'}"
+                )
+            else:
+                logger.info(f"【LiteLLM响应】scenario={self.scenario}, length={len(content)}")
+            return content or ""
 
         except Exception as e:
             error_msg = str(e)
