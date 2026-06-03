@@ -190,6 +190,11 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
                 sequence=seq + 1,
             )
 
+        except asyncio.CancelledError:
+            # 取消 graph task（如果还在跑）
+            if not graph_task.done():
+                graph_task.cancel()
+            raise
         except Exception as e:
             # 取消 graph task（如果还在跑）
             if not graph_task.done():

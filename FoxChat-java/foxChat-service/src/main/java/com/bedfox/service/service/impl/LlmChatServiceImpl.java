@@ -171,7 +171,7 @@ public class LlmChatServiceImpl implements LlmChatService {
                                     .name("blocks")
                                     .data(JSON.toJSONString(snapshot)));
                             }
-                        } catch (IOException e) {
+                        } catch (Exception e) {
                             log.error("[SSE] 发送失败: {}", e.getMessage());
                         }
                     },
