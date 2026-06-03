@@ -167,7 +167,7 @@ async def upload_history_events_batch(
                 "type": event.get("type", "event"),
                 "event_type": event.get("event_type", "other"),
                 "importance": event.get("importance", 0.5),
-                "keywords": event.get("keywords") or ["general"],  # LLM 不生成 keywords，空列表会导致 ChromaDB 拒绝写入
+
                 "source_round": event.get("source_round", 0),
                 "occurred_at": event.get("occurred_at", ""),
                 "last_seen_at": event.get("last_seen_at", ""),
@@ -198,17 +198,16 @@ async def upload_history_event(
     actor: str,
     event_type: str,
     importance: float,
-    keywords: List[str],
     source_round: int,
     occurred_at: str = "",
     last_seen_at: str = "",
     type: str = "event",
     source_snippet: str = "",
     activity_score: float = 1.0,
-    category: str = "event",  # 新增：区分 state/event
+    category: str = "event",
 ) -> None:
     """
-    上传历史事件到向量库（阶段4→wire-history-events-to-chroma补齐）
+    上传历史事件到向量库
 
     Args:
         event_content: 事件内容文本
@@ -218,7 +217,6 @@ async def upload_history_event(
         actor: 事件主体 (USER/AI)
         event_type: 事件细类
         importance: 重要程度
-        keywords: 关键词列表
         source_round: 来源轮次
         occurred_at: 事件发生时间（ISO datetime）
         last_seen_at: 最近一次出现时间（用于续写合并）
@@ -237,14 +235,13 @@ async def upload_history_event(
             "type": type,
             "event_type": event_type,
             "importance": importance,
-            "keywords": keywords,
             "source_round": source_round,
             "occurred_at": occurred_at,
             "last_seen_at": last_seen_at,
             "source_snippet": source_snippet,
             "activity_score": activity_score,
-            "is_event": True,  # 统一标记为 True，用 category 区分
-            "category": category,  # 新增字段
+            "is_event": True,
+            "category": category,
         }
     )
 

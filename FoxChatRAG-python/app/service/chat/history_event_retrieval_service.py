@@ -126,7 +126,6 @@ def _dict_to_memory_event(event_dict: dict, content: str = None) -> MemoryEvent:
         type=event_type_enum,
         event_type=event_type,
         content=content or event_dict.get("content", ""),
-        keywords=event_dict.get("keywords", []),
         importance=event_dict.get("importance", 0.5),
         source_snippet=event_dict.get("source_snippet", ""),
         source_round=event_dict.get("source_round", 0),

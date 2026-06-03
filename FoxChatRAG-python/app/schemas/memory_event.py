@@ -12,7 +12,6 @@
 - type: 大类（event / state）
 - event_type: 细类（share_experience, express_emotion, commitment 等）
 - content: 事件本体描述
-- keywords: 关键词数组，用于关键词召回
 - importance: 重要程度（0-1），用于排序优先级
 - source_snippet: 原文片段，防止摘要失真
 - source_round: 来源轮次，用于回溯调试
@@ -20,7 +19,7 @@
 
 去重依据：
 - actor + type + event_type 分桶
-- 时间邻近窗口内 content 相似度 + keywords 重叠率
+- 时间邻近窗口内 content 相似度
 """
 
 from datetime import datetime
@@ -83,7 +82,6 @@ class MemoryEvent(BaseModel):
     type: EventType = Field(default=EventType.EVENT, description="事件大类")
     event_type: EventDetailType = Field(default=EventDetailType.OTHER, description="事件细类")
     content: str = Field(default="", description="事件本体描述，30-50字")
-    keywords: List[str] = Field(default_factory=list, description="关键词数组")
     importance: float = Field(default=0.5, ge=0.0, le=1.0, description="重要程度")
     source_snippet: str = Field(default="", description="原文片段，防止摘要失真")
     source_round: int = Field(default=0, ge=0, description="来源轮次")
@@ -100,16 +98,6 @@ class MemoryEvent(BaseModel):
             return delta <= window_hours * 3600
         except (ValueError, TypeError):
             return False
-
-    def keywords_overlap_ratio(self, other: "MemoryEvent") -> float:
-        """计算关键词重叠率"""
-        if not self.keywords or not other.keywords:
-            return 0.0
-        set1 = set(self.keywords)
-        set2 = set(other.keywords)
-        overlap = len(set1 & set2)
-        return overlap / min(len(set1), len(set2))
-
 
 class HistoryEventCandidate(BaseModel):
     """

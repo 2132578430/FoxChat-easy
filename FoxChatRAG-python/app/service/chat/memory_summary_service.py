@@ -199,8 +199,6 @@ async def _extract_memory_events(recent_msg_list: List[str], llm_id: str = None,
                 del event["time"]
             if "actor" not in event or not event["actor"]:
                 event["actor"] = "UNKNOWN"
-            if "keywords" not in event:
-                event["keywords"] = []
             # 统一分类器覆盖 event_type：消除 LLM 判断与检索 scope 的不一致
             content = event.get("content", "")
             if content:
@@ -270,9 +268,6 @@ def _merge_continuation_event(target: dict, new_event: dict) -> None:
     target["last_seen_at"] = new_event.get("time", "")
     target["importance"] = max(target.get("importance", 0.5), new_event.get("importance", 0.5))
     target["activity_score"] = max(target.get("activity_score", 1.0), new_event.get("activity_score", 1.0))
-    if "keywords" in new_event:
-        merged = list(set(target.get("keywords", []) + new_event["keywords"]))
-        target["keywords"] = merged[:5]
 
 
 # ============================================================
@@ -290,7 +285,6 @@ async def _sync_event_to_chroma(event: dict, user_id: str, llm_id: str) -> bool:
             actor=event.get("actor", "UNKNOWN"),
             event_type=event.get("event_type", "other"),
             importance=event.get("importance", 0.5),
-            keywords=event.get("keywords", []),
             source_round=event.get("source_round", 0),
             occurred_at=event.get("occurred_at", ""),
             last_seen_at=event.get("last_seen_at", ""),
