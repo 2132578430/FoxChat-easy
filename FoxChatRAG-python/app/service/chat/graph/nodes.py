@@ -29,6 +29,7 @@ from app.service.chat.intent_classifier import classify_intent
 from app.service.chat.llm_invoke_service import (
     search_relevant_memories,
     invoke_llm_with_retrieval,
+    stream_llm_with_retrieval,
 )
 from app.service.chat.response_parser import parse_action_tags
 from app.service.chat.emotion_classifier import classify_and_update_emotion
@@ -131,19 +132,48 @@ async def skip_retrieval(state: ChatState) -> dict:
 # LLM Invocation (Build Prompt + Call LLM)
 # ============================================================
 
-async def invoke_llm(state: ChatState) -> dict:
-    """构建 Prompt 并调用 LLM，使用预计算的 retrieval 结果"""
-    response = await invoke_llm_with_retrieval(
-        parsed=state["parsed"],
-        history_msg=state["history_msg"],
-        init_memory=state["memories"].init_memory,
-        msg_content=state["msg_content"],
-        user_id=state["user_id"],
-        llm_id=state["llm_id"],
-        recent_messages=state["memories"].recent_msg,
-        relevant_memories_text=state.get("relevant_memories_text", ""),
-    )
-    return {"ai_response": response}
+async def invoke_llm(state: ChatState, config: dict = None) -> dict:
+    """
+    构建 Prompt 并调用 LLM。
+
+    双模式：
+    - 非流式（默认）：invoke_llm_with_retrieval → 返回完整响应
+    - 流式：通过 config.configurable.stream_queue 逐 token 推送，同时积累完整响应
+    """
+    stream_queue = None
+    if config and config.get("configurable"):
+        stream_queue = config["configurable"].get("stream_queue")
+
+    if stream_queue is not None:
+        # ── 流式模式：逐 token yield 到 queue ──
+        response = ""
+        async for token in stream_llm_with_retrieval(
+            parsed=state["parsed"],
+            history_msg=state["history_msg"],
+            init_memory=state["memories"].init_memory,
+            msg_content=state["msg_content"],
+            user_id=state["user_id"],
+            llm_id=state["llm_id"],
+            recent_messages=state["memories"].recent_msg,
+            relevant_memories_text=state.get("relevant_memories_text", ""),
+        ):
+            response += token
+            await stream_queue.put(token)
+        await stream_queue.put(None)  # Sentinel: streaming done
+        return {"ai_response": response}
+    else:
+        # ── 非流式模式（REST / 降级） ──
+        response = await invoke_llm_with_retrieval(
+            parsed=state["parsed"],
+            history_msg=state["history_msg"],
+            init_memory=state["memories"].init_memory,
+            msg_content=state["msg_content"],
+            user_id=state["user_id"],
+            llm_id=state["llm_id"],
+            recent_messages=state["memories"].recent_msg,
+            relevant_memories_text=state.get("relevant_memories_text", ""),
+        )
+        return {"ai_response": response}
 
 
 # ============================================================

@@ -2,18 +2,21 @@
 LLM 调用服务
 
 职责：
-- 构建 Prompt 并调用 LLM
+- 构建 Prompt 并调用 LLM（流式 + 非流式）
 - 检索相关记忆
 - 记录 Token 消耗
 
 重构说明：
 - 使用策略层替代硬编码的 get_chat_model()
 - 需要传入 llm_id 参数以查询用户配置
+- 2026-05-21: 提取 _build_chat_messages() 公共 builder，新增 stream_llm_with_retrieval()
 """
 
+import asyncio
 import json
-from typing import List, Optional
+from typing import List, Optional, AsyncGenerator
 
+import litellm
 from loguru import logger
 from langchain_core.language_models.chat_models import BaseMessage
 
@@ -25,13 +28,13 @@ from app.service.chat.history_event_retrieval_service import (
     retrieve_history_events_v2,
     format_history_events,
 )
-from app.service.chat.strategy.base_strategy import ChatInvokeStrategy
+from app.service.chat.strategy.base_strategy import ChatInvokeStrategy, format_model_name
 from app.service.llm_config_service import get_llm_configs_batch
 from app.util import chroma_util
 from app.util.template_util import escape_template
 
 
-async def invoke_llm_with_retrieval(
+async def _build_chat_messages(
     parsed: "ParsedMemories",
     history_msg: List[BaseMessage],
     init_memory: str,
@@ -41,28 +44,21 @@ async def invoke_llm_with_retrieval(
     recent_messages: List[str] = None,
     relevant_memories_text: str = "",
     db = None,
-) -> str:
+) -> tuple[list[dict], dict, str]:
     """
-    使用预计算的检索结果调用 LLM（跳过 search_relevant_memories）
+    构建 LLM 消息列表（公共 prompt builder）
 
-    Args:
-        parsed: 解析后的记忆数据
-        history_msg: 历史消息列表
-        init_memory: 初始化记忆
-        msg_content: 用户消息内容
-        user_id: 用户 ID
-        llm_id: 模型 ID（必需，用于查询用户配置）
-        recent_messages: 最近消息列表
-        relevant_memories_text: 预计算的检索结果文本（空字符串表示无检索结果）
-        db: 数据库会话（可选，如果没有传入则自动创建）
+    从 invoke_llm_with_retrieval 提取，供流式和非流式路径共用。
 
     Returns:
-        LLM 响应文本
+        (messages, config_map, system_prompt)
+        - messages: LiteLLM 格式消息列表 [{"role":..., "content":...}, ...]
+        - config_map: LLM 配置字典 {"chat": {...}, ...}
+        - system_prompt: 格式化后的系统提示词（用于日志/调试）
     """
     from app.service.chat.memory_parser import build_static_anchors
 
     # 获取用户配置（批量查询）
-    # 如果没有传入 db，则自动创建 session
     if db:
         config_map = await get_llm_configs_batch(llm_id, db)
     else:
@@ -123,24 +119,14 @@ async def invoke_llm_with_retrieval(
     if payload.duplicates_removed:
         logger.info(f"【Payload去重】移除: {payload.duplicates_removed}")
 
-    # 使用策略层调用 LLM
-    strategy = ChatInvokeStrategy()
-
-    # 构建消息列表（用于 LiteLLM）
+    # 构建 messages 列表
     messages = []
     for msg in history_msg:
         msg_type = msg.type if hasattr(msg, 'type') else "user"
         role = {"human": "user", "ai": "assistant"}.get(msg_type, msg_type)
-        messages.append({
-            "role": role,
-            "content": msg.content
-        })
-    messages.append({
-        "role": "user",
-        "content": msg_content
-    })
+        messages.append({"role": role, "content": msg.content})
+    messages.append({"role": "user", "content": msg_content})
 
-    # 添加 system prompt 到消息开头
     system_prompt = prompt_text.format(
         static_anchors=payload.static_anchors,
         user_profile_summary=payload.user_profile_summary,
@@ -151,14 +137,132 @@ async def invoke_llm_with_retrieval(
     )
     messages.insert(0, {"role": "system", "content": system_prompt})
 
-    # 调试日志：打印完整 messages
     logger.debug(f"【完整Messages】共 {len(messages)} 条消息")
     for i, msg in enumerate(messages):
         content_preview = msg["content"][:3000] if len(msg["content"]) > 3000 else msg["content"]
         logger.debug(f"  [{i}] role={msg['role']}, content={content_preview}...")
 
-    response_text = await strategy.invoke(messages, config_map)
-    return response_text
+    return messages, config_map, system_prompt
+
+
+async def invoke_llm_with_retrieval(
+    parsed: "ParsedMemories",
+    history_msg: List[BaseMessage],
+    init_memory: str,
+    msg_content: str,
+    user_id: str,
+    llm_id: str,
+    recent_messages: List[str] = None,
+    relevant_memories_text: str = "",
+    db = None,
+) -> str:
+    """
+    使用预计算的检索结果调用 LLM（非流式）
+
+    Args:
+        parsed: 解析后的记忆数据
+        history_msg: 历史消息列表
+        init_memory: 初始化记忆
+        msg_content: 用户消息内容
+        user_id: 用户 ID
+        llm_id: 模型 ID
+        recent_messages: 最近消息列表
+        relevant_memories_text: 预计算的检索结果文本
+        db: 数据库会话（可选）
+
+    Returns:
+        LLM 响应文本
+    """
+    messages, config_map, _ = await _build_chat_messages(
+        parsed=parsed,
+        history_msg=history_msg,
+        init_memory=init_memory,
+        msg_content=msg_content,
+        user_id=user_id,
+        llm_id=llm_id,
+        recent_messages=recent_messages,
+        relevant_memories_text=relevant_memories_text,
+        db=db,
+    )
+
+    strategy = ChatInvokeStrategy()
+    return await strategy.invoke(messages, config_map)
+
+
+async def stream_llm_with_retrieval(
+    parsed: "ParsedMemories",
+    history_msg: List[BaseMessage],
+    init_memory: str,
+    msg_content: str,
+    user_id: str,
+    llm_id: str,
+    recent_messages: List[str] = None,
+    relevant_memories_text: str = "",
+    db = None,
+) -> AsyncGenerator[str, None]:
+    """
+    流式 LLM 调用（使用预计算的检索结果）
+
+    与 invoke_llm_with_retrieval 共享同一套 _build_chat_messages，
+    区别仅在于 LLM 调用方式：stream=True 逐 token yield。
+
+    Yields:
+        str: 每个 LLM token
+    """
+    messages, config_map, _ = await _build_chat_messages(
+        parsed=parsed,
+        history_msg=history_msg,
+        init_memory=init_memory,
+        msg_content=msg_content,
+        user_id=user_id,
+        llm_id=llm_id,
+        recent_messages=recent_messages,
+        relevant_memories_text=relevant_memories_text,
+        db=db,
+    )
+
+    config = config_map.get("chat", {})
+    if not config:
+        raise ValueError("chat 场景未配置模型")
+
+    model = format_model_name(config["model_name"])
+
+    logger.info(f"[StreamLLM] model={model}, messages={len(messages)}条")
+
+    max_retries = 3
+    last_error = None
+
+    for attempt in range(max_retries):
+        try:
+            response = await litellm.acompletion(
+                model=model,
+                messages=messages,
+                api_key=config["model_api_key"],
+                base_url=config["model_base_url"],
+                temperature=config.get("model_temperature", 0.8),
+                max_tokens=config.get("model_max_tokens", 4096),
+                stream=True,
+                timeout=120,
+            )
+
+            async for chunk in response:
+                if chunk.choices and chunk.choices[0].delta.content:
+                    yield chunk.choices[0].delta.content
+
+            return  # 成功，退出
+
+        except (litellm.exceptions.APIConnectionError, litellm.exceptions.APIError) as e:
+            last_error = e
+            status_code = getattr(e, 'status_code', None)
+            if status_code and status_code < 500:
+                raise
+            if attempt == max_retries - 1:
+                raise
+            logger.warning(f"[StreamLLM] 第 {attempt+1}/{max_retries} 次尝试失败: {e}，{2**attempt}s 后重试...")
+            await asyncio.sleep(2 ** attempt)
+
+    if last_error:
+        raise last_error
 
 
 async def search_relevant_memories(
