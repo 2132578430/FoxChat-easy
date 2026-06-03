@@ -167,7 +167,7 @@ async def upload_history_events_batch(
                 "type": event.get("type", "event"),
                 "event_type": event.get("event_type", "other"),
                 "importance": event.get("importance", 0.5),
-                "keywords": event.get("keywords", []),
+                "keywords": event.get("keywords") or ["general"],  # LLM 不生成 keywords，空列表会导致 ChromaDB 拒绝写入
                 "source_round": event.get("source_round", 0),
                 "occurred_at": event.get("occurred_at", ""),
                 "last_seen_at": event.get("last_seen_at", ""),
