@@ -1817,13 +1817,10 @@ const sendMessage = async () => {
       onError: (err) => {
         console.warn('[SSE] 流失败，降级 REST:', err);
         hasError = true;
-        if (bubblePushed) {
-          const idx = messageList.value.findIndex(m => m.id === aiPlaceholderId);
-          if (idx >= 0) messageList.value.splice(idx, 1);
-        }
         isLlmTyping.value = false;
         llmPendingCount.value--;
-        fallbackLlmRest(llmId, msgContent, currentFriend, friendList, messageList);
+        // 原地更新流式占位，不 splice（避免 UI 闪动 + "○" 残留）
+        fallbackLlmRest(llmId, msgContent, currentFriend, friendList, messageList, bubblePushed ? aiPlaceholderId : null);
       },
     });
 
