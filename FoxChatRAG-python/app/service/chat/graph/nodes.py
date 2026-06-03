@@ -11,7 +11,6 @@ from loguru import logger
 from app.service.chat.graph.state import ChatState
 from app.service.chat.state_manager import (
     increment_round_counter,
-    clean_expired_unfinished_items,
     get_current_state,
 )
 from app.service.chat.chat_redis_service import (
@@ -50,7 +49,6 @@ async def pre_flight(state: ChatState) -> dict:
     llm_id = state["llm_id"]
 
     current_round = increment_round_counter(user_id, llm_id) - 1
-    clean_expired_unfinished_items(user_id, llm_id, current_round)
 
     recent_msg_key = build_recent_msg_key(user_id, llm_id)
 

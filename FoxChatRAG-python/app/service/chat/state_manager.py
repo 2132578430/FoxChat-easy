@@ -14,7 +14,6 @@
 
 保留字段：
 - emotion: 当前情绪
-- unfinished_items: 待跟进事项
 
 阶段2改造：
 - 使用 RedisJSON 实现字段级原子更新
@@ -37,9 +36,7 @@ from app.core.db.redis_client import redis_client
 from app.schemas.current_state import (
     CurrentState,
     StateField,
-    UnfinishedItem,
     UpdateSource,
-    ItemStatus,
 )
 from app.util.redis_json_util import json_set_safe
 from app.service.chat.common import EMOTION_CN_MAP, safe_json_parse, build_round_counter_key
@@ -47,7 +44,6 @@ from app.service.chat.common import EMOTION_CN_MAP, safe_json_parse, build_round
 
 # 默认过期轮数配置（V2 简化版）
 DEFAULT_EXPIRE_EMOTION = 3
-DEFAULT_EXPIRE_UNFINISHED = 6
 
 # 状态覆盖阈值
 CONFIDENCE_DELTA_THRESHOLD = 0.15
@@ -116,7 +112,6 @@ def _create_default_state() -> CurrentState:
     """创建默认状态（V2 简化版）"""
     return CurrentState(
         emotion=StateField(value="平静", confidence=0.5, expire_rounds=DEFAULT_EXPIRE_EMOTION, update_round=0),
-        unfinished_items=[],
         last_update=datetime.now().isoformat(),
         update_source=UpdateSource.RUNTIME,
     )
@@ -299,166 +294,6 @@ def update_current_state(
         logger.debug(f"【状态保持】{field_name}: 保持原值 {target_field.value}")
 
 
-def update_unfinished_items_atomic(
-    user_id: str,
-    llm_id: str,
-    items_list: list[dict],
-) -> None:
-    """
-    原子更新未完成事项列表（使用 RedisJSON）
-
-    Args:
-        user_id: 用户 ID
-        llm_id: 模型 ID
-        items_list: 事项列表（字典形式）
-    """
-    key = _build_state_key(user_id, llm_id)
-
-    _ensure_state_exists(user_id, llm_id)
-
-    # 原子更新整个数组（使用安全写入方法）
-    _json_set(key, '$.unfinished_items', items_list)
-    _json_set(key, '$.last_update', datetime.now().isoformat())
-
-    logger.info(f"【事项更新】unfinished_items: {len(items_list)} 条")
-
-
-def _is_same_event(existing: UnfinishedItem, new_item: UnfinishedItem) -> bool:
-    """
-    判断是否为同一事件（基于 content 文本包含关系）
-
-    Args:
-        existing: 已存在的事项
-        new_item: 新事项
-
-    Returns:
-        是否为同一事件
-    """
-    if existing.content and new_item.content:
-        return (new_item.content in existing.content or
-                existing.content in new_item.content)
-
-    return False
-
-
-def update_unfinished_items(
-    user_id: str,
-    llm_id: str,
-    items: list[UnfinishedItem],
-    current_round: int = 0,
-) -> None:
-    """
-    更新未完成事项列表（带合并逻辑）
-
-    Args:
-        user_id: 用户 ID
-        llm_id: 模型 ID
-        items: 新事项列表（会与现有事项合并）
-        current_round: 当前全局轮数
-    """
-    # 1. 读取现有事项
-    state = get_current_state(user_id, llm_id, current_round)
-
-    merged_items = list(state.unfinished_items)
-
-    # 2. 合并规则：基于 content 去重
-    for new_item in items:
-        is_duplicate = False
-        for existing in merged_items:
-            if _is_same_event(existing, new_item):
-                is_duplicate = True
-                if len(new_item.content) > len(existing.content):
-                    existing.content = new_item.content
-                if new_item.due_at and not existing.due_at:
-                    existing.due_at = new_item.due_at
-                break
-
-        if not is_duplicate:
-            # 新事项写入当前轮数作为更新轮数
-            new_item.update_round = current_round
-            merged_items.append(new_item)
-
-    # 3. 清理已完成/过期事项
-    from datetime import datetime
-
-    def _is_absolutely_expired(item: UnfinishedItem) -> bool:
-        """判断是否绝对时间过期（due_at过期超过7天）"""
-        if not item.due_at:
-            return False
-        try:
-            due_date = datetime.fromisoformat(item.due_at.replace("Z", "+00:00"))
-            days_passed = (datetime.now() - due_date).days
-            return days_passed > 7  # 超过预期时间7天，清理掉
-        except Exception:
-            return False
-
-    merged_items = [
-        item for item in merged_items
-        if item.status == ItemStatus.PENDING
-        and not item.is_expired(current_round)
-        and not _is_absolutely_expired(item)  # 阶段5：绝对时间过期清理
-    ]
-
-    # 4. 最多保留5条
-    merged_items = merged_items[:5]
-
-    # 5. 原子更新
-    items_list = [item.model_dump() for item in merged_items]
-    update_unfinished_items_atomic(user_id, llm_id, items_list)
-
-
-def clean_expired_unfinished_items(user_id: str, llm_id: str, current_round: int = 0) -> int:
-    """
-    清理过期未完成事项（阶段5新增）
-
-    在每次对话开始时调用，清理：
-    1. 轮数过期的事项（expire_rounds机制）
-    2. 绝对时间过期的事项（due_at过期超过7天）
-
-    Args:
-        user_id: 用户 ID
-        llm_id: 模型 ID
-        current_round: 当前全局轮数
-
-    Returns:
-        清理的事项数量
-    """
-    from datetime import datetime
-
-    state = get_current_state(user_id, llm_id, current_round)
-
-    def _is_absolutely_expired(item: UnfinishedItem) -> bool:
-        """判断是否绝对时间过期"""
-        if not item.due_at:
-            return False
-        try:
-            due_date = datetime.fromisoformat(item.due_at.replace("Z", "+00:00"))
-            days_passed = (datetime.now() - due_date).days
-            return days_passed > 7
-        except Exception:
-            return False
-
-    original_count = len(state.unfinished_items)
-
-    # 清理过期事项
-    valid_items = [
-        item for item in state.unfinished_items
-        if item.status == ItemStatus.PENDING
-        and not item.is_expired(current_round)
-        and not _is_absolutely_expired(item)
-    ]
-
-    cleaned_count = original_count - len(valid_items)
-
-    if cleaned_count > 0:
-        # 原子更新清理后的列表
-        items_list = [item.model_dump() for item in valid_items[:5]]
-        update_unfinished_items_atomic(user_id, llm_id, items_list)
-        logger.info(f"【过期清理】清理 {cleaned_count} 条过期未完成事项")
-
-    return cleaned_count
-
-
 def _apply_state_overwrite_rules(
     existing: StateField,
     candidate: StateField,
@@ -542,14 +377,6 @@ def check_and_expire_fields(user_id: str, llm_id: str, current_round: int) -> Cu
         expired_fields.append("emotion")
         # 原子更新：置信度置零（标记为失效，等待重新检测）
         _json_set(key, '$.emotion.confidence', 0.0)
-
-    # 检查 unfinished_items
-    state.unfinished_items = [
-        item for item in state.unfinished_items
-        if not item.is_expired(current_round) and item.status == ItemStatus.PENDING
-    ]
-    items_list = [item.model_dump() for item in state.unfinished_items]
-    _json_set(key, '$.unfinished_items', items_list)
 
     if expired_fields:
         logger.info(f"【状态过期】字段已过期: {expired_fields}")

@@ -24,7 +24,6 @@ from app.service.chat.memory_parser import (
 )
 from app.service.chat.state_manager import (
     increment_round_counter,
-    clean_expired_unfinished_items,
 )
 from app.service.chat.chat_redis_service import (
     fetch_all_memories,
@@ -60,9 +59,8 @@ async def stream_llm_response(
     Yields:
         str: 每个 LLM token
     """
-    # ── 1. 轮数 & 记忆拉取（复用 pre_flight + fetch_memory + parse_memory） ──
+    # 1. 轮数 & 记忆拉取
     current_round = increment_round_counter(user_id, llm_id) - 1
-    clean_expired_unfinished_items(user_id, llm_id, current_round)
 
     recent_msg_key = build_recent_msg_key(user_id, llm_id)
     memories = await fetch_all_memories(user_id, llm_id)

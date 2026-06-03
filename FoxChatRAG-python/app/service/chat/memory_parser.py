@@ -269,21 +269,6 @@ def parse_current_state(json_str: str, current_round: int = 0) -> str:
         if "情绪" in valid_fields:
             lines.append(f"- 情绪：{map_emotion_to_cn(valid_fields['情绪'])}")
 
-        # 未完成事项
-        valid_items = [
-            item for item in state.unfinished_items
-            if item.is_valid_for_injection(current_round)
-        ]
-        if valid_items:
-            today = datetime.now().strftime("%Y-%m-%d")
-            for item in valid_items[:2]:
-                if item.created_at and item.due_at:
-                    created_date = item.created_at[:10] if len(item.created_at) >= 10 else item.created_at
-                    due_date = item.due_at[:10] if len(item.due_at) >= 10 else item.due_at
-                    lines.append(f"- 未完成：[{created_date}录入] {item.content} [预期{due_date}/今天{today}]")
-                else:
-                    lines.append(f"- 未完成：{item.content}")
-
         return "\n".join(lines)
 
     except Exception as e:

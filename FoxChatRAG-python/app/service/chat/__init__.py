@@ -14,7 +14,6 @@ from app.service.chat.chat_msg_service import clear_chat_memory
 from app.service.chat.state_manager import (
     get_current_state,
     update_current_state,
-    update_unfinished_items,
     check_and_expire_fields,
     increment_round_counter,
     get_current_round,
@@ -37,7 +36,6 @@ __all__ = [
     # 状态管理
     "get_current_state",
     "update_current_state",
-    "update_unfinished_items",
     "check_and_expire_fields",
     "increment_round_counter",
     "get_current_round",
