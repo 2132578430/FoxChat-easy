@@ -207,13 +207,7 @@ class EmotionInvokeStrategy(LLMInvokeStrategy):
 
     scenario = "emotion"
     default_temperature = 0.0  # 零温度，确定性分类
-    default_max_tokens = None  # 不限制（MIMO 把 max_tokens 当 prompt+completion 总配额，设太小会空响应）
-
-    def get_model_params(self, config: dict, **kwargs) -> dict:
-        """重写：始终不传 max_tokens（MIMO 将其计为 prompt+completion 总额，配 50 则空响应）"""
-        params = super().get_model_params(config, **kwargs)
-        params.pop("max_tokens", None)
-        return params
+    default_max_tokens = 50  # 短分类结果（如遇 MIMO 空响应，调大数据库 model_max_tokens）
 
 
 # JSON 模式策略 (共享基础配置)
