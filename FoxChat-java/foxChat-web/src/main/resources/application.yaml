@@ -1,6 +1,9 @@
 spring:
   application:
     name: FoxChat
+  mvc:
+    async:
+      request-timeout: 120000  # SSE 异步请求超时 120s（MIMO 首 token 需 ~20s）
   datasource:
     username: root
     password: ${SPRING_DATASOURCE_PASSWORD:}

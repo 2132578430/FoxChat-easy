@@ -110,7 +110,12 @@ public class LlmChatServiceImpl implements LlmChatService {
         StringBuilder currentBlockContent = new StringBuilder();
         String[] currentBlockType = {};  // 数组绕过 lambda effectively-final 限制
 
-        // 3. 尝试 gRPC 流式调用
+        // 3. 发送 SSE 心跳（防止代理/浏览器在首 token 到达前超时断开）
+        try {
+            emitter.send(SseEmitter.event().comment("heartbeat"));
+        } catch (IOException ignored) {}
+
+        // 4. 尝试 gRPC 流式调用
         // [DIAG] 检查 ForkJoinPool 并行度 + 当前线程
         int parallelism = ForkJoinPool.commonPool().getParallelism();
         int poolSize = ForkJoinPool.commonPool().getPoolSize();
