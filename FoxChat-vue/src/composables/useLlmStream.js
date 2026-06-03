@@ -93,6 +93,7 @@ export function useLlmStream() {
 
     // 收集完整文本（用于降级时的 full 事件和 onDone）
     let fullText = '';
+    let doneCalled = false;
 
     try {
       const response = await fetch('/api/llm/stream', {
@@ -139,6 +140,11 @@ export function useLlmStream() {
         // 可能有不完整的最后一行，忽略
       }
 
+      // 流正常结束但未收到 done 事件（SSE 连接提前关闭等），补调 onDone
+      if (!doneCalled) {
+        onDone?.(fullText || '');
+      }
+
     } catch (err) {
       if (err.name !== 'AbortError') {
         console.error('[LLM Stream] 错误:', err);
@@ -180,6 +186,7 @@ export function useLlmStream() {
           onToken?.(data, 'text');
           // fall through to done
         case 'done': {
+          doneCalled = true;
           // 新格式: {"blocks":[...],"emotion":"..."}
           try {
             const result = JSON.parse(data);
