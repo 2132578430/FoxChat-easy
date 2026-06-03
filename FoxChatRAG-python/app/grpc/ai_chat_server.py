@@ -70,6 +70,23 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
             async for response in self._stream_chat(user_id, llm_id, msg_content, parser):
                 seq += 1
                 yield response
+        except asyncio.CancelledError:
+            logger.warning(f"[gRPC Chat] 流式被取消 (客户端断开或 deadline)，降级到非流式")
+            # ── 降级 ──
+            try:
+                async for response in self._fallback_chat(user_id, llm_id, msg_content, parser):
+                    seq += 1
+                    yield response
+            except Exception as e2:
+                logger.error(f"[gRPC Chat] 降级也失败: {e2}")
+                yield ai_chat_pb2.ChatResponse(
+                    content="",
+                    is_final=True,
+                    block_type="error",
+                    error_code=15000,
+                    error_msg=str(e2),
+                    sequence=seq + 1,
+                )
         except Exception as e:
             logger.error(f"[gRPC Chat] 流式失败，降级到非流式: {e}")
             # ── 降级：同一张图，非流式 ──
@@ -116,6 +133,7 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
             _stream_queue_ctx.reset(token)
 
         # 读取流式 token，逐 token 喂给 parser 并 yield
+        logger.info(f"[gRPC Chat] _stream_chat 开始等待 token (首token超时={FIRST_TOKEN_TIMEOUT}s)...")
         seq = 0
         first_token = True
         try:
@@ -124,6 +142,8 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
                 timeout = FIRST_TOKEN_TIMEOUT if first_token else INTER_TOKEN_TIMEOUT
                 try:
                     token = await asyncio.wait_for(stream_queue.get(), timeout=timeout)
+                    if first_token:
+                        logger.info(f"[gRPC Chat] 收到首 token: len={len(token)}")
                 except asyncio.TimeoutError:
                     # 超时：检查 graph 是否已失败
                     if graph_task.done():
@@ -141,9 +161,11 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
                 first_token = False
 
                 if token is None:  # Sentinel: streaming done
+                    logger.info(f"[gRPC Chat] 收到流结束 sentinel, 共 {seq} 个 gRPC 消息")
                     break
                 for st in parser.feed(token):
                     seq += 1
+                    logger.debug(f"[gRPC Chat] yield gRPC seq={seq} type={st.block_type}")
                     yield self._to_response(st, seq, is_final=False)
 
             # 刷新 parser 缓冲区（action 标签闭合）
