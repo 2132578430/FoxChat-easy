@@ -60,6 +60,14 @@ async def search(
 
     # 用预计算的 embedding 做搜索，使用 LangChain 公开 API（避免直接访问 _collection 内部接口）
     chroma_filter = _build_chroma_filter(metadata)
+
+    # 预检：空集合直接返回，避免 ChromaDB 内部 "list index out of range" 异常
+    try:
+        if chroma._collection.count() == 0:
+            return []
+    except Exception:
+        pass  # count() 失败则继续走正常查询流程
+
     try:
         scored_docs: list[tuple[Document, float]] = chroma.similarity_search_by_vector_with_relevance_scores(
             embedding=embedding,

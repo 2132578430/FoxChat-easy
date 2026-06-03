@@ -16,6 +16,7 @@ import os
 
 from langgraph.graph import StateGraph, START, END
 from langgraph.checkpoint.memory import MemorySaver
+from langgraph.checkpoint.serde.jsonplus import JsonPlusSerializer
 
 from app.service.chat.graph.state import ChatState
 from app.service.chat.graph.nodes import (
@@ -106,7 +107,14 @@ def _get_default_checkpointer():
             return AsyncSqliteSaver.from_conn_string(sqlite_path)
         except ImportError:
             pass
-    return MemorySaver()
+    # 注册自定义 dataclass 到 msgpack 反序列化 allowlist（消除 checkpoint 反序列化警告）
+    serde = JsonPlusSerializer(
+        allowed_msgpack_modules=[
+            ("app.service.chat.types", "ChatMemories"),
+            ("app.service.chat.types", "ParsedMemories"),
+        ]
+    )
+    return MemorySaver(serde=serde)
 
 
 # 默认编译（MemorySaver），用于快速启动
