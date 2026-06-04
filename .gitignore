@@ -90,3 +90,7 @@ repo_info.json
 
 .aider*
 AGENTS.md
+
+# mcp配置
+.codegraph/
+nul
