@@ -50,18 +50,22 @@ PROGRESS_KEYWORDS = ["后来", "结果", "还是", "已经", "最后", "终于",
 # ============================================================
 
 def _load_event_list(raw_text: str) -> List[dict]:
-    """解析事件列表（兼容 MIMO response_format=json_object 时将数组包裹在 {"content":"[...]"} 中）"""
-    events = try_parse_json(raw_text)
+    """解析事件列表
 
-    # MIMO 兼容：response_format=json_object 强制输出 {} 对象，模型可能将数组包在 content 字段里
-    if isinstance(events, dict) and "content" in events:
-        inner = events["content"]
-        if isinstance(inner, str):
-            events = try_parse_json(inner)
-        elif isinstance(inner, list):
-            events = inner
+    期望格式 {"events": [...]}，与 response_format=json_object 约束对齐。
+    也兼容 LLM 将内层数组序列化为字符串的情况 {"events": "[...]"}。
+    """
+    data = try_parse_json(raw_text)
 
-    if events is None or not isinstance(events, list):
+    # 解包 events 字段
+    if isinstance(data, dict) and "events" in data:
+        events = data["events"]
+        if isinstance(events, str):
+            events = try_parse_json(events)
+    else:
+        events = data
+
+    if not isinstance(events, list):
         raise json.JSONDecodeError("event payload is not a valid list", raw_text, 0)
     return events
 

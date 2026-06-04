@@ -48,22 +48,24 @@
   - 例如："真好看啊，比我画的垃圾好多了" → 提取为"用户感到不满/自嘲"，category=event，event_type=express_emotion
   - 反话中的虚构内容不存为事实
 
-## 输出格式（JSON数组）
-[
-  {
-    "event_id": "evt_<YYYYMMDD>_001",
-    "occurred_at": "2024-01-15",
-    "last_seen_at": "2024-01-15",
-    "actor": "USER",
-    "category": "event",
-    "type": "event",
-    "event_type": "follow_up",
-    "content": "用户说三小时后吃饭",
-    "source_snippet": "我三小时后去吃饭",
-    "source_round": 42,
-    "activity_score": 0.9
-  }
-]
+## 输出格式（JSON对象，包含 events 数组）
+{
+  "events": [
+    {
+      "event_id": "evt_<YYYYMMDD>_001",
+      "occurred_at": "2024-01-15",
+      "last_seen_at": "2024-01-15",
+      "actor": "USER",
+      "category": "event",
+      "type": "event",
+      "event_type": "follow_up",
+      "content": "用户说三小时后吃饭",
+      "source_snippet": "我三小时后去吃饭",
+      "source_round": 42,
+      "activity_score": 0.9
+    }
+  ]
+}
 
 ## 字段说明
 
@@ -98,5 +100,5 @@
 
 ## 注意
 - 必须输出合法 JSON，字符串内双引号需转义为 \"
-- 只输出 JSON 数组本身，不要输出 markdown 代码块、解释、前后缀文本
-- 如果没有值得记忆的内容，输出空数组 []
+- 只输出 JSON 对象本身，不要输出 markdown 代码块、解释、前后缀文本
+- 如果没有值得记忆的内容，输出 {"events": []}
