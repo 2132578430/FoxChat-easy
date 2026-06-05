@@ -14,7 +14,7 @@ Features:
 Usage:
     from app.service.chat.session_lock import acquire_session_lock, release_session_lock
 
-    lock = acquire_session_lock(user_id, llm_id)
+    lock = await acquire_session_lock(user_id, llm_id)
     try:
         # Process request sequentially
         ...
@@ -22,6 +22,7 @@ Usage:
         release_session_lock(lock)
 """
 
+import asyncio
 import redis
 import redis_lock
 from typing import Optional
@@ -29,14 +30,17 @@ from typing import Optional
 from app.core.db.redis_client import redis_client
 from loguru import logger
 
-# BLPOP 等待锁期间，每隔 POLL_INTERVAL 秒检查一次连接健康
-# 避免单次 BLPOP 长时间占用连接导致 Redis 服务端/代理层关闭空闲连接
+# 单次 BLPOP 超时：10s（短轮询，避免长时间阻塞线程池中的线程）
+# BLPOP 本身在线程池中执行，不阻塞事件循环
 _POLL_INTERVAL = 10  # 秒
 
 
-def acquire_session_lock(user_id: str, llm_id: str, expire: int = 60) -> redis_lock.Lock:
+async def acquire_session_lock(user_id: str, llm_id: str, expire: int = 60) -> redis_lock.Lock:
     """
     Acquire a distributed lock for the specified session.
+
+    This is an **async** function — the underlying Redis BLPOP is executed in a
+    thread pool via asyncio.to_thread(), so it never blocks the asyncio event loop.
 
     Args:
         user_id: User identifier
@@ -49,8 +53,9 @@ def acquire_session_lock(user_id: str, llm_id: str, expire: int = 60) -> redis_l
     Note:
         - expire=60: Lock auto-releases after 60s if process crashes
         - auto_renewal=True: Watchdog keeps renewing lock while process is alive
-        - 采用短 BLPOP 轮询代替单次长 BLPOP，避免 Redis 连接在等待期间
-          被服务端/代理层（如 Nginx stream、AWS NLB）因 idle timeout 断开
+        - BLPOP is run in a thread pool: acquire() blocks a thread, not the event loop
+        - Short BLPOP poll interval (10s) prevents a single BLPOP from hogging a
+          thread-pool thread when the lock holder takes a long time
     """
     key = f"session_lock:{user_id}:{llm_id}"
 
@@ -62,11 +67,14 @@ def acquire_session_lock(user_id: str, llm_id: str, expire: int = 60) -> redis_l
     )
 
     waited = 0
-    max_wait = 300  # 最多等 5 分钟（正常 LLM 调用不可能超过这个时间）
+    max_wait = 300  # 最多等 5 分钟
 
     while waited < max_wait:
         try:
-            acquired = lock.acquire(blocking=True, timeout=_POLL_INTERVAL)
+            # 在线程池中执行同步 BLPOP，事件循环不受影响
+            acquired = await asyncio.to_thread(
+                lock.acquire, blocking=True, timeout=_POLL_INTERVAL
+            )
             if acquired:
                 if waited > 0:
                     logger.info(f"[SessionLock] Acquired after waiting {waited}s: {key}")
@@ -76,7 +84,7 @@ def acquire_session_lock(user_id: str, llm_id: str, expire: int = 60) -> redis_l
             waited += _POLL_INTERVAL
             logger.debug(f"[SessionLock] Still waiting ({waited}s): {key}")
         except redis.exceptions.TimeoutError:
-            # BLPOP 被 Redis/TCP 层 timeout 打断 — 重新尝试
+            # BLPOP 在 thread 里被 Redis/TCP 层 timeout 中断 → 重试
             waited += _POLL_INTERVAL
             logger.warning(f"[SessionLock] Redis timeout after {waited}s, retrying: {key}")
             continue

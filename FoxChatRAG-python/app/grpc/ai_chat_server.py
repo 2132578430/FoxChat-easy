@@ -63,7 +63,7 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
         parser = StreamingTagParser()
         seq = 0
 
-        lock = acquire_session_lock(user_id, llm_id)
+        lock = await acquire_session_lock(user_id, llm_id)
 
         try:
             # ── 尝试流式 ──

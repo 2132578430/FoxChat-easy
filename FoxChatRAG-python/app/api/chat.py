@@ -52,7 +52,7 @@ async def chat_msg(chat_msg_to: ChatMsgTo, background_tasks: BackgroundTasks, re
     }
     config = {"configurable": {"thread_id": f"{user_id}:{llm_id}"}}
 
-    lock = acquire_session_lock(user_id, llm_id)
+    lock = await acquire_session_lock(user_id, llm_id)
     try:
         result = await main_graph.ainvoke(initial_state, config)
         response = {
