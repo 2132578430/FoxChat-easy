@@ -29,6 +29,10 @@ from typing import Optional
 from app.core.db.redis_client import redis_client
 from loguru import logger
 
+# BLPOP 等待锁期间，每隔 POLL_INTERVAL 秒检查一次连接健康
+# 避免单次 BLPOP 长时间占用连接导致 Redis 服务端/代理层关闭空闲连接
+_POLL_INTERVAL = 10  # 秒
+
 
 def acquire_session_lock(user_id: str, llm_id: str, expire: int = 60) -> redis_lock.Lock:
     """
@@ -45,8 +49,8 @@ def acquire_session_lock(user_id: str, llm_id: str, expire: int = 60) -> redis_l
     Note:
         - expire=60: Lock auto-releases after 60s if process crashes
         - auto_renewal=True: Watchdog keeps renewing lock while process is alive
-        - blocking=True with timeout=5: fast-fail for concurrent requests, avoids
-          BLPOP hogging a Redis connection and triggering socket timeout
+        - 采用短 BLPOP 轮询代替单次长 BLPOP，避免 Redis 连接在等待期间
+          被服务端/代理层（如 Nginx stream、AWS NLB）因 idle timeout 断开
     """
     key = f"session_lock:{user_id}:{llm_id}"
 
@@ -54,25 +58,32 @@ def acquire_session_lock(user_id: str, llm_id: str, expire: int = 60) -> redis_l
         redis_client,
         key,
         expire=expire,
-        auto_renewal=True,  # Watchdog auto-renewal
+        auto_renewal=True,
     )
 
-    try:
-        # blocking=True + timeout=5:
-        # - 正常情况：立刻拿到锁（上个请求已释放）
-        # - 并发情况：等最多5s，拿不到则快速失败，避免 BLPOP 长时间占用连接导致 socket 超时
-        acquired = lock.acquire(blocking=True, timeout=5)
-        if not acquired:
-            logger.warning(f"[SessionLock] 锁等待超时(5s)，可能存在并发请求: {key}")
-            raise RuntimeError("会话正忙，请稍后再试")
-        logger.debug(f"[SessionLock] Acquired: {key}")
-        return lock
-    except redis.exceptions.TimeoutError as e:
-        logger.error(f"[SessionLock] Redis 连接超时: {key} — {e}")
-        raise RuntimeError("服务暂时不可用，请稍后重试") from e
-    except Exception as e:
-        logger.error(f"[SessionLock] 获取锁失败: {key} — {e}")
-        raise RuntimeError(f"会话锁获取失败，请稍后重试") from e
+    waited = 0
+    max_wait = 300  # 最多等 5 分钟（正常 LLM 调用不可能超过这个时间）
+
+    while waited < max_wait:
+        try:
+            acquired = lock.acquire(blocking=True, timeout=_POLL_INTERVAL)
+            if acquired:
+                if waited > 0:
+                    logger.info(f"[SessionLock] Acquired after waiting {waited}s: {key}")
+                else:
+                    logger.debug(f"[SessionLock] Acquired: {key}")
+                return lock
+            waited += _POLL_INTERVAL
+            logger.debug(f"[SessionLock] Still waiting ({waited}s): {key}")
+        except redis.exceptions.TimeoutError:
+            # BLPOP 被 Redis/TCP 层 timeout 打断 — 重新尝试
+            waited += _POLL_INTERVAL
+            logger.warning(f"[SessionLock] Redis timeout after {waited}s, retrying: {key}")
+            continue
+
+    # 等了 5 分钟还拿不到 → 前一个请求大概率卡死了
+    logger.error(f"[SessionLock] 等待超时({max_wait}s)，锁持有者可能已卡死: {key}")
+    raise RuntimeError("会话正忙，请稍后再试")
 
 
 def release_session_lock(lock: redis_lock.Lock) -> None:
