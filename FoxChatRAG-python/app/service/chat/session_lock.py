@@ -45,7 +45,8 @@ def acquire_session_lock(user_id: str, llm_id: str, expire: int = 60) -> redis_l
     Note:
         - expire=60: Lock auto-releases after 60s if process crashes
         - auto_renewal=True: Watchdog keeps renewing lock while process is alive
-        - blocking=True: Wait until lock is available
+        - blocking=True with timeout=5: fast-fail for concurrent requests, avoids
+          BLPOP hogging a Redis connection and triggering socket timeout
     """
     key = f"session_lock:{user_id}:{llm_id}"
 
@@ -57,13 +58,18 @@ def acquire_session_lock(user_id: str, llm_id: str, expire: int = 60) -> redis_l
     )
 
     try:
-        # blocking=True + timeout=30: 最多等 30s，超时抛异常而不是无限阻塞
-        lock.acquire(blocking=True, timeout=30)
+        # blocking=True + timeout=5:
+        # - 正常情况：立刻拿到锁（上个请求已释放）
+        # - 并发情况：等最多5s，拿不到则快速失败，避免 BLPOP 长时间占用连接导致 socket 超时
+        acquired = lock.acquire(blocking=True, timeout=5)
+        if not acquired:
+            logger.warning(f"[SessionLock] 锁等待超时(5s)，可能存在并发请求: {key}")
+            raise RuntimeError("会话正忙，请稍后再试")
         logger.debug(f"[SessionLock] Acquired: {key}")
         return lock
     except redis.exceptions.TimeoutError as e:
-        logger.error(f"[SessionLock] Redis 连接超时，获取锁失败: {key} — {e}")
-        raise RuntimeError("Redis 连接超时，请稍后重试") from e
+        logger.error(f"[SessionLock] Redis 连接超时: {key} — {e}")
+        raise RuntimeError("服务暂时不可用，请稍后重试") from e
     except Exception as e:
         logger.error(f"[SessionLock] 获取锁失败: {key} — {e}")
         raise RuntimeError(f"会话锁获取失败，请稍后重试") from e

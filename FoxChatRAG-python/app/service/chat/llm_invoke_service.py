@@ -59,11 +59,13 @@ async def _build_chat_messages(
     from app.service.chat.memory_parser import build_static_anchors
 
     # 获取用户配置（批量查询）
+    logger.debug(f"[BuildMessages] 开始获取 LLM 配置: llm_id={llm_id}")
     if db:
         config_map = await get_llm_configs_batch(llm_id, db)
     else:
         async with async_session_local() as session:
             config_map = await get_llm_configs_batch(llm_id, session)
+    logger.debug(f"[BuildMessages] LLM 配置获取完成: llm_id={llm_id}")
 
     prompt_text = await PromptManager.get_prompt("chat_system")
     prompt_text = escape_template(
