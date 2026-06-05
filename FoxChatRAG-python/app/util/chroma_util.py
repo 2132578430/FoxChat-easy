@@ -61,12 +61,21 @@ async def search(
     # 用预计算的 embedding 做搜索，使用 LangChain 公开 API（避免直接访问 _collection 内部接口）
     chroma_filter = _build_chroma_filter(metadata)
 
-    # 预检：空集合直接返回，避免 ChromaDB 内部 "list index out of range" 异常
+    # 预检1：空集合直接返回
     try:
         if chroma._collection.count() == 0:
             return []
     except Exception:
-        pass  # count() 失败则继续走正常查询流程
+        pass
+
+    # 预检2：有 filter 时检查是否有匹配的文档（避免 ChromaDB HNSW 在 filter 零匹配时抛 IndexError）
+    if chroma_filter:
+        try:
+            probe = chroma._collection.get(where=chroma_filter, limit=1)
+            if not probe or not probe.get("ids"):
+                return []
+        except Exception:
+            pass  # probe 失败则继续走正常查询流程
 
     try:
         scored_docs: list[tuple[Document, float]] = chroma.similarity_search_by_vector_with_relevance_scores(
@@ -74,6 +83,9 @@ async def search(
             k=limit,
             filter=chroma_filter,
         )
+    except IndexError:
+        # ChromaDB 已知 bug：filter 导致 HNSW 内部访问空列表
+        return []
     except Exception as e:
         logger.error(f"[PERF] chroma query 失败: {e}")
         return []
