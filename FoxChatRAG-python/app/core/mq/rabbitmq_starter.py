@@ -8,8 +8,10 @@ from app.core.mq.rabbitmq_setup_queue import rag_setup_queue, chat_setup_queue
 
 
 async def init_rabbitmq():
-    # 开启rabbitmq连接
-    connection = await rabbitmq_connect()
+    from app.core.health_check import retry_connect
+
+    # 开启rabbitmq连接（带重试）
+    connection = await retry_connect("RabbitMQ", rabbitmq_connect)
     channel_rag = await connection.channel()
     channel_chat = await connection.channel()
 

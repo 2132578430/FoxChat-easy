@@ -22,6 +22,7 @@ Usage:
         release_session_lock(lock)
 """
 
+import redis
 import redis_lock
 from typing import Optional
 
@@ -55,11 +56,17 @@ def acquire_session_lock(user_id: str, llm_id: str, expire: int = 60) -> redis_l
         auto_renewal=True,  # Watchdog auto-renewal
     )
 
-    # blocking=True: wait until lock acquired
-    lock.acquire(blocking=True)
-    logger.debug(f"[SessionLock] Acquired: {key}")
-
-    return lock
+    try:
+        # blocking=True + timeout=30: 最多等 30s，超时抛异常而不是无限阻塞
+        lock.acquire(blocking=True, timeout=30)
+        logger.debug(f"[SessionLock] Acquired: {key}")
+        return lock
+    except redis.exceptions.TimeoutError as e:
+        logger.error(f"[SessionLock] Redis 连接超时，获取锁失败: {key} — {e}")
+        raise RuntimeError("Redis 连接超时，请稍后重试") from e
+    except Exception as e:
+        logger.error(f"[SessionLock] 获取锁失败: {key} — {e}")
+        raise RuntimeError(f"会话锁获取失败，请稍后重试") from e
 
 
 def release_session_lock(lock: redis_lock.Lock) -> None:

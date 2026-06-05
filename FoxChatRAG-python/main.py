@@ -16,8 +16,18 @@ from app.service.chat.timer_scheduler import timer_scheduler
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # 开启rabbitmq监听后台
-    connection = await init_rabbitmq()
+    # ═══════════════════════════════════════════════
+    # 启动时并行健康检查所有中间件（带重试）
+    # 任一中间件不可用 → 启动失败，不进入服务状态
+    # ═══════════════════════════════════════════════
+    from app.core.health_check import retry_connect, check_redis, check_mysql
+
+    results = await asyncio.gather(
+        retry_connect("MySQL", check_mysql),
+        retry_connect("Redis", check_redis),
+        init_rabbitmq(),  # RabbitMQ 内部自带重试
+    )
+    connection = results[2]
 
     # 启动定时总结调度器
     asyncio.create_task(timer_scheduler())

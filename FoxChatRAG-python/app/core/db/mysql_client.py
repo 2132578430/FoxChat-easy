@@ -1,4 +1,3 @@
-from loguru import logger
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
 from app.core.settings import global_settings
@@ -15,9 +14,7 @@ async_session_local = async_sessionmaker(
     autocommit=False,
 )
 
-logger.info("mysql数据库已连接")
-
-# 异步获取数据库
+# 异步获取数据库（连接在 lifespan 启动时通过 health_check 验证）
 async def get_db():
     async with async_session_local() as session:
         try:
