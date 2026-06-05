@@ -107,7 +107,9 @@ async def parse_memory(state: ChatState) -> dict:
 
 async def classify_intent_node(state: ChatState) -> dict:
     """两层意图分类（规则 + 语义），结果用于条件路由"""
+    logger.debug(f"[Graph] classify_intent_node 开始: msg={state['msg_content'][:30]}")
     intent_result = classify_intent(state["msg_content"])
+    logger.debug(f"[Graph] classify_intent_node 完成: intent={intent_result.intent}, skip={intent_result.skip}")
     return {"intent_result": {
         "intent": str(intent_result.intent),
         "scope": [str(s) for s in intent_result.scope],
@@ -119,6 +121,7 @@ async def classify_intent_node(state: ChatState) -> dict:
 
 async def retrieve(state: ChatState) -> dict:
     """主动检索：BM25 + ChromaDB Vector + Rerank，结果存入 state"""
+    logger.debug(f"[Graph] retrieve 节点开始: msg={state['msg_content'][:30]}")
     relevant_memories_text = await search_relevant_memories(
         msg_content=state["msg_content"],
         user_id=state["user_id"],
@@ -130,6 +133,7 @@ async def retrieve(state: ChatState) -> dict:
 
 async def skip_retrieval(state: ChatState) -> dict:
     """跳过检索（casual_chat），relevant_memories_text 为空"""
+    logger.debug(f"[Graph] skip_retrieval 节点开始")
     return {"relevant_memories_text": ""}
 
 
@@ -145,6 +149,7 @@ async def invoke_llm(state: ChatState, config: dict = None) -> dict:
     - 非流式（默认）：invoke_llm_with_retrieval → 返回完整响应
     - 流式：通过 contextvars._stream_queue_ctx 逐 token 推送（绕过 checkpointer 序列化）
     """
+    logger.debug(f"[Graph] invoke_llm 节点开始: has_stream_queue={_stream_queue_ctx.get(None) is not None}")
     stream_queue = _stream_queue_ctx.get(None)
 
     if stream_queue is not None:
