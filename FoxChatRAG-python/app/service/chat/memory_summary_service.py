@@ -32,6 +32,7 @@ from app.util import loader_util, chroma_util
 from app.util.template_util import escape_template, try_parse_json
 from app.service.chat.user_profile_service import update_user_profile_in_summary
 from app.service.chat.common import safe_json_parse, calc_jaccard_similarity
+from app.service.chat.history_event_retrieval_service import IMPORTANCE_BY_TYPE
 
 # 配置常量
 MEMORY_BANK_MAX_SIZE = 50
@@ -379,14 +380,27 @@ async def _compress_memory_bank_if_needed(user_id: str, llm_id: str, db = None) 
 
     logger.info(f"memory_bank 压缩触发: {len(memory_bank)} 条")
 
+    # 补全 importance 字段：如果事件没有 importance，根据 event_type 映射
+    for event in memory_bank:
+        if "importance" not in event or event["importance"] is None:
+            event_type = event.get("event_type", "other")
+            event["importance"] = IMPORTANCE_BY_TYPE.get(event_type, 0.30)
+
+    # 提取高重要性事件（importance >= 0.7），必须在压缩结果中原样保留
+    pinned_events = [e for e in memory_bank if e.get("importance", 0) >= 0.70]
+    pinned_json = json.dumps(pinned_events, ensure_ascii=False, indent=2) if pinned_events else "（无高重要性事件）"
+    if pinned_events:
+        logger.info(f"memory_bank 压缩: 锚定 {len(pinned_events)} 条高重要性事件 (importance>=0.7)")
+
     prompt_str = await PromptManager.get_prompt("memory_bank_compress")
-    prompt_str = escape_template(prompt_str, ["target_size", "memory_bank_json"])
+    prompt_str = escape_template(prompt_str, ["target_size", "memory_bank_json", "pinned_events_json"])
 
     # 构建 messages
     messages = [
         {"role": "user", "content": prompt_str.format(
             target_size=MEMORY_BANK_COMPRESS_TARGET,
             memory_bank_json=json.dumps(memory_bank, ensure_ascii=False, indent=2),
+            pinned_events_json=pinned_json,
         )}
     ]
 
