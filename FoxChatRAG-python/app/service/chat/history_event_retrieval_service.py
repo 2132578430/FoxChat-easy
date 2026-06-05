@@ -579,6 +579,7 @@ async def _rerank_candidates(
     try:
         from langchain_community.document_compressors import FlashrankRerank
         from langchain_core.documents import Document
+        from app.core.llm_model.model import rerank_model as _global_rerank
 
         # 转换为Document格式
         documents = [
@@ -586,8 +587,8 @@ async def _rerank_candidates(
             for event in events
         ]
 
-        # FlashrankRerank
-        reranker = FlashrankRerank(top_n=top_k)
+        # 复用全局 rerank_model 的 client（已配置 cache_dir + MiniLM），只覆写 top_n
+        reranker = FlashrankRerank(client=_global_rerank.client, top_n=top_k)
         compressed = reranker.compress_documents(
             documents=documents,
             query=query,
