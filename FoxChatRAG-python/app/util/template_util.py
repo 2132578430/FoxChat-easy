@@ -18,11 +18,6 @@ def escape_template(template: str, var_names: list[str]) -> str:
 
     Returns:
         转义后的模板字符串
-
-    Example:
-        >>> template = "用户信息: {current_profile}\\n对话: {chat_history}"
-        >>> escaped = escape_template(template, ["current_profile", "chat_history"])
-        >>> # 现在 JSON 中的 {"name": "test"} 会被正确转义
     """
     for name in var_names:
         template = template.replace(f"{{{name}}}", f"__VAR_{name}__")

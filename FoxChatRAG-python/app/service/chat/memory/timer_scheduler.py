@@ -27,7 +27,7 @@ from app.core.db.redis_client import redis_client
 # Constants for hybrid trigger mechanism
 TIMER_CHECK_INTERVAL = 45  # Timer interval in seconds (how often to check)
 SUMMARY_MIN_TRIGGER_THRESHOLD = 18  # Minimum messages for timer trigger
-SUMMARY_MAX_TRIGGER_THRESHOLD = 30  # Max threshold (handled in chat_msg_service)
+SUMMARY_MAX_TRIGGER_THRESHOLD = 30  # Max threshold (handled in nodes.py trigger_summary node)
 MAX_RECENT_MSG_SIZE = 40  # Hard cap to prevent extreme accumulation
 
 

@@ -8,8 +8,8 @@ DAG 拓扑:
     → UNLOCK → END
 
 Checkpointer:
-  默认使用 MemorySaver (in-memory)，适合开发环境。
-  生产环境可切换到 SQLite: pip install langgraph-checkpoint-sqlite
+  默认使用 MemorySaver (in-memory)，适合开发环境
+  生产环境可切换到 SQLite 数据库
 """
 
 import os   
@@ -37,11 +37,13 @@ from app.service.chat.graph.router import need_retrieval
 
 
 def build_main_graph() -> StateGraph:
-    """构建主 Chat 流程的 StateGraph"""
+    """
+    构建主 Chat 流程的 StateGraph
+    """
 
     builder = StateGraph(ChatState)
 
-    # === Nodes ===
+    # 节点
     builder.add_node("pre_flight", pre_flight)
     builder.add_node("fetch_memory", fetch_memory)
     builder.add_node("parse_memory", parse_memory)
@@ -55,13 +57,13 @@ def build_main_graph() -> StateGraph:
     builder.add_node("trigger_summary", trigger_summary)
     builder.add_node("unlock", unlock)
 
-    # === Edges ===
+    # 边
     builder.add_edge(START, "pre_flight")
     builder.add_edge("pre_flight", "fetch_memory")
     builder.add_edge("fetch_memory", "parse_memory")
     builder.add_edge("parse_memory", "classify_intent")
 
-    # Conditional routing
+    # 路由分支
     builder.add_conditional_edges(
         "classify_intent",
         need_retrieval,
@@ -74,13 +76,13 @@ def build_main_graph() -> StateGraph:
     builder.add_edge("retrieve", "invoke_llm")
     builder.add_edge("skip_retrieval", "invoke_llm")
 
-    # 4-way parallel post-processing
+    # 4分叉并行处理分支
     builder.add_edge("invoke_llm", "save_message")
     builder.add_edge("invoke_llm", "format_output")
     builder.add_edge("invoke_llm", "classify_emotion")
     builder.add_edge("invoke_llm", "trigger_summary")
 
-    # All converge to unlock, then END
+    # 合并分支到 unlock 节点
     builder.add_edge("save_message", "unlock")
     builder.add_edge("format_output", "unlock")
     builder.add_edge("classify_emotion", "unlock")
@@ -91,32 +93,39 @@ def build_main_graph() -> StateGraph:
 
 
 def compile_main_graph(checkpointer=None):
-    """编译主 Graph（可选传入 checkpointer）"""
+    """
+    编译主 Graph（可选传入 checkpointer）
+    """
     builder = build_main_graph()
     if checkpointer is None:
         checkpointer = _get_default_checkpointer()
+
     return builder.compile(checkpointer=checkpointer)
 
 
 def _get_default_checkpointer():
-    """获取默认 checkpointer：优先 SQLite，回退 MemorySaver"""
-    sqlite_path = os.environ.get("CHECKPOINT_DB_PATH", "")
-    if sqlite_path:
-        try:
-            from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
-            return AsyncSqliteSaver.from_conn_string(sqlite_path)
-        except ImportError:
-            pass
-    # 注册自定义 dataclass 到 msgpack 反序列化 allowlist（消除 checkpoint 反序列化警告）
+    """
+    获取默认 checkpointer：优先 SQLite，回退 MemorySaver
+    """
+    # 将我们ChatState中自定义的类型注册到序列化器中
     serde = JsonPlusSerializer(
         allowed_msgpack_modules=[
             ("app.service.chat.types", "ChatMemories"),
             ("app.service.chat.types", "ParsedMemories"),
         ]
     )
+
+    sqlite_path = os.environ.get("CHECKPOINT_DB_PATH", "")
+    # 如果制定了SqlLite数据库路径就用SqlLite的持久化器
+    if sqlite_path:
+        try:
+            from langgraph.checkpoint.sqlite.aio import AsyncSqliteSaver
+            return AsyncSqliteSaver.from_conn_string(sqlite_path, serde=serde)
+        except ImportError:
+            pass
+    # 默认使用内存自带的持久化器
     return MemorySaver(serde=serde)
 
 
 # 默认编译（MemorySaver），用于快速启动
 main_graph = compile_main_graph()
-main_graph_no_checkpoint = build_main_graph().compile()

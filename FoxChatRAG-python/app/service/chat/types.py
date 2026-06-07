@@ -10,7 +10,9 @@ from typing import List
 
 @dataclass
 class ChatMemories:
-    """聊天所需的记忆数据容器"""
+    """
+    聊天所需的记忆数据容器
+    """
     init_memory: str
     recent_msg: List[str]
     character_card_json: str
@@ -22,7 +24,9 @@ class ChatMemories:
 
 @dataclass
 class ParsedMemories:
-    """解析后的记忆数据容器"""
+    """
+    解析后的记忆数据容器
+    """
     character_card_examples: str
     character_card_detail: str
     behavior_guide_text: str

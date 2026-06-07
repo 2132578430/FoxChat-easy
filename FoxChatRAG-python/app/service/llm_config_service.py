@@ -3,12 +3,15 @@ LLM 配置服务模块
 
 职责:
 - 批量查询 LLM 配置 (5 个场景一次性查询)
-- 保存/更新/删除配置
 - 配置完整性验证
 - 测试连接验证
+
+注意：
+  LLM 配置的增删改由 Java 端 LlmConfigServiceImpl 直接操作 MySQL，
+  Python 不再维护重复的 save/delete 逻辑。
+  仅保留 Java 无法替代的功能：查询（chat 流程内部使用）和连通性测试（需要 litellm）。
 """
 
-import json
 from typing import Dict, List
 from loguru import logger
 
@@ -90,6 +93,7 @@ async def get_llm_configs_batch(llm_id: str, db: AsyncSession) -> Dict[str, dict
     configs = result.scalars().all()
 
     config_map = {}
+    # 查询后根据模型类型分类存储配置
     for config in configs:
         scenario = config.scenario
         config_map[scenario] = {
@@ -109,121 +113,6 @@ async def get_llm_configs_batch(llm_id: str, db: AsyncSession) -> Dict[str, dict
     return config_map
 
 
-async def save_llm_config(
-    llm_id: str,
-    scenario: str,
-    config_data: dict,
-    db: AsyncSession
-) -> str:
-    """
-    保存或更新 LLM 配置
-
-    Args:
-        llm_id: AI 朋友 ID
-        scenario: 场景名称
-        config_data: 配置数据
-        db: 数据库会话
-
-    Returns:
-        配置 ID
-    """
-    # 检查是否已存在配置
-    query = select(LlmConfig).where(
-        LlmConfig.llm_id == llm_id,
-        LlmConfig.scenario == scenario
-    )
-    result = await db.execute(query)
-    existing_config = result.scalar_one_or_none()
-
-    if existing_config:
-        # 更新现有配置
-        existing_config.model_name = config_data["model_name"]
-        existing_config.model_api_key = config_data["model_api_key"]
-        existing_config.model_base_url = config_data["model_base_url"]
-        existing_config.model_temperature = config_data.get("model_temperature")
-        existing_config.model_max_tokens = config_data.get("model_max_tokens")
-        existing_config.model_response_format = config_data.get("model_response_format")
-
-        await db.commit()
-        logger.info(f"【更新配置】llm_id={llm_id}, scenario={scenario}")
-        return existing_config.id
-    else:
-        # 创建新配置
-        import uuid
-        config_id = str(uuid.uuid4())
-
-        new_config = LlmConfig(
-            id=config_id,
-            llm_id=llm_id,
-            scenario=scenario,
-            model_name=config_data["model_name"],
-            model_api_key=config_data["model_api_key"],
-            model_base_url=config_data["model_base_url"],
-            model_temperature=config_data.get("model_temperature"),
-            model_max_tokens=config_data.get("model_max_tokens"),
-            model_response_format=config_data.get("model_response_format"),
-            is_default=False,
-        )
-
-        db.add(new_config)
-        await db.commit()
-        logger.info(f"【创建配置】llm_id={llm_id}, scenario={scenario}, id={config_id}")
-        return config_id
-
-
-async def save_llm_configs_batch(
-    llm_id: str,
-    configs: List[dict],
-    db: AsyncSession
-) -> Dict[str, str]:
-    """
-    批量保存 5 个场景配置
-
-    Args:
-        llm_id: AI 朋友 ID
-        configs: 配置列表 (每个包含 scenario 字段)
-        db: 数据库会话
-
-    Returns:
-        配置 ID 字典: {'chat': 'id1', 'memory': 'id2', ...}
-    """
-    config_ids = {}
-    for config in configs:
-        scenario = config["scenario"]
-        config_id = await save_llm_config(llm_id, scenario, config, db)
-        config_ids[scenario] = config_id
-
-    logger.info(f"【批量保存】llm_id={llm_id}, 保存 {len(config_ids)} 个配置")
-    return config_ids
-
-
-async def delete_llm_config(llm_id: str, scenario: str, db: AsyncSession) -> bool:
-    """
-    删除 LLM 配置
-
-    Args:
-        llm_id: AI 朋友 ID
-        scenario: 场景名称
-        db: 数据库会话
-
-    Returns:
-        是否成功删除
-    """
-    query = select(LlmConfig).where(
-        LlmConfig.llm_id == llm_id,
-        LlmConfig.scenario == scenario
-    )
-    result = await db.execute(query)
-    config = result.scalar_one_or_none()
-
-    if config:
-        await db.delete(config)
-        await db.commit()
-        logger.info(f"【删除配置】llm_id={llm_id}, scenario={scenario}")
-        return True
-    else:
-        logger.warning(f"【删除配置】配置不存在: llm_id={llm_id}, scenario={scenario}")
-        return False
 
 
 async def validate_config_count(llm_id: str, db: AsyncSession) -> bool:

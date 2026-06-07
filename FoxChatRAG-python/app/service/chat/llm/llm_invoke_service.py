@@ -5,11 +5,6 @@ LLM 调用服务
 - 构建 Prompt 并调用 LLM（流式 + 非流式）
 - 检索相关记忆
 - 记录 Token 消耗
-
-重构说明：
-- 使用策略层替代硬编码的 get_chat_model()
-- 需要传入 llm_id 参数以查询用户配置
-- 2026-05-21: 提取 _build_chat_messages() 公共 builder，新增 stream_llm_with_retrieval()
 """
 
 import asyncio
@@ -58,25 +53,31 @@ async def _build_chat_messages(
     """
     from app.service.chat.memory.memory_parser import build_static_anchors
 
-    # 获取用户配置（批量查询）
+    # 批量查询用户配置
     logger.debug(f"[BuildMessages] 开始获取 LLM 配置: llm_id={llm_id}")
     if db:
         config_map = await get_llm_configs_batch(llm_id, db)
     else:
+        # 当没有提供数据库会话时，使用默认的异步会话池
         async with async_session_local() as session:
             config_map = await get_llm_configs_batch(llm_id, session)
     logger.debug(f"[BuildMessages] LLM 配置获取完成: llm_id={llm_id}")
 
+    # 获取提示词模版
     prompt_text = await PromptManager.get_prompt("chat_system")
+    # 转义模板中的变量，防止 SQL 注入
     prompt_text = escape_template(
         prompt_text,
         ["static_anchors", "user_profile_summary", "historical_context", "current_state", "behavior_guide", "talkativeness_guidance"],
     )
 
+    # 获取角色全局提示词
     soul = await PromptManager.get_soul("soul")
 
+    # 获取历史上下文
     historical_context = relevant_memories_text if relevant_memories_text else parsed.memory_bank_summary
 
+    # 构建静态锚点
     static_anchors = build_static_anchors(
         soul=soul or "",
         role_declaration=parsed.role_declaration,
