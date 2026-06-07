@@ -7,7 +7,7 @@
 """
 
 from app.service.chat import clear_chat_memory
-from app.service.chat.memory_upload_service import chat_init
+from app.service.chat.memory.memory_upload_service import chat_init
 from app.service.rag import search_file, upload_file
 
 # 兼容旧导入路径（过渡期）

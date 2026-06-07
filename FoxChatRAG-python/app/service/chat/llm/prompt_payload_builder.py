@@ -16,7 +16,7 @@
 - 输出最终 payload 字典
 
 使用方式：
-    from app.service.chat.prompt_payload_builder import build_prompt_payload
+    from app.service.chat.llm.prompt_payload_builder import build_prompt_payload
 
     payload = build_prompt_payload(
         static_anchors=...,

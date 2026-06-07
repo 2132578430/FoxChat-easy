@@ -18,7 +18,7 @@ from loguru import logger
 
 from app.service.chat.strategy.base_strategy import EmotionInvokeStrategy
 from app.core.prompts.prompt_manager import PromptManager
-from app.service.chat.state_manager import update_current_state, get_current_state
+from app.service.chat.state.state_manager import update_current_state, get_current_state
 from app.schemas.current_state import UpdateSource
 from app.util.template_util import escape_template
 from app.core.db.mysql_client import async_session_local

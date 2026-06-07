@@ -30,9 +30,9 @@ from app.core.prompts.prompt_manager import PromptManager
 from app.service.chat.strategy.base_strategy import ExtractionInvokeStrategy, MemoryInvokeStrategy, SummaryInvokeStrategy
 from app.util import loader_util, chroma_util
 from app.util.template_util import escape_template, try_parse_json
-from app.service.chat.user_profile_service import update_user_profile_in_summary
+from app.service.chat.profile.user_profile_service import update_user_profile_in_summary
 from app.service.chat.common import safe_json_parse, calc_jaccard_similarity
-from app.service.chat.history_event_retrieval_service import IMPORTANCE_BY_TYPE
+from app.service.chat.memory.history_event_retrieval_service import IMPORTANCE_BY_TYPE
 
 # 配置常量
 MEMORY_BANK_MAX_SIZE = 50
@@ -207,7 +207,7 @@ async def _extract_memory_events(recent_msg_list: List[str], llm_id: str = None,
             # 统一分类器覆盖 event_type：消除 LLM 判断与检索 scope 的不一致
             content = event.get("content", "")
             if content:
-                from app.service.chat.intent_classifier import classify_event_type
+                from app.service.chat.llm.intent_classifier import classify_event_type
                 event["event_type"] = classify_event_type(content)
             # 覆盖 LLM 生成的 event_id，防止跨轮次 ID 碰撞导致 ChromaDB upsert 覆盖
             content_hash = hashlib.md5(event.get("content", "").encode()).hexdigest()[:12]
@@ -588,7 +588,7 @@ async def execute_summary_loop(
         await async_summary_msg_parallel(recent_msg_key, size, user_id, llm_id)
 
         # 重置定时器
-        from app.service.chat.timer_scheduler import reset_timer
+        from app.service.chat.memory.timer_scheduler import reset_timer
         reset_timer(user_id, llm_id)
 
         counter = int(redis_client.get(counter_key) or 0)

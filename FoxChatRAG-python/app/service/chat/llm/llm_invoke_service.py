@@ -23,8 +23,8 @@ from langchain_core.language_models.chat_models import BaseMessage
 from app.common.constant.ChromaTypeConstant import ChromaTypeConstant
 from app.core.db.mysql_client import async_session_local
 from app.core.prompts.prompt_manager import PromptManager
-from app.service.chat.prompt_payload_builder import build_prompt_payload
-from app.service.chat.history_event_retrieval_service import (
+from app.service.chat.llm.prompt_payload_builder import build_prompt_payload
+from app.service.chat.memory.history_event_retrieval_service import (
     retrieve_history_events_v2,
     format_history_events,
 )
@@ -56,7 +56,7 @@ async def _build_chat_messages(
         - config_map: LLM 配置字典 {"chat": {...}, ...}
         - system_prompt: 格式化后的系统提示词（用于日志/调试）
     """
-    from app.service.chat.memory_parser import build_static_anchors
+    from app.service.chat.memory.memory_parser import build_static_anchors
 
     # 获取用户配置（批量查询）
     logger.debug(f"[BuildMessages] 开始获取 LLM 配置: llm_id={llm_id}")
@@ -286,7 +286,7 @@ async def search_relevant_memories(
         格式化后的 relevant_memories 文本块
     """
     try:
-        from app.service.chat.intent_classifier import classify_intent
+        from app.service.chat.llm.intent_classifier import classify_intent
         from app.common.constant.intent_config import IntentType
 
         # 意图判断

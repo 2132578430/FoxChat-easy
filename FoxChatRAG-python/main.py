@@ -12,7 +12,7 @@ from app.api import rag_router, chat_router, llm_config_router
 from app.core.settings import global_settings
 from app.core.mq import init_rabbitmq, close_rabbitmq
 from app.exception import register_exception_handlers
-from app.service.chat.timer_scheduler import timer_scheduler
+from app.service.chat.memory.timer_scheduler import timer_scheduler
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

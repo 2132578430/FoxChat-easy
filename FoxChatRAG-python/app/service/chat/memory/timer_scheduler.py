@@ -125,7 +125,7 @@ async def timer_summary_check_single(user_id: str, llm_id: str) -> None:
     logger.info(f"[Timer] {user_id}:{llm_id} elapsed {elapsed:.1f}s >= {TIMER_CHECK_INTERVAL}s, trigger summary (size={recent_msg_size})")
 
     # Import here to avoid circular dependency
-    from app.service.chat.memory_summary_service import trigger_summary_with_counter
+    from app.service.chat.memory.memory_summary_service import trigger_summary_with_counter
 
     await trigger_summary_with_counter(
         recent_msg_key,

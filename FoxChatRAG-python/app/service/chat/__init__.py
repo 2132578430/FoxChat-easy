@@ -8,19 +8,19 @@
 - 记忆总结
 """
 
-from app.service.chat.session_lock import acquire_session_lock, release_session_lock
+from app.service.chat.state.session_lock import acquire_session_lock, release_session_lock
 
-from app.service.chat.chat_msg_service import clear_chat_memory
-from app.service.chat.state_manager import (
+from app.service.chat.state.chat_msg_service import clear_chat_memory
+from app.service.chat.state.state_manager import (
     get_current_state,
     update_current_state,
     check_and_expire_fields,
     increment_round_counter,
     get_current_round,
 )
-from app.service.chat.memory_summary_service import async_summary_msg_parallel
-from app.service.chat.user_profile_service import update_user_profile_in_summary
-from app.service.chat.emotion_classifier import classify_and_update_emotion
+from app.service.chat.memory.memory_summary_service import async_summary_msg_parallel
+from app.service.chat.profile.user_profile_service import update_user_profile_in_summary
+from app.service.chat.profile.emotion_classifier import classify_and_update_emotion
 
 from app.service.chat.graph.graph import main_graph, build_main_graph, compile_main_graph
 __all__ = [

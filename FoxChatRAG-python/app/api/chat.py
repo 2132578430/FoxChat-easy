@@ -5,7 +5,7 @@ from loguru import logger
 from app.schemas import ChatMsgTo
 from app.schemas.M import M
 from app.service.chat import clear_chat_memory
-from app.service.chat.session_lock import acquire_session_lock, release_session_lock
+from app.service.chat.state.session_lock import acquire_session_lock, release_session_lock
 from app.service.chat.graph.graph import main_graph
 
 chat_router = APIRouter(prefix="/chat", tags=["chat"])
