@@ -14,48 +14,48 @@ from loguru import logger
 # ai_chat_server._stream_chat 写入，invoke_llm 节点读取
 _stream_queue_ctx: contextvars.ContextVar = contextvars.ContextVar("stream_queue", default=None)
 from app.service.chat.graph.state import ChatState
-from app.service.chat.state_manager import (
+from app.service.chat.state.state_manager import (
     increment_round_counter,
     get_current_state,
 )
-from app.service.chat.chat_redis_service import (
+from app.service.chat.state.chat_redis_service import (
     fetch_all_memories,
     save_chat_to_redis,
     build_history_message,
 )
-from app.service.chat.memory_parser import (
+from app.service.chat.memory.memory_parser import (
     parse_character_card,
     parse_core_anchor,
     parse_user_profile,
     parse_memory_bank,
     parse_current_state,
 )
-from app.service.chat.intent_classifier import classify_intent
-from app.service.chat.llm_invoke_service import (
+from app.service.chat.llm.intent_classifier import classify_intent
+from app.service.chat.llm.llm_invoke_service import (
     search_relevant_memories,
     invoke_llm_with_retrieval,
     stream_llm_with_retrieval,
 )
-from app.service.chat.response_parser import parse_action_tags
-from app.service.chat.emotion_classifier import classify_and_update_emotion
-from app.service.chat.memory_summary_service import trigger_summary_with_counter
-from app.service.chat.timer_scheduler import SUMMARY_MAX_TRIGGER_THRESHOLD
+from app.service.chat.parsing.response_parser import parse_action_tags
+from app.service.chat.profile.emotion_classifier import classify_and_update_emotion
+from app.service.chat.memory.memory_summary_service import trigger_summary_with_counter
+from app.service.chat.memory.timer_scheduler import SUMMARY_MAX_TRIGGER_THRESHOLD
 from app.service.chat.common import build_recent_msg_key
 from app.util import strip_all_tags, strip_think_only
 from app.service.chat.types import ParsedMemories
 
 
-# ============================================================
-# Pre-flight
-# ============================================================
-
+# 前缀处理
 async def pre_flight(state: ChatState) -> dict:
-    """轮数初始化 + 清理过期（lock 由 API 层管理）"""
+    """
+    轮数初始化 + 构建最近消息key
+    """
     user_id = state["user_id"]
     llm_id = state["llm_id"]
 
+    # 当前轮数
     current_round = increment_round_counter(user_id, llm_id) - 1
-
+    # 最近消息的key
     recent_msg_key = build_recent_msg_key(user_id, llm_id)
 
     return {
@@ -64,16 +64,15 @@ async def pre_flight(state: ChatState) -> dict:
     }
 
 
-# ============================================================
-# Memory
-# ============================================================
-
+# 拉取记忆
 async def fetch_memory(state: ChatState) -> dict:
-    """批量拉取 Redis 记忆（7 个 key 一次 pipeline）"""
+    """
+    通过pipline批量拉取 Redis 记忆
+    """
     memories = await fetch_all_memories(state["user_id"], state["llm_id"])
     return {"memories": memories}
 
-
+# 解析记忆
 async def parse_memory(state: ChatState) -> dict:
     """解析 5 种记忆 + 构建历史消息"""
     memories = state["memories"]
@@ -101,15 +100,13 @@ async def parse_memory(state: ChatState) -> dict:
     return {"parsed": parsed, "history_msg": history_msg}
 
 
-# ============================================================
-# Intent & Retrieval
-# ============================================================
-
+# 意图判断
 async def classify_intent_node(state: ChatState) -> dict:
-    """两层意图分类（规则 + 语义），结果用于条件路由"""
-    logger.debug(f"[Graph] classify_intent_node 开始: msg={state['msg_content'][:30]}")
+    """
+    两层意图分类（规则 + 语义），结果用于条件路由
+    """
     intent_result = classify_intent(state["msg_content"])
-    logger.debug(f"[Graph] classify_intent_node 完成: intent={intent_result.intent}, skip={intent_result.skip}")
+
     return {"intent_result": {
         "intent": str(intent_result.intent),
         "scope": [str(s) for s in intent_result.scope],
@@ -118,10 +115,14 @@ async def classify_intent_node(state: ChatState) -> dict:
         "confidence": float(intent_result.confidence),
     }}
 
-
+# 主动检索
 async def retrieve(state: ChatState) -> dict:
-    """主动检索：BM25 + ChromaDB Vector + Rerank，结果存入 state"""
-    logger.debug(f"[Graph] retrieve 节点开始: msg={state['msg_content'][:30]}")
+    """
+    Redis中用BM25检索memory bank
+    ChromaDB中用Scope过滤+语义检索
+    两个结果查重粗排后用Rerank模型精排
+    """
+    # logger.debug(f"[Graph] retrieve 节点开始: msg={state['msg_content'][:30]}")
     relevant_memories_text = await search_relevant_memories(
         msg_content=state["msg_content"],
         user_id=state["user_id"],
@@ -130,26 +131,24 @@ async def retrieve(state: ChatState) -> dict:
     )
     return {"relevant_memories_text": relevant_memories_text}
 
-
+# 跳过检索节点
 async def skip_retrieval(state: ChatState) -> dict:
-    """跳过检索（casual_chat），relevant_memories_text 为空"""
-    logger.debug(f"[Graph] skip_retrieval 节点开始")
+    """
+    当意图判断为闲聊的时候直接跳过主动检索节点
+    """
+    # logger.debug(f"[Graph] skip_retrieval 节点开始")
     return {"relevant_memories_text": ""}
 
 
-# ============================================================
-# LLM Invocation (Build Prompt + Call LLM)
-# ============================================================
-
+# 构建Prompt调用模型
 async def invoke_llm(state: ChatState, config: dict = None) -> dict:
     """
     构建 Prompt 并调用 LLM。
 
     双模式：
-    - 非流式（默认）：invoke_llm_with_retrieval → 返回完整响应
-    - 流式：通过 contextvars._stream_queue_ctx 逐 token 推送（绕过 checkpointer 序列化）
+    - 非流式(失败后降级):invoke_llm_with_retrieval → 返回完整响应
+    - 流式(默认)：通过 contextvars._stream_queue_ctx 逐 token 推送（绕过 checkpointer 序列化）
     """
-    logger.debug(f"[Graph] invoke_llm 节点开始: has_stream_queue={_stream_queue_ctx.get(None) is not None}")
     stream_queue = _stream_queue_ctx.get(None)
 
     if stream_queue is not None:
@@ -183,11 +182,7 @@ async def invoke_llm(state: ChatState, config: dict = None) -> dict:
         )
         return {"ai_response": response}
 
-
-# ============================================================
-# Post-processing (4 路并行)
-# ============================================================
-
+# 后续处理(保存消息+格式化输出消息+分析模型回复情绪+判断是否需要总结)
 async def save_message(state: ChatState) -> dict:
     """保存 human + AI 消息到 Redis"""
     await save_chat_to_redis(
@@ -232,11 +227,7 @@ async def trigger_summary(state: ChatState) -> dict:
         )
     return {}
 
-
-# ============================================================
-# Cleanup
-# ============================================================
-
+# 清理节点
 async def unlock(state: ChatState) -> dict:
     """汇聚节点（lock 由 API 层 try/finally 管理）"""
     return {}

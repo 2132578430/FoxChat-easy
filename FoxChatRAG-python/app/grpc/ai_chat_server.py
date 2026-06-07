@@ -30,9 +30,9 @@ except ImportError:
     ai_chat_pb2 = None
     ai_chat_pb2_grpc = None
 
-from app.service.chat.streaming_tag_parser import StreamingTagParser, StreamToken
-from app.service.chat.chat_msg_service import clear_chat_memory
-from app.service.chat.session_lock import acquire_session_lock, release_session_lock
+from app.service.chat.parsing.streaming_tag_parser import StreamingTagParser, StreamToken
+from app.service.chat.state.chat_msg_service import clear_chat_memory
+from app.service.chat.state.session_lock import acquire_session_lock, release_session_lock
 from app.service.chat.graph.graph import main_graph
 from app.service.chat.graph.nodes import _stream_queue_ctx
 
@@ -45,7 +45,7 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
         服务端流式 RPC：接收 ChatRequest，然后逐个 yield ChatResponse。
 
         流程：
-        1. LangGraph 编排全流程（pre_flight → fetch → parse → intent → retrieve → invoke_llm）
+        1. LangGraph 编排全流程
         2. invoke_llm 节点通过 stream_queue 逐 token 推送
         3. StreamingTagParser → 检测 <action> 标签，标注 block_type
         4. 每个 StreamToken 转 ChatResponse → yield
@@ -60,76 +60,59 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
 
         logger.info(f"[gRPC Chat] user={user_id[:8]}... llm={llm_id[:8]}... msg={msg_content[:30]}...")
 
+        # 初始化标签解析器
         parser = StreamingTagParser()
+        # 初始化序列号
         seq = 0
 
+        # 获取会话锁，同时上锁
         lock = await acquire_session_lock(user_id, llm_id)
 
         try:
-            # ── 尝试流式 ──
+            # 流式传输
             async for response in self._stream_chat(user_id, llm_id, msg_content, parser):
                 seq += 1
                 yield response
+
         except asyncio.CancelledError:
             logger.warning(f"[gRPC Chat] 流式被取消 (客户端断开或 deadline)，降级到非流式")
-            # Python 3.9+: 必须 uncancel，否则后续 await 持续抛 CancelledError，fallback 无法执行
+            # 清除取消标记，使后续 await 不会被 CancelledError 中断，确保 fallback 能够执行
             task = asyncio.current_task()
             if task:
                 task.uncancel()
-            # ── 降级 ──
-            try:
-                async for response in self._fallback_chat(user_id, llm_id, msg_content, parser):
-                    seq += 1
-                    yield response
-            except Exception as e2:
-                logger.error(f"[gRPC Chat] 降级也失败: {e2}")
-                yield ai_chat_pb2.ChatResponse(
-                    content="",
-                    is_final=True,
-                    block_type="error",
-                    error_code=15000,
-                    error_msg=str(e2),
-                    sequence=seq + 1,
-                )
+                
+            async for response in self._do_fallback(user_id, llm_id, msg_content, parser, seq):
+                yield response
         except Exception as e:
             logger.error(f"[gRPC Chat] 流式失败，降级到非流式: {e}")
-            # ── 降级：同一张图，非流式 ──
-            try:
-                async for response in self._fallback_chat(user_id, llm_id, msg_content, parser):
-                    seq += 1
-                    yield response
-            except Exception as e2:
-                logger.error(f"[gRPC Chat] 降级也失败: {e2}")
-                yield ai_chat_pb2.ChatResponse(
-                    content="",
-                    is_final=True,
-                    block_type="error",
-                    error_code=15000,
-                    error_msg=str(e2),
-                    sequence=seq + 1,
-                )
+            async for response in self._do_fallback(user_id, llm_id, msg_content, parser, seq):
+                yield response
         finally:
             release_session_lock(lock)
 
     async def _stream_chat(self, user_id: str, llm_id: str, msg_content: str, parser: StreamingTagParser):
-        """流式 Chat：graph + stream_queue（带超时保护，防止 graph 挂死）"""
+        """
+        流式 Chat：graph + stream_queue
+        """
 
         stream_queue = asyncio.Queue()
         FIRST_TOKEN_TIMEOUT = 60  # 首 token 超时（秒）
         INTER_TOKEN_TIMEOUT = 15  # token 间超时（秒）
 
+        # graph中初始的State
         initial_state = {
             "user_id": user_id,
             "llm_id": llm_id,
             "msg_content": msg_content,
         }
+        # 对State的配置
         config = {
             "configurable": {
                 "thread_id": f"{user_id}:{llm_id}",
             }
         }
 
-        # 通过 contextvars 传递 stream_queue（绕过 LangGraph checkpointer 序列化）
+        # 通过 contextvars 传递 stream_queue
         token = _stream_queue_ctx.set(stream_queue)
         try:
             graph_task = asyncio.create_task(main_graph.ainvoke(initial_state, config))
@@ -137,7 +120,7 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
             _stream_queue_ctx.reset(token)
 
         # 读取流式 token，逐 token 喂给 parser 并 yield
-        logger.info(f"[gRPC Chat] _stream_chat 开始等待 token (首token超时={FIRST_TOKEN_TIMEOUT}s)...")
+        logger.info(f"[gRPC Chat] _stream_chat 开始等待 token ...")
         seq = 0
         first_token = True
         try:
@@ -156,20 +139,23 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
                             logger.error(f"[gRPC Chat] Graph 执行失败: {exc}")
                             raise exc
                         else:
-                            raise RuntimeError("Graph completed without producing any tokens")
+                            raise RuntimeError("Graph未产生Token输出")
                     else:
                         logger.error(f"[gRPC Chat] 首 token 超时 ({timeout}s)，取消 graph")
                         graph_task.cancel()
                         raise TimeoutError(f"LLM streaming timed out waiting for {'first' if first_token else 'next'} token ({timeout}s)")
 
                 first_token = False
-
-                if token is None:  # Sentinel: streaming done
+                
+                # 判断流是否结束
+                if token is None:
                     logger.info(f"[gRPC Chat] 收到流结束 sentinel, 共 {seq} 个 gRPC 消息")
                     break
+
+                # 开始解析token
                 for st in parser.feed(token):
                     seq += 1
-                    logger.debug(f"[gRPC Chat] yield gRPC seq={seq} type={st.block_type}")
+                    # logger.debug(f"[gRPC Chat] yield gRPC seq={seq} type={st.block_type}")
                     yield self._to_response(st, seq, is_final=False)
 
             # 刷新 parser 缓冲区（action 标签闭合）
@@ -191,25 +177,53 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
             )
 
         except asyncio.CancelledError:
-            # 取消 graph task（如果还在跑）
+            # 任务主动取消,取消 graph task
             if not graph_task.done():
                 graph_task.cancel()
             raise
         except Exception as e:
-            # 取消 graph task（如果还在跑）
+            # 其他异常导致task报错,取消 graph task
             if not graph_task.done():
                 graph_task.cancel()
             raise
 
+    async def _do_fallback(self, user_id: str, llm_id: str, msg_content: str,
+                           parser: StreamingTagParser, seq: int):
+        """降级到非流式 + 异常处理。seq 用于错误响应的序列号。"""
+        try:
+            async for response in self._fallback_chat(user_id, llm_id, msg_content, parser):
+                seq += 1
+                yield response
+        except Exception as e:
+            logger.error(f"[gRPC Chat] 降级也失败: {e}")
+            yield ai_chat_pb2.ChatResponse(
+                content="",
+                is_final=True,
+                block_type="error",
+                error_code=15000,
+                error_msg=str(e),
+                sequence=seq + 1,
+            )
+
     async def _fallback_chat(self, user_id: str, llm_id: str, msg_content: str, parser: StreamingTagParser):
-        """降级 Chat：同一张图，非流式模式"""
+        """
+        降级 Chat：同一张图，非流式模式
+
+        这里还用parse解析是因为py和java用的是gRPC通讯,已经用了stream建立连接
+        一次性推送推送不过去,所以只能逐个token解析,也变相模仿了stream推送的样子
+        """
 
         initial_state = {
             "user_id": user_id,
             "llm_id": llm_id,
             "msg_content": msg_content,
         }
-        config = {"configurable": {"thread_id": f"{user_id}:{llm_id}"}}
+
+        config = {
+            "configurable": {
+                "thread_id": f"{user_id}:{llm_id}",
+            }
+        }
 
         result = await main_graph.ainvoke(initial_state, config)
 
@@ -221,7 +235,7 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
         if blocks:
             # 有结构化 blocks → 逐个输出
             for block in blocks:
-                text = block.get("text", "") or block.get("content", "")
+                text = block.get("text", "")
                 if text:
                     for st in parser.feed(text):
                         seq += 1
@@ -250,15 +264,13 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
         )
 
     async def DeleteMemory(self, request, context):
-        """删除记忆（非流式）"""
+        """删除记忆"""
         try:
             await clear_chat_memory(request.user_id, request.llm_id)
             return ai_chat_pb2.DeleteResponse(success=True, message="记忆已清除")
         except Exception as e:
             logger.error(f"[gRPC DeleteMemory] 错误: {e}")
             return ai_chat_pb2.DeleteResponse(success=False, message=str(e))
-
-    # ── 内部 ──────────────────────────────────────
 
     @staticmethod
     def _to_response(st: StreamToken, seq: int, is_final: bool):
