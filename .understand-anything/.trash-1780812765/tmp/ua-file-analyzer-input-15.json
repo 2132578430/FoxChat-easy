@@ -1,0 +1,7 @@
+{
+  "projectRoot": "E:/WorkSpace/ProjectCode",
+  "batchFiles": [
+    {"path": "FoxChatRAG-python/Dockerfile", "language": "dockerfile", "sizeLines": 14, "fileCategory": "infra"}
+  ],
+  "batchImportData": {"FoxChatRAG-python/Dockerfile": []}
+}

@@ -1,0 +1,35 @@
+{
+  "projectRoot": "E:/WorkSpace/ProjectCode",
+  "batchFiles": [
+    {"path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/MsgStatus.java", "language": "java", "sizeLines": 73, "fileCategory": "code"},
+    {"path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/DeleteMsgDto.java", "language": "java", "sizeLines": 13, "fileCategory": "code"},
+    {"path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryUserDto.java", "language": "java", "sizeLines": 12, "fileCategory": "code"},
+    {"path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/SignMsgFriendDto.java", "language": "java", "sizeLines": 11, "fileCategory": "code"},
+    {"path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/WithdrawMsgDto.java", "language": "java", "sizeLines": 13, "fileCategory": "code"},
+    {"path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/UnreadMsgTo.java", "language": "java", "sizeLines": 12, "fileCategory": "code"},
+    {"path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/HistoryMsgVo.java", "language": "java", "sizeLines": 18, "fileCategory": "code"},
+    {"path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/ChatMsgMapper.java", "language": "java", "sizeLines": 27, "fileCategory": "code"},
+    {"path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/MsgStatusMapper.java", "language": "java", "sizeLines": 18, "fileCategory": "code"},
+    {"path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/ChatMsgService.java", "language": "java", "sizeLines": 31, "fileCategory": "code"},
+    {"path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/MsgStatusService.java", "language": "java", "sizeLines": 18, "fileCategory": "code"},
+    {"path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java", "language": "java", "sizeLines": 154, "fileCategory": "code"},
+    {"path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/MsgStatusServiceImpl.java", "language": "java", "sizeLines": 70, "fileCategory": "code"},
+    {"path": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/MsgController.java", "language": "java", "sizeLines": 84, "fileCategory": "code"}
+  ],
+  "batchImportData": {
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/MsgStatus.java":[],
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/DeleteMsgDto.java":[],
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryUserDto.java":[],
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/SignMsgFriendDto.java":[],
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/WithdrawMsgDto.java":[],
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/UnreadMsgTo.java":[],
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/HistoryMsgVo.java":[],
+    "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/ChatMsgMapper.java":["FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatMsg.java","FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/UnreadMsgTo.java","FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/HistoryMsgVo.java"],
+    "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/MsgStatusMapper.java":["FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/MsgStatus.java"],
+    "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/ChatMsgService.java":["FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatMsg.java","FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryUserDto.java","FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/WithdrawMsgDto.java","FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/HistoryMsgVo.java"],
+    "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/MsgStatusService.java":["FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatMsg.java","FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/MsgStatus.java","FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/DeleteMsgDto.java"],
+    "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java":["FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java","FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/TimeUtil.java","FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatMsg.java","FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryUserDto.java","FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/WithdrawMsgDto.java","FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/UnreadMsgTo.java","FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/HistoryMsgVo.java","FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/ChatMsgMapper.java","FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/ChatMsgService.java","FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/MsgStatusService.java"],
+    "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/MsgStatusServiceImpl.java":["FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java","FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatMsg.java","FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/MsgStatus.java","FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/DeleteMsgDto.java","FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/MsgStatusMapper.java","FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/MsgStatusService.java"],
+    "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/MsgController.java":["FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/R.java","FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/DeleteMsgDto.java","FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryUserDto.java","FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/SignMsgFriendDto.java","FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/WithdrawMsgDto.java","FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/HistoryMsgVo.java","FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/ChatMsgService.java","FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/MsgStatusService.java"]
+  }
+}

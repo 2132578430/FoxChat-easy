@@ -1,0 +1,131 @@
+{
+  "nodes": [
+    {
+      "id": "service:FoxChatRAG-python/Dockerfile.base",
+      "type": "service",
+      "name": "Dockerfile.base",
+      "filePath": "FoxChatRAG-python/Dockerfile.base",
+      "summary": "Python RAG 后端的基础 Docker 镜像，采用多阶段构建策略：系统依赖安装、两层 pip 依赖分层缓存（核心 AI/ML 包 ~15min 重建但缓存命中率 >99%，轻量框架包 ~30s 快速重建），以及从 hf-mirror 预下载 FlashRank 和 ChromaDB ONNX 模型。",
+      "tags": ["containerization", "infrastructure", "deployment", "ml-models"],
+      "complexity": "moderate",
+      "languageNotes": "使用 pip --mount=type=cache 实现构建缓存优化，通过 Chinese mirror (阿里云/清华) 加速 apt 和 pip 下载，预下载模型时包含文件大小校验防止下载失败。"
+    },
+    {
+      "id": "document:FoxChatRAG-python/MEMORY_UPLOAD.md",
+      "type": "document",
+      "name": "MEMORY_UPLOAD.md",
+      "filePath": "FoxChatRAG-python/MEMORY_UPLOAD.md",
+      "summary": "多层记忆架构的核心设计文档（889行），详细阐述了 5 层记忆体系（角色核心锚点、用户画像、角色卡、记忆库、最近对话）、chat_init 初始化流程、对话时记忆融合策略、长期记忆追加式总结机制、SillyTavern Character Card V2 角色卡规范集成，以及 Phase 1/2 的实施记录和代码变更清单。",
+      "tags": ["documentation", "architecture-design", "memory-system", "ai-prompt"],
+      "complexity": "complex"
+    },
+    {
+      "id": "document:FoxChatRAG-python/Problem.md",
+      "type": "document",
+      "name": "Problem.md",
+      "filePath": "FoxChatRAG-python/Problem.md",
+      "summary": "开发过程中的问题追踪文档，记录了记忆系统实现中遇到的关键问题：记忆溢出与上下文压力、记忆初始化事件提取失败、user_profile 分流缺陷、时间节点提前添加导致模型聚焦异常、中层记忆召回率不理想、情绪判断准确性不足、话题聚焦判断缺乏实际应用场景，以及 current_state 字段设计疑问。",
+      "tags": ["documentation", "issue-tracker", "memory-system", "development"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:FoxChatRAG-python/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "FoxChatRAG-python/README.md",
+      "summary": "FoxChatRAG 项目的主 README 文档，介绍核心特性（FastAPI 异步框架、多格式文档支持、Chroma+FlashRank 两阶段检索、Ollama 本地模型集成、多阶段记忆架构优化、RabbitMQ 异步处理）、项目目录结构、技术栈、快速启动指南，以及记忆架构 6 个阶段的实施进度和关键文件说明。",
+      "tags": ["documentation", "entry-point", "overview", "project-structure"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:FoxChatRAG-python/requirements-core.txt",
+      "type": "document",
+      "name": "requirements-core.txt",
+      "filePath": "FoxChatRAG-python/requirements-core.txt",
+      "summary": "核心 AI/ML 重依赖清单，包含 LangChain 全家桶（langchain、langchain-community、langchain-core、langchain-ollama、langchain-openai、langchain-chroma、langgraph）、SQLAlchemy、FlashRank、gRPC、pydantic 等，专为 Docker 分层缓存设计（变动极少，缓存命中率 >99%）。",
+      "tags": ["configuration", "dependencies", "ai-ml", "docker-layer"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:FoxChatRAG-python/requirements.txt",
+      "type": "document",
+      "name": "requirements.txt",
+      "filePath": "FoxChatRAG-python/requirements.txt",
+      "summary": "轻量框架/工具依赖清单，包含 FastAPI、uvicorn、loguru、aio-pika、redis、jieba、numpy 等，专为 Docker 分层缓存设计（变动频繁时仅需 ~30s 重建此层）。",
+      "tags": ["configuration", "dependencies", "framework", "docker-layer"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "service:FoxChatRAG-python/Dockerfile.base",
+      "target": "document:FoxChatRAG-python/requirements-core.txt",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:FoxChatRAG-python/Dockerfile.base",
+      "target": "document:FoxChatRAG-python/requirements.txt",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:FoxChatRAG-python/MEMORY_UPLOAD.md",
+      "target": "document:FoxChatRAG-python/Problem.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/MEMORY_UPLOAD.md",
+      "target": "document:FoxChatRAG-python/README.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/README.md",
+      "target": "document:FoxChatRAG-python/MEMORY_UPLOAD.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/README.md",
+      "target": "document:FoxChatRAG-python/Problem.md",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/README.md",
+      "target": "service:FoxChatRAG-python/Dockerfile.base",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/requirements-core.txt",
+      "target": "service:FoxChatRAG-python/Dockerfile.base",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:FoxChatRAG-python/requirements.txt",
+      "target": "service:FoxChatRAG-python/Dockerfile.base",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:FoxChatRAG-python/Problem.md",
+      "target": "document:FoxChatRAG-python/MEMORY_UPLOAD.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

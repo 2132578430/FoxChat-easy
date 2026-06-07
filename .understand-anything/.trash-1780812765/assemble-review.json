@@ -1,0 +1,16 @@
+{
+  "fixedSectionOk": true,
+  "nodesRecovered": 8,
+  "edgesRestored": 14,
+  "crossBatchEdgesAdded": 0,
+  "typesRemapped": 0,
+  "complexityRemapped": 0,
+  "notes": [
+    "All 9 dropped edges had genuinely missing target/source nodes - recovered by recreating nodes with proper summaries from source files.",
+    "8 nodes recovered: 2 Java constant classes, 1 Java service impl class, 3 Python functions, 1 Python retriever function, 1 Spring Boot entry-point file.",
+    "Cross-batch import map analysis: 0 additional imports edges added from 392 import map entries.",
+    "0 source files and 0 target files in import map are not present in the graph (likely unanalyzed files).",
+    "No unknown complexity values found - all nodes have valid complexity.",
+    "Node types 'table', 'document', 'pipeline', 'schema', 'endpoint' are non-standard but semantically valid for this project's domain."
+  ]
+}

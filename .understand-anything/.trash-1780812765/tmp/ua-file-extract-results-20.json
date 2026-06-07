@@ -1,0 +1,474 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 6,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "FoxChatRAG-python/Dockerfile.base",
+      "language": "dockerfile",
+      "fileCategory": "infra",
+      "totalLines": 43,
+      "nonEmptyLines": 38,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChatRAG-python/MEMORY_UPLOAD.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 889,
+      "nonEmptyLines": 703,
+      "sections": [
+        {
+          "heading": "记忆上传与多层记忆架构设计",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "一、问题背景",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "1.1 当前问题",
+          "level": 3,
+          "line": 5
+        },
+        {
+          "heading": "1.2 解决思路",
+          "level": 3,
+          "line": 19
+        },
+        {
+          "heading": "二、多层记忆架构设计",
+          "level": 2,
+          "line": 28
+        },
+        {
+          "heading": "2.1 架构总览",
+          "level": 3,
+          "line": 30
+        },
+        {
+          "heading": "2.2 核心设计理念",
+          "level": 3,
+          "line": 65
+        },
+        {
+          "heading": "2.3 各层记忆详解",
+          "level": 3,
+          "line": 76
+        },
+        {
+          "heading": "层级1：角色核心锚点 (Role Core Anchor)",
+          "level": 4,
+          "line": 78
+        },
+        {
+          "heading": "层级2：用户画像 (User Profile)",
+          "level": 4,
+          "line": 94
+        },
+        {
+          "heading": "层级3：角色卡 (Character Card)",
+          "level": 4,
+          "line": 113
+        },
+        {
+          "heading": "层级4：记忆库 (Memory Bank)",
+          "level": 4,
+          "line": 172
+        },
+        {
+          "heading": "层级5：最近聊天记录 (Recent Chat)",
+          "level": 4,
+          "line": 203
+        },
+        {
+          "heading": "三、初始记忆处理流程 (chat_init 优化)",
+          "level": 2,
+          "line": 213
+        },
+        {
+          "heading": "3.1 流程图",
+          "level": 3,
+          "line": 215
+        },
+        {
+          "heading": "3.2 Redis存储结构",
+          "level": 3,
+          "line": 257
+        },
+        {
+          "heading": "3.3 LLM提炼提示词设计",
+          "level": 3,
+          "line": 287
+        },
+        {
+          "heading": "提示词1：提炼角色核心锚点",
+          "level": 4,
+          "line": 289
+        },
+        {
+          "heading": "提示词2：生成用户画像",
+          "level": 4,
+          "line": 326
+        },
+        {
+          "heading": "提示词3：生成角色卡（基于 SillyTavern 结构）",
+          "level": 4,
+          "line": 388
+        },
+        {
+          "heading": "提示词4：提取初始事件",
+          "level": 4,
+          "line": 471
+        },
+        {
+          "heading": "四、对话时记忆融合流程",
+          "level": 2,
+          "line": 496
+        },
+        {
+          "heading": "4.1 流程图",
+          "level": 3,
+          "line": 498
+        },
+        {
+          "heading": "4.2 提示词模板设计",
+          "level": 3,
+          "line": 532
+        },
+        {
+          "heading": "五、长期记忆总结流程",
+          "level": 2,
+          "line": 570
+        },
+        {
+          "heading": "5.1 核心原则",
+          "level": 3,
+          "line": 572
+        },
+        {
+          "heading": "5.2 触发条件",
+          "level": 3,
+          "line": 581
+        },
+        {
+          "heading": "5.3 流程",
+          "level": 3,
+          "line": 585
+        },
+        {
+          "heading": "5.4 总结提示词",
+          "level": 3,
+          "line": 616
+        },
+        {
+          "heading": "六、用户画像不变性保障",
+          "level": 2,
+          "line": 648
+        },
+        {
+          "heading": "6.1 问题",
+          "level": 3,
+          "line": 650
+        },
+        {
+          "heading": "6.2 解决方案",
+          "level": 3,
+          "line": 654
+        },
+        {
+          "heading": "6.3 推荐方案",
+          "level": 3,
+          "line": 679
+        },
+        {
+          "heading": "八、技术实现要点",
+          "level": 2,
+          "line": 689
+        },
+        {
+          "heading": "8.1 Token预算估算",
+          "level": 3,
+          "line": 691
+        },
+        {
+          "heading": "8.2 LLM模型选择",
+          "level": 3,
+          "line": 704
+        },
+        {
+          "heading": "8.3 Redis Key设计",
+          "level": 3,
+          "line": 711
+        },
+        {
+          "heading": "8.4 RAG检索策略",
+          "level": 3,
+          "line": 734
+        },
+        {
+          "heading": "十、相关文件",
+          "level": 2,
+          "line": 756
+        },
+        {
+          "heading": "十一、Phase 1 实施记录 (2026-04-09)",
+          "level": 2,
+          "line": 770
+        },
+        {
+          "heading": "修改清单",
+          "level": 3,
+          "line": 772
+        },
+        {
+          "heading": "chat_init 流程",
+          "level": 3,
+          "line": 785
+        },
+        {
+          "heading": "Redis 存储结构",
+          "level": 3,
+          "line": 809
+        },
+        {
+          "heading": "代码规范",
+          "level": 3,
+          "line": 822
+        },
+        {
+          "heading": "删除方法",
+          "level": 3,
+          "line": 828
+        },
+        {
+          "heading": "待完成",
+          "level": 3,
+          "line": 843
+        },
+        {
+          "heading": "十二、Phase 2 实施记录 (2026-04-10) - 角色卡优化",
+          "level": 2,
+          "line": 850
+        },
+        {
+          "heading": "修改清单",
+          "level": 3,
+          "line": 852
+        },
+        {
+          "heading": "设计变更",
+          "level": 3,
+          "line": 859
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 49
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/Problem.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 83,
+      "nonEmptyLines": 70,
+      "sections": [
+        {
+          "heading": "以下为项目过程中遇到的问题",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "当与模型聊天的时候",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "记忆过大",
+          "level": 2,
+          "line": 6
+        },
+        {
+          "heading": "记忆初始化处理有问题",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "user_profile的分流有问题",
+          "level": 2,
+          "line": 13
+        },
+        {
+          "heading": "时间节点time_nodes有问题",
+          "level": 2,
+          "line": 16
+        },
+        {
+          "heading": "深层记忆的分流召回问题",
+          "level": 2,
+          "line": 20
+        },
+        {
+          "heading": "情绪判断有问题",
+          "level": 2,
+          "line": 22
+        },
+        {
+          "heading": "中层记忆召回问题",
+          "level": 2,
+          "line": 26
+        },
+        {
+          "heading": "中层记忆的问题",
+          "level": 2,
+          "line": 30
+        },
+        {
+          "heading": "以下问题解决方案",
+          "level": 2,
+          "line": 59
+        },
+        {
+          "heading": "话题聚焦判断的问题",
+          "level": 2,
+          "line": 62
+        },
+        {
+          "heading": "话题聚焦和情绪影响问题",
+          "level": 2,
+          "line": 68
+        },
+        {
+          "heading": "current_stata的问题",
+          "level": 2,
+          "line": 77
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 14
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/README.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 199,
+      "nonEmptyLines": 159,
+      "sections": [
+        {
+          "heading": "FoxChatRAG (狐狸聊天室 RAG 后端)",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "🌟 核心特性 (Core Features)",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "🧠 记忆架构 (Memory Architecture)",
+          "level": 2,
+          "line": 26
+        },
+        {
+          "heading": "分层设计",
+          "level": 3,
+          "line": 28
+        },
+        {
+          "heading": "阶段3候选分流",
+          "level": 3,
+          "line": 54
+        },
+        {
+          "heading": "🏗️ 项目结构 (Project Structure)",
+          "level": 2,
+          "line": 74
+        },
+        {
+          "heading": "🛠️ 技术栈 (Tech Stack)",
+          "level": 2,
+          "line": 126
+        },
+        {
+          "heading": "🚀 快速开始 (Quick Start)",
+          "level": 2,
+          "line": 140
+        },
+        {
+          "heading": "1. 环境准备",
+          "level": 3,
+          "line": 142
+        },
+        {
+          "heading": "2. 依赖安装",
+          "level": 3,
+          "line": 145
+        },
+        {
+          "heading": "3. 服务启动",
+          "level": 3,
+          "line": 150
+        },
+        {
+          "heading": "📝 开发指南 (Development Notes)",
+          "level": 2,
+          "line": 162
+        },
+        {
+          "heading": "记忆架构实施进度",
+          "level": 3,
+          "line": 164
+        },
+        {
+          "heading": "关键文件说明",
+          "level": 3,
+          "line": 176
+        },
+        {
+          "heading": "全局异常处理",
+          "level": 3,
+          "line": 190
+        },
+        {
+          "heading": "📚 参考文档",
+          "level": 2,
+          "line": 195
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 16
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/requirements-core.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 24,
+      "nonEmptyLines": 24,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChatRAG-python/requirements.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 17,
+      "nonEmptyLines": 17,
+      "metrics": {}
+    }
+  ]
+}

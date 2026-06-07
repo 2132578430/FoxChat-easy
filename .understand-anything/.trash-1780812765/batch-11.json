@@ -1,0 +1,580 @@
+{
+  "nodes": [
+    {
+      "id": "file:FoxChat-vue/src/App.vue",
+      "type": "file",
+      "name": "App.vue",
+      "filePath": "FoxChat-vue/src/App.vue",
+      "summary": "Vue 应用根组件，检测 Electron 环境并渲染 TitleBar 条件组件，通过 RouterView 承载页面路由。",
+      "tags": ["entry-point", "component", "root-layout"],
+      "complexity": "simple",
+      "languageNotes": "使用 Vue 3 Composition API (script setup) 和条件渲染检测 Electron 桌面环境。"
+    },
+    {
+      "id": "file:FoxChat-vue/src/main.js",
+      "type": "file",
+      "name": "main.js",
+      "filePath": "FoxChat-vue/src/main.js",
+      "summary": "Vue 应用入口文件，创建应用实例并注册 Vue Router、Element Plus 组件库和图标组件，挂载到 DOM。",
+      "tags": ["entry-point", "bootstrap", "ui-framework"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-vue/src/router/index.js",
+      "type": "file",
+      "name": "index.js",
+      "filePath": "FoxChat-vue/src/router/index.js",
+      "summary": "Vue Router 路由配置，定义首页、登录、注册三个路由，并实现基于 localStorage userInfo 的导航守卫进行登录状态校验。",
+      "tags": ["routing", "auth-guard", "navigation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-vue/src/utils/request.js",
+      "type": "file",
+      "name": "request.js",
+      "filePath": "FoxChat-vue/src/utils/request.js",
+      "summary": "Axios HTTP 客户端封装，提供请求/响应拦截器：自动管理全局 Loading 状态、标准化业务错误处理、401 自动跳转登录页，支持 Cookie 鉴权。",
+      "tags": ["http-client", "middleware", "error-handling", "utility"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-vue/src/views/Home.vue",
+      "type": "file",
+      "name": "Home.vue",
+      "filePath": "FoxChat-vue/src/views/Home.vue",
+      "summary": "核心聊天主界面组件，集成私聊/群聊消息收发、WebSocket 实时通信、好友与群组管理、RAG 知识检索、LLM AI 对话、情绪显示、消息撤回/删除等功能，是整个前端应用的核心业务中枢。",
+      "tags": ["chat-interface", "websocket", "component", "core-view", "ai-integration"],
+      "complexity": "complex",
+      "languageNotes": "Vue 3 Composition API 大型单文件组件(2922行)，包含 30+ 业务函数，通过 WebSocket 实现二进制协议编解码通信，集成 LLM 流式对话和 RAG 检索增强。"
+    },
+    {
+      "id": "file:FoxChat-vue/src/views/Login.vue",
+      "type": "file",
+      "name": "Login.vue",
+      "filePath": "FoxChat-vue/src/views/Login.vue",
+      "summary": "用户登录页面组件，提供用户名/密码表单登录，登录成功后将用户信息存入 localStorage 并跳转首页。",
+      "tags": ["auth", "form", "component", "login"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-vue/src/views/Register.vue",
+      "type": "file",
+      "name": "Register.vue",
+      "filePath": "FoxChat-vue/src/views/Register.vue",
+      "summary": "用户注册页面组件，提供昵称/用户名/密码/确认密码表单，注册成功后跳转登录页。",
+      "tags": ["auth", "form", "component", "registration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChat-vue/src/utils/request.js:startLoading",
+      "type": "function",
+      "name": "startLoading",
+      "filePath": "FoxChat-vue/src/utils/request.js",
+      "lineRange": [17, 26],
+      "summary": "开启全局 Loading 遮罩层，使用引用计数确保并发请求共享同一 Loading 实例。",
+      "tags": ["ui-feedback", "loading", "utility"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChat-vue/src/utils/request.js:closeLoading",
+      "type": "function",
+      "name": "closeLoading",
+      "filePath": "FoxChat-vue/src/utils/request.js",
+      "lineRange": [29, 35],
+      "summary": "关闭全局 Loading 遮罩层，引用计数归零时才真正关闭，避免并发请求提前关闭 Loading。",
+      "tags": ["ui-feedback", "loading", "utility"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChat-vue/src/views/Home.vue:sendMessage",
+      "type": "function",
+      "name": "sendMessage",
+      "filePath": "FoxChat-vue/src/views/Home.vue",
+      "lineRange": [1709, 2058],
+      "summary": "核心消息发送函数，处理私聊/群聊文本消息和 LLM AI 对话，通过 WebSocket 发送二进制协议编码消息，对 LLM 好友触发流式 AI 回复。",
+      "tags": ["message", "websocket", "llm", "core-logic"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:FoxChat-vue/src/views/Home.vue:getChatHistory",
+      "type": "function",
+      "name": "getChatHistory",
+      "filePath": "FoxChat-vue/src/views/Home.vue",
+      "lineRange": [1534, 1709],
+      "summary": "获取聊天历史记录，根据私聊/群聊/LLM 不同类型调用不同 API，格式化消息列表并处理消息类型解析。",
+      "tags": ["history", "data-fetching", "message"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:FoxChat-vue/src/views/Home.vue:getFriendList",
+      "type": "function",
+      "name": "getFriendList",
+      "filePath": "FoxChat-vue/src/views/Home.vue",
+      "lineRange": [1176, 1209],
+      "summary": "获取好友列表并合并 LLM 好友，同时异步加载未读消息计数。",
+      "tags": ["friend", "data-fetching", "social"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-vue/src/views/Home.vue:getUserInfo",
+      "type": "function",
+      "name": "getUserInfo",
+      "filePath": "FoxChat-vue/src/views/Home.vue",
+      "lineRange": [635, 653],
+      "summary": "从后端获取当前用户信息并更新本地响应式状态和 localStorage 缓存。",
+      "tags": ["user", "data-fetching", "profile"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChat-vue/src/views/Home.vue:selectFriend",
+      "type": "function",
+      "name": "selectFriend",
+      "filePath": "FoxChat-vue/src/views/Home.vue",
+      "lineRange": [1358, 1461],
+      "summary": "选择好友进入聊天，加载 LLM 历史对话或普通聊天记录，管理未读消息签收。",
+      "tags": ["friend", "chat", "navigation"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:FoxChat-vue/src/views/Home.vue:getGroupList",
+      "type": "function",
+      "name": "getGroupList",
+      "filePath": "FoxChat-vue/src/views/Home.vue",
+      "lineRange": [2081, 2121],
+      "summary": "获取当前用户加入的群组列表并更新未读消息计数。",
+      "tags": ["group", "data-fetching", "social"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-vue/src/views/Home.vue:selectGroup",
+      "type": "function",
+      "name": "selectGroup",
+      "filePath": "FoxChat-vue/src/views/Home.vue",
+      "lineRange": [1461, 1494],
+      "summary": "选择群聊进入会话，加载群聊历史消息。",
+      "tags": ["group", "chat", "navigation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-vue/src/views/Home.vue:handleLogout",
+      "type": "function",
+      "name": "handleLogout",
+      "filePath": "FoxChat-vue/src/views/Home.vue",
+      "lineRange": [2225, 2235],
+      "summary": "用户登出，清理 localStorage 中的用户信息并跳转到登录页。",
+      "tags": ["auth", "session", "navigation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChat-vue/src/views/Home.vue:handleCreateGroup",
+      "type": "function",
+      "name": "handleCreateGroup",
+      "filePath": "FoxChat-vue/src/views/Home.vue",
+      "lineRange": [2135, 2160],
+      "summary": "创建新群组，提交群名和群头像到后端 API。",
+      "tags": ["group", "creation", "social"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-vue/src/views/Home.vue:handleAddLlmFriend",
+      "type": "function",
+      "name": "handleAddLlmFriend",
+      "filePath": "FoxChat-vue/src/views/Home.vue",
+      "lineRange": [2160, 2190],
+      "summary": "添加 LLM AI 好友，配置模型名称、API Key 和 Base URL。",
+      "tags": ["llm", "friend", "ai-integration"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-vue/src/views/Home.vue:fetchRagFiles",
+      "type": "function",
+      "name": "fetchRagFiles",
+      "filePath": "FoxChat-vue/src/views/Home.vue",
+      "lineRange": [405, 421],
+      "summary": "从后端获取 RAG 知识库文件列表。",
+      "tags": ["rag", "data-fetching", "ai-integration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChat-vue/src/views/Home.vue:searchRagFiles",
+      "type": "function",
+      "name": "searchRagFiles",
+      "filePath": "FoxChat-vue/src/views/Home.vue",
+      "lineRange": [436, 463],
+      "summary": "根据用户输入内容搜索 RAG 知识库文件并展示匹配结果。",
+      "tags": ["rag", "search", "ai-integration"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-vue/src/views/Home.vue:handleDeleteMessages",
+      "type": "function",
+      "name": "handleDeleteMessages",
+      "filePath": "FoxChat-vue/src/views/Home.vue",
+      "lineRange": [690, 706],
+      "summary": "批量删除选中的消息。",
+      "tags": ["message", "batch-operation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-vue/src/views/Home.vue:handleWithdrawMessages",
+      "type": "function",
+      "name": "handleWithdrawMessages",
+      "filePath": "FoxChat-vue/src/views/Home.vue",
+      "lineRange": [668, 690],
+      "summary": "批量撤回选中的消息，仅允许撤回自己发送的消息。",
+      "tags": ["message", "batch-operation", "withdraw"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-vue/src/views/Home.vue:getUnreadCounts",
+      "type": "function",
+      "name": "getUnreadCounts",
+      "filePath": "FoxChat-vue/src/views/Home.vue",
+      "lineRange": [596, 625],
+      "summary": "获取所有好友的未读消息计数并更新好友列表中的徽标。",
+      "tags": ["unread", "notification", "data-fetching"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-vue/src/views/Home.vue:handleUpdateProfile",
+      "type": "function",
+      "name": "handleUpdateProfile",
+      "filePath": "FoxChat-vue/src/views/Home.vue",
+      "lineRange": [758, 777],
+      "summary": "更新用户个人资料（昵称和邮箱）。",
+      "tags": ["profile", "user", "update"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:FoxChat-vue/src/main.js",
+      "target": "file:FoxChat-vue/src/App.vue",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-vue/src/main.js",
+      "target": "file:FoxChat-vue/src/router/index.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-vue/src/router/index.js",
+      "target": "file:FoxChat-vue/src/views/Home.vue",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-vue/src/router/index.js",
+      "target": "file:FoxChat-vue/src/views/Login.vue",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-vue/src/router/index.js",
+      "target": "file:FoxChat-vue/src/views/Register.vue",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-vue/src/utils/request.js",
+      "target": "file:FoxChat-vue/src/router/index.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-vue/src/main.js",
+      "target": "file:FoxChat-vue/src/App.vue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/App.vue",
+      "target": "file:FoxChat-vue/src/views/Home.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:FoxChat-vue/src/App.vue",
+      "target": "file:FoxChat-vue/src/views/Login.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:FoxChat-vue/src/App.vue",
+      "target": "file:FoxChat-vue/src/views/Register.vue",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "file:FoxChat-vue/src/utils/request.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Login.vue",
+      "target": "file:FoxChat-vue/src/utils/request.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Register.vue",
+      "target": "file:FoxChat-vue/src/utils/request.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:FoxChat-vue/src/utils/request.js",
+      "target": "function:FoxChat-vue/src/utils/request.js:startLoading",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/utils/request.js",
+      "target": "function:FoxChat-vue/src/utils/request.js:closeLoading",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:sendMessage",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:getChatHistory",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:getFriendList",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:getUserInfo",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:selectFriend",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:getGroupList",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:selectGroup",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:handleLogout",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:handleCreateGroup",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:handleAddLlmFriend",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:fetchRagFiles",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:searchRagFiles",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:handleDeleteMessages",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:handleWithdrawMessages",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:getUnreadCounts",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:handleUpdateProfile",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:sendMessage",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:getChatHistory",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:getFriendList",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:getUserInfo",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:selectFriend",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:getGroupList",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:selectGroup",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:handleLogout",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:handleCreateGroup",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:handleAddLlmFriend",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:fetchRagFiles",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:searchRagFiles",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:handleDeleteMessages",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:handleWithdrawMessages",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:getUnreadCounts",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChat-vue/src/views/Home.vue",
+      "target": "function:FoxChat-vue/src/views/Home.vue:handleUpdateProfile",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

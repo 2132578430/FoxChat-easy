@@ -1,0 +1,108 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 1,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "FoxChat-java/Dockerfile",
+      "language": "dockerfile",
+      "fileCategory": "infra",
+      "totalLines": 36,
+      "nonEmptyLines": 30,
+      "services": [
+        {
+          "name": "build",
+          "image": "foxchat-java-build-base:latest",
+          "ports": [],
+          "startLine": 4,
+          "endLine": 20
+        },
+        {
+          "name": "eclipse-temurin",
+          "image": "eclipse-temurin:17-jre-alpine",
+          "ports": [
+            12000,
+            13000
+          ],
+          "startLine": 21,
+          "endLine": 37
+        }
+      ],
+      "steps": [
+        {
+          "name": "FROM foxchat-java-build-base:latest AS build",
+          "startLine": 4,
+          "endLine": 4
+        },
+        {
+          "name": "WORKDIR /app",
+          "startLine": 5,
+          "endLine": 5
+        },
+        {
+          "name": "COPY foxChat-common foxChat-common",
+          "startLine": 8,
+          "endLine": 8
+        },
+        {
+          "name": "COPY foxChat-pojo foxChat-pojo",
+          "startLine": 9,
+          "endLine": 9
+        },
+        {
+          "name": "COPY foxChat-service foxChat-service",
+          "startLine": 10,
+          "endLine": 10
+        },
+        {
+          "name": "COPY foxChat-netty foxChat-netty",
+          "startLine": 11,
+          "endLine": 11
+        },
+        {
+          "name": "COPY foxChat-web foxChat-web",
+          "startLine": 12,
+          "endLine": 12
+        },
+        {
+          "name": "RUN --mount=type=cache,target=/root/.gradle \\",
+          "startLine": 15,
+          "endLine": 15
+        },
+        {
+          "name": "FROM eclipse-temurin:17-jre-alpine",
+          "startLine": 21,
+          "endLine": 21
+        },
+        {
+          "name": "WORKDIR /app",
+          "startLine": 22,
+          "endLine": 22
+        },
+        {
+          "name": "COPY --from=build /app/foxChat-web/build/libs/foxChat-web-1.0.0-S",
+          "startLine": 25,
+          "endLine": 25
+        },
+        {
+          "name": "EXPOSE 12000 13000",
+          "startLine": 27,
+          "endLine": 27
+        },
+        {
+          "name": "ENTRYPOINT [\"java\", \\",
+          "startLine": 30,
+          "endLine": 30
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "serviceCount": 2,
+        "stepCount": 13
+      }
+    }
+  ]
+}

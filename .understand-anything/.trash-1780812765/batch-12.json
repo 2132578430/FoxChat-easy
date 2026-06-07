@@ -1,0 +1,107 @@
+{
+  "nodes": [
+    {
+      "id": "file:FoxChatRAG-python/app/grpc/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "FoxChatRAG-python/app/grpc/__init__.py",
+      "summary": "gRPC 包的空初始化文件，将 grpc 目录标记为 Python 包。",
+      "tags": ["package-init", "barrel"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2.py",
+      "type": "file",
+      "name": "ai_chat_pb2.py",
+      "filePath": "FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2.py",
+      "summary": "由 protoc 编译器自动生成的 Protobuf Python 代码，定义了 ChatRequest、ChatResponse、DeleteRequest、DeleteResponse 四种消息类型。",
+      "tags": ["protobuf", "generated-code", "schema-definition"],
+      "complexity": "simple",
+      "languageNotes": "由 Protobuf 6.31.1 生成，源文件为 ai_chat.proto，定义了 foxchat.ai 包下的消息和 AIChatService 服务。"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2_grpc.py",
+      "type": "file",
+      "name": "ai_chat_pb2_grpc.py",
+      "filePath": "FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2_grpc.py",
+      "summary": "由 gRPC Python 编译器自动生成的代码，包含 AIChatService 的客户端 Stub、服务端 Servicer 基类和服务注册函数，提供 Chat（服务端流式）和 DeleteMemory（一元调用）两个 RPC 方法。",
+      "tags": ["grpc", "generated-code", "service-definition", "api-handler"],
+      "complexity": "moderate",
+      "languageNotes": "由 grpcio-tools 1.80.0 生成。Chat 方法为 unary_stream（一元请求、流式响应），DeleteMemory 为 unary_unary（一元请求、一元响应）。"
+    },
+    {
+      "id": "class:FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2_grpc.py:AIChatServiceStub",
+      "type": "class",
+      "name": "AIChatServiceStub",
+      "filePath": "FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2_grpc.py",
+      "lineRange": [28, 50],
+      "summary": "AIChatService 的客户端 Stub 类，提供 Chat（unary_stream）和 DeleteMemory（unary_unary）两个 RPC 调用方法，供 Java 端通过 gRPC 调用 Python 服务。",
+      "tags": ["grpc-stub", "client", "generated-code"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2_grpc.py:AIChatServiceServicer",
+      "type": "class",
+      "name": "AIChatServiceServicer",
+      "filePath": "FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2_grpc.py",
+      "lineRange": [53, 73],
+      "summary": "AIChatService 的服务端基类，定义了 Chat 和 DeleteMemory 两个方法的接口签名。实际实现由 AIChatServiceImpl（在 ai_chat_server.py 中）继承此类完成。",
+      "tags": ["grpc-servicer", "server", "generated-code", "base-class"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2_grpc.py:AIChatService",
+      "type": "class",
+      "name": "AIChatService",
+      "filePath": "FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2_grpc.py",
+      "lineRange": [96, 155],
+      "summary": "实验性的静态方法包装类，提供 Chat 和 DeleteMemory 的静态 RPC 调用接口，可直接调用而无需实例化 Stub。",
+      "tags": ["grpc", "static-methods", "experimental", "generated-code"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:FoxChatRAG-python/app/grpc/__init__.py",
+      "target": "file:FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2.py",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2_grpc.py",
+      "target": "file:FoxChatRAG-python/app/grpc/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2_grpc.py",
+      "target": "file:FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2_grpc.py",
+      "target": "class:FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2_grpc.py:AIChatServiceStub",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2_grpc.py",
+      "target": "class:FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2_grpc.py:AIChatServiceServicer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2_grpc.py",
+      "target": "class:FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2_grpc.py:AIChatService",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    }
+  ]
+}

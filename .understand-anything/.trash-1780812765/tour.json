@@ -1,0 +1,124 @@
+[
+  {
+    "order": 1,
+    "title": "项目概览",
+    "description": "README.md 是理解 FoxChat 的最佳起点。它介绍了项目定位——一个集成 AI 对话记忆系统的即时通讯平台，涵盖多阶段记忆架构设计（分层记忆、记忆流水线）、Java IM 核心架构、通信协议、技术栈和项目结构说明。建议先通读此文档，建立对三端架构（Vue 前端、Spring Boot 后端、FastAPI RAG 服务）的整体认知。",
+    "nodeIds": ["document:README.md"]
+  },
+  {
+    "order": 2,
+    "title": "前端入口与主界面",
+    "description": "Vue 前端是用户与系统交互的入口。main.js 创建应用实例并注册路由和 UI 组件库，Home.vue 则是整个应用的核心视图——它承载了好友列表、聊天窗口、群组管理、LLM 配置和 RAG 文件上传等几乎所有功能。理解 Home.vue 的职责划分，就掌握了前端的功能全貌。",
+    "nodeIds": ["file:FoxChat-vue/src/main.js", "file:FoxChat-vue/src/views/Home.vue"],
+    "languageLesson": "Vue 3 的 Composition API 将相关逻辑聚合在 setup() 中，而非按选项（data/methods/computed）分散。Home.vue 中的 sendMessage、selectFriend 等函数都通过 composables 模式组织，便于复用和测试。"
+  },
+  {
+    "order": 3,
+    "title": "数据模型与数据库设计",
+    "description": "数据模型是整个系统的骨架。Java POJO 层定义了 Users、ChatMsg 等实体类，它们直接映射到 MySQL 中的 users、chat_msg 等表。理解这些核心实体及其关系（如好友关系 friends、群成员 group_member），就能把握系统的数据流向。",
+    "nodeIds": [
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatMsg.java",
+      "table:FoxChat.sql:users",
+      "table:FoxChat.sql:chat_msg"
+    ]
+  },
+  {
+    "order": 4,
+    "title": "认证与用户上下文",
+    "description": "认证是所有业务逻辑的前置环节。AuthServiceImpl 处理登录（密码校验 + JWT 生成 + Redis 存储）、注册和登出。JwtUtil 封装了 token 的生成与验证，LoginUserHolder（fanIn 排名第一，被 12 个文件依赖）基于 ThreadLocal 在请求链中传递用户身份，是理解鉴权流程的关键。",
+    "nodeIds": [
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/JwtUtil.java"
+    ],
+    "languageLesson": "ThreadLocal 是 Java 中实现线程隔离的经典模式。LoginUserHolder 利用它在同一线程的不同方法间传递用户 ID，避免了层层传参。但需注意在线程池场景下必须及时清理，否则会导致内存泄漏和身份错乱。"
+  },
+  {
+    "order": 5,
+    "title": "实时通信：Netty WebSocket",
+    "description": "FoxChat 的即时通讯基于 Netty 实现。WebSocketSeverInitializer 构建 Channel Pipeline（编解码器 + 认证 + 业务处理器），ChatWebSocketHandler 是消息分发的枢纽。当用户发送消息时，它根据消息类型路由到 ChatHandler、ConnectHandler、RequestFriendHandler 等具体处理器，实现了策略模式的消息处理架构。",
+    "nodeIds": [
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/WebSocketSeverInitializer.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/ChatWebSocketHandler.java"
+    ],
+    "languageLesson": "Netty 的 Channel Pipeline 是责任链模式的经典实现。每个 Handler 处理特定职责（编解码、认证、业务），数据像流水线一样依次流过。这种设计让每个 Handler 保持单一职责，易于扩展和测试。"
+  },
+  {
+    "order": 6,
+    "title": "AI 对话：LangGraph 编排引擎",
+    "description": "FoxChat 的 AI 对话核心由 LangGraph 驱动。graph.py 构建主 DAG 图，nodes.py 定义了 pre_flight（预检）、classify_intent_node（意图分类）、retrieve（记忆检索）、invoke_llm（调用模型）、trigger_summary（触发记忆总结）等节点，state.py 的 ChatState 在节点间传递上下文。这是整个 RAG 记忆系统的编排骨架。",
+    "nodeIds": [
+      "file:FoxChatRAG-python/app/service/chat/graph/graph.py",
+      "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "file:FoxChatRAG-python/app/service/chat/graph/state.py"
+    ],
+    "languageLesson": "LangGraph 将 LLM 应用建模为有向无环图（DAG），每个节点是一个处理步骤，边定义了状态流转逻辑。与顺序 Chain 不同，Graph 支持条件路由（如根据意图分类结果选择不同检索策略），非常适合复杂多步骤的 AI 工作流。"
+  },
+  {
+    "order": 7,
+    "title": "多层记忆架构",
+    "description": "MEMORY_UPLOAD.md 是理解 FoxChat 核心差异化能力的关键文档，详述了 5 层记忆体系：角色核心锚点、用户画像、角色卡、记忆库、最近对话。memory_parser.py 负责解析各层记忆，memory_summary_service.py 实现长期记忆的追加式总结与压缩，prompt_payload_builder.py 将多层记忆融合为最终 prompt。这是让 AI 拥有「长期记忆」的核心机制。",
+    "nodeIds": [
+      "document:FoxChatRAG-python/MEMORY_UPLOAD.md",
+      "file:FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "file:FoxChatRAG-python/app/service/chat/prompt_payload_builder.py"
+    ]
+  },
+  {
+    "order": 8,
+    "title": "Prompt 工程与角色灵魂",
+    "description": "FoxChat 的 AI 人格由一套精心设计的 Prompt 模板驱动。soul.md 定义所有角色的核心使命（陪伴优先于解决问题）和绝对边界；role_memory_core.md 提取角色核心锚点；chat_system.md 是最终发送给 LLM 的主模板，通过占位符注入各层记忆；memory_event_extractor.md 从对话中提取记忆事件。这些 Prompt 共同构成了 AI 的「灵魂」。",
+    "nodeIds": [
+      "document:FoxChatRAG-python/app/core/prompts/soul.md",
+      "document:FoxChatRAG-python/app/core/prompts/role_memory_core.md",
+      "document:FoxChatRAG-python/app/core/prompts/chat_system.md",
+      "document:FoxChatRAG-python/app/core/prompts/memory_event_extractor.md"
+    ]
+  },
+  {
+    "order": 9,
+    "title": "记忆状态与智能检索",
+    "description": "记忆的生命不止于存储，更在于检索和更新。state_manager.py 管理当前对话状态（情绪、话题、轮次），emotion_classifier.py 为 AI 回复打上情绪标签，intent_classifier.py 通过规则和语义匹配判断用户意图以选择检索策略，history_event_retrieval_service.py 实现 BM25 + 向量的混合检索与重排序。这一层让记忆真正「活」了起来。",
+    "nodeIds": [
+      "file:FoxChatRAG-python/app/service/chat/state_manager.py",
+      "file:FoxChatRAG-python/app/service/chat/emotion_classifier.py",
+      "file:FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py"
+    ],
+    "languageLesson": "BM25 是经典的稀疏检索算法，通过词频和逆文档频率计算相关性；向量检索则基于语义相似度。FoxChat 将两者结合（混合检索），再通过 Reranker 重排序，兼顾了关键词精确匹配和语义理解能力。"
+  },
+  {
+    "order": 10,
+    "title": "跨服务通信：gRPC 协议",
+    "description": "Java 后端与 Python RAG 服务通过 gRPC 通信。ai_chat.proto 定义了 Chat（服务端流式 RPC）和 DeleteMemory 两个接口；ai_chat_server.py 是 Python 端的服务实现，GrpcChatClient.java 是 Java 端的调用客户端。当 gRPC 不可用时，LlmChatServiceImpl 会降级到 REST Feign 调用，保证了系统的容错能力。",
+    "nodeIds": [
+      "schema:FoxChatRAG-python/proto/ai_chat.proto",
+      "endpoint:FoxChatRAG-python/proto/ai_chat.proto:AIChatService.Chat",
+      "file:FoxChatRAG-python/app/grpc/ai_chat_server.py",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/client/grpc/GrpcChatClient.java"
+    ],
+    "languageLesson": "Protobuf 的 field number 一旦分配就永远不能重用（即使删除字段），否则会导致新旧版本的序列化不兼容。gRPC 的 server-streaming 模式允许服务端分批推送响应，非常适合 LLM 的流式输出场景。"
+  },
+  {
+    "order": 11,
+    "title": "RAG 知识库与向量存储",
+    "description": "FoxChat 支持用户上传文件到 RAG 知识库，实现基于文档的增强对话。vector_upload_service.py 处理文件上传和向量化，chroma_util.py 封装了 ChromaDB 的向量存取操作（包括历史记忆事件的批量上传和检索）。这套机制让 AI 能够引用用户提供的文档内容进行回答。",
+    "nodeIds": [
+      "file:FoxChatRAG-python/app/service/rag/vector_upload_service.py",
+      "file:FoxChatRAG-python/app/util/chroma_util.py"
+    ]
+  },
+  {
+    "order": 12,
+    "title": "部署架构与 CI/CD",
+    "description": "FoxChat 的三个服务通过 docker-compose.prod.yml 编排部署：vue-nginx 提供前端静态资源，java-app 处理 IM 业务，python-app 运行 RAG 服务。Gitea CI/CD 流水线（deploy.yml）在 master 分支推送时自动构建镜像、部署容器并执行健康检查。这种容器化架构保证了开发环境与生产环境的一致性。",
+    "nodeIds": [
+      "service:docker-compose.prod.yml:java-app",
+      "service:docker-compose.prod.yml:python-app",
+      "service:docker-compose.prod.yml:vue-nginx",
+      "pipeline:.gitea/workflows/deploy.yml"
+    ],
+    "languageLesson": "Docker Compose 的 depends_on 只保证容器启动顺序，不保证服务就绪。生产环境通常需要配合 healthcheck 和 restart 策略。FoxChat 的 deploy.yml 使用 Gitea Actions（与 GitHub Actions 语法兼容）实现自动化部署，包括基础镜像构建、应用镜像构建和滚动更新。"
+  }
+]

@@ -1,0 +1,1338 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 25,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": ".gitea/workflows/deploy.yml",
+      "language": "yaml",
+      "fileCategory": "config",
+      "totalLines": 76,
+      "nonEmptyLines": 69,
+      "sections": [
+        {
+          "heading": "name",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "on",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "jobs",
+          "level": 1,
+          "line": 8
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 3
+      }
+    },
+    {
+      "path": ".reasonix/truncated-results/1780141453720-308a5b32-web_fetch.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 15,
+      "nonEmptyLines": 13,
+      "metrics": {}
+    },
+    {
+      "path": ".reasonix/truncated-results/1780298383943-ab106a2d-web_fetch.txt",
+      "language": "txt",
+      "fileCategory": "docs",
+      "totalLines": 209,
+      "nonEmptyLines": 110,
+      "metrics": {}
+    },
+    {
+      "path": ".understand-anything/.understandignore",
+      "language": "unknown",
+      "fileCategory": "code",
+      "totalLines": 79,
+      "nonEmptyLines": 74,
+      "metrics": {}
+    },
+    {
+      "path": ".understand-anything/config.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 3,
+      "nonEmptyLines": 3,
+      "sections": [
+        {
+          "heading": "outputLanguage",
+          "level": 1,
+          "line": 2
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 1
+      }
+    },
+    {
+      "path": "deploy/DEPLOY.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 393,
+      "nonEmptyLines": 283,
+      "sections": [
+        {
+          "heading": "FoxChat 中间件迁出部署手册",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "架构变化",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "端口映射",
+          "level": 2,
+          "line": 23
+        },
+        {
+          "heading": "前置准备",
+          "level": 2,
+          "line": 37
+        },
+        {
+          "heading": "Step 1: 修改配置文件中的 token 和 IP",
+          "level": 2,
+          "line": 46
+        },
+        {
+          "heading": "1a. 生成 token",
+          "level": 3,
+          "line": 48
+        },
+        {
+          "heading": "1b. 编辑 `deploy/frp/frps.toml`",
+          "level": 3,
+          "line": 55
+        },
+        {
+          "heading": "1c. 编辑 `deploy/local-middleware/frpc-docker.toml`",
+          "level": 3,
+          "line": 61
+        },
+        {
+          "heading": "1d. 编辑 `docker-compose.prod.yml`",
+          "level": 3,
+          "line": 68
+        },
+        {
+          "heading": "✅ 验证",
+          "level": 3,
+          "line": 75
+        },
+        {
+          "heading": "Step 2: 本机启动中间件",
+          "level": 2,
+          "line": 84
+        },
+        {
+          "heading": "✅ 验证",
+          "level": 3,
+          "line": 107
+        },
+        {
+          "heading": "Step 3: 服务器部署 frps",
+          "level": 2,
+          "line": 119
+        },
+        {
+          "heading": "3a. 本机下载 frp 安装包",
+          "level": 3,
+          "line": 121
+        },
+        {
+          "heading": "3b. 上传到服务器并安装",
+          "level": 3,
+          "line": 131
+        },
+        {
+          "heading": "✅ 验证",
+          "level": 3,
+          "line": 144
+        },
+        {
+          "heading": "Step 4: 本机启动 frpc 隧道",
+          "level": 2,
+          "line": 156
+        },
+        {
+          "heading": "✅ 验证",
+          "level": 3,
+          "line": 164
+        },
+        {
+          "heading": "Step 5: 数据迁移",
+          "level": 2,
+          "line": 182
+        },
+        {
+          "heading": "5a. MySQL（必须迁移）",
+          "level": 3,
+          "line": 186
+        },
+        {
+          "heading": "5b. MinIO（如果有文件则迁移）",
+          "level": 3,
+          "line": 197
+        },
+        {
+          "heading": "5c. ChromaDB（如果有向量数据则迁移）",
+          "level": 3,
+          "line": 210
+        },
+        {
+          "heading": "5d. Redis + RabbitMQ",
+          "level": 3,
+          "line": 223
+        },
+        {
+          "heading": "✅ 验证",
+          "level": 3,
+          "line": 227
+        },
+        {
+          "heading": "Step 6: 部署业务代码到服务器",
+          "level": 2,
+          "line": 240
+        },
+        {
+          "heading": "方式 A：push 触发 Gitea Runner 自动部署（推荐）",
+          "level": 3,
+          "line": 242
+        },
+        {
+          "heading": "方式 B：手动部署",
+          "level": 3,
+          "line": 252
+        },
+        {
+          "heading": "✅ 验证",
+          "level": 3,
+          "line": 261
+        },
+        {
+          "heading": "Step 7: 端到端功能测试",
+          "level": 2,
+          "line": 281
+        },
+        {
+          "heading": "Step 8: 清理服务器旧中间件",
+          "level": 2,
+          "line": 306
+        },
+        {
+          "heading": "✅ 最终确认",
+          "level": 3,
+          "line": 336
+        },
+        {
+          "heading": "回滚方案",
+          "level": 2,
+          "line": 346
+        },
+        {
+          "heading": "常见问题",
+          "level": 2,
+          "line": 367
+        },
+        {
+          "heading": "Q: frpc 日志 `connect to server error: i/o timeout`",
+          "level": 3,
+          "line": 369
+        },
+        {
+          "heading": "Q: java-app 启动日志 `Communications link failure`",
+          "level": 3,
+          "line": 373
+        },
+        {
+          "heading": "Q: 前端上传文件失败",
+          "level": 3,
+          "line": 380
+        },
+        {
+          "heading": "Q: 内存没降",
+          "level": 3,
+          "line": 387
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 37
+      }
+    },
+    {
+      "path": "deploy/frp/frpc.toml.example",
+      "language": "example",
+      "fileCategory": "code",
+      "totalLines": 65,
+      "nonEmptyLines": 55,
+      "metrics": {}
+    },
+    {
+      "path": "deploy/frp/frps.toml.example",
+      "language": "example",
+      "fileCategory": "code",
+      "totalLines": 27,
+      "nonEmptyLines": 23,
+      "metrics": {}
+    },
+    {
+      "path": "deploy/frp/install-frps.sh",
+      "language": "shell",
+      "fileCategory": "script",
+      "totalLines": 91,
+      "nonEmptyLines": 79,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "deploy/local-middleware/frpc-docker.toml.example",
+      "language": "example",
+      "fileCategory": "code",
+      "totalLines": 60,
+      "nonEmptyLines": 51,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-java/.gitattributes",
+      "language": "unknown",
+      "fileCategory": "code",
+      "totalLines": 2,
+      "nonEmptyLines": 2,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-java/.mvn/wrapper/maven-wrapper.properties",
+      "language": "properties",
+      "fileCategory": "config",
+      "totalLines": 3,
+      "nonEmptyLines": 3,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-java/foxChat-common/build.gradle",
+      "language": "gradle",
+      "fileCategory": "config",
+      "totalLines": 16,
+      "nonEmptyLines": 13,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/config/MinioConfig.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 34,
+      "nonEmptyLines": 30,
+      "functions": [
+        {
+          "name": "minioClient",
+          "startLine": 27,
+          "endLine": 33,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "MinioConfig",
+          "startLine": 13,
+          "endLine": 34,
+          "methods": [
+            "minioClient"
+          ],
+          "properties": [
+            "endpoint",
+            "username",
+            "password"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "endpoint",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "username",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "password",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "minioClient",
+          "line": 27,
+          "isDefault": false
+        },
+        {
+          "name": "MinioConfig",
+          "line": 13,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "minioClient",
+          "callee": "MinioClient.builder()\r\n                .endpoint(endpoint)\r\n                .credentials(username, password).build",
+          "lineNumber": 29
+        },
+        {
+          "caller": "minioClient",
+          "callee": "MinioClient.builder()\r\n                .endpoint(endpoint).credentials",
+          "lineNumber": 29
+        },
+        {
+          "caller": "minioClient",
+          "callee": "MinioClient.builder().endpoint",
+          "lineNumber": 29
+        },
+        {
+          "caller": "minioClient",
+          "callee": "MinioClient.builder",
+          "lineNumber": 29
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 5,
+        "functionCount": 1,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/config/ThreadExecutor.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 37,
+      "nonEmptyLines": 30,
+      "functions": [
+        {
+          "name": "executor",
+          "startLine": 27,
+          "endLine": 36,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "ThreadExecutor",
+          "startLine": 15,
+          "endLine": 37,
+          "methods": [
+            "executor"
+          ],
+          "properties": [
+            "corePoolSize",
+            "maxPoolSize",
+            "queueCapacity"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "corePoolSize",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "maxPoolSize",
+          "line": 21,
+          "isDefault": false
+        },
+        {
+          "name": "queueCapacity",
+          "line": 24,
+          "isDefault": false
+        },
+        {
+          "name": "executor",
+          "line": 27,
+          "isDefault": false
+        },
+        {
+          "name": "ThreadExecutor",
+          "line": 15,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "executor",
+          "callee": "new ThreadPoolExecutor",
+          "lineNumber": 29
+        },
+        {
+          "caller": "executor",
+          "callee": "new ArrayBlockingQueue<>",
+          "lineNumber": 34
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 5,
+        "functionCount": 1,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/LuaConstant.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 19,
+      "nonEmptyLines": 17,
+      "classes": [
+        {
+          "name": "LuaConstant",
+          "startLine": 7,
+          "endLine": 19,
+          "methods": [],
+          "properties": [
+            "DELETE_FRIEND",
+            "ADD_FRIEND"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "DELETE_FRIEND",
+          "line": 8,
+          "isDefault": false
+        },
+        {
+          "name": "ADD_FRIEND",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "LuaConstant",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-netty/build.gradle",
+      "language": "gradle",
+      "fileCategory": "config",
+      "totalLines": 13,
+      "nonEmptyLines": 10,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/HeartBeatHandler.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 24,
+      "nonEmptyLines": 20,
+      "functions": [
+        {
+          "name": "userEventTriggered",
+          "startLine": 12,
+          "endLine": 23,
+          "params": [
+            "ctx",
+            "evt"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "HeartBeatHandler",
+          "startLine": 11,
+          "endLine": 24,
+          "methods": [
+            "userEventTriggered"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "userEventTriggered",
+          "line": 12,
+          "isDefault": false
+        },
+        {
+          "name": "HeartBeatHandler",
+          "line": 11,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "userEventTriggered",
+          "callee": "event.state().equals",
+          "lineNumber": 15
+        },
+        {
+          "caller": "userEventTriggered",
+          "callee": "event.state",
+          "lineNumber": 15
+        },
+        {
+          "caller": "userEventTriggered",
+          "callee": "event.state().equals",
+          "lineNumber": 17
+        },
+        {
+          "caller": "userEventTriggered",
+          "callee": "event.state",
+          "lineNumber": 17
+        },
+        {
+          "caller": "userEventTriggered",
+          "callee": "event.state().equals",
+          "lineNumber": 19
+        },
+        {
+          "caller": "userEventTriggered",
+          "callee": "event.state",
+          "lineNumber": 19
+        },
+        {
+          "caller": "userEventTriggered",
+          "callee": "ctx.channel().close",
+          "lineNumber": 20
+        },
+        {
+          "caller": "userEventTriggered",
+          "callee": "ctx.channel",
+          "lineNumber": 20
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/NettyServer.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 60,
+      "nonEmptyLines": 49,
+      "functions": [
+        {
+          "name": "initNetty",
+          "startLine": 30,
+          "endLine": 49,
+          "params": []
+        },
+        {
+          "name": "nettyClose",
+          "startLine": 51,
+          "endLine": 59,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "NettyServer",
+          "startLine": 17,
+          "endLine": 60,
+          "methods": [
+            "initNetty",
+            "nettyClose"
+          ],
+          "properties": [
+            "port",
+            "syncChannel",
+            "bossGroup",
+            "workGroup"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "initNetty",
+          "line": 30,
+          "isDefault": false
+        },
+        {
+          "name": "nettyClose",
+          "line": 51,
+          "isDefault": false
+        },
+        {
+          "name": "NettyServer",
+          "line": 17,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "initNetty",
+          "callee": "new ServerBootstrap",
+          "lineNumber": 32
+        },
+        {
+          "caller": "initNetty",
+          "callee": "bootstrap.group(bossGroup, workGroup)\r\n                .channel(NioServerSocketChannel.class)\r\n                .option(ChannelOption.SO_BACKLOG, 128)\r\n                .childOption(ChannelOption.SO_KEEPALIVE, true).childHandler",
+          "lineNumber": 34
+        },
+        {
+          "caller": "initNetty",
+          "callee": "bootstrap.group(bossGroup, workGroup)\r\n                .channel(NioServerSocketChannel.class)\r\n                .option(ChannelOption.SO_BACKLOG, 128).childOption",
+          "lineNumber": 34
+        },
+        {
+          "caller": "initNetty",
+          "callee": "bootstrap.group(bossGroup, workGroup)\r\n                .channel(NioServerSocketChannel.class).option",
+          "lineNumber": 34
+        },
+        {
+          "caller": "initNetty",
+          "callee": "bootstrap.group(bossGroup, workGroup).channel",
+          "lineNumber": 34
+        },
+        {
+          "caller": "initNetty",
+          "callee": "bootstrap.group",
+          "lineNumber": 34
+        },
+        {
+          "caller": "initNetty",
+          "callee": "new WebSocketSeverInitializer",
+          "lineNumber": 38
+        },
+        {
+          "caller": "initNetty",
+          "callee": "log.info",
+          "lineNumber": 40
+        },
+        {
+          "caller": "initNetty",
+          "callee": "bootstrap.bind(port).sync().channel",
+          "lineNumber": 43
+        },
+        {
+          "caller": "initNetty",
+          "callee": "bootstrap.bind(port).sync",
+          "lineNumber": 43
+        },
+        {
+          "caller": "initNetty",
+          "callee": "bootstrap.bind",
+          "lineNumber": 43
+        },
+        {
+          "caller": "initNetty",
+          "callee": "log.info",
+          "lineNumber": 44
+        },
+        {
+          "caller": "initNetty",
+          "callee": "Thread.currentThread().interrupt",
+          "lineNumber": 46
+        },
+        {
+          "caller": "initNetty",
+          "callee": "Thread.currentThread",
+          "lineNumber": 46
+        },
+        {
+          "caller": "initNetty",
+          "callee": "new RuntimeException",
+          "lineNumber": 47
+        },
+        {
+          "caller": "nettyClose",
+          "callee": "syncChannel.closeFuture",
+          "lineNumber": 54
+        },
+        {
+          "caller": "nettyClose",
+          "callee": "bossGroup.shutdownGracefully",
+          "lineNumber": 57
+        },
+        {
+          "caller": "nettyClose",
+          "callee": "workGroup.shutdownGracefully",
+          "lineNumber": 58
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 2,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/build.gradle",
+      "language": "gradle",
+      "fileCategory": "config",
+      "totalLines": 10,
+      "nonEmptyLines": 9,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/FileDto.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 12,
+      "nonEmptyLines": 10,
+      "classes": [
+        {
+          "name": "FileDto",
+          "startLine": 9,
+          "endLine": 12,
+          "methods": [],
+          "properties": [
+            "file"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "FileDto",
+          "line": 9,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LLMChatMsgDto.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 11,
+      "nonEmptyLines": 9,
+      "classes": [
+        {
+          "name": "LLMChatMsgDto",
+          "startLine": 9,
+          "endLine": 11,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "LLMChatMsgDto",
+          "line": 9,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/build.gradle",
+      "language": "gradle",
+      "fileCategory": "config",
+      "totalLines": 21,
+      "nonEmptyLines": 15,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/config/RagRabbitMqConfig.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 142,
+      "nonEmptyLines": 112,
+      "functions": [
+        {
+          "name": "topicExchange",
+          "startLine": 74,
+          "endLine": 77,
+          "params": []
+        },
+        {
+          "name": "ragQueue",
+          "startLine": 81,
+          "endLine": 87,
+          "params": []
+        },
+        {
+          "name": "chatQueue",
+          "startLine": 89,
+          "endLine": 95,
+          "params": []
+        },
+        {
+          "name": "binding",
+          "startLine": 97,
+          "endLine": 100,
+          "params": [
+            "topicExchange",
+            "ragQueue"
+          ]
+        },
+        {
+          "name": "chatBinding",
+          "startLine": 102,
+          "endLine": 105,
+          "params": [
+            "topicExchange",
+            "chatQueue"
+          ]
+        },
+        {
+          "name": "ragDlxExchange",
+          "startLine": 109,
+          "endLine": 112,
+          "params": []
+        },
+        {
+          "name": "chatDlxExchange",
+          "startLine": 114,
+          "endLine": 117,
+          "params": []
+        },
+        {
+          "name": "ragDlxQueue",
+          "startLine": 121,
+          "endLine": 124,
+          "params": []
+        },
+        {
+          "name": "chatDlxQueue",
+          "startLine": 126,
+          "endLine": 129,
+          "params": []
+        },
+        {
+          "name": "ragDlxBinding",
+          "startLine": 133,
+          "endLine": 136,
+          "params": [
+            "ragDlxExchange",
+            "ragDlxQueue"
+          ]
+        },
+        {
+          "name": "chatDlxBinding",
+          "startLine": 138,
+          "endLine": 141,
+          "params": [
+            "chatDlxExchange",
+            "chatDlxQueue"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "RagRabbitMqConfig",
+          "startLine": 22,
+          "endLine": 142,
+          "methods": [
+            "topicExchange",
+            "ragQueue",
+            "chatQueue",
+            "binding",
+            "chatBinding",
+            "ragDlxExchange",
+            "chatDlxExchange",
+            "ragDlxQueue",
+            "chatDlxQueue",
+            "ragDlxBinding",
+            "chatDlxBinding"
+          ],
+          "properties": [
+            "RAG_EXCHANGE",
+            "RAG_QUEUE",
+            "CHAT_QUEUE",
+            "RAG_KEY",
+            "CHAT_KEY",
+            "RAG_DLX_EXCHANGE",
+            "RAG_DLX_QUEUE",
+            "RAG_DLX_KEY",
+            "CHAT_DLX_EXCHANGE",
+            "CHAT_DLX_QUEUE",
+            "CHAT_DLX_KEY",
+            "MAX_RETRY_COUNT"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "RAG_EXCHANGE",
+          "line": 27,
+          "isDefault": false
+        },
+        {
+          "name": "RAG_QUEUE",
+          "line": 32,
+          "isDefault": false
+        },
+        {
+          "name": "CHAT_QUEUE",
+          "line": 37,
+          "isDefault": false
+        },
+        {
+          "name": "RAG_KEY",
+          "line": 42,
+          "isDefault": false
+        },
+        {
+          "name": "CHAT_KEY",
+          "line": 47,
+          "isDefault": false
+        },
+        {
+          "name": "RAG_DLX_EXCHANGE",
+          "line": 52,
+          "isDefault": false
+        },
+        {
+          "name": "RAG_DLX_QUEUE",
+          "line": 55,
+          "isDefault": false
+        },
+        {
+          "name": "RAG_DLX_KEY",
+          "line": 58,
+          "isDefault": false
+        },
+        {
+          "name": "CHAT_DLX_EXCHANGE",
+          "line": 61,
+          "isDefault": false
+        },
+        {
+          "name": "CHAT_DLX_QUEUE",
+          "line": 64,
+          "isDefault": false
+        },
+        {
+          "name": "CHAT_DLX_KEY",
+          "line": 67,
+          "isDefault": false
+        },
+        {
+          "name": "MAX_RETRY_COUNT",
+          "line": 70,
+          "isDefault": false
+        },
+        {
+          "name": "topicExchange",
+          "line": 74,
+          "isDefault": false
+        },
+        {
+          "name": "ragQueue",
+          "line": 81,
+          "isDefault": false
+        },
+        {
+          "name": "chatQueue",
+          "line": 89,
+          "isDefault": false
+        },
+        {
+          "name": "binding",
+          "line": 97,
+          "isDefault": false
+        },
+        {
+          "name": "chatBinding",
+          "line": 102,
+          "isDefault": false
+        },
+        {
+          "name": "ragDlxExchange",
+          "line": 109,
+          "isDefault": false
+        },
+        {
+          "name": "chatDlxExchange",
+          "line": 114,
+          "isDefault": false
+        },
+        {
+          "name": "ragDlxQueue",
+          "line": 121,
+          "isDefault": false
+        },
+        {
+          "name": "chatDlxQueue",
+          "line": 126,
+          "isDefault": false
+        },
+        {
+          "name": "ragDlxBinding",
+          "line": 133,
+          "isDefault": false
+        },
+        {
+          "name": "chatDlxBinding",
+          "line": 138,
+          "isDefault": false
+        },
+        {
+          "name": "RagRabbitMqConfig",
+          "line": 22,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "topicExchange",
+          "callee": "new TopicExchange",
+          "lineNumber": 76
+        },
+        {
+          "caller": "ragQueue",
+          "callee": "QueueBuilder.durable(RAG_QUEUE)\r\n                .deadLetterExchange(RAG_DLX_EXCHANGE)\r\n                .deadLetterRoutingKey(RAG_DLX_KEY).build",
+          "lineNumber": 83
+        },
+        {
+          "caller": "ragQueue",
+          "callee": "QueueBuilder.durable(RAG_QUEUE)\r\n                .deadLetterExchange(RAG_DLX_EXCHANGE).deadLetterRoutingKey",
+          "lineNumber": 83
+        },
+        {
+          "caller": "ragQueue",
+          "callee": "QueueBuilder.durable(RAG_QUEUE).deadLetterExchange",
+          "lineNumber": 83
+        },
+        {
+          "caller": "ragQueue",
+          "callee": "QueueBuilder.durable",
+          "lineNumber": 83
+        },
+        {
+          "caller": "chatQueue",
+          "callee": "QueueBuilder.durable(CHAT_QUEUE)\r\n                .deadLetterExchange(CHAT_DLX_EXCHANGE)\r\n                .deadLetterRoutingKey(CHAT_DLX_KEY).build",
+          "lineNumber": 91
+        },
+        {
+          "caller": "chatQueue",
+          "callee": "QueueBuilder.durable(CHAT_QUEUE)\r\n                .deadLetterExchange(CHAT_DLX_EXCHANGE).deadLetterRoutingKey",
+          "lineNumber": 91
+        },
+        {
+          "caller": "chatQueue",
+          "callee": "QueueBuilder.durable(CHAT_QUEUE).deadLetterExchange",
+          "lineNumber": 91
+        },
+        {
+          "caller": "chatQueue",
+          "callee": "QueueBuilder.durable",
+          "lineNumber": 91
+        },
+        {
+          "caller": "binding",
+          "callee": "BindingBuilder.bind(ragQueue).to(topicExchange).with",
+          "lineNumber": 99
+        },
+        {
+          "caller": "binding",
+          "callee": "BindingBuilder.bind(ragQueue).to",
+          "lineNumber": 99
+        },
+        {
+          "caller": "binding",
+          "callee": "BindingBuilder.bind",
+          "lineNumber": 99
+        },
+        {
+          "caller": "chatBinding",
+          "callee": "BindingBuilder.bind(chatQueue).to(topicExchange).with",
+          "lineNumber": 104
+        },
+        {
+          "caller": "chatBinding",
+          "callee": "BindingBuilder.bind(chatQueue).to",
+          "lineNumber": 104
+        },
+        {
+          "caller": "chatBinding",
+          "callee": "BindingBuilder.bind",
+          "lineNumber": 104
+        },
+        {
+          "caller": "ragDlxExchange",
+          "callee": "new TopicExchange",
+          "lineNumber": 111
+        },
+        {
+          "caller": "chatDlxExchange",
+          "callee": "new TopicExchange",
+          "lineNumber": 116
+        },
+        {
+          "caller": "ragDlxQueue",
+          "callee": "QueueBuilder.durable(RAG_DLX_QUEUE).build",
+          "lineNumber": 123
+        },
+        {
+          "caller": "ragDlxQueue",
+          "callee": "QueueBuilder.durable",
+          "lineNumber": 123
+        },
+        {
+          "caller": "chatDlxQueue",
+          "callee": "QueueBuilder.durable(CHAT_DLX_QUEUE).build",
+          "lineNumber": 128
+        },
+        {
+          "caller": "chatDlxQueue",
+          "callee": "QueueBuilder.durable",
+          "lineNumber": 128
+        },
+        {
+          "caller": "ragDlxBinding",
+          "callee": "BindingBuilder.bind(ragDlxQueue).to(ragDlxExchange).with",
+          "lineNumber": 135
+        },
+        {
+          "caller": "ragDlxBinding",
+          "callee": "BindingBuilder.bind(ragDlxQueue).to",
+          "lineNumber": 135
+        },
+        {
+          "caller": "ragDlxBinding",
+          "callee": "BindingBuilder.bind",
+          "lineNumber": 135
+        },
+        {
+          "caller": "chatDlxBinding",
+          "callee": "BindingBuilder.bind(chatDlxQueue).to(chatDlxExchange).with",
+          "lineNumber": 140
+        },
+        {
+          "caller": "chatDlxBinding",
+          "callee": "BindingBuilder.bind(chatDlxQueue).to",
+          "lineNumber": 140
+        },
+        {
+          "caller": "chatDlxBinding",
+          "callee": "BindingBuilder.bind",
+          "lineNumber": 140
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 24,
+        "functionCount": 11,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/proto/ai_chat.proto",
+      "language": "protobuf",
+      "fileCategory": "data",
+      "totalLines": 78,
+      "nonEmptyLines": 57,
+      "definitions": [
+        {
+          "name": "ChatRequest",
+          "kind": "message",
+          "fields": [
+            "user_id",
+            "llm_id",
+            "msg_content"
+          ],
+          "startLine": 28,
+          "endLine": 32
+        },
+        {
+          "name": "ChatResponse",
+          "kind": "message",
+          "fields": [
+            "content",
+            "is_final",
+            "block_type",
+            "is_block_start",
+            "is_block_end",
+            "emotion",
+            "error_code",
+            "error_msg",
+            "sequence"
+          ],
+          "startLine": 34,
+          "endLine": 63
+        },
+        {
+          "name": "DeleteRequest",
+          "kind": "message",
+          "fields": [
+            "user_id",
+            "llm_id"
+          ],
+          "startLine": 70,
+          "endLine": 73
+        },
+        {
+          "name": "DeleteResponse",
+          "kind": "message",
+          "fields": [
+            "success",
+            "message"
+          ],
+          "startLine": 75,
+          "endLine": 78
+        }
+      ],
+      "endpoints": [
+        {
+          "method": "rpc",
+          "path": "AIChatService.Chat",
+          "startLine": 17,
+          "endLine": 17
+        },
+        {
+          "method": "rpc",
+          "path": "AIChatService.DeleteMemory",
+          "startLine": 20,
+          "endLine": 20
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 4,
+        "endpointCount": 2
+      }
+    }
+  ]
+}

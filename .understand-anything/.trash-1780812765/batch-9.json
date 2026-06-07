@@ -1,0 +1,605 @@
+{
+  "nodes": [
+    {
+      "id": "file:FoxChatRAG-python/app/api/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "FoxChatRAG-python/app/api/__init__.py",
+      "summary": "API 包的入口文件，聚合导出 chat_router、llm_config_router 和 rag_router 三个路由模块。",
+      "tags": ["entry-point", "barrel", "api-handler"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/api/chat.py",
+      "type": "file",
+      "name": "chat.py",
+      "filePath": "FoxChatRAG-python/app/api/chat.py",
+      "summary": "聊天消息 API 路由，提供消息发送和聊天记录删除端点。消息处理流程包括 LLM 配置验证、会话锁获取、LangGraph 图调用。",
+      "tags": ["api-handler", "chat", "session-management"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/api/llm_config.py",
+      "type": "file",
+      "name": "llm_config.py",
+      "filePath": "FoxChatRAG-python/app/api/llm_config.py",
+      "summary": "LLM 配置管理 API 路由，提供批量保存、查询、删除、验证和连接测试五个端点，管理 5 个场景的模型配置。",
+      "tags": ["api-handler", "configuration", "crud"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/api/rag.py",
+      "type": "file",
+      "name": "rag.py",
+      "filePath": "FoxChatRAG-python/app/api/rag.py",
+      "summary": "RAG 文件检索 API 路由，提供基于用户消息的文件搜索端点，将请求委托给 rag 搜索服务处理。",
+      "tags": ["api-handler", "rag", "file-search"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/retriever/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "FoxChatRAG-python/app/retriever/__init__.py",
+      "summary": "retriever 包的空入口文件，用于标识 Python 包结构。",
+      "tags": ["barrel"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/retriever/project_retriever.py",
+      "type": "file",
+      "name": "project_retriever.py",
+      "filePath": "FoxChatRAG-python/app/retriever/project_retriever.py",
+      "summary": "项目检索器模块，封装 BM25 和向量检索能力，支持中文分词（jieba）、Chroma 向量数据库查询，以及两种检索器的 Ensemble 混合检索。",
+      "tags": ["retrieval", "rag", "search", "nlp"],
+      "complexity": "moderate",
+      "languageNotes": "使用 jieba 进行中文分词，BM25 与向量检索权重 0.4:0.6 混合。"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/schemas/M.py",
+      "type": "file",
+      "name": "M.py",
+      "filePath": "FoxChatRAG-python/app/schemas/M.py",
+      "summary": "通用响应包装模型 M，使用泛型和 Pydantic 封装 API 响应格式，自动基于数据内容生成 msgId（MD5 哈希）。",
+      "tags": ["type-definition", "serialization", "utility"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/schemas/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "FoxChatRAG-python/app/schemas/__init__.py",
+      "summary": "schemas 包的入口文件，通配符导出 chat_msg_to、chat_msg_resp 和 current_state 模块中的所有模型。",
+      "tags": ["barrel", "type-definition"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/schemas/chat_msg_resp.py",
+      "type": "file",
+      "name": "chat_msg_resp.py",
+      "filePath": "FoxChatRAG-python/app/schemas/chat_msg_resp.py",
+      "summary": "定义 MessageBlock 消息块模型，用于描述带 action 标签的消息分段结构，支持 action 和 text 两种类型。",
+      "tags": ["type-definition", "data-model"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/schemas/chat_msg_to.py",
+      "type": "file",
+      "name": "chat_msg_to.py",
+      "filePath": "FoxChatRAG-python/app/schemas/chat_msg_to.py",
+      "summary": "定义 ChatMsgTo 请求模型，包含 userId、msgContent 和 llmId 三个字段，用于接收聊天消息请求。",
+      "tags": ["type-definition", "data-model"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/schemas/rag_search_file_msg.py",
+      "type": "file",
+      "name": "rag_search_file_msg.py",
+      "filePath": "FoxChatRAG-python/app/schemas/rag_search_file_msg.py",
+      "summary": "定义 RagSearchFileMsg 请求模型，包含 msg 和 userId 字段，用于 RAG 文件检索请求的数据传输。",
+      "tags": ["type-definition", "data-model"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/response_parser.py",
+      "type": "file",
+      "name": "response_parser.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/response_parser.py",
+      "summary": "响应解析服务，使用正则表达式解析 LLM 响应中的 <action> 标签，将文本分割为 action 和 text 两种消息块。",
+      "tags": ["parser", "utility", "nlp"],
+      "complexity": "moderate",
+      "languageNotes": "使用正则表达式 re.DOTALL 模式匹配跨行的 <action> 标签。"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/rag/rag_search_service.py",
+      "type": "file",
+      "name": "rag_search_service.py",
+      "filePath": "FoxChatRAG-python/app/service/rag/rag_search_service.py",
+      "summary": "RAG 文件检索服务，调用 project_retriever 进行向量相似度搜索，并按文件路径归纳检索结果，返回按相似度排序的文件列表。",
+      "tags": ["service", "rag", "file-search"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/api/chat.py:chat_msg",
+      "type": "function",
+      "name": "chat_msg",
+      "filePath": "FoxChatRAG-python/app/api/chat.py",
+      "lineRange": [15, 65],
+      "summary": "聊天消息处理端点，验证 LLM 配置完整性后获取会话锁，调用 LangGraph 图处理消息并返回带 emotion 的响应。",
+      "tags": ["api-handler", "chat", "async"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/api/llm_config.py:save_configs_batch",
+      "type": "function",
+      "name": "save_configs_batch",
+      "filePath": "FoxChatRAG-python/app/api/llm_config.py",
+      "lineRange": [29, 49],
+      "summary": "批量保存 LLM 场景配置端点，接收配置列表并调用服务层持久化到数据库。",
+      "tags": ["api-handler", "crud", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/api/llm_config.py:delete_config",
+      "type": "function",
+      "name": "delete_config",
+      "filePath": "FoxChatRAG-python/app/api/llm_config.py",
+      "lineRange": [72, 95],
+      "summary": "删除指定 LLM 配置端点，根据 llm_id 和 scenario 删除配置并返回操作结果。",
+      "tags": ["api-handler", "crud", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/api/llm_config.py:validate_configs",
+      "type": "function",
+      "name": "validate_configs",
+      "filePath": "FoxChatRAG-python/app/api/llm_config.py",
+      "lineRange": [99, 118],
+      "summary": "验证 LLM 配置完整性端点，检查是否已配置全部 5 个场景并返回缺失场景列表。",
+      "tags": ["api-handler", "validation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/api/llm_config.py:test_connection",
+      "type": "function",
+      "name": "test_connection",
+      "filePath": "FoxChatRAG-python/app/api/llm_config.py",
+      "lineRange": [122, 143],
+      "summary": "LLM 连接测试端点，调用 LiteLLM 验证模型配置的可用性并返回测试结果。",
+      "tags": ["api-handler", "validation", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/retriever/project_retriever.py:get_ensemble_retriever",
+      "type": "function",
+      "name": "get_ensemble_retriever",
+      "filePath": "FoxChatRAG-python/app/retriever/project_retriever.py",
+      "lineRange": [43, 55],
+      "summary": "构建 BM25 和向量检索的 Ensemble 混合检索器，权重分配为 BM25 0.4、向量 0.6。",
+      "tags": ["retrieval", "rag", "search"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/response_parser.py:parse_action_tags",
+      "type": "function",
+      "name": "parse_action_tags",
+      "filePath": "FoxChatRAG-python/app/service/chat/response_parser.py",
+      "lineRange": [15, 58],
+      "summary": "解析 LLM 响应中的 <action> 标签，将文本按标签位置分割为 action 和 text 消息块列表。",
+      "tags": ["parser", "regex", "nlp"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/rag/rag_search_service.py:search_file",
+      "type": "function",
+      "name": "search_file",
+      "filePath": "FoxChatRAG-python/app/service/rag/rag_search_service.py",
+      "lineRange": [20, 40],
+      "summary": "RAG 文件搜索主逻辑，解析请求后调用向量检索搜索文档并归纳文件路径返回结果。",
+      "tags": ["service", "rag", "file-search"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/rag/rag_search_service.py:file_group_path",
+      "type": "function",
+      "name": "file_group_path",
+      "filePath": "FoxChatRAG-python/app/service/rag/rag_search_service.py",
+      "lineRange": [43, 76],
+      "summary": "将检索到的文档按文件路径分组，取每组最高相似度分数，返回按分数排序的文件列表。",
+      "tags": ["utility", "data-processing", "rag"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChatRAG-python/app/schemas/M.py:M",
+      "type": "class",
+      "name": "M",
+      "filePath": "FoxChatRAG-python/app/schemas/M.py",
+      "lineRange": [9, 31],
+      "summary": "泛型响应包装模型，封装 msgId 和 data 字段，提供 get_msg 类方法自动序列化数据并生成 MD5 消息 ID。",
+      "tags": ["type-definition", "serialization", "generic"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChatRAG-python/app/schemas/chat_msg_resp.py:MessageBlock",
+      "type": "class",
+      "name": "MessageBlock",
+      "filePath": "FoxChatRAG-python/app/schemas/chat_msg_resp.py",
+      "lineRange": [6, 10],
+      "summary": "消息块模型，定义 type（action/text）、action 和 text 三个字段，用于描述 LLM 响应的分段结构。",
+      "tags": ["type-definition", "data-model"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChatRAG-python/app/schemas/chat_msg_to.py:ChatMsgTo",
+      "type": "class",
+      "name": "ChatMsgTo",
+      "filePath": "FoxChatRAG-python/app/schemas/chat_msg_to.py",
+      "lineRange": [4, 7],
+      "summary": "聊天消息请求模型，包含 userId、msgContent 和 llmId 字段。",
+      "tags": ["type-definition", "data-model"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChatRAG-python/app/schemas/rag_search_file_msg.py:RagSearchFileMsg",
+      "type": "class",
+      "name": "RagSearchFileMsg",
+      "filePath": "FoxChatRAG-python/app/schemas/rag_search_file_msg.py",
+      "lineRange": [4, 6],
+      "summary": "RAG 文件检索请求模型，包含 msg 和 userId 字段。",
+      "tags": ["type-definition", "data-model"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:FoxChatRAG-python/app/api/__init__.py",
+      "target": "file:FoxChatRAG-python/app/api/chat.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/api/__init__.py",
+      "target": "file:FoxChatRAG-python/app/api/llm_config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/api/__init__.py",
+      "target": "file:FoxChatRAG-python/app/api/rag.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/api/chat.py",
+      "target": "file:FoxChatRAG-python/app/schemas/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/api/chat.py",
+      "target": "file:FoxChatRAG-python/app/schemas/M.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/api/chat.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/api/chat.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/graph/graph.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/api/chat.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/session_lock.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/api/llm_config.py",
+      "target": "file:FoxChatRAG-python/app/core/db/mysql_client.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/api/llm_config.py",
+      "target": "file:FoxChatRAG-python/app/schemas/M.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/api/llm_config.py",
+      "target": "file:FoxChatRAG-python/app/service/llm_config_service.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/api/rag.py",
+      "target": "file:FoxChatRAG-python/app/schemas/M.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/api/rag.py",
+      "target": "file:FoxChatRAG-python/app/schemas/rag_search_file_msg.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/api/rag.py",
+      "target": "file:FoxChatRAG-python/app/service/rag/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/schemas/__init__.py",
+      "target": "file:FoxChatRAG-python/app/schemas/chat_msg_resp.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/schemas/__init__.py",
+      "target": "file:FoxChatRAG-python/app/schemas/chat_msg_to.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/schemas/__init__.py",
+      "target": "file:FoxChatRAG-python/app/schemas/current_state.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/response_parser.py",
+      "target": "file:FoxChatRAG-python/app/schemas/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/rag/rag_search_service.py",
+      "target": "file:FoxChatRAG-python/app/chroma/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/rag/rag_search_service.py",
+      "target": "file:FoxChatRAG-python/app/retriever/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/rag/rag_search_service.py",
+      "target": "file:FoxChatRAG-python/app/retriever/project_retriever.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/rag/rag_search_service.py",
+      "target": "file:FoxChatRAG-python/app/schemas/M.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/rag/rag_search_service.py",
+      "target": "file:FoxChatRAG-python/app/schemas/rag_search_file_msg.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/api/chat.py",
+      "target": "function:FoxChatRAG-python/app/api/chat.py:chat_msg",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/api/llm_config.py",
+      "target": "function:FoxChatRAG-python/app/api/llm_config.py:save_configs_batch",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/api/llm_config.py",
+      "target": "function:FoxChatRAG-python/app/api/llm_config.py:delete_config",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/api/llm_config.py",
+      "target": "function:FoxChatRAG-python/app/api/llm_config.py:validate_configs",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/api/llm_config.py",
+      "target": "function:FoxChatRAG-python/app/api/llm_config.py:test_connection",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/retriever/project_retriever.py",
+      "target": "function:FoxChatRAG-python/app/retriever/project_retriever.py:get_ensemble_retriever",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/response_parser.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/response_parser.py:parse_action_tags",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/rag/rag_search_service.py",
+      "target": "function:FoxChatRAG-python/app/service/rag/rag_search_service.py:search_file",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/rag/rag_search_service.py",
+      "target": "function:FoxChatRAG-python/app/service/rag/rag_search_service.py:file_group_path",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/schemas/M.py",
+      "target": "class:FoxChatRAG-python/app/schemas/M.py:M",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/schemas/chat_msg_resp.py",
+      "target": "class:FoxChatRAG-python/app/schemas/chat_msg_resp.py:MessageBlock",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/schemas/chat_msg_to.py",
+      "target": "class:FoxChatRAG-python/app/schemas/chat_msg_to.py:ChatMsgTo",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/schemas/rag_search_file_msg.py",
+      "target": "class:FoxChatRAG-python/app/schemas/rag_search_file_msg.py:RagSearchFileMsg",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "function:FoxChatRAG-python/app/api/chat.py:chat_msg",
+      "target": "function:FoxChatRAG-python/app/service/chat/graph/graph.py:build_main_graph",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:FoxChatRAG-python/app/api/chat.py:chat_msg",
+      "target": "function:FoxChatRAG-python/app/service/chat/session_lock.py:acquire_session_lock",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:FoxChatRAG-python/app/api/chat.py:chat_msg",
+      "target": "function:FoxChatRAG-python/app/service/chat/session_lock.py:release_session_lock",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:FoxChatRAG-python/app/api/chat.py:chat_msg",
+      "target": "function:FoxChatRAG-python/app/service/llm_config_service.py:validate_config_count",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:FoxChatRAG-python/app/api/chat.py:chat_msg",
+      "target": "function:FoxChatRAG-python/app/service/llm_config_service.py:get_missing_scenarios",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:FoxChatRAG-python/app/api/llm_config.py:save_configs_batch",
+      "target": "function:FoxChatRAG-python/app/service/llm_config_service.py:save_llm_configs_batch",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:FoxChatRAG-python/app/api/llm_config.py:delete_config",
+      "target": "function:FoxChatRAG-python/app/service/llm_config_service.py:delete_llm_config",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:FoxChatRAG-python/app/api/llm_config.py:validate_configs",
+      "target": "function:FoxChatRAG-python/app/service/llm_config_service.py:validate_config_count",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:FoxChatRAG-python/app/api/llm_config.py:validate_configs",
+      "target": "function:FoxChatRAG-python/app/service/llm_config_service.py:get_missing_scenarios",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:FoxChatRAG-python/app/api/llm_config.py:test_connection",
+      "target": "function:FoxChatRAG-python/app/service/llm_config_service.py:test_llm_connection",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:FoxChatRAG-python/app/service/rag/rag_search_service.py:search_file",
+      "target": "function:FoxChatRAG-python/app/retriever/project_retriever.py:search_vector_score",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "function:FoxChatRAG-python/app/service/rag/rag_search_service.py:search_file",
+      "target": "function:FoxChatRAG-python/app/service/rag/rag_search_service.py:file_group_path",
+      "type": "calls",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/api/__init__.py",
+      "target": "file:FoxChatRAG-python/main.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/schemas/__init__.py",
+      "target": "file:FoxChatRAG-python/app/schemas/current_state.py",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

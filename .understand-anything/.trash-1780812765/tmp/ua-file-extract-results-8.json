@@ -1,0 +1,1613 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 13,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/GroupConstant.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 8,
+      "nonEmptyLines": 7,
+      "classes": [
+        {
+          "name": "GroupConstant",
+          "startLine": 6,
+          "endLine": 8,
+          "methods": [],
+          "properties": [
+            "GROUP_KEY"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "GROUP_KEY",
+          "line": 7,
+          "isDefault": false
+        },
+        {
+          "name": "GroupConstant",
+          "line": 6,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatGroup.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 83,
+      "nonEmptyLines": 73,
+      "functions": [
+        {
+          "name": "equals",
+          "startLine": 38,
+          "endLine": 55,
+          "params": [
+            "that"
+          ]
+        },
+        {
+          "name": "hashCode",
+          "startLine": 57,
+          "endLine": 67,
+          "params": []
+        },
+        {
+          "name": "toString",
+          "startLine": 69,
+          "endLine": 82,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "ChatGroup",
+          "startLine": 11,
+          "endLine": 83,
+          "methods": [
+            "equals",
+            "hashCode",
+            "toString"
+          ],
+          "properties": [
+            "id",
+            "groupName",
+            "ownerUserId",
+            "faceImage",
+            "createTime"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "equals",
+          "line": 38,
+          "isDefault": false
+        },
+        {
+          "name": "hashCode",
+          "line": 57,
+          "isDefault": false
+        },
+        {
+          "name": "toString",
+          "line": 69,
+          "isDefault": false
+        },
+        {
+          "name": "ChatGroup",
+          "line": 11,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "equals",
+          "callee": "getClass",
+          "lineNumber": 46
+        },
+        {
+          "caller": "equals",
+          "callee": "that.getClass",
+          "lineNumber": 46
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getId",
+          "lineNumber": 50
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getId",
+          "lineNumber": 50
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getId().equals",
+          "lineNumber": 50
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getId",
+          "lineNumber": 50
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getId",
+          "lineNumber": 50
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getGroupName",
+          "lineNumber": 51
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getGroupName",
+          "lineNumber": 51
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getGroupName().equals",
+          "lineNumber": 51
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getGroupName",
+          "lineNumber": 51
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getGroupName",
+          "lineNumber": 51
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getOwnerUserId",
+          "lineNumber": 52
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getOwnerUserId",
+          "lineNumber": 52
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getOwnerUserId().equals",
+          "lineNumber": 52
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getOwnerUserId",
+          "lineNumber": 52
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getOwnerUserId",
+          "lineNumber": 52
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getFaceImage",
+          "lineNumber": 53
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getFaceImage",
+          "lineNumber": 53
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getFaceImage().equals",
+          "lineNumber": 53
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getFaceImage",
+          "lineNumber": 53
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getFaceImage",
+          "lineNumber": 53
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getCreateTime",
+          "lineNumber": 54
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getCreateTime",
+          "lineNumber": 54
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getCreateTime().equals",
+          "lineNumber": 54
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getCreateTime",
+          "lineNumber": 54
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getCreateTime",
+          "lineNumber": 54
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getId",
+          "lineNumber": 61
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getId().hashCode",
+          "lineNumber": 61
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getId",
+          "lineNumber": 61
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getGroupName",
+          "lineNumber": 62
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getGroupName().hashCode",
+          "lineNumber": 62
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getGroupName",
+          "lineNumber": 62
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getOwnerUserId",
+          "lineNumber": 63
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getOwnerUserId().hashCode",
+          "lineNumber": 63
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getOwnerUserId",
+          "lineNumber": 63
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getFaceImage",
+          "lineNumber": 64
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getFaceImage().hashCode",
+          "lineNumber": 64
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getFaceImage",
+          "lineNumber": 64
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getCreateTime",
+          "lineNumber": 65
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getCreateTime().hashCode",
+          "lineNumber": 65
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getCreateTime",
+          "lineNumber": 65
+        },
+        {
+          "caller": "toString",
+          "callee": "new StringBuilder",
+          "lineNumber": 71
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 72
+        },
+        {
+          "caller": "toString",
+          "callee": "getClass().getSimpleName",
+          "lineNumber": 72
+        },
+        {
+          "caller": "toString",
+          "callee": "getClass",
+          "lineNumber": 72
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 73
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\"Hash = \").append",
+          "lineNumber": 74
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 74
+        },
+        {
+          "caller": "toString",
+          "callee": "hashCode",
+          "lineNumber": 74
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\", id=\").append",
+          "lineNumber": 75
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 75
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\", groupName=\").append",
+          "lineNumber": 76
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 76
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\", ownerUserId=\").append",
+          "lineNumber": 77
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 77
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\", faceImage=\").append",
+          "lineNumber": 78
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 78
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\", createTime=\").append",
+          "lineNumber": 79
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 79
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 80
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.toString",
+          "lineNumber": 81
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 4,
+        "functionCount": 3,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMember.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 99,
+      "nonEmptyLines": 87,
+      "functions": [
+        {
+          "name": "equals",
+          "startLine": 48,
+          "endLine": 67,
+          "params": [
+            "that"
+          ]
+        },
+        {
+          "name": "hashCode",
+          "startLine": 69,
+          "endLine": 81,
+          "params": []
+        },
+        {
+          "name": "toString",
+          "startLine": 83,
+          "endLine": 98,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "GroupMember",
+          "startLine": 11,
+          "endLine": 99,
+          "methods": [
+            "equals",
+            "hashCode",
+            "toString"
+          ],
+          "properties": [
+            "id",
+            "groupNickname",
+            "userId",
+            "groupId",
+            "role",
+            "joinTime",
+            "lastAckMsgId"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "equals",
+          "line": 48,
+          "isDefault": false
+        },
+        {
+          "name": "hashCode",
+          "line": 69,
+          "isDefault": false
+        },
+        {
+          "name": "toString",
+          "line": 83,
+          "isDefault": false
+        },
+        {
+          "name": "GroupMember",
+          "line": 11,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "equals",
+          "callee": "getClass",
+          "lineNumber": 56
+        },
+        {
+          "caller": "equals",
+          "callee": "that.getClass",
+          "lineNumber": 56
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getId",
+          "lineNumber": 60
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getId",
+          "lineNumber": 60
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getId().equals",
+          "lineNumber": 60
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getId",
+          "lineNumber": 60
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getId",
+          "lineNumber": 60
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getGroupNickname",
+          "lineNumber": 61
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getGroupNickname",
+          "lineNumber": 61
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getGroupNickname().equals",
+          "lineNumber": 61
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getGroupNickname",
+          "lineNumber": 61
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getGroupNickname",
+          "lineNumber": 61
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getUserId",
+          "lineNumber": 62
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getUserId",
+          "lineNumber": 62
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getUserId().equals",
+          "lineNumber": 62
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getUserId",
+          "lineNumber": 62
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getUserId",
+          "lineNumber": 62
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getGroupId",
+          "lineNumber": 63
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getGroupId",
+          "lineNumber": 63
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getGroupId().equals",
+          "lineNumber": 63
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getGroupId",
+          "lineNumber": 63
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getGroupId",
+          "lineNumber": 63
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getRole",
+          "lineNumber": 64
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getRole",
+          "lineNumber": 64
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getRole().equals",
+          "lineNumber": 64
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getRole",
+          "lineNumber": 64
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getRole",
+          "lineNumber": 64
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getJoinTime",
+          "lineNumber": 65
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getJoinTime",
+          "lineNumber": 65
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getJoinTime().equals",
+          "lineNumber": 65
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getJoinTime",
+          "lineNumber": 65
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getJoinTime",
+          "lineNumber": 65
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getLastAckMsgId",
+          "lineNumber": 66
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getLastAckMsgId",
+          "lineNumber": 66
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getLastAckMsgId().equals",
+          "lineNumber": 66
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getLastAckMsgId",
+          "lineNumber": 66
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getLastAckMsgId",
+          "lineNumber": 66
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getId",
+          "lineNumber": 73
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getId().hashCode",
+          "lineNumber": 73
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getId",
+          "lineNumber": 73
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getGroupNickname",
+          "lineNumber": 74
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getGroupNickname().hashCode",
+          "lineNumber": 74
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getGroupNickname",
+          "lineNumber": 74
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getUserId",
+          "lineNumber": 75
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getUserId().hashCode",
+          "lineNumber": 75
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getUserId",
+          "lineNumber": 75
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getGroupId",
+          "lineNumber": 76
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getGroupId().hashCode",
+          "lineNumber": 76
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getGroupId",
+          "lineNumber": 76
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getRole",
+          "lineNumber": 77
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getRole().hashCode",
+          "lineNumber": 77
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getRole",
+          "lineNumber": 77
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getJoinTime",
+          "lineNumber": 78
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getJoinTime().hashCode",
+          "lineNumber": 78
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getJoinTime",
+          "lineNumber": 78
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getLastAckMsgId",
+          "lineNumber": 79
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getLastAckMsgId().hashCode",
+          "lineNumber": 79
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getLastAckMsgId",
+          "lineNumber": 79
+        },
+        {
+          "caller": "toString",
+          "callee": "new StringBuilder",
+          "lineNumber": 85
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 86
+        },
+        {
+          "caller": "toString",
+          "callee": "getClass().getSimpleName",
+          "lineNumber": 86
+        },
+        {
+          "caller": "toString",
+          "callee": "getClass",
+          "lineNumber": 86
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 87
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\"Hash = \").append",
+          "lineNumber": 88
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 88
+        },
+        {
+          "caller": "toString",
+          "callee": "hashCode",
+          "lineNumber": 88
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\", id=\").append",
+          "lineNumber": 89
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 89
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\", groupNickname=\").append",
+          "lineNumber": 90
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 90
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\", userId=\").append",
+          "lineNumber": 91
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 91
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\", groupId=\").append",
+          "lineNumber": 92
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 92
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\", role=\").append",
+          "lineNumber": 93
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 93
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\", joinTime=\").append",
+          "lineNumber": 94
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 94
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\", lastAckMsgId=\").append",
+          "lineNumber": 95
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 95
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 96
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.toString",
+          "lineNumber": 97
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 4,
+        "functionCount": 3,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/ApplyGroupDto.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 12,
+      "nonEmptyLines": 10,
+      "classes": [
+        {
+          "name": "ApplyGroupDto",
+          "startLine": 8,
+          "endLine": 12,
+          "methods": [],
+          "properties": [
+            "groupId",
+            "reason"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ApplyGroupDto",
+          "line": 8,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/GroupDto.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 11,
+      "nonEmptyLines": 9,
+      "classes": [
+        {
+          "name": "GroupDto",
+          "startLine": 8,
+          "endLine": 11,
+          "methods": [],
+          "properties": [
+            "groupName"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "GroupDto",
+          "line": 8,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/GroupVo.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 46,
+      "nonEmptyLines": 37,
+      "classes": [
+        {
+          "name": "GroupVo",
+          "startLine": 10,
+          "endLine": 46,
+          "methods": [],
+          "properties": [
+            "id",
+            "groupName",
+            "ownerUserId",
+            "faceImage",
+            "createTime",
+            "role",
+            "isJoined"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "GroupVo",
+          "line": 10,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/ChatGroupMapper.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 23,
+      "nonEmptyLines": 15,
+      "classes": [
+        {
+          "name": "ChatGroupMapper",
+          "startLine": 16,
+          "endLine": 19,
+          "methods": [
+            "searchGroupWithStatus"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "ChatGroupMapper",
+          "line": 16,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/GroupMemberMapper.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 23,
+      "nonEmptyLines": 15,
+      "classes": [
+        {
+          "name": "GroupMemberMapper",
+          "startLine": 16,
+          "endLine": 19,
+          "methods": [
+            "queryGroupByUserId"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "GroupMemberMapper",
+          "line": 16,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/ChatGroupService.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 24,
+      "nonEmptyLines": 17,
+      "classes": [
+        {
+          "name": "ChatGroupService",
+          "startLine": 15,
+          "endLine": 24,
+          "methods": [
+            "addGroup",
+            "listGroup",
+            "applyGroup",
+            "searchGroup"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "ChatGroupService",
+          "line": 15,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/GroupMemberService.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 13,
+      "nonEmptyLines": 10,
+      "classes": [
+        {
+          "name": "GroupMemberService",
+          "startLine": 11,
+          "endLine": 13,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "GroupMemberService",
+          "line": 11,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatGroupServiceImpl.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 113,
+      "nonEmptyLines": 86,
+      "functions": [
+        {
+          "name": "addGroup",
+          "startLine": 40,
+          "endLine": 66,
+          "params": [
+            "groupDto"
+          ]
+        },
+        {
+          "name": "searchGroup",
+          "startLine": 67,
+          "endLine": 71,
+          "params": [
+            "keyword"
+          ]
+        },
+        {
+          "name": "listGroup",
+          "startLine": 73,
+          "endLine": 78,
+          "params": []
+        },
+        {
+          "name": "applyGroup",
+          "startLine": 80,
+          "endLine": 94,
+          "params": [
+            "groupId",
+            "reason"
+          ]
+        },
+        {
+          "name": "joinGroup",
+          "startLine": 97,
+          "endLine": 108,
+          "params": [
+            "groupId",
+            "userId"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "ChatGroupServiceImpl",
+          "startLine": 27,
+          "endLine": 109,
+          "methods": [
+            "addGroup",
+            "searchGroup",
+            "listGroup",
+            "applyGroup",
+            "joinGroup"
+          ],
+          "properties": [
+            "groupMemberService",
+            "groupMemberMapper",
+            "redisTemplate"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "addGroup",
+          "line": 40,
+          "isDefault": false
+        },
+        {
+          "name": "searchGroup",
+          "line": 67,
+          "isDefault": false
+        },
+        {
+          "name": "listGroup",
+          "line": 73,
+          "isDefault": false
+        },
+        {
+          "name": "applyGroup",
+          "line": 80,
+          "isDefault": false
+        },
+        {
+          "name": "ChatGroupServiceImpl",
+          "line": 27,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "addGroup",
+          "callee": "LoginUserHolder.getUserId",
+          "lineNumber": 42
+        },
+        {
+          "caller": "addGroup",
+          "callee": "new ChatGroup",
+          "lineNumber": 44
+        },
+        {
+          "caller": "addGroup",
+          "callee": "chatGroup.setGroupName",
+          "lineNumber": 46
+        },
+        {
+          "caller": "addGroup",
+          "callee": "groupDto.getGroupName",
+          "lineNumber": 46
+        },
+        {
+          "caller": "addGroup",
+          "callee": "chatGroup.setCreateTime",
+          "lineNumber": 47
+        },
+        {
+          "caller": "addGroup",
+          "callee": "LocalDateTime.now",
+          "lineNumber": 47
+        },
+        {
+          "caller": "addGroup",
+          "callee": "chatGroup.setOwnerUserId",
+          "lineNumber": 48
+        },
+        {
+          "caller": "addGroup",
+          "callee": "save",
+          "lineNumber": 50
+        },
+        {
+          "caller": "addGroup",
+          "callee": "new GroupMember",
+          "lineNumber": 53
+        },
+        {
+          "caller": "addGroup",
+          "callee": "groupMember.setRole",
+          "lineNumber": 55
+        },
+        {
+          "caller": "addGroup",
+          "callee": "groupMember.setJoinTime",
+          "lineNumber": 56
+        },
+        {
+          "caller": "addGroup",
+          "callee": "LocalDateTime.now",
+          "lineNumber": 56
+        },
+        {
+          "caller": "addGroup",
+          "callee": "groupMember.setGroupId",
+          "lineNumber": 57
+        },
+        {
+          "caller": "addGroup",
+          "callee": "chatGroup.getId",
+          "lineNumber": 57
+        },
+        {
+          "caller": "addGroup",
+          "callee": "groupMember.setUserId",
+          "lineNumber": 58
+        },
+        {
+          "caller": "addGroup",
+          "callee": "groupMemberService.save",
+          "lineNumber": 60
+        },
+        {
+          "caller": "addGroup",
+          "callee": "redisTemplate.opsForSet().add",
+          "lineNumber": 65
+        },
+        {
+          "caller": "addGroup",
+          "callee": "redisTemplate.opsForSet",
+          "lineNumber": 65
+        },
+        {
+          "caller": "addGroup",
+          "callee": "chatGroup.getId",
+          "lineNumber": 65
+        },
+        {
+          "caller": "searchGroup",
+          "callee": "LoginUserHolder.getUserId",
+          "lineNumber": 69
+        },
+        {
+          "caller": "searchGroup",
+          "callee": "baseMapper.searchGroupWithStatus",
+          "lineNumber": 70
+        },
+        {
+          "caller": "listGroup",
+          "callee": "LoginUserHolder.getUserId",
+          "lineNumber": 75
+        },
+        {
+          "caller": "listGroup",
+          "callee": "groupMemberMapper.queryGroupByUserId",
+          "lineNumber": 77
+        },
+        {
+          "caller": "applyGroup",
+          "callee": "LoginUserHolder.getUserId",
+          "lineNumber": 82
+        },
+        {
+          "caller": "applyGroup",
+          "callee": "groupMemberService.getOne",
+          "lineNumber": 85
+        },
+        {
+          "caller": "applyGroup",
+          "callee": "new LambdaQueryWrapper<GroupMember>()\r\n                .eq(GroupMember::getGroupId, groupId).eq",
+          "lineNumber": 85
+        },
+        {
+          "caller": "applyGroup",
+          "callee": "new LambdaQueryWrapper<GroupMember>().eq",
+          "lineNumber": 85
+        },
+        {
+          "caller": "applyGroup",
+          "callee": "new LambdaQueryWrapper<GroupMember>",
+          "lineNumber": 85
+        },
+        {
+          "caller": "applyGroup",
+          "callee": "new RuntimeException",
+          "lineNumber": 90
+        },
+        {
+          "caller": "applyGroup",
+          "callee": "joinGroup",
+          "lineNumber": 93
+        },
+        {
+          "caller": "joinGroup",
+          "callee": "new GroupMember",
+          "lineNumber": 98
+        },
+        {
+          "caller": "joinGroup",
+          "callee": "groupMember.setGroupId",
+          "lineNumber": 99
+        },
+        {
+          "caller": "joinGroup",
+          "callee": "groupMember.setUserId",
+          "lineNumber": 100
+        },
+        {
+          "caller": "joinGroup",
+          "callee": "groupMember.setRole",
+          "lineNumber": 101
+        },
+        {
+          "caller": "joinGroup",
+          "callee": "groupMember.setJoinTime",
+          "lineNumber": 102
+        },
+        {
+          "caller": "joinGroup",
+          "callee": "LocalDateTime.now",
+          "lineNumber": 102
+        },
+        {
+          "caller": "joinGroup",
+          "callee": "groupMemberService.save",
+          "lineNumber": 103
+        },
+        {
+          "caller": "joinGroup",
+          "callee": "redisTemplate.opsForSet().add",
+          "lineNumber": 107
+        },
+        {
+          "caller": "joinGroup",
+          "callee": "redisTemplate.opsForSet",
+          "lineNumber": 107
+        }
+      ],
+      "metrics": {
+        "importCount": 10,
+        "exportCount": 5,
+        "functionCount": 5,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMemberServiceImpl.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 22,
+      "nonEmptyLines": 15,
+      "classes": [
+        {
+          "name": "GroupMemberServiceImpl",
+          "startLine": 14,
+          "endLine": 18,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "GroupMemberServiceImpl",
+          "line": 14,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/GroupController.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 45,
+      "nonEmptyLines": 38,
+      "functions": [
+        {
+          "name": "addGroup",
+          "startLine": 23,
+          "endLine": 27,
+          "params": [
+            "groupDto"
+          ]
+        },
+        {
+          "name": "searchGroup",
+          "startLine": 28,
+          "endLine": 32,
+          "params": [
+            "keyword"
+          ]
+        },
+        {
+          "name": "listGroup",
+          "startLine": 34,
+          "endLine": 38,
+          "params": []
+        },
+        {
+          "name": "applyGroup",
+          "startLine": 40,
+          "endLine": 44,
+          "params": [
+            "applyGroupDto"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "GroupController",
+          "startLine": 16,
+          "endLine": 45,
+          "methods": [
+            "addGroup",
+            "searchGroup",
+            "listGroup",
+            "applyGroup"
+          ],
+          "properties": [
+            "chatGroupService"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "addGroup",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "searchGroup",
+          "line": 28,
+          "isDefault": false
+        },
+        {
+          "name": "listGroup",
+          "line": 34,
+          "isDefault": false
+        },
+        {
+          "name": "applyGroup",
+          "line": 40,
+          "isDefault": false
+        },
+        {
+          "name": "GroupController",
+          "line": 16,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "addGroup",
+          "callee": "chatGroupService.addGroup",
+          "lineNumber": 25
+        },
+        {
+          "caller": "addGroup",
+          "callee": "R.ok",
+          "lineNumber": 26
+        },
+        {
+          "caller": "searchGroup",
+          "callee": "chatGroupService.searchGroup",
+          "lineNumber": 30
+        },
+        {
+          "caller": "searchGroup",
+          "callee": "R.ok",
+          "lineNumber": 31
+        },
+        {
+          "caller": "listGroup",
+          "callee": "chatGroupService.listGroup",
+          "lineNumber": 36
+        },
+        {
+          "caller": "listGroup",
+          "callee": "R.ok",
+          "lineNumber": 37
+        },
+        {
+          "caller": "applyGroup",
+          "callee": "chatGroupService.applyGroup",
+          "lineNumber": 42
+        },
+        {
+          "caller": "applyGroup",
+          "callee": "applyGroupDto.getGroupId",
+          "lineNumber": 42
+        },
+        {
+          "caller": "applyGroup",
+          "callee": "applyGroupDto.getReason",
+          "lineNumber": 42
+        },
+        {
+          "caller": "applyGroup",
+          "callee": "R.ok",
+          "lineNumber": 43
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 5,
+        "functionCount": 4,
+        "classCount": 1
+      }
+    }
+  ]
+}

@@ -80,7 +80,7 @@ public class GrpcChatClient {
             .setMsgContent(message)
             .build();
 
-        // [DIAG] 记录 channel 状态（true = 等待连接就绪）
+        // 记录 channel 状态
         ConnectivityState state = channel.getState(true);
         log.info("[gRPC Chat] 发起流式请求: user={}, llm={}, msg={}, channelState={}, thread={}",
             userId,llmId,message,state,Thread.currentThread().getName());

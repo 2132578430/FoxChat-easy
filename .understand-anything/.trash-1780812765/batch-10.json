@@ -1,0 +1,232 @@
+{
+  "nodes": [
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMsg.java",
+      "type": "file",
+      "name": "GroupMsg.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMsg.java",
+      "summary": "群消息领域实体类，包含消息ID、群组ID、发送者ID、消息内容、消息类型和创建时间等字段，用于持久化群聊消息数据。",
+      "tags": ["data-model", "entity", "domain"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryGroupDto.java",
+      "type": "file",
+      "name": "HistoryGroupDto.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryGroupDto.java",
+      "summary": "群聊历史消息查询的数据传输对象，携带群组ID和上次拉取的时间戳，用于客户端请求历史消息时的参数封装。",
+      "tags": ["data-model", "dto", "api-contract"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/GroupMsgHistoryVo.java",
+      "type": "file",
+      "name": "GroupMsgHistoryVo.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/GroupMsgHistoryVo.java",
+      "summary": "群聊历史消息的视图对象，在消息基础字段之上额外包含发送者用户名、昵称和头像，用于向前端返回完整的聊天记录展示数据。",
+      "tags": ["data-model", "vo", "presentation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/GroupMsgMapper.java",
+      "type": "file",
+      "name": "GroupMsgMapper.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/GroupMsgMapper.java",
+      "summary": "群消息数据访问层接口，继承MyBatis BaseMapper并定义historyMsg方法，负责从数据库查询群聊历史消息记录。",
+      "tags": ["data-access", "mapper", "mybatis"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/GroupMsgService.java",
+      "type": "file",
+      "name": "GroupMsgService.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/GroupMsgService.java",
+      "summary": "群消息服务接口，定义historyMsg方法签名，抽象群聊历史消息查询的业务逻辑契约。",
+      "tags": ["service", "interface", "api-contract"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java",
+      "type": "file",
+      "name": "GroupMsgServiceImpl.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java",
+      "summary": "群消息服务实现类，通过GroupMsgMapper查询群聊历史记录，结合UsersService获取发送者信息，使用TimeUtil进行时间戳转换，最终将GroupMsg实体转换为GroupMsgHistoryVo视图对象返回。",
+      "tags": ["service", "implementation", "data-transformation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/GroupMsgController.java",
+      "type": "file",
+      "name": "GroupMsgController.java",
+      "filePath": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/GroupMsgController.java",
+      "summary": "群消息REST控制器，提供群聊历史消息查询API端点，接收HistoryGroupDto参数并返回R封装的GroupMsgHistoryVo列表。",
+      "tags": ["api-handler", "controller", "rest"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMsg.java:GroupMsg",
+      "type": "class",
+      "name": "GroupMsg",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMsg.java",
+      "lineRange": [11, 91],
+      "summary": "群消息领域实体，包含id、groupId、sendUserId、msgContent、msgType、createTime六个属性，手动实现了equals、hashCode和toString方法。",
+      "tags": ["data-model", "entity", "domain"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java:GroupMsgServiceImpl",
+      "type": "class",
+      "name": "GroupMsgServiceImpl",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java",
+      "lineRange": [24, 66],
+      "summary": "群消息服务实现类，注入GroupMsgMapper和UsersService，实现historyMsg方法完成群聊历史消息的查询与数据组装。",
+      "tags": ["service", "implementation", "data-transformation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java:historyMsg",
+      "type": "function",
+      "name": "historyMsg",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java",
+      "lineRange": [34, 65],
+      "summary": "查询群聊历史消息的核心方法，根据群组ID和时间戳从数据库拉取消息，使用TimeUtil转换时间格式，遍历消息列表通过UsersService补充发送者用户信息，最终返回GroupMsgHistoryVo列表。",
+      "tags": ["business-logic", "data-query", "service-method"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMsg.java",
+      "target": "class:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMsg.java:GroupMsg",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java",
+      "target": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java:GroupMsgServiceImpl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java:historyMsg",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/GroupMsgMapper.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMsg.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/GroupMsgService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMsg.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/GroupMsgService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryGroupDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/GroupMsgService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/GroupMsgHistoryVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/TimeUtil.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMsg.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryGroupDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/GroupMsgHistoryVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/GroupMsgMapper.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/GroupMsgService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/GroupMsgController.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/R.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/GroupMsgController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryGroupDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/GroupMsgController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/GroupMsgHistoryVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/GroupMsgController.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/GroupMsgService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

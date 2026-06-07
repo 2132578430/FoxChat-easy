@@ -1,0 +1,135 @@
+{
+  "nodes": [
+    {
+      "id": "config:FoxChat-vue/.env.development",
+      "type": "config",
+      "name": ".env.development",
+      "filePath": "FoxChat-vue/.env.development",
+      "summary": "Vite 开发环境配置文件，设置 API、WebSocket 和 OSS 的代理路径，通过 Vite 代理避免跨域 Cookie 问题。",
+      "tags": ["configuration", "environment", "vite", "development"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:FoxChat-vue/.env.production",
+      "type": "config",
+      "name": ".env.production",
+      "filePath": "FoxChat-vue/.env.production",
+      "summary": "Vite 生产环境配置文件，定义 API 和 OSS 基础路径，WebSocket 地址留空由代码自动推断。",
+      "tags": ["configuration", "environment", "vite", "production"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:FoxChat-vue/AI-Project.md",
+      "type": "document",
+      "name": "AI-Project.md",
+      "filePath": "FoxChat-vue/AI-Project.md",
+      "summary": "AI 生成的项目介绍文档，涵盖项目概述、技术栈（Vue 3 + Vite + Electron）、分层架构设计和编码规范指导。",
+      "tags": ["documentation", "project-overview", "coding-standards", "architecture"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:FoxChat-vue/API_INTERFACE.md",
+      "type": "document",
+      "name": "API_INTERFACE.md",
+      "filePath": "FoxChat-vue/API_INTERFACE.md",
+      "summary": "前端 API 接口文档，定义用户认证模块（登录/注册）的请求格式、响应结构及 Mock 数据说明。",
+      "tags": ["documentation", "api-schema", "authentication", "mock-data"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "service:FoxChat-vue/Dockerfile.base",
+      "type": "service",
+      "name": "Dockerfile.base",
+      "filePath": "FoxChat-vue/Dockerfile.base",
+      "summary": "基于 node:20-alpine 的基础镜像 Dockerfile，配置国内 npm 和 Electron 镜像源，仅安装项目依赖，当 package.json 变更时重建。",
+      "tags": ["containerization", "infrastructure", "base-image", "node"],
+      "complexity": "simple",
+      "languageNotes": "使用多阶段构建策略，基础镜像仅包含 npm 依赖层，与应用代码分离以优化 Docker 缓存。"
+    },
+    {
+      "id": "document:FoxChat-vue/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "FoxChat-vue/README.md",
+      "summary": "FoxChat 前端项目 README，介绍技术栈（Vue 3 + Electron 40）、环境配置、HTTP/WebSocket 通信协议、核心功能模块及开发运行命令。",
+      "tags": ["documentation", "entry-point", "websocket-protocol", "tech-stack"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-vue/index.html",
+      "type": "file",
+      "name": "index.html",
+      "filePath": "FoxChat-vue/index.html",
+      "summary": "Vue 应用的 HTML 入口文件，包含 CSP 安全策略配置，加载 /src/main.js 作为模块入口。",
+      "tags": ["entry-point", "html", "security-policy"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:FoxChat-vue/package.json",
+      "type": "config",
+      "name": "package.json",
+      "filePath": "FoxChat-vue/package.json",
+      "summary": "前端项目配置文件，定义 Vue 3 + Vite 7 + Electron 40 技术栈的依赖、构建脚本及 Electron 打包配置（NSIS 安装包）。",
+      "tags": ["configuration", "dependency-management", "build-system", "electron"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:FoxChat-vue/.env.development",
+      "target": "file:FoxChat-vue/index.html",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-vue/.env.production",
+      "target": "file:FoxChat-vue/index.html",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:FoxChat-vue/AI-Project.md",
+      "target": "file:FoxChat-vue/index.html",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChat-vue/API_INTERFACE.md",
+      "target": "file:FoxChat-vue/index.html",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChat-vue/README.md",
+      "target": "file:FoxChat-vue/index.html",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "service:FoxChat-vue/Dockerfile.base",
+      "target": "file:FoxChat-vue/index.html",
+      "type": "deploys",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "config:FoxChat-vue/package.json",
+      "target": "file:FoxChat-vue/index.html",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:FoxChat-vue/Dockerfile.base",
+      "target": "config:FoxChat-vue/package.json",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

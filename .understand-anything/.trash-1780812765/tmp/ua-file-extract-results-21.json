@@ -1,0 +1,417 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 11,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "FoxChatRAG-python/app/core/prompts/character_card.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 89,
+      "nonEmptyLines": 69,
+      "sections": [
+        {
+          "heading": "角色声明",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "核心原则",
+          "level": 2,
+          "line": 9
+        },
+        {
+          "heading": "动作表达指导",
+          "level": 2,
+          "line": 13
+        },
+        {
+          "heading": "动作使用原则",
+          "level": 3,
+          "line": 17
+        },
+        {
+          "heading": "动作生成方法",
+          "level": 3,
+          "line": 24
+        },
+        {
+          "heading": "示例",
+          "level": 3,
+          "line": 29
+        },
+        {
+          "heading": "输出格式（JSON）",
+          "level": 2,
+          "line": 49
+        },
+        {
+          "heading": "各字段说明",
+          "level": 2,
+          "line": 68
+        },
+        {
+          "heading": "约束",
+          "level": 2,
+          "line": 80
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 9
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/prompts/chat_system.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 15,
+      "nonEmptyLines": 10,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/prompts/emotion_classifier.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 16,
+      "nonEmptyLines": 11,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/prompts/focus_extractor.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 44,
+      "nonEmptyLines": 34,
+      "sections": [
+        {
+          "heading": "【已废弃 - V2 简化版移除】话题焦点提取提示词",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "以下为旧版提示词内容（已废弃）",
+          "level": 1,
+          "line": 13
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 2
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/prompts/memory_bank_compress.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 20,
+      "nonEmptyLines": 16,
+      "sections": [
+        {
+          "heading": "必须保留的高重要性事件（不得删除或合并，原样保留）",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "压缩要求",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "当前记忆库",
+          "level": 2,
+          "line": 17
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 3
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/prompts/memory_event_extractor.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 104,
+      "nonEmptyLines": 89,
+      "sections": [
+        {
+          "heading": "核心原则（最高优先级）",
+          "level": 2,
+          "line": 8
+        },
+        {
+          "heading": "提取范围（统一提取，用 category 区分）",
+          "level": 2,
+          "line": 12
+        },
+        {
+          "heading": "Event 类（category=\"event\"）",
+          "level": 3,
+          "line": 14
+        },
+        {
+          "heading": "State 类（category=\"state\"）",
+          "level": 3,
+          "line": 21
+        },
+        {
+          "heading": "判断规则",
+          "level": 2,
+          "line": 26
+        },
+        {
+          "heading": "反话/阴阳检测（关键）",
+          "level": 2,
+          "line": 40
+        },
+        {
+          "heading": "输出格式（JSON对象，包含 events 数组）",
+          "level": 2,
+          "line": 51
+        },
+        {
+          "heading": "字段说明",
+          "level": 2,
+          "line": 70
+        },
+        {
+          "heading": "必填字段",
+          "level": 3,
+          "line": 72
+        },
+        {
+          "heading": "event_type 分类",
+          "level": 3,
+          "line": 85
+        },
+        {
+          "heading": "注意",
+          "level": 2,
+          "line": 101
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 11
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/prompts/memory_summary.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 23,
+      "nonEmptyLines": 18,
+      "sections": [
+        {
+          "heading": "总结要求",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "总结范围",
+          "level": 2,
+          "line": 10
+        },
+        {
+          "heading": "输出格式",
+          "level": 2,
+          "line": 16
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 3
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/prompts/role_memory_core.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 31,
+      "nonEmptyLines": 23,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/prompts/soul.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 38,
+      "nonEmptyLines": 32,
+      "sections": [
+        {
+          "heading": "Soul - 通用角色约束",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "核心使命",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "核心原则",
+          "level": 2,
+          "line": 6
+        },
+        {
+          "heading": "绝对边界",
+          "level": 2,
+          "line": 12
+        },
+        {
+          "heading": "行为准则",
+          "level": 2,
+          "line": 19
+        },
+        {
+          "heading": "输出格式规范",
+          "level": 2,
+          "line": 28
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 6
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/prompts/user_profile.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 90,
+      "nonEmptyLines": 82,
+      "sections": [
+        {
+          "heading": "角色与核心任务",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "视角指引",
+          "level": 2,
+          "line": 4
+        },
+        {
+          "heading": "强制执行铁则",
+          "level": 2,
+          "line": 13
+        },
+        {
+          "heading": "维度与字段定义（严格对应输出结构）",
+          "level": 2,
+          "line": 19
+        },
+        {
+          "heading": "输出结构（严格照搬键名，仅修改对应值）",
+          "level": 2,
+          "line": 52
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/prompts/user_profile_updater.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 95,
+      "nonEmptyLines": 82,
+      "sections": [
+        {
+          "heading": "更新原则（simplify-memory-a2-profile）",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "✅ 应该更新的内容（长期稳定画像）",
+          "level": 3,
+          "line": 5
+        },
+        {
+          "heading": "❌ 不应该更新的内容（临时情绪、硬边界）",
+          "level": 3,
+          "line": 14
+        },
+        {
+          "heading": "⚠️ 边界情况",
+          "level": 3,
+          "line": 20
+        },
+        {
+          "heading": "更新规则（simplify-memory-a2-profile）",
+          "level": 2,
+          "line": 25
+        },
+        {
+          "heading": "输入格式",
+          "level": 2,
+          "line": 33
+        },
+        {
+          "heading": "当前用户画像",
+          "level": 3,
+          "line": 35
+        },
+        {
+          "heading": "最近对话历史",
+          "level": 3,
+          "line": 40
+        },
+        {
+          "heading": "输出格式",
+          "level": 2,
+          "line": 45
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 9
+      }
+    }
+  ]
+}

@@ -1,0 +1,498 @@
+{
+  "nodes": [
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/graph/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/graph/__init__.py",
+      "summary": "Chat Pipeline Graph 模块初始化文件，基于 LangGraph 实现对话流程编排，替代原有的线性 process_chat_msg()。",
+      "tags": ["entry-point", "barrel", "langgraph"],
+      "complexity": "simple",
+      "languageNotes": "仅含模块文档字符串，无实际代码，用于标识 graph 包。"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/util/token_monitor.py",
+      "type": "file",
+      "name": "token_monitor.py",
+      "filePath": "FoxChatRAG-python/app/util/token_monitor.py",
+      "summary": "Token 消耗实时监控工具，记录每次 LLM 调用的 token 消耗、Memory Bank 注入条数及各组件字符占比，用于性能调优和成本分析。",
+      "tags": ["utility", "monitoring", "token-tracking", "singleton"],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:FoxChatRAG-python/app/util/token_monitor.py:TokenRecord",
+      "type": "class",
+      "name": "TokenRecord",
+      "filePath": "FoxChatRAG-python/app/util/token_monitor.py",
+      "lineRange": [30, 63],
+      "summary": "单次 LLM 调用的 token 消耗记录数据类，包含 token 数量、Memory Bank 注入情况、各 prompt 组件字符数和向量检索信息。",
+      "tags": ["data-model", "dataclass", "monitoring"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChatRAG-python/app/util/token_monitor.py:TokenMonitorConfig",
+      "type": "class",
+      "name": "TokenMonitorConfig",
+      "filePath": "FoxChatRAG-python/app/util/token_monitor.py",
+      "lineRange": [67, 72],
+      "summary": "Token 监控配置数据类，定义 Memory Bank 最大注入条数、向量检索开关和日志文件路径。",
+      "tags": ["config", "dataclass"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChatRAG-python/app/util/token_monitor.py:TokenMonitor",
+      "type": "class",
+      "name": "TokenMonitor",
+      "filePath": "FoxChatRAG-python/app/util/token_monitor.py",
+      "lineRange": [75, 285],
+      "summary": "Token 消耗监控器核心类，包装 LLM 调用以自动记录 token 使用情况，支持动态调整 Memory Bank 注入限制并生成分析报告。",
+      "tags": ["service", "monitoring", "singleton", "llm-wrapper"],
+      "complexity": "complex"
+    },
+    {
+      "id": "schema:FoxChatRAG-python/proto/ai_chat.proto",
+      "type": "schema",
+      "name": "ai_chat.proto",
+      "filePath": "FoxChatRAG-python/proto/ai_chat.proto",
+      "summary": "定义 AIChatService gRPC 服务接口，包含流式 Chat RPC 和非流式 DeleteMemory RPC，以及对应的请求/响应消息格式。支持文本和动作两种 block 类型，带情感标签和断流恢复序号。",
+      "tags": ["schema-definition", "api-schema", "grpc", "protobuf"],
+      "complexity": "moderate",
+      "languageNotes": "使用 proto3 语法，Chat 为服务端流式 RPC，ChatResponse 包含 block_type（text/action）用于前端分段渲染。"
+    },
+    {
+      "id": "endpoint:FoxChatRAG-python/proto/ai_chat.proto:AIChatService.Chat",
+      "type": "endpoint",
+      "name": "AIChatService.Chat",
+      "filePath": "FoxChatRAG-python/proto/ai_chat.proto",
+      "lineRange": [17, 17],
+      "summary": "核心流式 RPC 端点，Java 端发送 ChatRequest，Python 端逐个 StreamToken 推回 ChatResponse。",
+      "tags": ["grpc", "streaming", "api-endpoint"],
+      "complexity": "simple"
+    },
+    {
+      "id": "endpoint:FoxChatRAG-python/proto/ai_chat.proto:AIChatService.DeleteMemory",
+      "type": "endpoint",
+      "name": "AIChatService.DeleteMemory",
+      "filePath": "FoxChatRAG-python/proto/ai_chat.proto",
+      "lineRange": [20, 20],
+      "summary": "非流式 RPC 端点，用于删除指定用户和角色的所有记忆数据。",
+      "tags": ["grpc", "memory-management", "api-endpoint"],
+      "complexity": "simple"
+    },
+    {
+      "id": "schema:FoxChatRAG-python/proto/ai_chat.proto:ChatRequest",
+      "type": "schema",
+      "name": "ChatRequest",
+      "filePath": "FoxChatRAG-python/proto/ai_chat.proto",
+      "lineRange": [28, 32],
+      "summary": "聊天请求消息，包含 user_id、llm_id 和 msg_content 三个字段。",
+      "tags": ["protobuf", "message-type"],
+      "complexity": "simple"
+    },
+    {
+      "id": "schema:FoxChatRAG-python/proto/ai_chat.proto:ChatResponse",
+      "type": "schema",
+      "name": "ChatResponse",
+      "filePath": "FoxChatRAG-python/proto/ai_chat.proto",
+      "lineRange": [34, 63],
+      "summary": "流式聊天响应消息，包含文本内容、block 类型（text/action）、块边界标记、情感标签、错误信息和序列号。",
+      "tags": ["protobuf", "message-type", "streaming"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "schema:FoxChatRAG-python/proto/ai_chat.proto:DeleteRequest",
+      "type": "schema",
+      "name": "DeleteRequest",
+      "filePath": "FoxChatRAG-python/proto/ai_chat.proto",
+      "lineRange": [70, 73],
+      "summary": "记忆删除请求消息，包含 user_id 和 llm_id。",
+      "tags": ["protobuf", "message-type"],
+      "complexity": "simple"
+    },
+    {
+      "id": "schema:FoxChatRAG-python/proto/ai_chat.proto:DeleteResponse",
+      "type": "schema",
+      "name": "DeleteResponse",
+      "filePath": "FoxChatRAG-python/proto/ai_chat.proto",
+      "lineRange": [75, 78],
+      "summary": "记忆删除响应消息，包含 success 布尔值和 message 字符串。",
+      "tags": ["protobuf", "message-type"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:FoxChatRAG-python/README",
+      "type": "document",
+      "name": "README",
+      "filePath": "FoxChatRAG-python/README",
+      "summary": "FoxChat 项目文档，涵盖技术栈（Vue 3 + Vite + Electron）、环境配置、HTTP/WebSocket 通信协议、核心功能模块（即时通讯和 RAG 知识库）及开发脚本。",
+      "tags": ["documentation", "entry-point", "overview"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChatRAG-python/test/memory_stress_test.py",
+      "type": "file",
+      "name": "memory_stress_test.py",
+      "filePath": "FoxChatRAG-python/test/memory_stress_test.py",
+      "summary": "角色记忆压力测试脚本，通过播种期植入记忆点、污染期灌入无关话题、验证期检验记忆留存率，评估 AI 对话记忆系统的鲁棒性。",
+      "tags": ["test", "stress-test", "memory-system", "async"],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:FoxChatRAG-python/test/memory_stress_test.py:VerificationItem",
+      "type": "class",
+      "name": "VerificationItem",
+      "filePath": "FoxChatRAG-python/test/memory_stress_test.py",
+      "lineRange": [222, 227],
+      "summary": "验证项数据类，记录验证问题、期望关键词、是否通过、实际回复和请求延迟。",
+      "tags": ["data-model", "dataclass", "test"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChatRAG-python/test/memory_stress_test.py:ChatClient",
+      "type": "class",
+      "name": "ChatClient",
+      "filePath": "FoxChatRAG-python/test/memory_stress_test.py",
+      "lineRange": [245, 313],
+      "summary": "异步 HTTP 测试客户端，封装与 FoxChatRAG 服务的交互，支持发送消息、清除记忆和延迟测量。",
+      "tags": ["test", "http-client", "async"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChatRAG-python/test/memory_stress_test.py:_extract_reply",
+      "type": "function",
+      "name": "_extract_reply",
+      "filePath": "FoxChatRAG-python/test/memory_stress_test.py",
+      "lineRange": [316, 344],
+      "summary": "从 API 响应中提取 AI 回复文本，兼容多种响应结构（字符串、字典、MessageBlock 列表）。",
+      "tags": ["utility", "response-parsing"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChatRAG-python/test/memory_stress_test.py:check_answer",
+      "type": "function",
+      "name": "check_answer",
+      "filePath": "FoxChatRAG-python/test/memory_stress_test.py",
+      "lineRange": [350, 356],
+      "summary": "检查 AI 回复中是否包含期望关键词（大小写不敏感）。",
+      "tags": ["validation", "test-helper"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChatRAG-python/test/memory_stress_test.py:print_report",
+      "type": "function",
+      "name": "print_report",
+      "filePath": "FoxChatRAG-python/test/memory_stress_test.py",
+      "lineRange": [362, 393],
+      "summary": "生成并打印记忆压力测试报告，包含通过率、延迟统计和逐项结果。",
+      "tags": ["reporting", "test-helper"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChatRAG-python/test/memory_stress_test.py:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "FoxChatRAG-python/test/memory_stress_test.py",
+      "lineRange": [399, 467],
+      "summary": "压力测试主流程，依次执行清除旧记忆、播种期（12轮）、污染期（200轮）和验证期，最终输出测试报告。",
+      "tags": ["entry-point", "test-orchestrator", "async"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:FoxChatRAG-python/test/test_deduplication.py",
+      "type": "file",
+      "name": "test_deduplication.py",
+      "filePath": "FoxChatRAG-python/test/test_deduplication.py",
+      "summary": "记忆事件去重逻辑单元测试，验证基于内容相同、event_id 相同和字符级相似度（95% 阈值）三种去重规则。",
+      "tags": ["test", "unit-test", "deduplication"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChatRAG-python/test/test_deduplication.py:_calculate_content_similarity",
+      "type": "function",
+      "name": "_calculate_content_similarity",
+      "filePath": "FoxChatRAG-python/test/test_deduplication.py",
+      "lineRange": [15, 25],
+      "summary": "基于字符集合的 Jaccard 相似度计算函数，用于判断两条记忆内容是否重复。",
+      "tags": ["utility", "similarity", "algorithm"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChatRAG-python/test/test_deduplication.py:should_deduplicate",
+      "type": "function",
+      "name": "should_deduplicate",
+      "filePath": "FoxChatRAG-python/test/test_deduplication.py",
+      "lineRange": [28, 37],
+      "summary": "去重判定函数，当内容完全相同、event_id 相同或字符相似度 >= 95% 时返回 True。",
+      "tags": ["validation", "deduplication", "core-logic"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChatRAG-python/test/test_deduplication.py:TestShouldDeduplicate",
+      "type": "class",
+      "name": "TestShouldDeduplicate",
+      "filePath": "FoxChatRAG-python/test/test_deduplication.py",
+      "lineRange": [40, 82],
+      "summary": "去重逻辑测试类，包含 6 个测试用例覆盖相同内容、不同内容、相同 event_id、空 event_id、高相似度和中等相似度场景。",
+      "tags": ["test", "unit-test", "unittest"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChatRAG-python/test/test_history_event_retrieval_service_compile.py",
+      "type": "file",
+      "name": "test_history_event_retrieval_service_compile.py",
+      "filePath": "FoxChatRAG-python/test/test_history_event_retrieval_service_compile.py",
+      "summary": "编译检查测试，验证 history_event_retrieval_service.py 模块能通过 Python 语法编译。",
+      "tags": ["test", "smoke-test", "compilation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChatRAG-python/test/test_history_event_retrieval_service_compile.py:TestHistoryEventRetrievalServiceCompile",
+      "type": "class",
+      "name": "TestHistoryEventRetrievalServiceCompile",
+      "filePath": "FoxChatRAG-python/test/test_history_event_retrieval_service_compile.py",
+      "lineRange": [6, 17],
+      "summary": "编译检查测试类，使用 py_compile 验证 history_event_retrieval_service.py 无语法错误。",
+      "tags": ["test", "smoke-test", "unittest"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/test/test_structure_injection.py",
+      "type": "file",
+      "name": "test_structure_injection.py",
+      "filePath": "FoxChatRAG-python/test/test_structure_injection.py",
+      "summary": "历史事件结构化注入格式测试，验证 format_history_events 函数对跟进事项、边界声明和承诺约定三种事件类型的格式化输出。",
+      "tags": ["test", "unit-test", "formatting", "memory-system"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChatRAG-python/test/test_structure_injection.py:format_history_events",
+      "type": "function",
+      "name": "format_history_events",
+      "filePath": "FoxChatRAG-python/test/test_structure_injection.py",
+      "lineRange": [42, 56],
+      "summary": "将历史事件列表格式化为结构化文本，按事件类型（边界/跟进/承诺等）和角色（用户/角色）生成带标签的事件行。",
+      "tags": ["formatting", "utility", "memory-system"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChatRAG-python/test/test_structure_injection.py:TestFormatHistoryEvents",
+      "type": "class",
+      "name": "TestFormatHistoryEvents",
+      "filePath": "FoxChatRAG-python/test/test_structure_injection.py",
+      "lineRange": [59, 93],
+      "summary": "结构化注入格式测试类，包含 3 个测试用例验证跟进事项、边界声明和承诺约定的输出格式。",
+      "tags": ["test", "unit-test", "unittest"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/test/test.py",
+      "type": "file",
+      "name": "test.py",
+      "filePath": "FoxChatRAG-python/test/test.py",
+      "summary": "LeetCode 算法练习文件，实现 firstMissingPositive（缺失的第一个正整数）解题，与项目业务无关。",
+      "tags": ["test", "algorithm", "scratch"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChatRAG-python/test/test.py:Solution",
+      "type": "class",
+      "name": "Solution",
+      "filePath": "FoxChatRAG-python/test/test.py",
+      "lineRange": [5, 16],
+      "summary": "LeetCode 解题类，使用原地哈希方法求解缺失的第一个正整数。",
+      "tags": ["algorithm", "leetcode"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:FoxChatRAG-python/app/util/token_monitor.py",
+      "target": "class:FoxChatRAG-python/app/util/token_monitor.py:TokenRecord",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/token_monitor.py",
+      "target": "class:FoxChatRAG-python/app/util/token_monitor.py:TokenMonitorConfig",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/token_monitor.py",
+      "target": "class:FoxChatRAG-python/app/util/token_monitor.py:TokenMonitor",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/test/memory_stress_test.py",
+      "target": "class:FoxChatRAG-python/test/memory_stress_test.py:VerificationItem",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/test/memory_stress_test.py",
+      "target": "class:FoxChatRAG-python/test/memory_stress_test.py:ChatClient",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/test/memory_stress_test.py",
+      "target": "function:FoxChatRAG-python/test/memory_stress_test.py:_extract_reply",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/test/memory_stress_test.py",
+      "target": "function:FoxChatRAG-python/test/memory_stress_test.py:check_answer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/test/memory_stress_test.py",
+      "target": "function:FoxChatRAG-python/test/memory_stress_test.py:print_report",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/test/memory_stress_test.py",
+      "target": "function:FoxChatRAG-python/test/memory_stress_test.py:main",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/test/test_deduplication.py",
+      "target": "function:FoxChatRAG-python/test/test_deduplication.py:_calculate_content_similarity",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/test/test_deduplication.py",
+      "target": "function:FoxChatRAG-python/test/test_deduplication.py:should_deduplicate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/test/test_deduplication.py",
+      "target": "class:FoxChatRAG-python/test/test_deduplication.py:TestShouldDeduplicate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/test/test_history_event_retrieval_service_compile.py",
+      "target": "class:FoxChatRAG-python/test/test_history_event_retrieval_service_compile.py:TestHistoryEventRetrievalServiceCompile",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/test/test_structure_injection.py",
+      "target": "function:FoxChatRAG-python/test/test_structure_injection.py:format_history_events",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/test/test_structure_injection.py",
+      "target": "class:FoxChatRAG-python/test/test_structure_injection.py:TestFormatHistoryEvents",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/test/test.py",
+      "target": "class:FoxChatRAG-python/test/test.py:Solution",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "schema:FoxChatRAG-python/proto/ai_chat.proto",
+      "target": "endpoint:FoxChatRAG-python/proto/ai_chat.proto:AIChatService.Chat",
+      "type": "defines_schema",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "schema:FoxChatRAG-python/proto/ai_chat.proto",
+      "target": "endpoint:FoxChatRAG-python/proto/ai_chat.proto:AIChatService.DeleteMemory",
+      "type": "defines_schema",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "schema:FoxChatRAG-python/proto/ai_chat.proto",
+      "target": "schema:FoxChatRAG-python/proto/ai_chat.proto:ChatRequest",
+      "type": "defines_schema",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "schema:FoxChatRAG-python/proto/ai_chat.proto",
+      "target": "schema:FoxChatRAG-python/proto/ai_chat.proto:ChatResponse",
+      "type": "defines_schema",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "schema:FoxChatRAG-python/proto/ai_chat.proto",
+      "target": "schema:FoxChatRAG-python/proto/ai_chat.proto:DeleteRequest",
+      "type": "defines_schema",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "schema:FoxChatRAG-python/proto/ai_chat.proto",
+      "target": "schema:FoxChatRAG-python/proto/ai_chat.proto:DeleteResponse",
+      "type": "defines_schema",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "document:FoxChatRAG-python/README",
+      "target": "schema:FoxChatRAG-python/proto/ai_chat.proto",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/README",
+      "target": "file:FoxChatRAG-python/app/util/token_monitor.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/README",
+      "target": "file:FoxChatRAG-python/test/memory_stress_test.py",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:FoxChatRAG-python/test/memory_stress_test.py",
+      "target": "endpoint:FoxChatRAG-python/proto/ai_chat.proto:AIChatService.Chat",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:FoxChatRAG-python/test/memory_stress_test.py",
+      "target": "endpoint:FoxChatRAG-python/proto/ai_chat.proto:AIChatService.DeleteMemory",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

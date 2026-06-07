@@ -1,0 +1,152 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 3,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "deploy/local-middleware/.env.example",
+      "language": "config",
+      "fileCategory": "config",
+      "totalLines": 19,
+      "nonEmptyLines": 15,
+      "definitions": [
+        {
+          "name": "MYSQL_ROOT_PASSWORD",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 8,
+          "endLine": 8
+        },
+        {
+          "name": "REDIS_PASSWORD",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 11,
+          "endLine": 11
+        },
+        {
+          "name": "RABBIT_USER",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 14,
+          "endLine": 14
+        },
+        {
+          "name": "RABBIT_PASSWORD",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 15,
+          "endLine": 15
+        },
+        {
+          "name": "MINIO_ROOT_USER",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 18,
+          "endLine": 18
+        },
+        {
+          "name": "MINIO_ROOT_PASSWORD",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 19,
+          "endLine": 19
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 6
+      }
+    },
+    {
+      "path": "deploy/local-middleware/MIGRATE.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 146,
+      "nonEmptyLines": 106,
+      "sections": [
+        {
+          "heading": "中间件数据迁移指南",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "前置条件",
+          "level": 2,
+          "line": 5
+        },
+        {
+          "heading": "1. 本机启动中间件（空库）",
+          "level": 2,
+          "line": 13
+        },
+        {
+          "heading": "2. MySQL 数据迁移",
+          "level": 2,
+          "line": 37
+        },
+        {
+          "heading": "3. MinIO 文件迁移",
+          "level": 2,
+          "line": 67
+        },
+        {
+          "heading": "4. ChromaDB 数据迁移",
+          "level": 2,
+          "line": 94
+        },
+        {
+          "heading": "5. Redis & RabbitMQ",
+          "level": 2,
+          "line": 113
+        },
+        {
+          "heading": "6. 验证",
+          "level": 2,
+          "line": 129
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 8
+      }
+    },
+    {
+      "path": "deploy/local-middleware/docker-compose.yml",
+      "language": "yaml",
+      "fileCategory": "infra",
+      "totalLines": 118,
+      "nonEmptyLines": 110,
+      "sections": [
+        {
+          "heading": "x-logging",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "services",
+          "level": 1,
+          "line": 13
+        },
+        {
+          "heading": "networks",
+          "level": 1,
+          "line": 116
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 3
+      }
+    }
+  ]
+}

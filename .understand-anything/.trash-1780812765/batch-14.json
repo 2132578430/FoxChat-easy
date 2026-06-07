@@ -1,0 +1,57 @@
+{
+  "nodes": [
+    {
+      "id": "service:FoxChat-vue/Dockerfile",
+      "type": "service",
+      "name": "Dockerfile",
+      "filePath": "FoxChat-vue/Dockerfile",
+      "summary": "多阶段 Docker 构建文件，第一阶段使用 Vite 构建 Vue 前端应用并注入生产环境变量（API、WebSocket、OSS 地址），第二阶段将构建产物部署到 nginx:alpine 镜像中提供静态文件服务。",
+      "tags": ["containerization", "infrastructure", "deployment", "multi-stage-build"],
+      "complexity": "simple",
+      "languageNotes": "两阶段构建：build 阶段基于 foxchat-vue-build-base 自定义镜像执行 npm run build，nginx 阶段仅复制 dist 产物和 nginx 配置，最终镜像不含 Node.js 运行时，体积精简。"
+    },
+    {
+      "id": "service:FoxChat-vue/Dockerfile:build",
+      "type": "service",
+      "name": "build",
+      "filePath": "FoxChat-vue/Dockerfile",
+      "lineRange": [4, 23],
+      "summary": "构建阶段，基于 foxchat-vue-build-base 镜像，注入 VITE_API_BASE_URL、VITE_WS_BASE_URL、VITE_OSS_BASE_URL 等生产环境变量后执行 npm run build，输出静态资源到 /app/dist。",
+      "tags": ["build-stage", "vite", "vue", "static-assets"],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:FoxChat-vue/Dockerfile:nginx",
+      "type": "service",
+      "name": "nginx",
+      "filePath": "FoxChat-vue/Dockerfile",
+      "lineRange": [24, 35],
+      "summary": "运行阶段，基于 nginx:alpine 镜像，复制构建产物和自定义 nginx 配置到容器内，暴露 80 端口并以 daemon off 模式启动 nginx 服务。",
+      "tags": ["nginx", "serve", "static-files", "production"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "service:FoxChat-vue/Dockerfile",
+      "target": "service:FoxChat-vue/Dockerfile:build",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "service:FoxChat-vue/Dockerfile",
+      "target": "service:FoxChat-vue/Dockerfile:nginx",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "service:FoxChat-vue/Dockerfile:nginx",
+      "target": "service:FoxChat-vue/Dockerfile:build",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "projectRoot": "E:/WorkSpace/ProjectCode",
+  "batchFiles": [
+    {"path": "FoxChat-vue/.env.development", "language": "config", "sizeLines": 5, "fileCategory": "config"},
+    {"path": "FoxChat-vue/.env.production", "language": "config", "sizeLines": 5, "fileCategory": "config"},
+    {"path": "FoxChat-vue/AI-Project.md", "language": "markdown", "sizeLines": 63, "fileCategory": "docs"},
+    {"path": "FoxChat-vue/API_INTERFACE.md", "language": "markdown", "sizeLines": 77, "fileCategory": "docs"},
+    {"path": "FoxChat-vue/Dockerfile.base", "language": "dockerfile", "sizeLines": 16, "fileCategory": "infra"},
+    {"path": "FoxChat-vue/README.md", "language": "markdown", "sizeLines": 118, "fileCategory": "docs"},
+    {"path": "FoxChat-vue/index.html", "language": "html", "sizeLines": 14, "fileCategory": "markup"},
+    {"path": "FoxChat-vue/package.json", "language": "json", "sizeLines": 48, "fileCategory": "config"}
+  ],
+  "batchImportData": {
+    "FoxChat-vue/.env.development":[],
+    "FoxChat-vue/.env.production":[],
+    "FoxChat-vue/AI-Project.md":[],
+    "FoxChat-vue/API_INTERFACE.md":[],
+    "FoxChat-vue/Dockerfile.base":[],
+    "FoxChat-vue/README.md":[],
+    "FoxChat-vue/index.html":[],
+    "FoxChat-vue/package.json":[]
+  }
+}

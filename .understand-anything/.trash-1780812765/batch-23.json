@@ -1,0 +1,374 @@
+{
+  "nodes": [
+    {
+      "id": "pipeline:.gitea/workflows/deploy.yml",
+      "type": "pipeline",
+      "name": "deploy.yml",
+      "filePath": ".gitea/workflows/deploy.yml",
+      "summary": "Gitea CI/CD 工作流，在 master 分支推送时自动拉取代码、构建 Docker 基础镜像和应用镜像、部署容器并执行健康检查和资源清理。",
+      "tags": ["ci-cd", "deployment", "docker", "automation"],
+      "complexity": "moderate",
+      "languageNotes": "使用 self-hosted runner，通过 docker compose -f docker-compose.prod.yml 管理生产容器。"
+    },
+    {
+      "id": "document:.reasonix/truncated-results/1780141453720-308a5b32-web_fetch.txt",
+      "type": "document",
+      "name": "1780141453720-308a5b32-web_fetch.txt",
+      "filePath": ".reasonix/truncated-results/1780141453720-308a5b32-web_fetch.txt",
+      "summary": "Reasonix 工具生成的 Web 抓取结果片段，仅 14 行，内容被截断。",
+      "tags": ["documentation", "truncated", "web-fetch"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:.reasonix/truncated-results/1780298383943-ab106a2d-web_fetch.txt",
+      "type": "document",
+      "name": "1780298383943-ab106a2d-web_fetch.txt",
+      "filePath": ".reasonix/truncated-results/1780298383943-ab106a2d-web_fetch.txt",
+      "summary": "Reasonix 工具生成的 Web 抓取结果片段，208 行，内容被截断。",
+      "tags": ["documentation", "truncated", "web-fetch"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:.understand-anything/.understandignore",
+      "type": "file",
+      "name": ".understandignore",
+      "filePath": ".understand-anything/.understandignore",
+      "summary": "Understand-Anything 工具的忽略规则配置，定义了分析时应跳过的文件和目录模式。",
+      "tags": ["configuration", "ignore-patterns", "tooling"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:.understand-anything/config.json",
+      "type": "config",
+      "name": "config.json",
+      "filePath": ".understand-anything/config.json",
+      "summary": "Understand-Anything 工具的配置文件，设置输出语言为中文。",
+      "tags": ["configuration", "tooling", "localization"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:deploy/DEPLOY.md",
+      "type": "document",
+      "name": "DEPLOY.md",
+      "filePath": "deploy/DEPLOY.md",
+      "summary": "FoxChat 中间件迁出部署手册，涵盖架构变化、端口映射、frp 隧道配置、数据迁移、业务部署及回滚方案等 8 个步骤。",
+      "tags": ["documentation", "deployment", "infrastructure", "operations"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:deploy/frp/frpc.toml.example",
+      "type": "file",
+      "name": "frpc.toml.example",
+      "filePath": "deploy/frp/frpc.toml.example",
+      "summary": "FRP 客户端配置示例文件，定义了到本机 MySQL、Redis、RabbitMQ 等中间件的隧道转发规则。",
+      "tags": ["configuration", "infrastructure", "tunneling", "example"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:deploy/frp/frps.toml.example",
+      "type": "file",
+      "name": "frps.toml.example",
+      "filePath": "deploy/frp/frps.toml.example",
+      "summary": "FRP 服务端配置示例文件，定义了服务端口、认证 token 及 Dashboard 设置。",
+      "tags": ["configuration", "infrastructure", "tunneling", "example"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:deploy/frp/install-frps.sh",
+      "type": "file",
+      "name": "install-frps.sh",
+      "filePath": "deploy/frp/install-frps.sh",
+      "summary": "服务器端 frps 安装脚本，自动下载 frp 二进制、配置 systemd 服务并启动，支持多镜像源 fallback。",
+      "tags": ["script", "infrastructure", "installation", "tunneling"],
+      "complexity": "moderate",
+      "languageNotes": "使用 bash 数组遍历多个 GitHub 镜像源实现下载 fallback，配置 systemd 实现服务自启动。"
+    },
+    {
+      "id": "file:deploy/local-middleware/frpc-docker.toml.example",
+      "type": "file",
+      "name": "frpc-docker.toml.example",
+      "filePath": "deploy/local-middleware/frpc-docker.toml.example",
+      "summary": "Docker 环境下 FRP 客户端配置示例，定义了容器内访问本机中间件的隧道规则。",
+      "tags": ["configuration", "infrastructure", "docker", "tunneling", "example"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/.gitattributes",
+      "type": "file",
+      "name": ".gitattributes",
+      "filePath": "FoxChat-java/.gitattributes",
+      "summary": "Git 属性配置文件，用于指定行尾转换等 Git 行为。",
+      "tags": ["configuration", "git"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:FoxChat-java/.mvn/wrapper/maven-wrapper.properties",
+      "type": "config",
+      "name": "maven-wrapper.properties",
+      "filePath": "FoxChat-java/.mvn/wrapper/maven-wrapper.properties",
+      "summary": "Maven Wrapper 配置，指定 Maven 版本和下载 URL。",
+      "tags": ["configuration", "build-system", "maven"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:FoxChat-java/foxChat-common/build.gradle",
+      "type": "config",
+      "name": "build.gradle",
+      "filePath": "FoxChat-java/foxChat-common/build.gradle",
+      "summary": "foxChat-common 模块的 Gradle 构建配置，定义了公共组件的依赖。",
+      "tags": ["configuration", "build-system", "gradle"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/config/MinioConfig.java",
+      "type": "file",
+      "name": "MinioConfig.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/config/MinioConfig.java",
+      "summary": "MinIO 对象存储客户端配置类，通过 application.yml 注入 endpoint 和凭据，创建 MinioClient Bean。",
+      "tags": ["configuration", "storage", "spring-bean"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/config/ThreadExecutor.java",
+      "type": "file",
+      "name": "ThreadExecutor.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/config/ThreadExecutor.java",
+      "summary": "线程池执行器配置类，创建可配置核心线程数、最大线程数和队列容量的 ThreadPoolExecutor Bean。",
+      "tags": ["configuration", "concurrency", "spring-bean"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/LuaConstant.java",
+      "type": "file",
+      "name": "LuaConstant.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/LuaConstant.java",
+      "summary": "Redis Lua 脚本常量类，定义了删除好友和添加好友操作的 Lua 脚本字符串。",
+      "tags": ["constant", "redis", "lua-script"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:FoxChat-java/foxChat-netty/build.gradle",
+      "type": "config",
+      "name": "build.gradle",
+      "filePath": "FoxChat-java/foxChat-netty/build.gradle",
+      "summary": "foxChat-netty 模块的 Gradle 构建配置，定义了 Netty 相关依赖。",
+      "tags": ["configuration", "build-system", "gradle"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/HeartBeatHandler.java",
+      "type": "file",
+      "name": "HeartBeatHandler.java",
+      "filePath": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/HeartBeatHandler.java",
+      "summary": "Netty 心跳处理器，监听客户端空闲事件并在读空闲超时时关闭连接。",
+      "tags": ["handler", "netty", "heartbeat", "websocket"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/NettyServer.java",
+      "type": "file",
+      "name": "NettyServer.java",
+      "filePath": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/NettyServer.java",
+      "summary": "Netty WebSocket 服务器，初始化 NIO EventLoopGroup 和 ServerBootstrap，绑定端口并启动 WebSocket 服务。",
+      "tags": ["server", "netty", "websocket", "entry-point"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:FoxChat-java/foxChat-pojo/build.gradle",
+      "type": "config",
+      "name": "build.gradle",
+      "filePath": "FoxChat-java/foxChat-pojo/build.gradle",
+      "summary": "foxChat-pojo 模块的 Gradle 构建配置，定义了数据传输对象相关依赖。",
+      "tags": ["configuration", "build-system", "gradle"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/FileDto.java",
+      "type": "file",
+      "name": "FileDto.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/FileDto.java",
+      "summary": "文件上传数据传输对象，包含 MultipartFile 类型的 file 字段。",
+      "tags": ["data-model", "dto", "file-upload"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LLMChatMsgDto.java",
+      "type": "file",
+      "name": "LLMChatMsgDto.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LLMChatMsgDto.java",
+      "summary": "LLM 聊天消息数据传输对象，用于 AI 聊天消息的传输。",
+      "tags": ["data-model", "dto", "ai-chat"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:FoxChat-java/foxChat-service/build.gradle",
+      "type": "config",
+      "name": "build.gradle",
+      "filePath": "FoxChat-java/foxChat-service/build.gradle",
+      "summary": "foxChat-service 模块的 Gradle 构建配置，定义了服务层相关依赖。",
+      "tags": ["configuration", "build-system", "gradle"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/config/RagRabbitMqConfig.java",
+      "type": "file",
+      "name": "RagRabbitMqConfig.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/config/RagRabbitMqConfig.java",
+      "summary": "RabbitMQ 消息队列配置类，定义了 RAG 和 Chat 两个业务队列及对应的死信队列（DLX），支持消息重试和失败处理。",
+      "tags": ["configuration", "messaging", "rabbitmq", "spring-bean"],
+      "complexity": "complex"
+    },
+    {
+      "id": "schema:FoxChat-java/foxChat-service/src/main/proto/ai_chat.proto",
+      "type": "schema",
+      "name": "ai_chat.proto",
+      "filePath": "FoxChat-java/foxChat-service/src/main/proto/ai_chat.proto",
+      "summary": "AI 聊天 gRPC 服务的 Protobuf 定义文件，声明了 Chat（服务端流式 RPC）和 DeleteMemory 两个接口，以及 ChatRequest、ChatResponse、DeleteRequest、DeleteResponse 四个消息类型。",
+      "tags": ["schema-definition", "grpc", "protobuf", "ai-chat"],
+      "complexity": "moderate",
+      "languageNotes": "Chat 接口使用服务端流式 RPC（stream ChatResponse），支持文本 token 逐个推送和动作描写块传输。"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/NettyServer.java:NettyServer",
+      "type": "class",
+      "name": "NettyServer",
+      "filePath": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/NettyServer.java",
+      "lineRange": [17, 60],
+      "summary": "Netty WebSocket 服务器类，包含 initNetty（初始化并启动服务）和 nettyClose（优雅关闭）两个方法。",
+      "tags": ["server", "netty", "websocket"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/config/RagRabbitMqConfig.java:RagRabbitMqConfig",
+      "type": "class",
+      "name": "RagRabbitMqConfig",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/config/RagRabbitMqConfig.java",
+      "lineRange": [22, 142],
+      "summary": "RabbitMQ 配置类，包含 11 个 Bean 方法，定义 TopicExchange、业务队列（RAG/Chat）、死信交换机和队列，以及对应的绑定关系。",
+      "tags": ["configuration", "messaging", "rabbitmq", "dead-letter-exchange"],
+      "complexity": "complex",
+      "languageNotes": "使用 QueueBuilder.durable 链式调用配置死信路由，实现消息消费失败后的自动重试和最终兜底处理。"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/NettyServer.java",
+      "target": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/NettyServer.java:NettyServer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/config/RagRabbitMqConfig.java",
+      "target": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/config/RagRabbitMqConfig.java:RagRabbitMqConfig",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "pipeline:.gitea/workflows/deploy.yml",
+      "target": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/NettyServer.java",
+      "type": "deploys",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "document:deploy/DEPLOY.md",
+      "target": "pipeline:.gitea/workflows/deploy.yml",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:deploy/DEPLOY.md",
+      "target": "file:deploy/frp/frpc.toml.example",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:deploy/DEPLOY.md",
+      "target": "file:deploy/frp/frps.toml.example",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:deploy/DEPLOY.md",
+      "target": "file:deploy/frp/install-frps.sh",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:deploy/DEPLOY.md",
+      "target": "file:deploy/local-middleware/frpc-docker.toml.example",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "config:FoxChat-java/foxChat-common/build.gradle",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/config/MinioConfig.java",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-java/foxChat-common/build.gradle",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/config/ThreadExecutor.java",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-java/foxChat-common/build.gradle",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/LuaConstant.java",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-java/foxChat-netty/build.gradle",
+      "target": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/HeartBeatHandler.java",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-java/foxChat-netty/build.gradle",
+      "target": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/NettyServer.java",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-java/foxChat-pojo/build.gradle",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/FileDto.java",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-java/foxChat-pojo/build.gradle",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LLMChatMsgDto.java",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-java/foxChat-service/build.gradle",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/config/RagRabbitMqConfig.java",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-java/foxChat-service/build.gradle",
+      "target": "schema:FoxChat-java/foxChat-service/src/main/proto/ai_chat.proto",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

@@ -1,0 +1,1374 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 14,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/MsgStatus.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 73,
+      "nonEmptyLines": 65,
+      "functions": [
+        {
+          "name": "equals",
+          "startLine": 31,
+          "endLine": 47,
+          "params": [
+            "that"
+          ]
+        },
+        {
+          "name": "hashCode",
+          "startLine": 49,
+          "endLine": 58,
+          "params": []
+        },
+        {
+          "name": "toString",
+          "startLine": 60,
+          "endLine": 72,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "MsgStatus",
+          "startLine": 9,
+          "endLine": 73,
+          "methods": [
+            "equals",
+            "hashCode",
+            "toString"
+          ],
+          "properties": [
+            "id",
+            "userId",
+            "msgId",
+            "status"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "equals",
+          "line": 31,
+          "isDefault": false
+        },
+        {
+          "name": "hashCode",
+          "line": 49,
+          "isDefault": false
+        },
+        {
+          "name": "toString",
+          "line": 60,
+          "isDefault": false
+        },
+        {
+          "name": "MsgStatus",
+          "line": 9,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "equals",
+          "callee": "getClass",
+          "lineNumber": 39
+        },
+        {
+          "caller": "equals",
+          "callee": "that.getClass",
+          "lineNumber": 39
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getId",
+          "lineNumber": 43
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getId",
+          "lineNumber": 43
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getId().equals",
+          "lineNumber": 43
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getId",
+          "lineNumber": 43
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getId",
+          "lineNumber": 43
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getUserId",
+          "lineNumber": 44
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getUserId",
+          "lineNumber": 44
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getUserId().equals",
+          "lineNumber": 44
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getUserId",
+          "lineNumber": 44
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getUserId",
+          "lineNumber": 44
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getMsgId",
+          "lineNumber": 45
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getMsgId",
+          "lineNumber": 45
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getMsgId().equals",
+          "lineNumber": 45
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getMsgId",
+          "lineNumber": 45
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getMsgId",
+          "lineNumber": 45
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getStatus",
+          "lineNumber": 46
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getStatus",
+          "lineNumber": 46
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getStatus().equals",
+          "lineNumber": 46
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getStatus",
+          "lineNumber": 46
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getStatus",
+          "lineNumber": 46
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getId",
+          "lineNumber": 53
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getId().hashCode",
+          "lineNumber": 53
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getId",
+          "lineNumber": 53
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getUserId",
+          "lineNumber": 54
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getUserId().hashCode",
+          "lineNumber": 54
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getUserId",
+          "lineNumber": 54
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getMsgId",
+          "lineNumber": 55
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getMsgId().hashCode",
+          "lineNumber": 55
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getMsgId",
+          "lineNumber": 55
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getStatus",
+          "lineNumber": 56
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getStatus().hashCode",
+          "lineNumber": 56
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getStatus",
+          "lineNumber": 56
+        },
+        {
+          "caller": "toString",
+          "callee": "new StringBuilder",
+          "lineNumber": 62
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 63
+        },
+        {
+          "caller": "toString",
+          "callee": "getClass().getSimpleName",
+          "lineNumber": 63
+        },
+        {
+          "caller": "toString",
+          "callee": "getClass",
+          "lineNumber": 63
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 64
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\"Hash = \").append",
+          "lineNumber": 65
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 65
+        },
+        {
+          "caller": "toString",
+          "callee": "hashCode",
+          "lineNumber": 65
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\", id=\").append",
+          "lineNumber": 66
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 66
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\", userId=\").append",
+          "lineNumber": 67
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 67
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\", msgId=\").append",
+          "lineNumber": 68
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 68
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\", status=\").append",
+          "lineNumber": 69
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 69
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 70
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.toString",
+          "lineNumber": 71
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 4,
+        "functionCount": 3,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/DeleteMsgDto.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 13,
+      "nonEmptyLines": 10,
+      "classes": [
+        {
+          "name": "DeleteMsgDto",
+          "startLine": 10,
+          "endLine": 13,
+          "methods": [],
+          "properties": [
+            "msgIds"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "DeleteMsgDto",
+          "line": 10,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryUserDto.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 12,
+      "nonEmptyLines": 10,
+      "classes": [
+        {
+          "name": "HistoryUserDto",
+          "startLine": 8,
+          "endLine": 12,
+          "methods": [],
+          "properties": [
+            "friendId",
+            "lastTimestamp"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "HistoryUserDto",
+          "line": 8,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/SignMsgFriendDto.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 11,
+      "nonEmptyLines": 9,
+      "classes": [
+        {
+          "name": "SignMsgFriendDto",
+          "startLine": 8,
+          "endLine": 11,
+          "methods": [],
+          "properties": [
+            "friendId"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "SignMsgFriendDto",
+          "line": 8,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/WithdrawMsgDto.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 13,
+      "nonEmptyLines": 10,
+      "classes": [
+        {
+          "name": "WithdrawMsgDto",
+          "startLine": 10,
+          "endLine": 13,
+          "methods": [],
+          "properties": [
+            "msgIds"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "WithdrawMsgDto",
+          "line": 10,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/UnreadMsgTo.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 12,
+      "nonEmptyLines": 10,
+      "classes": [
+        {
+          "name": "UnreadMsgTo",
+          "startLine": 8,
+          "endLine": 12,
+          "methods": [],
+          "properties": [
+            "count",
+            "friendUserId"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "UnreadMsgTo",
+          "line": 8,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/HistoryMsgVo.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 18,
+      "nonEmptyLines": 15,
+      "classes": [
+        {
+          "name": "HistoryMsgVo",
+          "startLine": 10,
+          "endLine": 18,
+          "methods": [],
+          "properties": [
+            "msgId",
+            "msg",
+            "tempTime",
+            "createTime",
+            "sendUserId",
+            "status"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "HistoryMsgVo",
+          "line": 10,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/ChatMsgMapper.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 27,
+      "nonEmptyLines": 18,
+      "classes": [
+        {
+          "name": "ChatMsgMapper",
+          "startLine": 18,
+          "endLine": 23,
+          "methods": [
+            "msgPageByTime",
+            "getUnreadCount"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "ChatMsgMapper",
+          "line": 18,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/MsgStatusMapper.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 18,
+      "nonEmptyLines": 11,
+      "classes": [
+        {
+          "name": "MsgStatusMapper",
+          "startLine": 12,
+          "endLine": 14,
+          "methods": [],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "MsgStatusMapper",
+          "line": 12,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/ChatMsgService.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 31,
+      "nonEmptyLines": 21,
+      "classes": [
+        {
+          "name": "ChatMsgService",
+          "startLine": 17,
+          "endLine": 31,
+          "methods": [
+            "saveMsg",
+            "signMsg",
+            "noSignMsg",
+            "msgHistory",
+            "getUnreadCount",
+            "withdrawMsg"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "ChatMsgService",
+          "line": 17,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/MsgStatusService.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 18,
+      "nonEmptyLines": 14,
+      "classes": [
+        {
+          "name": "MsgStatusService",
+          "startLine": 13,
+          "endLine": 18,
+          "methods": [
+            "saveMsgStatus",
+            "deleteMsg"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "MsgStatusService",
+          "line": 13,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 154,
+      "nonEmptyLines": 125,
+      "functions": [
+        {
+          "name": "saveMsg",
+          "startLine": 47,
+          "endLine": 63,
+          "params": [
+            "chatMsg"
+          ]
+        },
+        {
+          "name": "signMsg",
+          "startLine": 69,
+          "endLine": 82,
+          "params": [
+            "msgIdList"
+          ]
+        },
+        {
+          "name": "noSignMsg",
+          "startLine": 88,
+          "endLine": 100,
+          "params": [
+            "friendId"
+          ]
+        },
+        {
+          "name": "msgHistory",
+          "startLine": 107,
+          "endLine": 121,
+          "params": [
+            "historyUserDto"
+          ]
+        },
+        {
+          "name": "getUnreadCount",
+          "startLine": 128,
+          "endLine": 137,
+          "params": []
+        },
+        {
+          "name": "withdrawMsg",
+          "startLine": 143,
+          "endLine": 149,
+          "params": [
+            "withdrawMsgDto"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "ChatMsgServiceImpl",
+          "startLine": 31,
+          "endLine": 150,
+          "methods": [
+            "saveMsg",
+            "signMsg",
+            "noSignMsg",
+            "msgHistory",
+            "getUnreadCount",
+            "withdrawMsg"
+          ],
+          "properties": [
+            "chatMsgMapper",
+            "msgStatusService"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "saveMsg",
+          "line": 47,
+          "isDefault": false
+        },
+        {
+          "name": "signMsg",
+          "line": 69,
+          "isDefault": false
+        },
+        {
+          "name": "noSignMsg",
+          "line": 88,
+          "isDefault": false
+        },
+        {
+          "name": "msgHistory",
+          "line": 107,
+          "isDefault": false
+        },
+        {
+          "name": "getUnreadCount",
+          "line": 128,
+          "isDefault": false
+        },
+        {
+          "name": "withdrawMsg",
+          "line": 143,
+          "isDefault": false
+        },
+        {
+          "name": "ChatMsgServiceImpl",
+          "line": 31,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "saveMsg",
+          "callee": "new ChatMsg",
+          "lineNumber": 49
+        },
+        {
+          "caller": "saveMsg",
+          "callee": "msg.setId",
+          "lineNumber": 51
+        },
+        {
+          "caller": "saveMsg",
+          "callee": "chatMsg.getId",
+          "lineNumber": 51
+        },
+        {
+          "caller": "saveMsg",
+          "callee": "msg.setMsg",
+          "lineNumber": 52
+        },
+        {
+          "caller": "saveMsg",
+          "callee": "chatMsg.getMsg",
+          "lineNumber": 52
+        },
+        {
+          "caller": "saveMsg",
+          "callee": "msg.setSendUserId",
+          "lineNumber": 53
+        },
+        {
+          "caller": "saveMsg",
+          "callee": "chatMsg.getSendUserId",
+          "lineNumber": 53
+        },
+        {
+          "caller": "saveMsg",
+          "callee": "msg.setAcceptUserId",
+          "lineNumber": 54
+        },
+        {
+          "caller": "saveMsg",
+          "callee": "chatMsg.getAcceptUserId",
+          "lineNumber": 54
+        },
+        {
+          "caller": "saveMsg",
+          "callee": "msg.setSignFlag",
+          "lineNumber": 55
+        },
+        {
+          "caller": "saveMsg",
+          "callee": "msg.setCreateTime",
+          "lineNumber": 56
+        },
+        {
+          "caller": "saveMsg",
+          "callee": "LocalDateTime.now",
+          "lineNumber": 56
+        },
+        {
+          "caller": "saveMsg",
+          "callee": "save",
+          "lineNumber": 58
+        },
+        {
+          "caller": "saveMsg",
+          "callee": "msgStatusService.saveMsgStatus",
+          "lineNumber": 60
+        },
+        {
+          "caller": "saveMsg",
+          "callee": "msg.getId",
+          "lineNumber": 62
+        },
+        {
+          "caller": "signMsg",
+          "callee": "msgIdList.stream()\r\n                .map(msgId -> {\r\n                    ChatMsg chatMsg = new ChatMsg();\r\n\r\n                    chatMsg.setId(msgId);\r\n                    chatMsg.setSignFlag(true);\r\n                    return chatMsg;\r\n                }).toList",
+          "lineNumber": 72
+        },
+        {
+          "caller": "signMsg",
+          "callee": "msgIdList.stream().map",
+          "lineNumber": 72
+        },
+        {
+          "caller": "signMsg",
+          "callee": "msgIdList.stream",
+          "lineNumber": 72
+        },
+        {
+          "caller": "signMsg",
+          "callee": "new ChatMsg",
+          "lineNumber": 74
+        },
+        {
+          "caller": "signMsg",
+          "callee": "chatMsg.setId",
+          "lineNumber": 76
+        },
+        {
+          "caller": "signMsg",
+          "callee": "chatMsg.setSignFlag",
+          "lineNumber": 77
+        },
+        {
+          "caller": "signMsg",
+          "callee": "updateBatchById",
+          "lineNumber": 81
+        },
+        {
+          "caller": "noSignMsg",
+          "callee": "LoginUserHolder.getUserId",
+          "lineNumber": 90
+        },
+        {
+          "caller": "noSignMsg",
+          "callee": "list",
+          "lineNumber": 92
+        },
+        {
+          "caller": "noSignMsg",
+          "callee": "new LambdaQueryWrapper<ChatMsg>()\r\n                .eq(ChatMsg::getSignFlag, false)\r\n                .eq(ChatMsg::getAcceptUserId, userId).eq",
+          "lineNumber": 92
+        },
+        {
+          "caller": "noSignMsg",
+          "callee": "new LambdaQueryWrapper<ChatMsg>()\r\n                .eq(ChatMsg::getSignFlag, false).eq",
+          "lineNumber": 92
+        },
+        {
+          "caller": "noSignMsg",
+          "callee": "new LambdaQueryWrapper<ChatMsg>().eq",
+          "lineNumber": 92
+        },
+        {
+          "caller": "noSignMsg",
+          "callee": "new LambdaQueryWrapper<ChatMsg>",
+          "lineNumber": 92
+        },
+        {
+          "caller": "noSignMsg",
+          "callee": "msgList.stream().map(ChatMsg::getId).toList",
+          "lineNumber": 97
+        },
+        {
+          "caller": "noSignMsg",
+          "callee": "msgList.stream().map",
+          "lineNumber": 97
+        },
+        {
+          "caller": "noSignMsg",
+          "callee": "msgList.stream",
+          "lineNumber": 97
+        },
+        {
+          "caller": "noSignMsg",
+          "callee": "msgIdList.isEmpty",
+          "lineNumber": 99
+        },
+        {
+          "caller": "noSignMsg",
+          "callee": "String.join",
+          "lineNumber": 99
+        },
+        {
+          "caller": "msgHistory",
+          "callee": "LoginUserHolder.getUserId",
+          "lineNumber": 109
+        },
+        {
+          "caller": "msgHistory",
+          "callee": "historyUserDto.getFriendId",
+          "lineNumber": 110
+        },
+        {
+          "caller": "msgHistory",
+          "callee": "historyUserDto.getLastTimestamp",
+          "lineNumber": 111
+        },
+        {
+          "caller": "msgHistory",
+          "callee": "TimeUtil.timestampToLdt",
+          "lineNumber": 113
+        },
+        {
+          "caller": "msgHistory",
+          "callee": "chatMsgMapper.msgPageByTime",
+          "lineNumber": 115
+        },
+        {
+          "caller": "msgHistory",
+          "callee": "historyMsgList.stream()\r\n                .peek(historyMsgVo ->\r\n                            historyMsgVo.setCreateTime(TimeUtil.ldtToTimestamp(historyMsgVo.getTempTime()).toString())).toList",
+          "lineNumber": 117
+        },
+        {
+          "caller": "msgHistory",
+          "callee": "historyMsgList.stream().peek",
+          "lineNumber": 117
+        },
+        {
+          "caller": "msgHistory",
+          "callee": "historyMsgList.stream",
+          "lineNumber": 117
+        },
+        {
+          "caller": "msgHistory",
+          "callee": "historyMsgVo.setCreateTime",
+          "lineNumber": 119
+        },
+        {
+          "caller": "msgHistory",
+          "callee": "TimeUtil.ldtToTimestamp(historyMsgVo.getTempTime()).toString",
+          "lineNumber": 119
+        },
+        {
+          "caller": "msgHistory",
+          "callee": "TimeUtil.ldtToTimestamp",
+          "lineNumber": 119
+        },
+        {
+          "caller": "msgHistory",
+          "callee": "historyMsgVo.getTempTime",
+          "lineNumber": 119
+        },
+        {
+          "caller": "getUnreadCount",
+          "callee": "LoginUserHolder.getUserId",
+          "lineNumber": 130
+        },
+        {
+          "caller": "getUnreadCount",
+          "callee": "chatMsgMapper.getUnreadCount",
+          "lineNumber": 132
+        },
+        {
+          "caller": "getUnreadCount",
+          "callee": "msgList.stream().collect",
+          "lineNumber": 134
+        },
+        {
+          "caller": "getUnreadCount",
+          "callee": "msgList.stream",
+          "lineNumber": 134
+        },
+        {
+          "caller": "getUnreadCount",
+          "callee": "Collectors.toMap",
+          "lineNumber": 135
+        },
+        {
+          "caller": "withdrawMsg",
+          "callee": "withdrawMsgDto.getMsgIds",
+          "lineNumber": 146
+        },
+        {
+          "caller": "withdrawMsg",
+          "callee": "removeBatchByIds",
+          "lineNumber": 148
+        }
+      ],
+      "metrics": {
+        "importCount": 10,
+        "exportCount": 7,
+        "functionCount": 6,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/MsgStatusServiceImpl.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 70,
+      "nonEmptyLines": 53,
+      "functions": [
+        {
+          "name": "saveMsgStatus",
+          "startLine": 29,
+          "endLine": 44,
+          "params": [
+            "msg"
+          ]
+        },
+        {
+          "name": "deleteMsg",
+          "startLine": 51,
+          "endLine": 65,
+          "params": [
+            "deleteMsgDto"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "MsgStatusServiceImpl",
+          "startLine": 22,
+          "endLine": 66,
+          "methods": [
+            "saveMsgStatus",
+            "deleteMsg"
+          ],
+          "properties": [
+            "msgStatusMapper"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "saveMsgStatus",
+          "line": 29,
+          "isDefault": false
+        },
+        {
+          "name": "deleteMsg",
+          "line": 51,
+          "isDefault": false
+        },
+        {
+          "name": "MsgStatusServiceImpl",
+          "line": 22,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "saveMsgStatus",
+          "callee": "new MsgStatus",
+          "lineNumber": 32
+        },
+        {
+          "caller": "saveMsgStatus",
+          "callee": "new MsgStatus",
+          "lineNumber": 33
+        },
+        {
+          "caller": "saveMsgStatus",
+          "callee": "msgStatus1.setStatus",
+          "lineNumber": 35
+        },
+        {
+          "caller": "saveMsgStatus",
+          "callee": "msgStatus1.setUserId",
+          "lineNumber": 36
+        },
+        {
+          "caller": "saveMsgStatus",
+          "callee": "msg.getAcceptUserId",
+          "lineNumber": 36
+        },
+        {
+          "caller": "saveMsgStatus",
+          "callee": "msgStatus1.setMsgId",
+          "lineNumber": 37
+        },
+        {
+          "caller": "saveMsgStatus",
+          "callee": "msg.getId",
+          "lineNumber": 37
+        },
+        {
+          "caller": "saveMsgStatus",
+          "callee": "msgStatus2.setStatus",
+          "lineNumber": 39
+        },
+        {
+          "caller": "saveMsgStatus",
+          "callee": "msgStatus2.setUserId",
+          "lineNumber": 40
+        },
+        {
+          "caller": "saveMsgStatus",
+          "callee": "msg.getSendUserId",
+          "lineNumber": 40
+        },
+        {
+          "caller": "saveMsgStatus",
+          "callee": "msgStatus2.setMsgId",
+          "lineNumber": 41
+        },
+        {
+          "caller": "saveMsgStatus",
+          "callee": "msg.getId",
+          "lineNumber": 41
+        },
+        {
+          "caller": "saveMsgStatus",
+          "callee": "saveBatch",
+          "lineNumber": 43
+        },
+        {
+          "caller": "saveMsgStatus",
+          "callee": "List.of",
+          "lineNumber": 43
+        },
+        {
+          "caller": "deleteMsg",
+          "callee": "LoginUserHolder.getUserId",
+          "lineNumber": 54
+        },
+        {
+          "caller": "deleteMsg",
+          "callee": "deleteMsgDto.getMsgIds",
+          "lineNumber": 56
+        },
+        {
+          "caller": "deleteMsg",
+          "callee": "new LambdaUpdateWrapper<>",
+          "lineNumber": 58
+        },
+        {
+          "caller": "deleteMsg",
+          "callee": "updateWrapper.set(MsgStatus::getStatus, 0)\r\n                        .eq(MsgStatus::getUserId, userId).in",
+          "lineNumber": 60
+        },
+        {
+          "caller": "deleteMsg",
+          "callee": "updateWrapper.set(MsgStatus::getStatus, 0).eq",
+          "lineNumber": 60
+        },
+        {
+          "caller": "deleteMsg",
+          "callee": "updateWrapper.set",
+          "lineNumber": 60
+        },
+        {
+          "caller": "deleteMsg",
+          "callee": "update",
+          "lineNumber": 64
+        }
+      ],
+      "metrics": {
+        "importCount": 6,
+        "exportCount": 3,
+        "functionCount": 2,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/MsgController.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 84,
+      "nonEmptyLines": 71,
+      "functions": [
+        {
+          "name": "signMsg",
+          "startLine": 36,
+          "endLine": 40,
+          "params": [
+            "signMsgFriendDto"
+          ]
+        },
+        {
+          "name": "msgHistory",
+          "startLine": 48,
+          "endLine": 52,
+          "params": [
+            "historyUserDto"
+          ]
+        },
+        {
+          "name": "unreadCount",
+          "startLine": 59,
+          "endLine": 63,
+          "params": []
+        },
+        {
+          "name": "withdrawMsg",
+          "startLine": 70,
+          "endLine": 75,
+          "params": [
+            "withdrawMsgDto"
+          ]
+        },
+        {
+          "name": "deleteMsg",
+          "startLine": 77,
+          "endLine": 82,
+          "params": [
+            "deleteMsgDto"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "MsgController",
+          "startLine": 20,
+          "endLine": 84,
+          "methods": [
+            "signMsg",
+            "msgHistory",
+            "unreadCount",
+            "withdrawMsg",
+            "deleteMsg"
+          ],
+          "properties": [
+            "chatMsgService",
+            "msgStatusService"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "signMsg",
+          "line": 36,
+          "isDefault": false
+        },
+        {
+          "name": "msgHistory",
+          "line": 48,
+          "isDefault": false
+        },
+        {
+          "name": "unreadCount",
+          "line": 59,
+          "isDefault": false
+        },
+        {
+          "name": "withdrawMsg",
+          "line": 70,
+          "isDefault": false
+        },
+        {
+          "name": "deleteMsg",
+          "line": 77,
+          "isDefault": false
+        },
+        {
+          "name": "MsgController",
+          "line": 20,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "signMsg",
+          "callee": "chatMsgService.noSignMsg",
+          "lineNumber": 38
+        },
+        {
+          "caller": "signMsg",
+          "callee": "signMsgFriendDto.getFriendId",
+          "lineNumber": 38
+        },
+        {
+          "caller": "signMsg",
+          "callee": "R.ok",
+          "lineNumber": 39
+        },
+        {
+          "caller": "msgHistory",
+          "callee": "chatMsgService.msgHistory",
+          "lineNumber": 50
+        },
+        {
+          "caller": "msgHistory",
+          "callee": "R.ok",
+          "lineNumber": 51
+        },
+        {
+          "caller": "unreadCount",
+          "callee": "chatMsgService.getUnreadCount",
+          "lineNumber": 61
+        },
+        {
+          "caller": "unreadCount",
+          "callee": "R.ok",
+          "lineNumber": 62
+        },
+        {
+          "caller": "withdrawMsg",
+          "callee": "chatMsgService.withdrawMsg",
+          "lineNumber": 72
+        },
+        {
+          "caller": "withdrawMsg",
+          "callee": "R.ok",
+          "lineNumber": 74
+        },
+        {
+          "caller": "deleteMsg",
+          "callee": "msgStatusService.deleteMsg",
+          "lineNumber": 79
+        },
+        {
+          "caller": "deleteMsg",
+          "callee": "R.ok",
+          "lineNumber": 81
+        }
+      ],
+      "metrics": {
+        "importCount": 8,
+        "exportCount": 6,
+        "functionCount": 5,
+        "classCount": 1
+      }
+    }
+  ]
+}

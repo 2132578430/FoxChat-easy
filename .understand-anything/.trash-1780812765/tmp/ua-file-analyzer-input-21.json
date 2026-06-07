@@ -1,0 +1,29 @@
+{
+  "projectRoot": "E:/WorkSpace/ProjectCode",
+  "batchFiles": [
+    {"path": "FoxChatRAG-python/app/core/prompts/character_card.md", "language": "markdown", "sizeLines": 89, "fileCategory": "docs"},
+    {"path": "FoxChatRAG-python/app/core/prompts/chat_system.md", "language": "markdown", "sizeLines": 14, "fileCategory": "docs"},
+    {"path": "FoxChatRAG-python/app/core/prompts/emotion_classifier.md", "language": "markdown", "sizeLines": 15, "fileCategory": "docs"},
+    {"path": "FoxChatRAG-python/app/core/prompts/focus_extractor.md", "language": "markdown", "sizeLines": 43, "fileCategory": "docs"},
+    {"path": "FoxChatRAG-python/app/core/prompts/memory_bank_compress.md", "language": "markdown", "sizeLines": 19, "fileCategory": "docs"},
+    {"path": "FoxChatRAG-python/app/core/prompts/memory_event_extractor.md", "language": "markdown", "sizeLines": 103, "fileCategory": "docs"},
+    {"path": "FoxChatRAG-python/app/core/prompts/memory_summary.md", "language": "markdown", "sizeLines": 22, "fileCategory": "docs"},
+    {"path": "FoxChatRAG-python/app/core/prompts/role_memory_core.md", "language": "markdown", "sizeLines": 31, "fileCategory": "docs"},
+    {"path": "FoxChatRAG-python/app/core/prompts/soul.md", "language": "markdown", "sizeLines": 37, "fileCategory": "docs"},
+    {"path": "FoxChatRAG-python/app/core/prompts/user_profile.md", "language": "markdown", "sizeLines": 89, "fileCategory": "docs"},
+    {"path": "FoxChatRAG-python/app/core/prompts/user_profile_updater.md", "language": "markdown", "sizeLines": 94, "fileCategory": "docs"}
+  ],
+  "batchImportData": {
+    "FoxChatRAG-python/app/core/prompts/character_card.md": [],
+    "FoxChatRAG-python/app/core/prompts/chat_system.md": [],
+    "FoxChatRAG-python/app/core/prompts/emotion_classifier.md": [],
+    "FoxChatRAG-python/app/core/prompts/focus_extractor.md": [],
+    "FoxChatRAG-python/app/core/prompts/memory_bank_compress.md": [],
+    "FoxChatRAG-python/app/core/prompts/memory_event_extractor.md": [],
+    "FoxChatRAG-python/app/core/prompts/memory_summary.md": [],
+    "FoxChatRAG-python/app/core/prompts/role_memory_core.md": [],
+    "FoxChatRAG-python/app/core/prompts/soul.md": [],
+    "FoxChatRAG-python/app/core/prompts/user_profile.md": [],
+    "FoxChatRAG-python/app/core/prompts/user_profile_updater.md": []
+  }
+}

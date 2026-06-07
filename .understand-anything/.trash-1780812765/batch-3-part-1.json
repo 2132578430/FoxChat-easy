@@ -1,0 +1,2135 @@
+{
+  "nodes": [
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/common/json_parser.py",
+      "type": "file",
+      "name": "json_parser.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/common/json_parser.py",
+      "summary": "JSON 安全解析工具，提供带默认值和自定义解析器的容错 JSON 解析功能，防止 LLM 返回格式异常导致崩溃。",
+      "tags": [
+        "utility",
+        "json",
+        "error-handling"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/common/json_parser.py:safe_json_parse",
+      "type": "function",
+      "name": "safe_json_parse",
+      "filePath": "FoxChatRAG-python/app/service/chat/common/json_parser.py",
+      "summary": "带容错的 JSON 解析函数，支持自定义解析器和默认值，解析失败时返回默认值并记录警告日志。",
+      "tags": [
+        "utility",
+        "json",
+        "error-handling"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        14,
+        53
+      ]
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/common/redis_keys.py",
+      "type": "file",
+      "name": "redis_keys.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/common/redis_keys.py",
+      "summary": "Redis 键名构建工具，为聊天记忆系统各模块生成统一格式的 Redis 键（初始记忆、最近消息、状态、轮次计数器等）。",
+      "tags": [
+        "utility",
+        "redis",
+        "key-builder"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/common/similarity.py",
+      "type": "file",
+      "name": "similarity.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/common/similarity.py",
+      "summary": "文本相似度计算工具，提供 Jaccard 相似度和词重叠率两种算法，用于记忆去重和事件匹配。",
+      "tags": [
+        "utility",
+        "similarity",
+        "text-processing"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/common/similarity.py:calc_jaccard_similarity",
+      "type": "function",
+      "name": "calc_jaccard_similarity",
+      "filePath": "FoxChatRAG-python/app/service/chat/common/similarity.py",
+      "summary": "计算两段文本的 Jaccard 相似度，基于字符级 n-gram 集合的交并比。",
+      "tags": [
+        "utility",
+        "similarity",
+        "algorithm"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        10,
+        39
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/common/similarity.py:calc_word_overlap_ratio",
+      "type": "function",
+      "name": "calc_word_overlap_ratio",
+      "filePath": "FoxChatRAG-python/app/service/chat/common/similarity.py",
+      "summary": "计算两段文本的词级重叠比率，基于分词后的交集与并集之比。",
+      "tags": [
+        "utility",
+        "similarity",
+        "algorithm"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        42,
+        65
+      ]
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/emotion_classifier.py",
+      "type": "file",
+      "name": "emotion_classifier.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/emotion_classifier.py",
+      "summary": "情感分类服务，通过 LLM 分析模型回复来识别用户当前情感状态，并将结果写入 CurrentState。",
+      "tags": [
+        "service",
+        "emotion",
+        "llm-invoke",
+        "state-management"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/emotion_classifier.py:classify_emotion",
+      "type": "function",
+      "name": "classify_emotion",
+      "filePath": "FoxChatRAG-python/app/service/chat/emotion_classifier.py",
+      "summary": "调用 LLM 对模型回复进行情感分类，使用 EmotionInvokeStrategy 获取情感标签和置信度。",
+      "tags": [
+        "service",
+        "emotion",
+        "llm-invoke"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        27,
+        72
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/emotion_classifier.py:_parse_emotion_result",
+      "type": "function",
+      "name": "_parse_emotion_result",
+      "filePath": "FoxChatRAG-python/app/service/chat/emotion_classifier.py",
+      "summary": "解析 LLM 返回的情感分类结果文本，支持 JSON 格式和纯文本格式，提取情感标签和置信度。",
+      "tags": [
+        "parser",
+        "emotion",
+        "json"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        75,
+        125
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/emotion_classifier.py:classify_and_update_emotion",
+      "type": "function",
+      "name": "classify_and_update_emotion",
+      "filePath": "FoxChatRAG-python/app/service/chat/emotion_classifier.py",
+      "summary": "情感分类的主入口函数，调用 LLM 分类后将结果更新到 CurrentState 的 emotion 字段。",
+      "tags": [
+        "service",
+        "emotion",
+        "state-update"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        128,
+        165
+      ]
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/graph/graph.py",
+      "type": "file",
+      "name": "graph.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/graph/graph.py",
+      "summary": "LangGraph 状态图构建器，定义聊天处理的完整工作流图（预检→记忆获取→解析→意图分类→检索/跳过→LLM调用→保存→格式化→情感分类→摘要触发→解锁）。",
+      "tags": [
+        "orchestration",
+        "langgraph",
+        "workflow"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/graph/graph.py:build_main_graph",
+      "type": "function",
+      "name": "build_main_graph",
+      "filePath": "FoxChatRAG-python/app/service/chat/graph/graph.py",
+      "summary": "构建 LangGraph StateGraph 主图，注册 12 个处理节点并定义节点间的边和条件路由。",
+      "tags": [
+        "orchestration",
+        "langgraph",
+        "graph-builder"
+      ],
+      "complexity": "complex",
+      "lineRange": [
+        39,
+        90
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/graph/graph.py:_get_default_checkpointer",
+      "type": "function",
+      "name": "_get_default_checkpointer",
+      "filePath": "FoxChatRAG-python/app/service/chat/graph/graph.py",
+      "summary": "获取图的默认检查点存储，优先使用 SQLite 持久化，回退到内存存储。",
+      "tags": [
+        "infrastructure",
+        "checkpointer"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        101,
+        117
+      ]
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "type": "file",
+      "name": "nodes.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "summary": "LangGraph 图节点实现，包含聊天工作流各阶段的处理函数：预检、记忆获取与解析、意图分类、历史检索、LLM调用、消息保存、输出格式化、情感分类和摘要触发。",
+      "tags": [
+        "orchestration",
+        "langgraph",
+        "node-handler"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/graph/nodes.py:pre_flight",
+      "type": "function",
+      "name": "pre_flight",
+      "filePath": "FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "summary": "预检节点，递增轮次计数器并构建最近消息 Redis 键。",
+      "tags": [
+        "node",
+        "preprocessing"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        49,
+        64
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/graph/nodes.py:parse_memory",
+      "type": "function",
+      "name": "parse_memory",
+      "filePath": "FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "summary": "解析从 Redis 获取的各类记忆数据（角色卡、核心锚点、用户画像、记忆库、当前状态），构建 ParsedMemories 对象。",
+      "tags": [
+        "node",
+        "memory",
+        "parser"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        76,
+        100
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/graph/nodes.py:classify_intent_node",
+      "type": "function",
+      "name": "classify_intent_node",
+      "filePath": "FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "summary": "意图分类图节点，调用 classify_intent 分析用户消息意图并写入 state。",
+      "tags": [
+        "node",
+        "intent",
+        "classification"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        104,
+        116
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/graph/nodes.py:retrieve",
+      "type": "function",
+      "name": "retrieve",
+      "filePath": "FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "summary": "历史记忆检索节点，调用 search_relevant_memories 获取与用户消息相关的记忆片段。",
+      "tags": [
+        "node",
+        "retrieval",
+        "memory"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        119,
+        132
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/graph/nodes.py:invoke_llm",
+      "type": "function",
+      "name": "invoke_llm",
+      "filePath": "FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "summary": "LLM 调用核心节点，支持流式和非流式两种模式，组装上下文后调用 LLM 生成回复。",
+      "tags": [
+        "node",
+        "llm",
+        "invoke"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        144,
+        184
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/graph/nodes.py:trigger_summary",
+      "type": "function",
+      "name": "trigger_summary",
+      "filePath": "FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "summary": "摘要触发节点，检查最近消息列表长度，超过阈值时触发异步摘要任务。",
+      "tags": [
+        "node",
+        "summary",
+        "trigger"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        219,
+        233
+      ]
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/graph/router.py",
+      "type": "file",
+      "name": "router.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/graph/router.py",
+      "summary": "LangGraph 条件路由函数，根据意图分类结果决定是否需要执行历史记忆检索。",
+      "tags": [
+        "utility",
+        "router",
+        "langgraph"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/graph/state.py",
+      "type": "file",
+      "name": "state.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/graph/state.py",
+      "summary": "LangGraph 状态定义，ChatState TypedDict 包含聊天工作流的全部状态字段（用户ID、消息内容、记忆、意图、AI回复等）。",
+      "tags": [
+        "type-definition",
+        "langgraph",
+        "state"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChatRAG-python/app/service/chat/graph/state.py:ChatState",
+      "type": "class",
+      "name": "ChatState",
+      "filePath": "FoxChatRAG-python/app/service/chat/graph/state.py",
+      "summary": "聊天工作流状态 TypedDict，定义了 user_id、llm_id、msg_content、memories、parsed、intent_result、ai_response、blocks、emotion 等 13 个状态字段。",
+      "tags": [
+        "type-definition",
+        "state",
+        "typeddict"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        12,
+        38
+      ]
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "type": "file",
+      "name": "history_event_retrieval_service.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "summary": "历史事件检索服务，实现 BM25+向量混合检索、去重、融合排序和重排，从记忆库中检索与查询最相关的历史事件。",
+      "tags": [
+        "service",
+        "retrieval",
+        "search",
+        "hybrid-search"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:should_deduplicate",
+      "type": "function",
+      "name": "should_deduplicate",
+      "filePath": "FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "summary": "判断两个历史事件是否应去重，基于事件类型、内容相似度和时间窗口。",
+      "tags": [
+        "utility",
+        "dedup"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        55,
+        84
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:_dict_to_memory_event",
+      "type": "function",
+      "name": "_dict_to_memory_event",
+      "filePath": "FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "summary": "将 Redis 中的事件字典转换为 MemoryEvent 对象，解析各字段并构建完整的事件数据结构。",
+      "tags": [
+        "parser",
+        "conversion"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        87,
+        133
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:deduplicate_with_recent_window",
+      "type": "function",
+      "name": "deduplicate_with_recent_window",
+      "filePath": "FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "summary": "基于最近消息窗口对事件进行关键词重叠去重，避免检索到与当前对话重复的历史信息。",
+      "tags": [
+        "dedup",
+        "filtering"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        136,
+        173
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:format_history_events",
+      "type": "function",
+      "name": "format_history_events",
+      "filePath": "FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "summary": "将历史事件列表格式化为可读文本，包含事件类型标签、时间戳和内容摘要。",
+      "tags": [
+        "formatter",
+        "output"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        176,
+        213
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:_bm25_retrieve_from_memory_bank",
+      "type": "function",
+      "name": "_bm25_retrieve_from_memory_bank",
+      "filePath": "FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "summary": "从 Redis 记忆库中使用 BM25 算法检索相关事件，包含分词、TF-IDF 计算和评分排序。",
+      "tags": [
+        "retrieval",
+        "bm25",
+        "search"
+      ],
+      "complexity": "complex",
+      "lineRange": [
+        220,
+        338
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:_vector_retrieve_from_chroma",
+      "type": "function",
+      "name": "_vector_retrieve_from_chroma",
+      "filePath": "FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "summary": "从 ChromaDB 向量数据库中检索语义相关的历史事件。",
+      "tags": [
+        "retrieval",
+        "vector",
+        "chroma"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        341,
+        389
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:_is_generic_summary",
+      "type": "function",
+      "name": "_is_generic_summary",
+      "filePath": "FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "summary": "判断事件内容是否为通用摘要（缺乏具体信息），通过关键词密度和长度启发式判断。",
+      "tags": [
+        "filtering",
+        "heuristic"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        392,
+        419
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:_compute_specificity_bonus",
+      "type": "function",
+      "name": "_compute_specificity_bonus",
+      "filePath": "FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "summary": "计算事件的具体性加分，长内容和非通用摘要获得更高评分。",
+      "tags": [
+        "scoring",
+        "ranking"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        422,
+        443
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:_merge_and_rank_candidates",
+      "type": "function",
+      "name": "_merge_and_rank_candidates",
+      "filePath": "FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "summary": "融合 BM25 和向量检索结果，去重后按综合分数（相关性+重要性+时间衰减+具体性）排序。",
+      "tags": [
+        "fusion",
+        "ranking",
+        "scoring"
+      ],
+      "complexity": "complex",
+      "lineRange": [
+        446,
+        555
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:_rerank_candidates",
+      "type": "function",
+      "name": "_rerank_candidates",
+      "filePath": "FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "summary": "使用 FlashrankRerank 模型对候选事件进行二次重排，提升检索精度。",
+      "tags": [
+        "reranking",
+        "ml-model"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        558,
+        615
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:retrieve_history_events_v2",
+      "type": "function",
+      "name": "retrieve_history_events_v2",
+      "filePath": "FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "summary": "历史事件检索主入口，编排 BM25 检索、向量检索、融合排序、重排和去重的完整流程。",
+      "tags": [
+        "service",
+        "retrieval",
+        "entry-point"
+      ],
+      "complexity": "complex",
+      "lineRange": [
+        618,
+        707
+      ]
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "type": "file",
+      "name": "llm_invoke_service.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "summary": "LLM 调用服务，负责组装聊天消息上下文（角色卡、记忆、历史消息等）并调用 LLM 生成回复，支持流式和非流式模式，同时提供相关记忆检索功能。",
+      "tags": [
+        "service",
+        "llm",
+        "invoke",
+        "context-building"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/llm_invoke_service.py:_build_chat_messages",
+      "type": "function",
+      "name": "_build_chat_messages",
+      "filePath": "FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "summary": "组装 LLM 调用所需的完整消息列表，包含系统提示（角色卡+锚点+用户画像+记忆+状态+行为指南）、历史消息和用户输入。",
+      "tags": [
+        "service",
+        "prompt",
+        "context"
+      ],
+      "complexity": "complex",
+      "lineRange": [
+        37,
+        147
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/llm_invoke_service.py:invoke_llm_with_retrieval",
+      "type": "function",
+      "name": "invoke_llm_with_retrieval",
+      "filePath": "FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "summary": "非流式 LLM 调用入口，组装消息后通过 ChatInvokeStrategy 调用 LLM 获取完整回复。",
+      "tags": [
+        "service",
+        "llm",
+        "invoke"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        150,
+        191
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/llm_invoke_service.py:stream_llm_with_retrieval",
+      "type": "function",
+      "name": "stream_llm_with_retrieval",
+      "filePath": "FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "summary": "流式 LLM 调用入口，使用 litellm.acompletion 进行流式请求，支持重试和错误处理。",
+      "tags": [
+        "service",
+        "llm",
+        "streaming"
+      ],
+      "complexity": "complex",
+      "lineRange": [
+        194,
+        267
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/llm_invoke_service.py:search_relevant_memories",
+      "type": "function",
+      "name": "search_relevant_memories",
+      "filePath": "FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "summary": "检索与用户消息相关的记忆，结合意图分类结果调用历史事件检索和 ChromaDB 向量检索，合并去重后返回格式化文本。",
+      "tags": [
+        "service",
+        "retrieval",
+        "memory"
+      ],
+      "complexity": "complex",
+      "lineRange": [
+        270,
+        348
+      ]
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "type": "file",
+      "name": "memory_parser.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "summary": "记忆解析器，将 Redis 中存储的各类 JSON 记忆数据解析为结构化文本，包括角色卡、核心锚点、用户画像、记忆库和当前状态。",
+      "tags": [
+        "parser",
+        "memory",
+        "json"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/memory_parser.py:parse_character_card",
+      "type": "function",
+      "name": "parse_character_card",
+      "filePath": "FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "summary": "解析角色卡 JSON，提取名称、性格、说话风格、行为指南和 temperature 等字段，拼接为可读文本。",
+      "tags": [
+        "parser",
+        "character"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        20,
+        72
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/memory_parser.py:parse_core_anchor",
+      "type": "function",
+      "name": "parse_core_anchor",
+      "filePath": "FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "summary": "从角色卡描述中通过正则提取角色声明和核心锚点文本。",
+      "tags": [
+        "parser",
+        "regex",
+        "extraction"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        75,
+        99
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/memory_parser.py:build_static_anchors",
+      "type": "function",
+      "name": "build_static_anchors",
+      "filePath": "FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "summary": "将灵魂、角色声明、核心锚点、角色卡详情和示例组装为静态锚点文本块。",
+      "tags": [
+        "builder",
+        "prompt"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        102,
+        140
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/memory_parser.py:parse_user_profile",
+      "type": "function",
+      "name": "parse_user_profile",
+      "filePath": "FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "summary": "解析用户画像 JSON，遍历多维属性并过滤占位符，生成用户特征摘要文本。",
+      "tags": [
+        "parser",
+        "user-profile"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        163,
+        198
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/memory_parser.py:parse_memory_bank",
+      "type": "function",
+      "name": "parse_memory_bank",
+      "filePath": "FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "summary": "解析记忆库 JSON 数组，提取每条记忆的时间、类型和内容，拼接为摘要文本。",
+      "tags": [
+        "parser",
+        "memory-bank"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        201,
+        228
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/memory_parser.py:parse_current_state",
+      "type": "function",
+      "name": "parse_current_state",
+      "filePath": "FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "summary": "解析当前状态 JSON，验证为 CurrentState 模型后提取有效字段注入 prompt，包含情感和时间信息。",
+      "tags": [
+        "parser",
+        "state"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        231,
+        276
+      ]
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "type": "file",
+      "name": "memory_summary_service.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "summary": "记忆摘要服务，负责从聊天消息中提取记忆事件、去重合并、向 ChromaDB 同步、记忆库压缩和用户画像更新，是记忆系统的核心编排服务。",
+      "tags": [
+        "service",
+        "memory",
+        "summary",
+        "extraction"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/memory_summary_service.py:_extract_memory_events",
+      "type": "function",
+      "name": "_extract_memory_events",
+      "filePath": "FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "summary": "使用 LLM 从最近聊天消息中提取结构化记忆事件，为每个事件生成唯一 ID 和时间戳。",
+      "tags": [
+        "service",
+        "extraction",
+        "llm"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        156,
+        218
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/memory_summary_service.py:_check_duplicate_or_continuation",
+      "type": "function",
+      "name": "_check_duplicate_or_continuation",
+      "filePath": "FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "summary": "检查新事件是否与已有事件重复或是其延续（同一类型+高内容相似度）。",
+      "tags": [
+        "dedup",
+        "merge"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        230,
+        267
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/memory_summary_service.py:_sync_event_to_chroma",
+      "type": "function",
+      "name": "_sync_event_to_chroma",
+      "filePath": "FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "summary": "将单个记忆事件同步上传到 ChromaDB 向量数据库。",
+      "tags": [
+        "sync",
+        "chroma"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        282,
+        304
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/memory_summary_service.py:_deduplicate_and_append_events",
+      "type": "function",
+      "name": "_deduplicate_and_append_events",
+      "filePath": "FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "summary": "对新提取的事件进行去重检查，合并延续事件后追加到记忆库并同步 ChromaDB。",
+      "tags": [
+        "dedup",
+        "merge",
+        "sync"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        322,
+        361
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/memory_summary_service.py:_compress_memory_bank_if_needed",
+      "type": "function",
+      "name": "_compress_memory_bank_if_needed",
+      "filePath": "FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "summary": "当记忆库超过阈值时，使用 LLM 压缩合并低重要性事件，减少记忆库体积。",
+      "tags": [
+        "compression",
+        "memory",
+        "llm"
+      ],
+      "complexity": "complex",
+      "lineRange": [
+        368,
+        428
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/memory_summary_service.py:_summary_and_upload",
+      "type": "function",
+      "name": "_summary_and_upload",
+      "filePath": "FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "summary": "使用 LLM 对聊天消息生成摘要文档并上传到 ChromaDB。",
+      "tags": [
+        "summary",
+        "upload",
+        "llm"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        450,
+        497
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/memory_summary_service.py:async_summary_msg_parallel",
+      "type": "function",
+      "name": "async_summary_msg_parallel",
+      "filePath": "FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "summary": "并行执行摘要上传、事件提取压缩和用户画像更新三个任务。",
+      "tags": [
+        "async",
+        "parallel",
+        "orchestration"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        504,
+        534
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/memory_summary_service.py:trigger_summary_with_counter",
+      "type": "function",
+      "name": "trigger_summary_with_counter",
+      "filePath": "FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "summary": "基于 Redis 计数器的摘要触发机制，防止重复触发。",
+      "tags": [
+        "trigger",
+        "counter",
+        "redis"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        541,
+        563
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/memory_summary_service.py:execute_summary_loop",
+      "type": "function",
+      "name": "execute_summary_loop",
+      "filePath": "FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "summary": "摘要执行循环，处理 Redis 消息队列中的所有待摘要消息。",
+      "tags": [
+        "loop",
+        "queue",
+        "summary"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        566,
+        599
+      ]
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/memory_upload_service.py",
+      "type": "file",
+      "name": "memory_upload_service.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/memory_upload_service.py",
+      "summary": "记忆上传服务（聊天初始化），在新对话创建时使用 LLM 从经验文本中提取核心锚点、用户画像、初始记忆和角色卡，并写入 Redis 和 ChromaDB。",
+      "tags": [
+        "service",
+        "memory",
+        "initialization",
+        "upload"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/memory_upload_service.py:_call_llm",
+      "type": "function",
+      "name": "_call_llm",
+      "filePath": "FoxChatRAG-python/app/service/chat/memory_upload_service.py",
+      "summary": "通用 LLM 调用封装，根据场景选择策略构建 prompt 并调用 LLM。",
+      "tags": [
+        "service",
+        "llm",
+        "invoke"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        33,
+        75
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/memory_upload_service.py:_process_memory_task",
+      "type": "function",
+      "name": "_process_memory_task",
+      "filePath": "FoxChatRAG-python/app/service/chat/memory_upload_service.py",
+      "summary": "单个记忆处理任务的通用流程：调用提取器→写入 Redis→上传 ChromaDB。",
+      "tags": [
+        "service",
+        "task",
+        "pipeline"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        131,
+        165
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/memory_upload_service.py:chat_init",
+      "type": "function",
+      "name": "chat_init",
+      "filePath": "FoxChatRAG-python/app/service/chat/memory_upload_service.py",
+      "summary": "聊天初始化主函数，验证 LLM 连接后并行提取 4 类记忆数据（核心锚点、用户画像、初始记忆、角色卡），写入 Redis 和 ChromaDB。",
+      "tags": [
+        "service",
+        "initialization",
+        "orchestration"
+      ],
+      "complexity": "complex",
+      "lineRange": [
+        168,
+        260
+      ]
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/prompt_payload_builder.py",
+      "type": "file",
+      "name": "prompt_payload_builder.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/prompt_payload_builder.py",
+      "summary": "Prompt 载荷构建器，负责组装 LLM 调用所需的多层上下文块（静态锚点、用户画像、历史上下文、当前状态、行为指南），并执行跨层去重和冲突优先级处理。",
+      "tags": [
+        "service",
+        "prompt",
+        "builder",
+        "dedup"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:FoxChatRAG-python/app/service/chat/prompt_payload_builder.py:PromptPayload",
+      "type": "class",
+      "name": "PromptPayload",
+      "filePath": "FoxChatRAG-python/app/service/chat/prompt_payload_builder.py",
+      "summary": "Prompt 载荷数据类，包含静态锚点、用户画像、历史上下文、当前状态、行为指南等 11 个字段。",
+      "tags": [
+        "data-model",
+        "prompt"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        37,
+        51
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/prompt_payload_builder.py:_suppress_duplicates_across_layers",
+      "type": "function",
+      "name": "_suppress_duplicates_across_layers",
+      "filePath": "FoxChatRAG-python/app/service/chat/prompt_payload_builder.py",
+      "summary": "跨层去重，使用 n-gram 关键词重叠检测并移除低优先级层中与高优先级层重复的内容行。",
+      "tags": [
+        "dedup",
+        "filtering",
+        "prompt"
+      ],
+      "complexity": "complex",
+      "lineRange": [
+        101,
+        168
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/prompt_payload_builder.py:_enforce_conflict_priority",
+      "type": "function",
+      "name": "_enforce_conflict_priority",
+      "filePath": "FoxChatRAG-python/app/service/chat/prompt_payload_builder.py",
+      "summary": "冲突优先级处理，检测行为指南中的边界标记，移除记忆库中与之冲突的内容，并在状态层添加冲突警告。",
+      "tags": [
+        "conflict",
+        "priority",
+        "prompt"
+      ],
+      "complexity": "complex",
+      "lineRange": [
+        171,
+        261
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/prompt_payload_builder.py:build_prompt_payload",
+      "type": "function",
+      "name": "build_prompt_payload",
+      "filePath": "FoxChatRAG-python/app/service/chat/prompt_payload_builder.py",
+      "summary": "Prompt 载荷构建主函数，组装 7 层上下文块，执行空块过滤、跨层去重和冲突处理，返回 PromptPayload 对象。",
+      "tags": [
+        "builder",
+        "prompt",
+        "orchestration"
+      ],
+      "complexity": "complex",
+      "lineRange": [
+        264,
+        387
+      ]
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/session_lock.py",
+      "type": "file",
+      "name": "session_lock.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/session_lock.py",
+      "summary": "会话锁管理，基于 Redis 实现分布式会话锁，防止同一用户的并发聊天请求产生竞态条件。",
+      "tags": [
+        "service",
+        "lock",
+        "redis",
+        "concurrency"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/session_lock.py:acquire_session_lock",
+      "type": "function",
+      "name": "acquire_session_lock",
+      "filePath": "FoxChatRAG-python/app/service/chat/session_lock.py",
+      "summary": "获取会话锁，使用 Redis 分布式锁实现，支持超时和异步等待，获取失败抛出 RuntimeError。",
+      "tags": [
+        "lock",
+        "redis",
+        "async"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        14,
+        47
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/common/json_parser.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/common/json_parser.py:safe_json_parse",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/common/similarity.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/common/similarity.py:calc_jaccard_similarity",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/common/similarity.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/common/similarity.py:calc_word_overlap_ratio",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/emotion_classifier.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/emotion_classifier.py:classify_emotion",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/emotion_classifier.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/emotion_classifier.py:_parse_emotion_result",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/emotion_classifier.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/emotion_classifier.py:classify_and_update_emotion",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/graph.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/graph/graph.py:build_main_graph",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/graph.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/graph/graph.py:_get_default_checkpointer",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/graph/nodes.py:pre_flight",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/graph/nodes.py:parse_memory",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/graph/nodes.py:classify_intent_node",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/graph/nodes.py:retrieve",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/graph/nodes.py:invoke_llm",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/graph/nodes.py:trigger_summary",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/state.py",
+      "target": "class:FoxChatRAG-python/app/service/chat/graph/state.py:ChatState",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:should_deduplicate",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:_dict_to_memory_event",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:deduplicate_with_recent_window",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:format_history_events",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:_bm25_retrieve_from_memory_bank",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:_vector_retrieve_from_chroma",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:_is_generic_summary",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:_compute_specificity_bonus",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:_merge_and_rank_candidates",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:_rerank_candidates",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:retrieve_history_events_v2",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/llm_invoke_service.py:_build_chat_messages",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/llm_invoke_service.py:invoke_llm_with_retrieval",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/llm_invoke_service.py:stream_llm_with_retrieval",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/llm_invoke_service.py:search_relevant_memories",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_parser.py:parse_character_card",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_parser.py:parse_core_anchor",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_parser.py:build_static_anchors",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_parser.py:parse_user_profile",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_parser.py:parse_memory_bank",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_parser.py:parse_current_state",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_summary_service.py:_extract_memory_events",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_summary_service.py:_check_duplicate_or_continuation",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_summary_service.py:_sync_event_to_chroma",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_summary_service.py:_deduplicate_and_append_events",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_summary_service.py:_compress_memory_bank_if_needed",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_summary_service.py:_summary_and_upload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_summary_service.py:async_summary_msg_parallel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_summary_service.py:trigger_summary_with_counter",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_summary_service.py:execute_summary_loop",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_upload_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_upload_service.py:_call_llm",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_upload_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_upload_service.py:_process_memory_task",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_upload_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_upload_service.py:chat_init",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/prompt_payload_builder.py",
+      "target": "class:FoxChatRAG-python/app/service/chat/prompt_payload_builder.py:PromptPayload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/prompt_payload_builder.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/prompt_payload_builder.py:_suppress_duplicates_across_layers",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/prompt_payload_builder.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/prompt_payload_builder.py:_enforce_conflict_priority",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/prompt_payload_builder.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/prompt_payload_builder.py:build_prompt_payload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/session_lock.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/session_lock.py:acquire_session_lock",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/common/redis_keys.py",
+      "target": "file:FoxChatRAG-python/app/common/constant/LLMChatConstant.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/emotion_classifier.py",
+      "target": "file:FoxChatRAG-python/app/core/db/mysql_client.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/emotion_classifier.py",
+      "target": "file:FoxChatRAG-python/app/core/prompts/prompt_manager.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/emotion_classifier.py",
+      "target": "file:FoxChatRAG-python/app/schemas/current_state.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/emotion_classifier.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/state_manager.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/emotion_classifier.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/strategy/base_strategy.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/emotion_classifier.py",
+      "target": "file:FoxChatRAG-python/app/util/template_util.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/graph.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/graph.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/graph/router.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/graph.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/graph/state.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/chat_redis_service.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/common/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/emotion_classifier.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/graph/state.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/response_parser.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/state_manager.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/timer_scheduler.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/types.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "file:FoxChatRAG-python/app/util/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/router.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/graph/state.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/state.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/types.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "target": "file:FoxChatRAG-python/app/common/constant/LLMChatConstant.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "target": "file:FoxChatRAG-python/app/core/db/redis_client.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "target": "file:FoxChatRAG-python/app/schemas/memory_event.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/common/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "target": "file:FoxChatRAG-python/app/util/chroma_util.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "target": "file:FoxChatRAG-python/app/common/constant/ChromaTypeConstant.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "target": "file:FoxChatRAG-python/app/core/db/mysql_client.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "target": "file:FoxChatRAG-python/app/core/prompts/prompt_manager.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/prompt_payload_builder.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/strategy/base_strategy.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "target": "file:FoxChatRAG-python/app/service/llm_config_service.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "target": "file:FoxChatRAG-python/app/util/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "target": "file:FoxChatRAG-python/app/util/chroma_util.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "target": "file:FoxChatRAG-python/app/util/template_util.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/common/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "file:FoxChatRAG-python/app/common/constant/ChromaTypeConstant.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "file:FoxChatRAG-python/app/common/constant/FileTypeConstant.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "file:FoxChatRAG-python/app/common/constant/LLMChatConstant.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "file:FoxChatRAG-python/app/core/db/mysql_client.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "file:FoxChatRAG-python/app/core/db/redis_client.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "file:FoxChatRAG-python/app/core/prompts/prompt_manager.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/common/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/strategy/base_strategy.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/user_profile_service.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "file:FoxChatRAG-python/app/util/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "file:FoxChatRAG-python/app/util/chroma_util.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "file:FoxChatRAG-python/app/util/loader_util.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "file:FoxChatRAG-python/app/util/template_util.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_upload_service.py",
+      "target": "file:FoxChatRAG-python/app/common/constant/LLMChatConstant.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_upload_service.py",
+      "target": "file:FoxChatRAG-python/app/core/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_upload_service.py",
+      "target": "file:FoxChatRAG-python/app/core/db/mysql_client.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_upload_service.py",
+      "target": "file:FoxChatRAG-python/app/core/prompts/prompt_manager.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_upload_service.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/common/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_upload_service.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/strategy/base_strategy.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_upload_service.py",
+      "target": "file:FoxChatRAG-python/app/service/llm_config_service.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_upload_service.py",
+      "target": "file:FoxChatRAG-python/app/util/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_upload_service.py",
+      "target": "file:FoxChatRAG-python/app/util/chroma_util.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_upload_service.py",
+      "target": "file:FoxChatRAG-python/app/util/template_util.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/session_lock.py",
+      "target": "file:FoxChatRAG-python/app/core/db/redis_client.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/common/json_parser.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/common/json_parser.py:safe_json_parse",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/common/similarity.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/common/similarity.py:calc_jaccard_similarity",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/common/similarity.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/common/similarity.py:calc_word_overlap_ratio",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/emotion_classifier.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/emotion_classifier.py:classify_emotion",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/emotion_classifier.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/emotion_classifier.py:classify_and_update_emotion",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/graph.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/graph/graph.py:build_main_graph",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/graph/nodes.py:pre_flight",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/graph/nodes.py:parse_memory",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/graph/nodes.py:classify_intent_node",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/graph/nodes.py:retrieve",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/graph/nodes.py:invoke_llm",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/graph/nodes.py:trigger_summary",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/graph/state.py",
+      "target": "class:FoxChatRAG-python/app/service/chat/graph/state.py:ChatState",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:retrieve_history_events_v2",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py:format_history_events",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/llm_invoke_service.py:invoke_llm_with_retrieval",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/llm_invoke_service.py:stream_llm_with_retrieval",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/llm_invoke_service.py:search_relevant_memories",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_parser.py:parse_character_card",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_parser.py:parse_core_anchor",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_parser.py:build_static_anchors",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_parser.py:parse_user_profile",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_parser.py:parse_memory_bank",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_parser.py:parse_current_state",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_summary_service.py:async_summary_msg_parallel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_summary_service.py:trigger_summary_with_counter",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/memory_upload_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/memory_upload_service.py:chat_init",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/prompt_payload_builder.py",
+      "target": "class:FoxChatRAG-python/app/service/chat/prompt_payload_builder.py:PromptPayload",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/prompt_payload_builder.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/prompt_payload_builder.py:build_prompt_payload",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/session_lock.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/session_lock.py:acquire_session_lock",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

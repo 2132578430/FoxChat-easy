@@ -1,0 +1,187 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 3,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "FoxChatRAG-python/app/grpc/__init__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 1,
+      "nonEmptyLines": 0,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 45,
+      "nonEmptyLines": 39,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2_grpc.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 155,
+      "nonEmptyLines": 134,
+      "functions": [
+        {
+          "name": "add_AIChatServiceServicer_to_server",
+          "startLine": 76,
+          "endLine": 92,
+          "params": [
+            "servicer",
+            "server"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "AIChatServiceStub",
+          "startLine": 28,
+          "endLine": 50,
+          "methods": [
+            "__init__"
+          ],
+          "properties": []
+        },
+        {
+          "name": "AIChatServiceServicer",
+          "startLine": 53,
+          "endLine": 73,
+          "methods": [
+            "Chat",
+            "DeleteMemory"
+          ],
+          "properties": []
+        },
+        {
+          "name": "AIChatService",
+          "startLine": 96,
+          "endLine": 155,
+          "methods": [
+            "Chat",
+            "DeleteMemory"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "AIChatServiceStub",
+          "line": 28,
+          "isDefault": false
+        },
+        {
+          "name": "AIChatServiceServicer",
+          "line": 53,
+          "isDefault": false
+        },
+        {
+          "name": "add_AIChatServiceServicer_to_server",
+          "line": 76,
+          "isDefault": false
+        },
+        {
+          "name": "AIChatService",
+          "line": 96,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "__init__",
+          "callee": "channel.unary_stream",
+          "lineNumber": 41
+        },
+        {
+          "caller": "__init__",
+          "callee": "channel.unary_unary",
+          "lineNumber": 46
+        },
+        {
+          "caller": "Chat",
+          "callee": "context.set_code",
+          "lineNumber": 64
+        },
+        {
+          "caller": "Chat",
+          "callee": "context.set_details",
+          "lineNumber": 65
+        },
+        {
+          "caller": "Chat",
+          "callee": "NotImplementedError",
+          "lineNumber": 66
+        },
+        {
+          "caller": "DeleteMemory",
+          "callee": "context.set_code",
+          "lineNumber": 71
+        },
+        {
+          "caller": "DeleteMemory",
+          "callee": "context.set_details",
+          "lineNumber": 72
+        },
+        {
+          "caller": "DeleteMemory",
+          "callee": "NotImplementedError",
+          "lineNumber": 73
+        },
+        {
+          "caller": "add_AIChatServiceServicer_to_server",
+          "callee": "grpc.unary_stream_rpc_method_handler",
+          "lineNumber": 78
+        },
+        {
+          "caller": "add_AIChatServiceServicer_to_server",
+          "callee": "grpc.unary_unary_rpc_method_handler",
+          "lineNumber": 83
+        },
+        {
+          "caller": "add_AIChatServiceServicer_to_server",
+          "callee": "grpc.method_handlers_generic_handler",
+          "lineNumber": 89
+        },
+        {
+          "caller": "add_AIChatServiceServicer_to_server",
+          "callee": "server.add_generic_rpc_handlers",
+          "lineNumber": 91
+        },
+        {
+          "caller": "add_AIChatServiceServicer_to_server",
+          "callee": "server.add_registered_method_handlers",
+          "lineNumber": 92
+        },
+        {
+          "caller": "Chat",
+          "callee": "grpc.experimental.unary_stream",
+          "lineNumber": 114
+        },
+        {
+          "caller": "DeleteMemory",
+          "callee": "grpc.experimental.unary_unary",
+          "lineNumber": 141
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 4,
+        "functionCount": 1,
+        "classCount": 3
+      }
+    }
+  ]
+}

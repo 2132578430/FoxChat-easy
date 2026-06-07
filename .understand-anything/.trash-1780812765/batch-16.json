@@ -1,0 +1,506 @@
+{
+  "nodes": [
+    {
+      "id": "config:.env.example",
+      "type": "config",
+      "name": ".env.example",
+      "filePath": ".env.example",
+      "summary": "FoxChatRAG Python 服务的环境变量配置模板，包含 RabbitMQ、MySQL、Redis 连接参数，以及多个 LLM 模型 API Key 和按场景（聊天/记忆/总结/抽取）的模型路由配置。",
+      "tags": ["configuration", "environment-variables", "llm-config", "middleware"],
+      "complexity": "moderate",
+      "languageNotes": "使用双下划线命名约定（如 MYSQL__HOST）映射嵌套配置结构，支持按场景覆盖默认模型。"
+    },
+    {
+      "id": "table:FoxChat.sql:chat_group",
+      "type": "table",
+      "name": "chat_group",
+      "filePath": "FoxChat.sql",
+      "lineRange": [24, 31],
+      "summary": "群聊基本信息表，存储群聊 ID、名称、群主用户 ID、群头像和创建时间。",
+      "tags": ["database", "im-core", "group-chat"],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:FoxChat.sql:chat_msg",
+      "type": "table",
+      "name": "chat_msg",
+      "filePath": "FoxChat.sql",
+      "lineRange": [37, 45],
+      "summary": "私聊消息表，存储发送人、接收人、消息内容、已读状态和创建时间，支撑一对一即时通讯核心功能。",
+      "tags": ["database", "im-core", "messaging"],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:FoxChat.sql:friends",
+      "type": "table",
+      "name": "friends",
+      "filePath": "FoxChat.sql",
+      "lineRange": [51, 57],
+      "summary": "好友关系表，通过 user_id 和 friend_user_id 唯一索引维护双向好友关系。",
+      "tags": ["database", "im-core", "social-graph"],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:FoxChat.sql:friends_request",
+      "type": "table",
+      "name": "friends_request",
+      "filePath": "FoxChat.sql",
+      "lineRange": [63, 69],
+      "summary": "好友申请记录表，存储发送人、接收人和申请时间，用于好友请求流程管理。",
+      "tags": ["database", "im-core", "social-graph"],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:FoxChat.sql:group_member",
+      "type": "table",
+      "name": "group_member",
+      "filePath": "FoxChat.sql",
+      "lineRange": [75, 84],
+      "summary": "群成员关系表，记录用户在群组中的角色（成员/群主）、群昵称、加入时间和最后确认的消息 ID。",
+      "tags": ["database", "im-core", "group-chat"],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:FoxChat.sql:group_msg",
+      "type": "table",
+      "name": "group_msg",
+      "filePath": "FoxChat.sql",
+      "lineRange": [90, 98],
+      "summary": "群聊消息表，支持文本、图片、视频等多种消息类型，记录群 ID、发送人和创建时间。",
+      "tags": ["database", "im-core", "group-chat", "messaging"],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:FoxChat.sql:llm_chat_msg",
+      "type": "table",
+      "name": "llm_chat_msg",
+      "filePath": "FoxChat.sql",
+      "lineRange": [104, 113],
+      "summary": "AI 对话消息表，记录 LLM 聊天消息的发送者、内容、状态（发送/存入 DB/存入 RAG）、关联模型和是否为 AI 生成消息。",
+      "tags": ["database", "ai-memory", "llm-chat"],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:FoxChat.sql:llm_user",
+      "type": "table",
+      "name": "llm_user",
+      "filePath": "FoxChat.sql",
+      "lineRange": [119, 127],
+      "summary": "AI 伙伴配置表，存储每个用户自定义的 LLM 伙伴名称、头像、初始化记忆内容和启用状态（禁用/转化中/启用）。",
+      "tags": ["database", "ai-memory", "user-config"],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:FoxChat.sql:msg_status",
+      "type": "table",
+      "name": "msg_status",
+      "filePath": "FoxChat.sql",
+      "lineRange": [133, 139],
+      "summary": "消息状态追踪表，记录用户对每条消息的可见状态（存在/已删除），支持消息删除和已读管理。",
+      "tags": ["database", "im-core", "messaging"],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:FoxChat.sql:rag_file",
+      "type": "table",
+      "name": "rag_file",
+      "filePath": "FoxChat.sql",
+      "lineRange": [145, 154],
+      "summary": "RAG 知识库文件表，管理用户上传文件的名称、路径和处理状态（创建/存入数据库/读入 RAG）。",
+      "tags": ["database", "ai-memory", "rag", "file-management"],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:FoxChat.sql:users",
+      "type": "table",
+      "name": "users",
+      "filePath": "FoxChat.sql",
+      "lineRange": [160, 172],
+      "summary": "用户核心信息表，存储用户名、加密密码、头像、昵称、二维码、客户端 ID 和邮箱，用户名唯一索引。",
+      "tags": ["database", "im-core", "user-auth"],
+      "complexity": "simple"
+    },
+    {
+      "id": "table:FoxChat.sql:llm_config",
+      "type": "table",
+      "name": "llm_config",
+      "filePath": "FoxChat.sql",
+      "lineRange": [178, 192],
+      "summary": "LLM 模型配置表，按 AI 伙伴和场景类型（chat/memory/summary/extraction/emotion）存储模型名称、API Key、服务地址、温度参数和输出格式等配置，支持默认配置标记。",
+      "tags": ["database", "ai-memory", "llm-config", "multi-model"],
+      "complexity": "moderate",
+      "languageNotes": "通过 llm_id + scenario 唯一索引实现同一 AI 伙伴按场景使用不同模型的灵活配置。"
+    },
+    {
+      "id": "document:README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "README.md",
+      "summary": "FoxChat 项目主文档，涵盖项目定位、AI 多阶段记忆架构设计（分层记忆、记忆流水线）、Java IM 核心架构、通信协议、技术栈、快速启动指南和项目结构说明。",
+      "tags": ["documentation", "entry-point", "architecture", "ai-memory"],
+      "complexity": "complex",
+      "languageNotes": "包含详细的 ASCII 架构图和二进制协议格式说明，是理解项目整体设计的核心文档。"
+    },
+    {
+      "id": "document:项目介绍.md",
+      "type": "document",
+      "name": "项目介绍.md",
+      "filePath": "项目介绍.md",
+      "summary": "项目简介文档，概述 FoxChat 作为 AI 驱动智能 IM 系统的技术栈和五大核心亮点：LangGraph DAG 推理编排、多阶段混合 RAG 检索、分层认知记忆架构、自研二进制通信协议和跨语言 gRPC 流式推理。",
+      "tags": ["documentation", "overview", "ai-memory", "architecture"],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:docker-compose.yml:mysql",
+      "type": "service",
+      "name": "mysql",
+      "filePath": "docker-compose.yml",
+      "lineRange": [10, 25],
+      "summary": "MySQL 8.0 数据库服务，用于 FoxChat 持久化数据存储，映射 3306 端口，支持数据和日志持久化。",
+      "tags": ["database", "middleware", "infrastructure"],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:docker-compose.yml:redis",
+      "type": "service",
+      "name": "redis",
+      "filePath": "docker-compose.yml",
+      "lineRange": [26, 41],
+      "summary": "Redis 缓存服务，用于会话管理、心跳检测和消息缓存，映射 6379 端口，支持自定义配置和数据持久化。",
+      "tags": ["cache", "middleware", "infrastructure"],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:docker-compose.yml:minio",
+      "type": "service",
+      "name": "minio",
+      "filePath": "docker-compose.yml",
+      "lineRange": [42, 56],
+      "summary": "MinIO 对象存储服务，用于文件和图片存储，提供 API 端口 9000 和管理控制台端口 9001。",
+      "tags": ["object-storage", "middleware", "infrastructure", "file-management"],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:docker-compose.yml:rabbitmq",
+      "type": "service",
+      "name": "rabbitmq",
+      "filePath": "docker-compose.yml",
+      "lineRange": [57, 73],
+      "summary": "RabbitMQ 消息队列服务，用于异步消息处理和向量处理任务调度，映射 5672（通信）和 15672（管理界面）端口。",
+      "tags": ["message-queue", "middleware", "infrastructure", "async-processing"],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:docker-compose.prod.yml:java-app",
+      "type": "service",
+      "name": "java-app",
+      "filePath": "docker-compose.prod.yml",
+      "lineRange": [20, 57],
+      "summary": "FoxChat Java 后端生产服务，构建自 FoxChat-java 目录，提供 HTTP（12000）和 WebSocket（13000）端口，通过 host.docker.internal 连接外部中间件，内存限制 512M。",
+      "tags": ["application", "deployment", "im-core", "spring-boot"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "service:docker-compose.prod.yml:python-app",
+      "type": "service",
+      "name": "python-app",
+      "filePath": "docker-compose.prod.yml",
+      "lineRange": [59, 97],
+      "summary": "FoxChatRAG Python AI 服务生产部署，构建自 FoxChatRAG-python 目录，提供 HTTP（8000）和 gRPC（50051）端口，挂载 ChromaDB ONNX 模型缓存，内存限制 1G。",
+      "tags": ["application", "deployment", "ai-memory", "rag"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "service:docker-compose.prod.yml:vue-nginx",
+      "type": "service",
+      "name": "vue-nginx",
+      "filePath": "docker-compose.prod.yml",
+      "lineRange": [99, 116],
+      "summary": "FoxChat Vue 前端 Nginx 服务，构建自 FoxChat-vue 目录，提供 HTTP（80）和 HTTPS（443）端口，依赖 java-app 服务，内存限制 32M。",
+      "tags": ["application", "deployment", "frontend", "nginx"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:.env.example",
+      "target": "service:docker-compose.prod.yml:python-app",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.env.example",
+      "target": "service:docker-compose.yml:mysql",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.env.example",
+      "target": "service:docker-compose.yml:redis",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:.env.example",
+      "target": "service:docker-compose.yml:rabbitmq",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:README.md",
+      "target": "document:项目介绍.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "config:.env.example",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "service:docker-compose.yml:mysql",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "service:docker-compose.yml:redis",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "service:docker-compose.yml:rabbitmq",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "service:docker-compose.yml:minio",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "service:docker-compose.prod.yml:java-app",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "service:docker-compose.prod.yml:python-app",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "service:docker-compose.prod.yml:vue-nginx",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "table:FoxChat.sql:users",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "table:FoxChat.sql:chat_msg",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "table:FoxChat.sql:llm_chat_msg",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:README.md",
+      "target": "table:FoxChat.sql:rag_file",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "service:docker-compose.prod.yml:java-app",
+      "target": "service:docker-compose.yml:mysql",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:docker-compose.prod.yml:java-app",
+      "target": "service:docker-compose.yml:redis",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:docker-compose.prod.yml:java-app",
+      "target": "service:docker-compose.yml:rabbitmq",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:docker-compose.prod.yml:java-app",
+      "target": "service:docker-compose.yml:minio",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:docker-compose.prod.yml:java-app",
+      "target": "service:docker-compose.prod.yml:python-app",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:docker-compose.prod.yml:python-app",
+      "target": "service:docker-compose.yml:mysql",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:docker-compose.prod.yml:python-app",
+      "target": "service:docker-compose.yml:redis",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:docker-compose.prod.yml:python-app",
+      "target": "service:docker-compose.yml:rabbitmq",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:docker-compose.prod.yml:vue-nginx",
+      "target": "service:docker-compose.prod.yml:java-app",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:docker-compose.yml:mysql",
+      "target": "table:FoxChat.sql:users",
+      "type": "provisions",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "service:docker-compose.yml:mysql",
+      "target": "table:FoxChat.sql:chat_group",
+      "type": "provisions",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "service:docker-compose.yml:mysql",
+      "target": "table:FoxChat.sql:chat_msg",
+      "type": "provisions",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "service:docker-compose.yml:mysql",
+      "target": "table:FoxChat.sql:friends",
+      "type": "provisions",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "service:docker-compose.yml:mysql",
+      "target": "table:FoxChat.sql:friends_request",
+      "type": "provisions",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "service:docker-compose.yml:mysql",
+      "target": "table:FoxChat.sql:group_member",
+      "type": "provisions",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "service:docker-compose.yml:mysql",
+      "target": "table:FoxChat.sql:group_msg",
+      "type": "provisions",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "service:docker-compose.yml:mysql",
+      "target": "table:FoxChat.sql:llm_chat_msg",
+      "type": "provisions",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "service:docker-compose.yml:mysql",
+      "target": "table:FoxChat.sql:llm_user",
+      "type": "provisions",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "service:docker-compose.yml:mysql",
+      "target": "table:FoxChat.sql:msg_status",
+      "type": "provisions",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "service:docker-compose.yml:mysql",
+      "target": "table:FoxChat.sql:rag_file",
+      "type": "provisions",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "service:docker-compose.yml:mysql",
+      "target": "table:FoxChat.sql:llm_config",
+      "type": "provisions",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "document:项目介绍.md",
+      "target": "service:docker-compose.prod.yml:java-app",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:项目介绍.md",
+      "target": "service:docker-compose.prod.yml:python-app",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

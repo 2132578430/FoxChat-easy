@@ -1,0 +1,13 @@
+{
+  "projectRoot": "E:/WorkSpace/ProjectCode",
+  "batchFiles": [
+    {"path": "FoxChatRAG-python/app/grpc/__init__.py", "language": "python", "sizeLines": 0, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2.py", "language": "python", "sizeLines": 45, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2_grpc.py", "language": "python", "sizeLines": 155, "fileCategory": "code"}
+  ],
+  "batchImportData": {
+    "FoxChatRAG-python/app/grpc/__init__.py": [],
+    "FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2.py": [],
+    "FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2_grpc.py": ["FoxChatRAG-python/app/grpc/__init__.py", "FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2.py"]
+  }
+}

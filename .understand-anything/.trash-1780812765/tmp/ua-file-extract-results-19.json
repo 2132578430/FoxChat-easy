@@ -1,0 +1,341 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 8,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "FoxChat-vue/.env.development",
+      "language": "config",
+      "fileCategory": "config",
+      "totalLines": 5,
+      "nonEmptyLines": 5,
+      "definitions": [
+        {
+          "name": "VITE_API_BASE_URL",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 3,
+          "endLine": 3
+        },
+        {
+          "name": "VITE_WS_BASE_URL",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 4,
+          "endLine": 4
+        },
+        {
+          "name": "VITE_OSS_BASE_URL",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 5,
+          "endLine": 5
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 3
+      }
+    },
+    {
+      "path": "FoxChat-vue/.env.production",
+      "language": "config",
+      "fileCategory": "config",
+      "totalLines": 5,
+      "nonEmptyLines": 5,
+      "definitions": [
+        {
+          "name": "VITE_API_BASE_URL",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 2,
+          "endLine": 2
+        },
+        {
+          "name": "VITE_WS_BASE_URL",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 4,
+          "endLine": 4
+        },
+        {
+          "name": "VITE_OSS_BASE_URL",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 5,
+          "endLine": 5
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 3
+      }
+    },
+    {
+      "path": "FoxChat-vue/AI-Project.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 63,
+      "nonEmptyLines": 53,
+      "sections": [
+        {
+          "heading": "FoxChat (狐狸 RAG) 项目介绍",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "1. 项目概述",
+          "level": 2,
+          "line": 3
+        },
+        {
+          "heading": "2. 技术栈",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "3. 整体架构与目录结构",
+          "level": 2,
+          "line": 18
+        },
+        {
+          "heading": "3.1 核心架构",
+          "level": 3,
+          "line": 20
+        },
+        {
+          "heading": "3.2 目录结构",
+          "level": 3,
+          "line": 27
+        },
+        {
+          "heading": "4. 编码规范与风格指导",
+          "level": 2,
+          "line": 41
+        },
+        {
+          "heading": "4.1 命名风格",
+          "level": 3,
+          "line": 43
+        },
+        {
+          "heading": "4.2 编码准则",
+          "level": 3,
+          "line": 51
+        },
+        {
+          "heading": "4.3 注释要求",
+          "level": 3,
+          "line": 57
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 10
+      }
+    },
+    {
+      "path": "FoxChat-vue/API_INTERFACE.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 77,
+      "nonEmptyLines": 70,
+      "sections": [
+        {
+          "heading": "API 接口文档 (API Interfaces)",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "1. 用户认证模块 (Auth)",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "1.1 用户登录 (Login)",
+          "level": 3,
+          "line": 9
+        },
+        {
+          "heading": "1.2 用户注册 (Register)",
+          "level": 3,
+          "line": 36
+        },
+        {
+          "heading": "2. 模拟数据说明 (Mock Data)",
+          "level": 2,
+          "line": 72
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 5
+      }
+    },
+    {
+      "path": "FoxChat-vue/Dockerfile.base",
+      "language": "dockerfile",
+      "fileCategory": "infra",
+      "totalLines": 16,
+      "nonEmptyLines": 13,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-vue/README.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 118,
+      "nonEmptyLines": 84,
+      "sections": [
+        {
+          "heading": "FoxChat (狐狸聊天室) - 前端",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "1. 技术栈 (Tech Stack)",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "2. 环境配置 (Environment Configuration)",
+          "level": 2,
+          "line": 20
+        },
+        {
+          "heading": "3. 前后端 HTTP 接口规范 (Standard HTTP Response)",
+          "level": 2,
+          "line": 32
+        },
+        {
+          "heading": "4. WebSocket 通信协议 (WebSocket & Protobuf)",
+          "level": 2,
+          "line": 51
+        },
+        {
+          "heading": "4.1 二进制自定义头 (16 Bytes)",
+          "level": 3,
+          "line": 55
+        },
+        {
+          "heading": "4.2 消息类型定义 (MsgType)",
+          "level": 3,
+          "line": 66
+        },
+        {
+          "heading": "5. 核心功能模块 (Core Features)",
+          "level": 2,
+          "line": 79
+        },
+        {
+          "heading": "5.1 即时通讯 (Chat)",
+          "level": 3,
+          "line": 81
+        },
+        {
+          "heading": "5.2 狐狸 RAG (Knowledge Base)",
+          "level": 3,
+          "line": 86
+        },
+        {
+          "heading": "6. 开发与运行 (Scripts)",
+          "level": 2,
+          "line": 95
+        },
+        {
+          "heading": "7. IDE 支持 (IDE Support)",
+          "level": 2,
+          "line": 116
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 12
+      }
+    },
+    {
+      "path": "FoxChat-vue/index.html",
+      "language": "html",
+      "fileCategory": "markup",
+      "totalLines": 14,
+      "nonEmptyLines": 14,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-vue/package.json",
+      "language": "json",
+      "fileCategory": "config",
+      "totalLines": 48,
+      "nonEmptyLines": 48,
+      "sections": [
+        {
+          "heading": "name",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "private",
+          "level": 1,
+          "line": 3
+        },
+        {
+          "heading": "version",
+          "level": 1,
+          "line": 4
+        },
+        {
+          "heading": "type",
+          "level": 1,
+          "line": 5
+        },
+        {
+          "heading": "main",
+          "level": 1,
+          "line": 6
+        },
+        {
+          "heading": "scripts",
+          "level": 1,
+          "line": 7
+        },
+        {
+          "heading": "build",
+          "level": 1,
+          "line": 9
+        },
+        {
+          "heading": "dependencies",
+          "level": 1,
+          "line": 29
+        },
+        {
+          "heading": "devDependencies",
+          "level": 1,
+          "line": 40
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 9
+      }
+    }
+  ]
+}

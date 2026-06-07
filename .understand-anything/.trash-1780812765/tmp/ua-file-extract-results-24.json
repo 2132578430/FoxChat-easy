@@ -1,0 +1,1235 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 25,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "FoxChat-java/foxChat-service/src/test/java/test.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 66,
+      "nonEmptyLines": 55,
+      "functions": [
+        {
+          "name": "testRoom",
+          "startLine": 10,
+          "endLine": 28,
+          "params": []
+        },
+        {
+          "name": "isCute",
+          "startLine": 30,
+          "endLine": 65,
+          "params": [
+            "year",
+            "mouth",
+            "day"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "test",
+          "startLine": 8,
+          "endLine": 66,
+          "methods": [
+            "testRoom",
+            "isCute"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "testRoom",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "isCute",
+          "line": 30,
+          "isDefault": false
+        },
+        {
+          "name": "test",
+          "line": 8,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "testRoom",
+          "callee": "System.out.println",
+          "lineNumber": 20
+        },
+        {
+          "caller": "testRoom",
+          "callee": "isCute",
+          "lineNumber": 20
+        },
+        {
+          "caller": "isCute",
+          "callee": "Integer.toString(year).toCharArray",
+          "lineNumber": 34
+        },
+        {
+          "caller": "isCute",
+          "callee": "Integer.toString",
+          "lineNumber": 34
+        },
+        {
+          "caller": "isCute",
+          "callee": "Integer.toString(mouth).toCharArray",
+          "lineNumber": 35
+        },
+        {
+          "caller": "isCute",
+          "callee": "Integer.toString",
+          "lineNumber": 35
+        },
+        {
+          "caller": "isCute",
+          "callee": "Integer.toString(day).toCharArray",
+          "lineNumber": 36
+        },
+        {
+          "caller": "isCute",
+          "callee": "Integer.toString",
+          "lineNumber": 36
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 2,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-web/build.gradle",
+      "language": "gradle",
+      "fileCategory": "config",
+      "totalLines": 20,
+      "nonEmptyLines": 15,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/BedfoxChatApplication.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 24,
+      "nonEmptyLines": 20,
+      "functions": [
+        {
+          "name": "main",
+          "startLine": 20,
+          "endLine": 22,
+          "params": [
+            "args"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "BedfoxChatApplication",
+          "startLine": 13,
+          "endLine": 24,
+          "methods": [
+            "main"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "main",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "BedfoxChatApplication",
+          "line": 13,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "main",
+          "callee": "SpringApplication.run",
+          "lineNumber": 21
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/config/CorsConfig.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 28,
+      "nonEmptyLines": 25,
+      "functions": [
+        {
+          "name": "addCorsMappings",
+          "startLine": 13,
+          "endLine": 27,
+          "params": [
+            "registry"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "CorsConfig",
+          "startLine": 10,
+          "endLine": 28,
+          "methods": [
+            "addCorsMappings"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "addCorsMappings",
+          "line": 13,
+          "isDefault": false
+        },
+        {
+          "name": "CorsConfig",
+          "line": 10,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "addCorsMappings",
+          "callee": "registry.addMapping(\"/**\")\r\n                // 允许所有来源（比 allowedOrigins 更灵活，支持 Cookie）\r\n                .allowedOriginPatterns(\"*\")\r\n                // 允许的方法，必须包含 OPTIONS\r\n                .allowedMethods(\"GET\", \"POST\", \"PUT\", \"DELETE\", \"OPTIONS\")\r\n                // 允许所有 Header\r\n                .allowedHeaders(\"*\")\r\n                // 允许携带 Cookie/凭证\r\n                .allowCredentials(true).maxAge",
+          "lineNumber": 16
+        },
+        {
+          "caller": "addCorsMappings",
+          "callee": "registry.addMapping(\"/**\")\r\n                // 允许所有来源（比 allowedOrigins 更灵活，支持 Cookie）\r\n                .allowedOriginPatterns(\"*\")\r\n                // 允许的方法，必须包含 OPTIONS\r\n                .allowedMethods(\"GET\", \"POST\", \"PUT\", \"DELETE\", \"OPTIONS\")\r\n                // 允许所有 Header\r\n                .allowedHeaders(\"*\").allowCredentials",
+          "lineNumber": 16
+        },
+        {
+          "caller": "addCorsMappings",
+          "callee": "registry.addMapping(\"/**\")\r\n                // 允许所有来源（比 allowedOrigins 更灵活，支持 Cookie）\r\n                .allowedOriginPatterns(\"*\")\r\n                // 允许的方法，必须包含 OPTIONS\r\n                .allowedMethods(\"GET\", \"POST\", \"PUT\", \"DELETE\", \"OPTIONS\").allowedHeaders",
+          "lineNumber": 16
+        },
+        {
+          "caller": "addCorsMappings",
+          "callee": "registry.addMapping(\"/**\")\r\n                // 允许所有来源（比 allowedOrigins 更灵活，支持 Cookie）\r\n                .allowedOriginPatterns(\"*\").allowedMethods",
+          "lineNumber": 16
+        },
+        {
+          "caller": "addCorsMappings",
+          "callee": "registry.addMapping(\"/**\").allowedOriginPatterns",
+          "lineNumber": 16
+        },
+        {
+          "caller": "addCorsMappings",
+          "callee": "registry.addMapping",
+          "lineNumber": 16
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/config/SecurityConfig.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 36,
+      "nonEmptyLines": 33,
+      "functions": [
+        {
+          "name": "filterChain",
+          "startLine": 18,
+          "endLine": 30,
+          "params": [
+            "http"
+          ]
+        },
+        {
+          "name": "passwordEncoder",
+          "startLine": 32,
+          "endLine": 35,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "SecurityConfig",
+          "startLine": 13,
+          "endLine": 36,
+          "methods": [
+            "filterChain",
+            "passwordEncoder"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "filterChain",
+          "line": 18,
+          "isDefault": false
+        },
+        {
+          "name": "passwordEncoder",
+          "line": 32,
+          "isDefault": false
+        },
+        {
+          "name": "SecurityConfig",
+          "line": 13,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "filterChain",
+          "callee": "http.csrf(csrf -> csrf.disable())\r\n                // 2. 授权配置：允许所有请求 (permitAll)\r\n                .authorizeHttpRequests(auth -> auth\r\n                        .anyRequest().permitAll()\r\n                )\r\n                // 3. 关闭默认的表单登录 (FormLogin) 和 HTTP Basic 认证\r\n                .formLogin(form -> form.disable()).httpBasic",
+          "lineNumber": 21
+        },
+        {
+          "caller": "filterChain",
+          "callee": "http.csrf(csrf -> csrf.disable())\r\n                // 2. 授权配置：允许所有请求 (permitAll)\r\n                .authorizeHttpRequests(auth -> auth\r\n                        .anyRequest().permitAll()\r\n                ).formLogin",
+          "lineNumber": 21
+        },
+        {
+          "caller": "filterChain",
+          "callee": "http.csrf(csrf -> csrf.disable()).authorizeHttpRequests",
+          "lineNumber": 21
+        },
+        {
+          "caller": "filterChain",
+          "callee": "http.csrf",
+          "lineNumber": 21
+        },
+        {
+          "caller": "filterChain",
+          "callee": "csrf.disable",
+          "lineNumber": 21
+        },
+        {
+          "caller": "filterChain",
+          "callee": "auth\r\n                        .anyRequest().permitAll",
+          "lineNumber": 23
+        },
+        {
+          "caller": "filterChain",
+          "callee": "auth.anyRequest",
+          "lineNumber": 23
+        },
+        {
+          "caller": "filterChain",
+          "callee": "form.disable",
+          "lineNumber": 27
+        },
+        {
+          "caller": "filterChain",
+          "callee": "basic.disable",
+          "lineNumber": 28
+        },
+        {
+          "caller": "filterChain",
+          "callee": "http.build",
+          "lineNumber": 29
+        },
+        {
+          "caller": "passwordEncoder",
+          "callee": "new BCryptPasswordEncoder",
+          "lineNumber": 34
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 2,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-web/src/main/resources/application.yaml",
+      "language": "yaml",
+      "fileCategory": "config",
+      "totalLines": 79,
+      "nonEmptyLines": 73,
+      "sections": [
+        {
+          "heading": "spring",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "FoxNetty",
+          "level": 1,
+          "line": 44
+        },
+        {
+          "heading": "FoxJwt",
+          "level": 1,
+          "line": 47
+        },
+        {
+          "heading": "server",
+          "level": 1,
+          "line": 50
+        },
+        {
+          "heading": "minio",
+          "level": 1,
+          "line": 53
+        },
+        {
+          "heading": "remote",
+          "level": 1,
+          "line": 60
+        },
+        {
+          "heading": "grpc",
+          "level": 1,
+          "line": 64
+        },
+        {
+          "heading": "Executor",
+          "level": 1,
+          "line": 68
+        },
+        {
+          "heading": "mybatis-plus",
+          "level": 1,
+          "line": 73
+        },
+        {
+          "heading": "logging",
+          "level": 1,
+          "line": 77
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 10
+      }
+    },
+    {
+      "path": "FoxChat-java/gradle/libs.versions.toml",
+      "language": "toml",
+      "fileCategory": "config",
+      "totalLines": 62,
+      "nonEmptyLines": 51,
+      "sections": [
+        {
+          "heading": "versions",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "libraries",
+          "level": 1,
+          "line": 21
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 2
+      }
+    },
+    {
+      "path": "FoxChat-java/gradle/wrapper/gradle-wrapper.jar",
+      "language": "jar",
+      "fileCategory": "code",
+      "totalLines": 195,
+      "nonEmptyLines": 194,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-java/gradle/wrapper/gradle-wrapper.properties",
+      "language": "properties",
+      "fileCategory": "config",
+      "totalLines": 7,
+      "nonEmptyLines": 7,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-java/gradlew",
+      "language": "unknown",
+      "fileCategory": "code",
+      "totalLines": 248,
+      "nonEmptyLines": 220,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-java/mvnw",
+      "language": "unknown",
+      "fileCategory": "code",
+      "totalLines": 295,
+      "nonEmptyLines": 263,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-vue/electron/main.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 100,
+      "nonEmptyLines": 83,
+      "functions": [
+        {
+          "name": "createWindow",
+          "startLine": 33,
+          "endLine": 65,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "createWindow",
+          "callee": "path.join",
+          "lineNumber": 38
+        },
+        {
+          "caller": "createWindow",
+          "callee": "path.join",
+          "lineNumber": 40
+        },
+        {
+          "caller": "createWindow",
+          "callee": "mainWindow.loadURL",
+          "lineNumber": 51
+        },
+        {
+          "caller": "createWindow",
+          "callee": "mainWindow.webContents.openDevTools",
+          "lineNumber": 53
+        },
+        {
+          "caller": "createWindow",
+          "callee": "mainWindow.loadFile",
+          "lineNumber": 56
+        },
+        {
+          "caller": "createWindow",
+          "callee": "path.join",
+          "lineNumber": 56
+        },
+        {
+          "caller": "createWindow",
+          "callee": "mainWindow.on",
+          "lineNumber": 62
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChat-vue/electron/preload.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 17,
+      "nonEmptyLines": 14,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChat-vue/gthiy65_files/gthiy65.html",
+      "language": "html",
+      "fileCategory": "markup",
+      "totalLines": 1,
+      "nonEmptyLines": 0,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-vue/nginx.conf",
+      "language": "conf",
+      "fileCategory": "code",
+      "totalLines": 52,
+      "nonEmptyLines": 47,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-vue/server.cer",
+      "language": "cer",
+      "fileCategory": "code",
+      "totalLines": 19,
+      "nonEmptyLines": 19,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-vue/src/api/auth.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 10,
+      "nonEmptyLines": 7,
+      "functions": [
+        {
+          "name": "login",
+          "startLine": 3,
+          "endLine": 5,
+          "params": [
+            "data"
+          ]
+        },
+        {
+          "name": "register",
+          "startLine": 7,
+          "endLine": 9,
+          "params": [
+            "data"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "login",
+          "line": 3,
+          "isDefault": false
+        },
+        {
+          "name": "register",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "login",
+          "callee": "request.post",
+          "lineNumber": 4
+        },
+        {
+          "caller": "register",
+          "callee": "request.post",
+          "lineNumber": 8
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChat-vue/src/api/friend.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 43,
+      "nonEmptyLines": 35,
+      "functions": [
+        {
+          "name": "getFriendList",
+          "startLine": 4,
+          "endLine": 6,
+          "params": []
+        },
+        {
+          "name": "searchFriend",
+          "startLine": 9,
+          "endLine": 11,
+          "params": [
+            "nickname"
+          ]
+        },
+        {
+          "name": "acceptFriend",
+          "startLine": 14,
+          "endLine": 16,
+          "params": [
+            "friendUserId"
+          ]
+        },
+        {
+          "name": "getFriendRequests",
+          "startLine": 19,
+          "endLine": 21,
+          "params": []
+        },
+        {
+          "name": "deleteFriend",
+          "startLine": 24,
+          "endLine": 28,
+          "params": [
+            "friendId",
+            "role"
+          ]
+        },
+        {
+          "name": "updateLlmFriend",
+          "startLine": 31,
+          "endLine": 33,
+          "params": [
+            "data"
+          ]
+        },
+        {
+          "name": "uploadLlmAvatar",
+          "startLine": 36,
+          "endLine": 42,
+          "params": [
+            "formData"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "getFriendList",
+          "line": 4,
+          "isDefault": false
+        },
+        {
+          "name": "searchFriend",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "acceptFriend",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "getFriendRequests",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "deleteFriend",
+          "line": 24,
+          "isDefault": false
+        },
+        {
+          "name": "updateLlmFriend",
+          "line": 31,
+          "isDefault": false
+        },
+        {
+          "name": "uploadLlmAvatar",
+          "line": 36,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getFriendList",
+          "callee": "request.get",
+          "lineNumber": 5
+        },
+        {
+          "caller": "searchFriend",
+          "callee": "request.post",
+          "lineNumber": 10
+        },
+        {
+          "caller": "acceptFriend",
+          "callee": "request.post",
+          "lineNumber": 15
+        },
+        {
+          "caller": "getFriendRequests",
+          "callee": "request.get",
+          "lineNumber": 20
+        },
+        {
+          "caller": "deleteFriend",
+          "callee": "request.get",
+          "lineNumber": 25
+        },
+        {
+          "caller": "updateLlmFriend",
+          "callee": "request.post",
+          "lineNumber": 32
+        },
+        {
+          "caller": "uploadLlmAvatar",
+          "callee": "request.post",
+          "lineNumber": 37
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 7,
+        "functionCount": 7,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChat-vue/src/api/group.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 42,
+      "nonEmptyLines": 37,
+      "functions": [
+        {
+          "name": "getGroupList",
+          "startLine": 6,
+          "endLine": 8,
+          "params": []
+        },
+        {
+          "name": "searchGroup",
+          "startLine": 14,
+          "endLine": 18,
+          "params": [
+            "keyword"
+          ]
+        },
+        {
+          "name": "createGroup",
+          "startLine": 24,
+          "endLine": 26,
+          "params": [
+            "data"
+          ]
+        },
+        {
+          "name": "joinGroup",
+          "startLine": 32,
+          "endLine": 34,
+          "params": [
+            "groupId"
+          ]
+        },
+        {
+          "name": "getGroupChatHistory",
+          "startLine": 40,
+          "endLine": 42,
+          "params": [
+            "data"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "getGroupList",
+          "line": 6,
+          "isDefault": false
+        },
+        {
+          "name": "searchGroup",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "createGroup",
+          "line": 24,
+          "isDefault": false
+        },
+        {
+          "name": "joinGroup",
+          "line": 32,
+          "isDefault": false
+        },
+        {
+          "name": "getGroupChatHistory",
+          "line": 40,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getGroupList",
+          "callee": "request.get",
+          "lineNumber": 7
+        },
+        {
+          "caller": "searchGroup",
+          "callee": "request.get",
+          "lineNumber": 15
+        },
+        {
+          "caller": "createGroup",
+          "callee": "request.post",
+          "lineNumber": 25
+        },
+        {
+          "caller": "joinGroup",
+          "callee": "request.post",
+          "lineNumber": 33
+        },
+        {
+          "caller": "getGroupChatHistory",
+          "callee": "request.post",
+          "lineNumber": 41
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 5,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChat-vue/src/api/llmConfig.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 44,
+      "nonEmptyLines": 37,
+      "functions": [
+        {
+          "name": "saveConfigsBatch",
+          "startLine": 9,
+          "endLine": 14,
+          "params": [
+            "llmId",
+            "configs"
+          ]
+        },
+        {
+          "name": "getConfigs",
+          "startLine": 17,
+          "endLine": 19,
+          "params": [
+            "llmId"
+          ]
+        },
+        {
+          "name": "deleteConfig",
+          "startLine": 22,
+          "endLine": 24,
+          "params": [
+            "llmId",
+            "scenario"
+          ]
+        },
+        {
+          "name": "testConnection",
+          "startLine": 27,
+          "endLine": 34,
+          "params": [
+            "config"
+          ]
+        },
+        {
+          "name": "validateConfig",
+          "startLine": 37,
+          "endLine": 39,
+          "params": [
+            "llmId"
+          ]
+        },
+        {
+          "name": "getModelMemory",
+          "startLine": 42,
+          "endLine": 44,
+          "params": [
+            "llmId"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "saveConfigsBatch",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "getConfigs",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "deleteConfig",
+          "line": 22,
+          "isDefault": false
+        },
+        {
+          "name": "testConnection",
+          "line": 27,
+          "isDefault": false
+        },
+        {
+          "name": "validateConfig",
+          "line": 37,
+          "isDefault": false
+        },
+        {
+          "name": "getModelMemory",
+          "line": 42,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "saveConfigsBatch",
+          "callee": "request.post",
+          "lineNumber": 10
+        },
+        {
+          "caller": "getConfigs",
+          "callee": "request.get",
+          "lineNumber": 18
+        },
+        {
+          "caller": "deleteConfig",
+          "callee": "request.delete",
+          "lineNumber": 23
+        },
+        {
+          "caller": "testConnection",
+          "callee": "request.post",
+          "lineNumber": 28
+        },
+        {
+          "caller": "validateConfig",
+          "callee": "request.get",
+          "lineNumber": 38
+        },
+        {
+          "caller": "getModelMemory",
+          "callee": "request.get",
+          "lineNumber": 43
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 6,
+        "functionCount": 6,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChat-vue/src/api/message.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 26,
+      "nonEmptyLines": 21,
+      "functions": [
+        {
+          "name": "getUnreadCounts",
+          "startLine": 4,
+          "endLine": 6,
+          "params": []
+        },
+        {
+          "name": "getChatHistory",
+          "startLine": 9,
+          "endLine": 11,
+          "params": [
+            "data"
+          ]
+        },
+        {
+          "name": "withdrawMessages",
+          "startLine": 14,
+          "endLine": 16,
+          "params": [
+            "msgIds"
+          ]
+        },
+        {
+          "name": "deleteMessages",
+          "startLine": 19,
+          "endLine": 21,
+          "params": [
+            "msgIds"
+          ]
+        },
+        {
+          "name": "getUnsignedMessages",
+          "startLine": 24,
+          "endLine": 26,
+          "params": [
+            "friendId"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "getUnreadCounts",
+          "line": 4,
+          "isDefault": false
+        },
+        {
+          "name": "getChatHistory",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "withdrawMessages",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "deleteMessages",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "getUnsignedMessages",
+          "line": 24,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "getUnreadCounts",
+          "callee": "request.get",
+          "lineNumber": 5
+        },
+        {
+          "caller": "getChatHistory",
+          "callee": "request.post",
+          "lineNumber": 10
+        },
+        {
+          "caller": "withdrawMessages",
+          "callee": "request.post",
+          "lineNumber": 15
+        },
+        {
+          "caller": "deleteMessages",
+          "callee": "request.post",
+          "lineNumber": 20
+        },
+        {
+          "caller": "getUnsignedMessages",
+          "callee": "request.post",
+          "lineNumber": 25
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 5,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChat-vue/src/api/user.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 27,
+      "nonEmptyLines": 23,
+      "functions": [
+        {
+          "name": "updateProfile",
+          "startLine": 4,
+          "endLine": 6,
+          "params": [
+            "data"
+          ]
+        },
+        {
+          "name": "getUserInfo",
+          "startLine": 9,
+          "endLine": 11,
+          "params": []
+        },
+        {
+          "name": "uploadAvatar",
+          "startLine": 14,
+          "endLine": 20,
+          "params": [
+            "formData"
+          ]
+        },
+        {
+          "name": "getAvatarUrl",
+          "startLine": 23,
+          "endLine": 27,
+          "params": [
+            "userId"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "updateProfile",
+          "line": 4,
+          "isDefault": false
+        },
+        {
+          "name": "getUserInfo",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "uploadAvatar",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "getAvatarUrl",
+          "line": 23,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "updateProfile",
+          "callee": "request.post",
+          "lineNumber": 5
+        },
+        {
+          "caller": "getUserInfo",
+          "callee": "request.get",
+          "lineNumber": 10
+        },
+        {
+          "caller": "uploadAvatar",
+          "callee": "request.post",
+          "lineNumber": 15
+        },
+        {
+          "caller": "getAvatarUrl",
+          "callee": "request.get",
+          "lineNumber": 24
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 4,
+        "functionCount": 4,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChat-vue/src/components/AvatarCropper.vue",
+      "language": "vue",
+      "fileCategory": "code",
+      "totalLines": 298,
+      "nonEmptyLines": 269,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-vue/src/components/Chat/ChatInput.vue",
+      "language": "vue",
+      "fileCategory": "code",
+      "totalLines": 186,
+      "nonEmptyLines": 166,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-vue/src/components/Chat/FriendList.vue",
+      "language": "vue",
+      "fileCategory": "code",
+      "totalLines": 474,
+      "nonEmptyLines": 412,
+      "metrics": {}
+    }
+  ]
+}

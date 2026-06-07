@@ -1,0 +1,1602 @@
+{
+  "nodes": [
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/AuthConstant.java",
+      "type": "file",
+      "name": "AuthConstant.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/AuthConstant.java",
+      "summary": "定义认证相关的Redis键前缀常量，用于token存储(PRE_LOGIN_AUTH)和在线状态(PRE_ONLINE)标识。",
+      "tags": [
+        "constant",
+        "auth",
+        "redis"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/CookieUtil.java",
+      "type": "file",
+      "name": "CookieUtil.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/CookieUtil.java",
+      "summary": "提供HTTP Cookie操作工具方法，包括从请求中读取token、设置HTTPOnly安全Cookie以及清除Cookie。",
+      "tags": [
+        "utility",
+        "cookie",
+        "auth"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/JwtUtil.java",
+      "type": "file",
+      "name": "JwtUtil.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/JwtUtil.java",
+      "summary": "JWT令牌工具类，封装token的生成、解析、验证、过期检测和刷新逻辑，基于HS256签名算法。",
+      "tags": [
+        "utility",
+        "jwt",
+        "auth",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "type": "file",
+      "name": "LoginUserHolder.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "summary": "基于ThreadLocal的登录用户上下文持有者，用于在请求处理链中传递当前用户身份信息。",
+      "tags": [
+        "utility",
+        "thread-local",
+        "auth",
+        "context"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/CookieAuthHandler.java",
+      "type": "file",
+      "name": "CookieAuthHandler.java",
+      "filePath": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/CookieAuthHandler.java",
+      "summary": "Netty ChannelHandler，拦截WebSocket握手请求中的Cookie进行JWT认证，验证token有效性并将用户ID绑定到Channel属性。",
+      "tags": [
+        "handler",
+        "netty",
+        "auth",
+        "websocket"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/CurrentUser.java",
+      "type": "file",
+      "name": "CurrentUser.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/CurrentUser.java",
+      "summary": "当前登录用户的轻量级数据载体，包含userId和userName两个字段，用于请求上下文传递。",
+      "tags": [
+        "data-model",
+        "auth",
+        "pojo"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Friends.java",
+      "type": "file",
+      "name": "Friends.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Friends.java",
+      "summary": "好友关系实体类，映射friends表，包含id、userId和friendUserId字段，实现了equals/hashCode用于双向关系判断。",
+      "tags": [
+        "data-model",
+        "entity",
+        "friend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/FriendsRequest.java",
+      "type": "file",
+      "name": "FriendsRequest.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/FriendsRequest.java",
+      "summary": "好友申请实体类，映射好友请求表，记录发送者、接受者和请求时间，实现了equals/hashCode。",
+      "tags": [
+        "data-model",
+        "entity",
+        "friend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java",
+      "type": "file",
+      "name": "Users.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java",
+      "summary": "用户实体类，映射users表，包含用户名、昵称、密码、头像等完整用户信息字段。",
+      "tags": [
+        "data-model",
+        "entity",
+        "user"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/AddFriendDto.java",
+      "type": "file",
+      "name": "AddFriendDto.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/AddFriendDto.java",
+      "summary": "添加好友请求的数据传输对象，包含目标好友用户ID。",
+      "tags": [
+        "dto",
+        "friend",
+        "data-transfer"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/RegisterDto.java",
+      "type": "file",
+      "name": "RegisterDto.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/RegisterDto.java",
+      "summary": "用户注册请求的数据传输对象，包含昵称、用户名和密码字段。",
+      "tags": [
+        "dto",
+        "auth",
+        "data-transfer"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/SearchUserDto.java",
+      "type": "file",
+      "name": "SearchUserDto.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/SearchUserDto.java",
+      "summary": "用户搜索请求的数据传输对象，包含昵称搜索关键词。",
+      "tags": [
+        "dto",
+        "user",
+        "data-transfer"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UpdateUserDto.java",
+      "type": "file",
+      "name": "UpdateUserDto.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UpdateUserDto.java",
+      "summary": "用户信息更新请求的数据传输对象，包含可修改的用户资料字段。",
+      "tags": [
+        "dto",
+        "user",
+        "data-transfer"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UserDto.java",
+      "type": "file",
+      "name": "UserDto.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UserDto.java",
+      "summary": "用户登录请求的数据传输对象，包含用户名和密码字段。",
+      "tags": [
+        "dto",
+        "auth",
+        "data-transfer"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/FriendVo.java",
+      "type": "file",
+      "name": "FriendVo.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/FriendVo.java",
+      "summary": "好友列表展示视图对象，包含用户基本信息、在线状态和角色标识(HUMAN/LLM)。",
+      "tags": [
+        "vo",
+        "friend",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SearchUserVo.java",
+      "type": "file",
+      "name": "SearchUserVo.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SearchUserVo.java",
+      "summary": "用户搜索结果视图对象，包含用户基本信息及是否为好友的标识。",
+      "tags": [
+        "vo",
+        "user",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SelectFriendVo.java",
+      "type": "file",
+      "name": "SelectFriendVo.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SelectFriendVo.java",
+      "summary": "选中好友详情视图对象，包含用户资料和在线状态信息。",
+      "tags": [
+        "vo",
+        "friend",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/ShowUserInfo.java",
+      "type": "file",
+      "name": "ShowUserInfo.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/ShowUserInfo.java",
+      "summary": "用户信息展示视图对象，用于返回用户资料给前端展示。",
+      "tags": [
+        "vo",
+        "user",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/CookieUtil.java:CookieUtil",
+      "type": "class",
+      "name": "CookieUtil",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/CookieUtil.java",
+      "lineRange": [
+        13,
+        60
+      ],
+      "summary": "Cookie操作工具类，提供从请求读取token、设置HTTPOnly安全Cookie和清除Cookie三个静态方法。",
+      "tags": [
+        "utility",
+        "cookie",
+        "auth"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/JwtUtil.java:JwtUtil",
+      "type": "class",
+      "name": "JwtUtil",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/JwtUtil.java",
+      "lineRange": [
+        17,
+        107
+      ],
+      "summary": "JWT工具类，封装token生成(支持自定义claims和userId两种重载)、解析、验证、过期检测和自动刷新逻辑。",
+      "tags": [
+        "utility",
+        "jwt",
+        "auth",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java:LoginUserHolder",
+      "type": "class",
+      "name": "LoginUserHolder",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "lineRange": [
+        11,
+        33
+      ],
+      "summary": "ThreadLocal持有者，管理当前请求线程的CurrentUser对象，提供set/get/clear生命周期方法。",
+      "tags": [
+        "utility",
+        "thread-local",
+        "auth",
+        "context"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/CookieAuthHandler.java:CookieAuthHandler",
+      "type": "class",
+      "name": "CookieAuthHandler",
+      "filePath": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/CookieAuthHandler.java",
+      "lineRange": [
+        19,
+        80
+      ],
+      "summary": "Netty ChannelInboundHandler，从HTTP请求头解析Cookie中的JWT token，验证Redis中的有效性，认证成功后绑定用户ID到Channel。",
+      "tags": [
+        "handler",
+        "netty",
+        "auth",
+        "websocket"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Friends.java:Friends",
+      "type": "class",
+      "name": "Friends",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Friends.java",
+      "lineRange": [
+        9,
+        65
+      ],
+      "summary": "好友关系实体，映射friends表，包含id/userId/friendUserId字段，实现了基于三字段的equals和hashCode。",
+      "tags": [
+        "entity",
+        "data-model",
+        "friend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/FriendsRequest.java:FriendsRequest",
+      "type": "class",
+      "name": "FriendsRequest",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/FriendsRequest.java",
+      "lineRange": [
+        11,
+        75
+      ],
+      "summary": "好友申请实体，映射好友请求表，包含id/sendUserId/acceptUserId/requestDataTime字段。",
+      "tags": [
+        "entity",
+        "data-model",
+        "friend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java:Users",
+      "type": "class",
+      "name": "Users",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java",
+      "lineRange": [
+        10,
+        111
+      ],
+      "summary": "用户实体，映射users表，包含id/username/nickname/password/faceImage等完整用户资料字段。",
+      "tags": [
+        "entity",
+        "data-model",
+        "user"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/UserInfo.java",
+      "type": "file",
+      "name": "UserInfo.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/UserInfo.java",
+      "summary": "登录成功后返回的用户信息视图对象，包含userId、用户名和token。",
+      "tags": [
+        "vo",
+        "auth",
+        "view"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsMapper.java",
+      "type": "file",
+      "name": "FriendsMapper.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsMapper.java",
+      "summary": "MyBatis-Plus好友关系Mapper接口，定义好友列表查询和删除等自定义数据库操作方法。",
+      "tags": [
+        "mapper",
+        "database",
+        "friend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsRequestMapper.java",
+      "type": "file",
+      "name": "FriendsRequestMapper.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsRequestMapper.java",
+      "summary": "MyBatis-Plus好友请求Mapper接口，定义好友申请列表查询和请求删除等数据库操作方法。",
+      "tags": [
+        "mapper",
+        "database",
+        "friend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/UsersMapper.java",
+      "type": "file",
+      "name": "UsersMapper.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/UsersMapper.java",
+      "summary": "MyBatis-Plus用户Mapper接口，继承BaseMapper提供基础CRUD操作。",
+      "tags": [
+        "mapper",
+        "database",
+        "user"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/AuthService.java",
+      "type": "file",
+      "name": "AuthService.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/AuthService.java",
+      "summary": "认证服务接口，定义login、register和logout三个核心认证方法契约。",
+      "tags": [
+        "service-interface",
+        "auth"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsRequestService.java",
+      "type": "file",
+      "name": "FriendsRequestService.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsRequestService.java",
+      "summary": "好友请求服务接口，定义获取好友申请列表的方法契约。",
+      "tags": [
+        "service-interface",
+        "friend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsService.java",
+      "type": "file",
+      "name": "FriendsService.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsService.java",
+      "summary": "好友服务接口，定义添加好友、好友列表查询(含LLM)、删除好友等方法契约。",
+      "tags": [
+        "service-interface",
+        "friend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java",
+      "type": "file",
+      "name": "UsersService.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java",
+      "summary": "用户服务接口，定义用户搜索、资料查询、信息更新、头像上传和发送者构建等方法契约。",
+      "tags": [
+        "service-interface",
+        "user"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "type": "file",
+      "name": "AuthServiceImpl.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "summary": "认证服务实现类，处理用户登录(密码校验+JWT生成+Redis存储)、注册(密码加密)和登出(Cookie+Redis清理)逻辑。",
+      "tags": [
+        "service-impl",
+        "auth",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsRequestServiceImpl.java",
+      "type": "file",
+      "name": "FriendsRequestServiceImpl.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsRequestServiceImpl.java",
+      "summary": "好友请求服务实现类，查询当前用户收到的好友申请列表。",
+      "tags": [
+        "service-impl",
+        "friend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "type": "file",
+      "name": "FriendsServiceImpl.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "summary": "好友服务实现类，处理双向好友关系的添加(含Lua脚本操作Redis)、列表查询(含在线状态)和删除(区分人/LLM)逻辑。",
+      "tags": [
+        "service-impl",
+        "friend",
+        "redis-lua"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "type": "file",
+      "name": "UsersServiceImpl.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "summary": "用户服务实现类，处理用户模糊搜索(含好友标识)、资料查询、信息更新和头像上传(MinIO存储)等操作。",
+      "tags": [
+        "service-impl",
+        "user",
+        "file-storage"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/config/WebConfig.java",
+      "type": "file",
+      "name": "WebConfig.java",
+      "filePath": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/config/WebConfig.java",
+      "summary": "Spring MVC Web配置类，注册LoginInterceptor拦截器并配置拦截路径和排除路径。",
+      "tags": [
+        "config",
+        "web",
+        "interceptor"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/AuthController.java",
+      "type": "file",
+      "name": "AuthController.java",
+      "filePath": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/AuthController.java",
+      "summary": "认证控制器，提供用户登录(/login)、注册(/register)和登出(/logout)三个REST API端点。",
+      "tags": [
+        "controller",
+        "api-handler",
+        "auth"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/FriendController.java",
+      "type": "file",
+      "name": "FriendController.java",
+      "filePath": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/FriendController.java",
+      "summary": "好友管理控制器，提供好友搜索、申请列表、接受好友、好友列表(含LLM)、好友详情和删除好友等REST API。",
+      "tags": [
+        "controller",
+        "api-handler",
+        "friend"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/UserController.java",
+      "type": "file",
+      "name": "UserController.java",
+      "filePath": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/UserController.java",
+      "summary": "用户管理控制器，提供用户信息查询、资料更新、头像上传和头像访问等REST API。",
+      "tags": [
+        "controller",
+        "api-handler",
+        "user"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/interceptor/LoginInterceptor.java",
+      "type": "file",
+      "name": "LoginInterceptor.java",
+      "filePath": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/interceptor/LoginInterceptor.java",
+      "summary": "登录拦截器，从Cookie提取JWT token并验证Redis中的有效性，通过后将用户信息存入LoginUserHolder，请求结束后清理。",
+      "tags": [
+        "interceptor",
+        "auth",
+        "security",
+        "middleware"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java:AuthServiceImpl",
+      "type": "class",
+      "name": "AuthServiceImpl",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "lineRange": [
+        29,
+        148
+      ],
+      "summary": "认证服务实现，注入UsersService/Redis/PasswordEncoder/JwtUtil，实现登录(密码校验+JWT+Redis)、注册(密码加密)和登出(清理Cookie+Redis)。",
+      "tags": [
+        "service-impl",
+        "auth",
+        "security"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java:FriendsServiceImpl",
+      "type": "class",
+      "name": "FriendsServiceImpl",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "lineRange": [
+        31,
+        143
+      ],
+      "summary": "好友服务实现，管理双向好友关系，使用Lua脚本操作Redis好友集合，支持人/LLM两种角色的好友删除。",
+      "tags": [
+        "service-impl",
+        "friend",
+        "redis-lua"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java:UsersServiceImpl",
+      "type": "class",
+      "name": "UsersServiceImpl",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "lineRange": [
+        33,
+        143
+      ],
+      "summary": "用户服务实现，提供模糊搜索(含好友标识)、资料查询(含在线状态)、信息更新和MinIO头像上传功能。",
+      "tags": [
+        "service-impl",
+        "user",
+        "file-storage"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/interceptor/LoginInterceptor.java:LoginInterceptor",
+      "type": "class",
+      "name": "LoginInterceptor",
+      "filePath": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/interceptor/LoginInterceptor.java",
+      "lineRange": [
+        19,
+        85
+      ],
+      "summary": "Spring MVC拦截器，preHandle中从Cookie提取JWT并校验Redis中token有效性，认证通过后设置LoginUserHolder，afterCompletion中清理上下文。",
+      "tags": [
+        "interceptor",
+        "auth",
+        "security",
+        "middleware"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java:login",
+      "type": "function",
+      "name": "login",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "lineRange": [
+        51,
+        97
+      ],
+      "summary": "用户登录方法：校验账号密码、生成JWT token、存入Redis(24h过期)、设置HTTPOnly Cookie，返回UserInfo。",
+      "tags": [
+        "auth",
+        "login",
+        "jwt",
+        "redis"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java:register",
+      "type": "function",
+      "name": "register",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "lineRange": [
+        103,
+        130
+      ],
+      "summary": "用户注册方法：校验参数完整性、检查用户名重复、BCrypt加密密码后保存用户。",
+      "tags": [
+        "auth",
+        "register",
+        "validation"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java:logout",
+      "type": "function",
+      "name": "logout",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "lineRange": [
+        137,
+        147
+      ],
+      "summary": "用户登出方法：从Cookie读取token，删除Redis中的token记录，清除响应Cookie。",
+      "tags": [
+        "auth",
+        "logout",
+        "cleanup"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java:addFriend",
+      "type": "function",
+      "name": "addFriend",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "lineRange": [
+        52,
+        83
+      ],
+      "summary": "添加好友方法(事务)：删除好友请求记录、批量保存双向好友关系、使用Lua脚本将好友ID添加到双方Redis集合。",
+      "tags": [
+        "friend",
+        "transaction",
+        "redis-lua"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java:listFriends",
+      "type": "function",
+      "name": "listFriends",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "lineRange": [
+        90,
+        104
+      ],
+      "summary": "查询当前用户的好友列表，通过Redis检查每个好友的在线状态，标记角色为HUMAN。",
+      "tags": [
+        "friend",
+        "list",
+        "online-status"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java:listAllFriends",
+      "type": "function",
+      "name": "listAllFriends",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "lineRange": [
+        106,
+        114
+      ],
+      "summary": "合并人类好友列表和LLM好友列表，返回完整的好友列表(含AI角色)。",
+      "tags": [
+        "friend",
+        "list",
+        "llm"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java:deleteFriend",
+      "type": "function",
+      "name": "deleteFriend",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "lineRange": [
+        123,
+        142
+      ],
+      "summary": "删除好友方法：根据角色区分LLM和人类好友，人类好友通过Mapper删除数据库记录并用Lua脚本清理Redis集合。",
+      "tags": [
+        "friend",
+        "delete",
+        "redis-lua"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java:searchFriend",
+      "type": "function",
+      "name": "searchFriend",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "lineRange": [
+        52,
+        79
+      ],
+      "summary": "用户模糊搜索：按昵称/用户名模糊匹配，过滤自身，标记搜索结果是否为当前用户的好友。",
+      "tags": [
+        "user",
+        "search",
+        "query"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java:selectUser",
+      "type": "function",
+      "name": "selectUser",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "lineRange": [
+        86,
+        99
+      ],
+      "summary": "根据用户ID查询用户资料，通过Redis检查在线状态，返回SelectFriendVo。",
+      "tags": [
+        "user",
+        "query",
+        "online-status"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java:updateUser",
+      "type": "function",
+      "name": "updateUser",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "lineRange": [
+        105,
+        113
+      ],
+      "summary": "更新当前登录用户的资料信息，通过LoginUserHolder获取用户ID。",
+      "tags": [
+        "user",
+        "update"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java:updateAvatar",
+      "type": "function",
+      "name": "updateAvatar",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "lineRange": [
+        120,
+        136
+      ],
+      "summary": "上传用户头像：将文件上传到MinIO对象存储，更新数据库中的头像URL字段。",
+      "tags": [
+        "user",
+        "avatar",
+        "file-storage",
+        "minio"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/CurrentUser.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/CookieAuthHandler.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/AuthConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/CookieAuthHandler.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/JwtUtil.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/CookieAuthHandler.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/SpringUtil.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/CookieUtil.java",
+      "target": "class:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/CookieUtil.java:CookieUtil",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/JwtUtil.java",
+      "target": "class:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/JwtUtil.java:JwtUtil",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "target": "class:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java:LoginUserHolder",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/CookieAuthHandler.java",
+      "target": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/CookieAuthHandler.java:CookieAuthHandler",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Friends.java",
+      "target": "class:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Friends.java:Friends",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/FriendsRequest.java",
+      "target": "class:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/FriendsRequest.java:FriendsRequest",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java",
+      "target": "class:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java:Users",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsMapper.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Friends.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsMapper.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/FriendVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsRequestMapper.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/FriendsRequest.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsRequestMapper.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/FriendVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/UsersMapper.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/AuthService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/RegisterDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/AuthService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UserDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/AuthService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/UserInfo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsRequestService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/FriendsRequest.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsRequestService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/FriendVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Friends.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/AddFriendDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/FriendVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/SearchUserDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UpdateUserDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SearchUserVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SelectFriendVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/AuthConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ResultStatusConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/exception/BusinessException.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/CookieUtil.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/JwtUtil.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/RegisterDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UserDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/UserInfo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/AuthService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsRequestServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsRequestServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/FriendsRequest.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsRequestServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/FriendVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsRequestServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsRequestMapper.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsRequestServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsRequestService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/exception/BusinessException.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/CurrentUser.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Friends.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/AddFriendDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/FriendVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsMapper.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsRequestMapper.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmUserService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/AuthConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/FileContstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Friends.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/SearchUserDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UpdateUserDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SearchUserVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SelectFriendVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/UsersMapper.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/config/WebConfig.java",
+      "target": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/interceptor/LoginInterceptor.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/AuthController.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/R.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/AuthController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/RegisterDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/AuthController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UserDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/AuthController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/UserInfo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/AuthController.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/AuthService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/FriendController.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/R.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/FriendController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/AddFriendDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/FriendController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/SearchUserDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/FriendController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/FriendVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/FriendController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SearchUserVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/FriendController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SelectFriendVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/FriendController.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsRequestService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/FriendController.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/FriendController.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/UserController.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/UserController.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/R.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/UserController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/UserController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UpdateUserDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/UserController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/ShowUserInfo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/UserController.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/interceptor/LoginInterceptor.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/AuthConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/interceptor/LoginInterceptor.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/CookieUtil.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/interceptor/LoginInterceptor.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/JwtUtil.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/interceptor/LoginInterceptor.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/interceptor/LoginInterceptor.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/CurrentUser.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "target": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java:AuthServiceImpl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "target": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java:FriendsServiceImpl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "target": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java:UsersServiceImpl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/interceptor/LoginInterceptor.java",
+      "target": "class:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/interceptor/LoginInterceptor.java:LoginInterceptor",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java:login",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java:register",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java:logout",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java:addFriend",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java:listFriends",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java:listAllFriends",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java:deleteFriend",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java:searchFriend",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java:selectUser",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java:updateUser",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java:updateAvatar",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "issues": [],
+  "warnings": [
+    "Node 'service:FoxChatRAG-python/Dockerfile' has no edges (orphan)",
+    "Node 'document:FoxChat-java/README.md' has no edges (orphan)",
+    "Node 'config:FoxChat-java/gradle.properties' has no edges (orphan)",
+    "Node 'file:FoxChat-java/gradlew.bat' has no edges (orphan)",
+    "Node 'file:FoxChat-java/mvnw.cmd' has no edges (orphan)",
+    "Node 'document:FoxChatRAG-python/app/core/prompts/focus_extractor.md' has no edges (orphan)",
+    "Node 'document:.reasonix/truncated-results/1780141453720-308a5b32-web_fetch.txt' has no edges (orphan)",
+    "Node 'document:.reasonix/truncated-results/1780298383943-ab106a2d-web_fetch.txt' has no edges (orphan)",
+    "Node 'file:.understand-anything/.understandignore' has no edges (orphan)",
+    "Node 'config:.understand-anything/config.json' has no edges (orphan)",
+    "Node 'file:FoxChat-java/.gitattributes' has no edges (orphan)",
+    "Node 'config:FoxChat-java/.mvn/wrapper/maven-wrapper.properties' has no edges (orphan)",
+    "Node 'file:FoxChat-vue/src/components/Chat/GroupList.vue' has no edges (orphan)",
+    "Node 'file:FoxChat-vue/src/components/Chat/ModelMemoryPanel.vue' has no edges (orphan)",
+    "Node 'file:FoxChat-vue/src/components/HelloWorld.vue' has no edges (orphan)",
+    "Node 'file:FoxChat-vue/src/components/TitleBar.vue' has no edges (orphan)",
+    "Node 'file:FoxChat-vue/src/style.css' has no edges (orphan)",
+    "Node 'file:FoxChatRAG-python/app/__init__.py' has no edges (orphan)",
+    "Node 'file:FoxChatRAG-python/app/core/prompts/__init__.py' has no edges (orphan)",
+    "Node 'file:FoxChatRAG-python/app/grpc/foxchat/__init__.py' has no edges (orphan)",
+    "Node 'file:FoxChatRAG-python/app/grpc/foxchat/ai/__init__.py' has no edges (orphan)",
+    "Node 'file:FoxChatRAG-python/app/service/chat/graph/__init__.py' has no edges (orphan)"
+  ],
+  "stats": {
+    "totalNodes": 702,
+    "totalEdges": 1180,
+    "totalLayers": 11,
+    "tourSteps": 12,
+    "nodeTypes": {
+      "file": 300,
+      "class": 106,
+      "function": 196,
+      "service": 24,
+      "config": 27,
+      "table": 12,
+      "document": 27,
+      "pipeline": 1,
+      "schema": 7,
+      "endpoint": 2
+    },
+    "edgeTypes": {
+      "imports": 589,
+      "contains": 313,
+      "depends_on": 44,
+      "exports": 94,
+      "implements": 10,
+      "calls": 16,
+      "configures": 39,
+      "related": 24,
+      "documents": 29,
+      "provisions": 12,
+      "deploys": 3,
+      "defines_schema": 7
+    }
+  }
+}

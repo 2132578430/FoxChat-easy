@@ -1,0 +1,944 @@
+{
+  "nodes": [
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/FriendConstant.java",
+      "type": "file",
+      "name": "FriendConstant.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/FriendConstant.java",
+      "summary": "好友关系相关的 Redis Key 前缀常量定义类，用于好友列表的缓存键名管理。",
+      "tags": [
+        "constant",
+        "redis",
+        "friend"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MsgTargetTypeConstant.java",
+      "type": "file",
+      "name": "MsgTargetTypeConstant.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MsgTargetTypeConstant.java",
+      "summary": "消息目标类型常量类，定义私聊（PRIVATE_CHAT）和群聊（GROUP_CHAT）两种消息目标类型。",
+      "tags": [
+        "constant",
+        "message",
+        "type-definition"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MsgTypeConstant.java:MsgTypeConstant",
+      "type": "class",
+      "name": "MsgTypeConstant",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MsgTypeConstant.java",
+      "lineRange": [
+        21,
+        44
+      ],
+      "summary": "消息类型枚举类，定义了所有 Netty 通信协议的消息类型码，包括连接、聊天、签收、心跳、好友请求、群聊等十余种消息类型。",
+      "tags": [
+        "enum",
+        "protocol",
+        "message-type",
+        "constant"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MsgTypeConstant.java",
+      "type": "file",
+      "name": "MsgTypeConstant.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MsgTypeConstant.java",
+      "summary": "消息类型枚举常量类，定义了连接、聊天、签收、心跳、好友请求、群聊等十余种 Netty 通信消息类型及其编码。",
+      "tags": [
+        "constant",
+        "enum",
+        "protocol",
+        "message-type"
+      ],
+      "complexity": "simple",
+      "languageNotes": "使用 Lombok @Getter 注解自动生成 getter 方法，枚举构造函数接收 code 和 msg 两个参数。"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ProtocolConstant.java",
+      "type": "file",
+      "name": "ProtocolConstant.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ProtocolConstant.java",
+      "summary": "自定义二进制协议常量类，定义魔数（MAGIC_NUMBER）、版本号（VERSION）和序列化方式（SERIAL）等协议头字段。",
+      "tags": [
+        "constant",
+        "protocol",
+        "binary-protocol"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/RedisConstant.java",
+      "type": "file",
+      "name": "RedisConstant.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/RedisConstant.java",
+      "summary": "Redis 相关常量定义类，包含 Pub/Sub 频道名（CHANNEL）和消息前缀（MSG_PRE）等键名常量。",
+      "tags": [
+        "constant",
+        "redis",
+        "pub-sub"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java:ProtocolUtil",
+      "type": "class",
+      "name": "ProtocolUtil",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java",
+      "lineRange": [
+        16,
+        176
+      ],
+      "summary": "Protobuf 协议工具类，提供 MsgDto 与 ChatProtocol.Message 之间的双向转换，支持私聊消息、群聊消息的序列化/反序列化及 Base64 编码。",
+      "tags": [
+        "utility",
+        "protocol",
+        "serialization",
+        "protobuf"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java:msgDtoToProtocol",
+      "type": "function",
+      "name": "msgDtoToProtocol",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java",
+      "lineRange": [
+        22,
+        36
+      ],
+      "summary": "将 MsgDto 对象转换为 Protobuf 的 ChatProtocol.Message 对象，根据 targetType 分别构建私聊或群聊消息体。",
+      "tags": [
+        "serialization",
+        "protobuf",
+        "converter"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java:protocolToMsgDto",
+      "type": "function",
+      "name": "protocolToMsgDto",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java",
+      "lineRange": [
+        116,
+        129
+      ],
+      "summary": "将 Protobuf 的 ChatProtocol.Message 对象反序列化为 MsgDto，根据 targetType 分别解析私聊或群聊消息。",
+      "tags": [
+        "deserialization",
+        "protobuf",
+        "converter"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java:toProtocolBase64",
+      "type": "function",
+      "name": "toProtocolBase64",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java",
+      "lineRange": [
+        167,
+        170
+      ],
+      "summary": "将 MsgDto 转换为 Protobuf 字节数组后再进行 Base64 编码，用于 Redis Pub/Sub 消息传输。",
+      "tags": [
+        "serialization",
+        "base64",
+        "redis"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/SpringUtil.java:SpringUtil",
+      "type": "class",
+      "name": "SpringUtil",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/SpringUtil.java",
+      "lineRange": [
+        14,
+        43
+      ],
+      "summary": "Spring 容器工具类，实现 ApplicationContextAware 接口，提供静态方法在非 Spring 管理的类中获取 Bean 实例。",
+      "tags": [
+        "utility",
+        "spring",
+        "singleton",
+        "ioc"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java",
+      "type": "file",
+      "name": "ProtocolUtil.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java",
+      "summary": "Protobuf 协议工具类，提供 MsgDto 与 ChatProtocol.Message 之间的双向转换，支持私聊/群聊消息序列化、反序列化及 Base64 编码，是消息传输层的核心转换器。",
+      "tags": [
+        "utility",
+        "protocol",
+        "serialization",
+        "protobuf",
+        "converter"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "大量使用 Protobuf Builder 模式构建消息体，包含空值安全处理（safeStringValue/safeIntegerValue）和时间戳转换逻辑。"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/SpringUtil.java",
+      "type": "file",
+      "name": "SpringUtil.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/SpringUtil.java",
+      "summary": "Spring IoC 容器静态工具类，实现 ApplicationContextAware，在 Netty Handler 等非 Spring 托管组件中提供 Bean 查找能力。",
+      "tags": [
+        "utility",
+        "spring",
+        "ioc",
+        "singleton"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/codec/ProtocolMsgDecoder.java:ProtocolMsgDecoder",
+      "type": "class",
+      "name": "ProtocolMsgDecoder",
+      "filePath": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/codec/ProtocolMsgDecoder.java",
+      "lineRange": [
+        23,
+        66
+      ],
+      "summary": "自定义二进制协议解码器，继承 Netty MessageToMessageDecoder，校验魔数、版本号后解析 Protobuf 消息体。",
+      "tags": [
+        "codec",
+        "decoder",
+        "netty",
+        "protocol"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/codec/ProtocolMsgDecoder.java",
+      "type": "file",
+      "name": "ProtocolMsgDecoder.java",
+      "filePath": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/codec/ProtocolMsgDecoder.java",
+      "summary": "Netty 自定义二进制协议解码器，从 WebSocket BinaryFrame 中读取协议头（魔数、版本、序列化方式、消息类型、长度），校验后反序列化为 Protobuf Message 对象。",
+      "tags": [
+        "codec",
+        "decoder",
+        "netty",
+        "protocol",
+        "binary-protocol"
+      ],
+      "complexity": "moderate",
+      "languageNotes": "使用 markReaderIndex/resetReaderIndex 实现半包处理，确保数据完整后再进行解码。"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/codec/ProtocolMsgEncoder.java:ProtocolMsgEncoder",
+      "type": "class",
+      "name": "ProtocolMsgEncoder",
+      "filePath": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/codec/ProtocolMsgEncoder.java",
+      "lineRange": [
+        22,
+        53
+      ],
+      "summary": "自定义二进制协议编码器，继承 Netty MessageToMessageEncoder，将 Protobuf Message 编码为带协议头的 BinaryWebSocketFrame。",
+      "tags": [
+        "codec",
+        "encoder",
+        "netty",
+        "protocol"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/codec/ProtocolMsgEncoder.java",
+      "type": "file",
+      "name": "ProtocolMsgEncoder.java",
+      "filePath": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/codec/ProtocolMsgEncoder.java",
+      "summary": "Netty 自定义二进制协议编码器，将 Protobuf Message 序列化后写入带协议头（魔数、版本、类型、长度）的 BinaryWebSocketFrame。",
+      "tags": [
+        "codec",
+        "encoder",
+        "netty",
+        "protocol",
+        "binary-protocol"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/config/RedisConfig.java:RedisConfig",
+      "type": "class",
+      "name": "RedisConfig",
+      "filePath": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/config/RedisConfig.java",
+      "lineRange": [
+        14,
+        31
+      ],
+      "summary": "Redis 消息监听容器配置类，注册 RedisMessageListener 到指定频道，实现跨节点消息分发。",
+      "tags": [
+        "config",
+        "redis",
+        "pub-sub",
+        "spring"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/config/RedisConfig.java",
+      "type": "file",
+      "name": "RedisConfig.java",
+      "filePath": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/config/RedisConfig.java",
+      "summary": "Spring Redis 配置类，创建 RedisMessageListenerContainer Bean 并注册消息监听器到指定 Pub/Sub 频道，实现跨 Netty 节点的消息广播。",
+      "tags": [
+        "config",
+        "redis",
+        "pub-sub",
+        "spring"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/ChatHandlerFactory.java:ChatHandlerFactory",
+      "type": "class",
+      "name": "ChatHandlerFactory",
+      "filePath": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/ChatHandlerFactory.java",
+      "lineRange": [
+        14,
+        36
+      ],
+      "summary": "消息处理器工厂类，实现 ApplicationContextAware，启动时自动扫描所有 MsgHandler 实现并按消息类型码注册到 Map 中，运行时按类型码分发。",
+      "tags": [
+        "factory",
+        "handler",
+        "strategy-pattern",
+        "spring"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/ChatHandlerFactory.java",
+      "type": "file",
+      "name": "ChatHandlerFactory.java",
+      "filePath": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/ChatHandlerFactory.java",
+      "summary": "消息处理器工厂，基于 Spring ApplicationContext 自动发现并注册所有 MsgHandler 实现，通过消息类型码进行策略分发。",
+      "tags": [
+        "factory",
+        "handler",
+        "strategy-pattern",
+        "spring"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java:ChatHandler",
+      "type": "class",
+      "name": "ChatHandler",
+      "filePath": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java",
+      "lineRange": [
+        24,
+        81
+      ],
+      "summary": "私聊消息处理器，保存消息到数据库后判断接收方是否在线，在线则直接投递，离线则缓存到 Redis 待签收集合并通过 Pub/Sub 广播。",
+      "tags": [
+        "handler",
+        "chat",
+        "message",
+        "redis"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java:handler",
+      "type": "function",
+      "name": "handler",
+      "filePath": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java",
+      "lineRange": [
+        39,
+        71
+      ],
+      "summary": "处理私聊消息的核心方法：保存消息到数据库，根据接收方在线状态决定直接投递或缓存到 Redis 未签收集合，最终通过 MsgPublisher 广播。",
+      "tags": [
+        "handler",
+        "chat",
+        "message-routing"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java",
+      "type": "file",
+      "name": "ChatHandler.java",
+      "filePath": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java",
+      "summary": "私聊消息处理器实现，负责消息持久化、在线投递、离线缓存到 Redis 未签收集合，并通过 Redis Pub/Sub 广播消息。",
+      "tags": [
+        "handler",
+        "chat",
+        "message",
+        "redis",
+        "real-time"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java:ConnectHandler",
+      "type": "class",
+      "name": "ConnectHandler",
+      "filePath": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java",
+      "lineRange": [
+        29,
+        118
+      ],
+      "summary": "WebSocket 连接处理器，验证 JWT Token 后建立用户-Channel 映射，将用户加入群组 Channel，并向好友广播上线通知。",
+      "tags": [
+        "handler",
+        "connection",
+        "authentication",
+        "jwt"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java:handler",
+      "type": "function",
+      "name": "handler",
+      "filePath": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java",
+      "lineRange": [
+        47,
+        74
+      ],
+      "summary": "处理 WebSocket 连接请求：通过 JWT 解析用户 ID，注册 UserChannelRelation 映射，缓存在线状态到 Redis，广播上线通知并加入群组 Channel。",
+      "tags": [
+        "handler",
+        "connection",
+        "jwt",
+        "authentication"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java:broadLoginToFriend",
+      "type": "function",
+      "name": "broadLoginToFriend",
+      "filePath": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java",
+      "lineRange": [
+        93,
+        117
+      ],
+      "summary": "从 Redis 获取好友列表，逐一构建上线通知消息并通过 MsgPublisher 广播给每个在线好友。",
+      "tags": [
+        "broadcast",
+        "friend",
+        "notification"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java",
+      "type": "file",
+      "name": "ConnectHandler.java",
+      "filePath": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java",
+      "summary": "WebSocket 连接建立处理器，负责 JWT 鉴权、用户-Channel 映射注册、Redis 在线状态缓存、群组 Channel 加入及好友上线广播。",
+      "tags": [
+        "handler",
+        "connection",
+        "authentication",
+        "jwt",
+        "websocket"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java:GroupChatHandler",
+      "type": "class",
+      "name": "GroupChatHandler",
+      "filePath": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java",
+      "lineRange": [
+        27,
+        73
+      ],
+      "summary": "群聊消息处理器，保存群消息到数据库后通过 GroupChannelRelation 获取群组 ChannelGroup 并广播给所有群成员。",
+      "tags": [
+        "handler",
+        "group-chat",
+        "message",
+        "broadcast"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java",
+      "type": "file",
+      "name": "GroupChatHandler.java",
+      "filePath": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java",
+      "summary": "群聊消息处理器实现，负责群消息持久化、构建发送者信息、获取群组 ChannelGroup 并通过 Redis Pub/Sub 广播消息。",
+      "tags": [
+        "handler",
+        "group-chat",
+        "message",
+        "broadcast"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/FriendConstant.java",
+      "target": "class:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/FriendConstant.java:FriendConstant",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MsgTargetTypeConstant.java",
+      "target": "class:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MsgTargetTypeConstant.java:MsgTargetTypeConstant",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MsgTypeConstant.java",
+      "target": "class:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MsgTypeConstant.java:MsgTypeConstant",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java",
+      "target": "class:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java:ProtocolUtil",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java",
+      "target": "function:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java:msgDtoToProtocol",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java",
+      "target": "function:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java:protocolToMsgDto",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java",
+      "target": "function:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java:toProtocolBase64",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/SpringUtil.java",
+      "target": "class:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/SpringUtil.java:SpringUtil",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/codec/ProtocolMsgDecoder.java",
+      "target": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/codec/ProtocolMsgDecoder.java:ProtocolMsgDecoder",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/codec/ProtocolMsgEncoder.java",
+      "target": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/codec/ProtocolMsgEncoder.java:ProtocolMsgEncoder",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/config/RedisConfig.java",
+      "target": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/config/RedisConfig.java:RedisConfig",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/ChatHandlerFactory.java",
+      "target": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/ChatHandlerFactory.java:ChatHandlerFactory",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java",
+      "target": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java:ChatHandler",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java",
+      "target": "function:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java:handler",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java",
+      "target": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java:ConnectHandler",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java",
+      "target": "function:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java:handler",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java",
+      "target": "function:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java:broadLoginToFriend",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java",
+      "target": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java:GroupChatHandler",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MsgTargetTypeConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatMsg.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatProtocol.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMsg.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/MsgDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/codec/ProtocolMsgDecoder.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ProtocolConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/codec/ProtocolMsgDecoder.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatProtocol.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/codec/ProtocolMsgEncoder.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ProtocolConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/codec/ProtocolMsgEncoder.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatProtocol.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/config/RedisConfig.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/RedisConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/config/RedisConfig.java",
+      "target": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/listener/RedisMessageListener.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MsgTypeConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/RedisConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/SpringUtil.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java",
+      "target": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/MsgHandler.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java",
+      "target": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/ChatWebSocketHandler.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java",
+      "target": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/UserChannelRelation.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java",
+      "target": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/publisher/MsgPublisher.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatMsg.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/MsgDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/ChatMsgService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/JwtUtil.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/SpringUtil.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java",
+      "target": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/MsgHandler.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java",
+      "target": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/ChatWebSocketHandler.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java",
+      "target": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/GroupChannelRelation.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java",
+      "target": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/UserChannelRelation.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java",
+      "target": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/publisher/MsgPublisher.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatMsg.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/MsgDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/GroupMemberService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MsgTargetTypeConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MsgTypeConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java",
+      "target": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/MsgHandler.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java",
+      "target": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/ChatWebSocketHandler.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java",
+      "target": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/GroupChannelRelation.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java",
+      "target": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/publisher/MsgPublisher.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMsg.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/MsgDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/GroupMsgService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java:ChatHandler",
+      "target": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/MsgHandler.java:MsgHandler",
+      "type": "implements",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java:ConnectHandler",
+      "target": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/MsgHandler.java:MsgHandler",
+      "type": "implements",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java:GroupChatHandler",
+      "target": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/MsgHandler.java:MsgHandler",
+      "type": "implements",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/ChatHandlerFactory.java",
+      "target": "class:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/MsgHandler.java:MsgHandler",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/config/RedisConfig.java",
+      "target": "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/listener/RedisMessageListener.java",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

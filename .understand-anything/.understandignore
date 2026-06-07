@@ -1,0 +1,79 @@
+# .understandignore — patterns for files/dirs to exclude from analysis
+# Syntax: same as .gitignore (globs, # comments, ! negation, trailing / for dirs)
+# Lines below are suggestions — uncomment to activate.
+# Use ! prefix to force-include something excluded by defaults.
+#
+# Built-in defaults (always excluded unless negated):
+#   node_modules/, .git/, dist/, build/, obj/, *.lock, *.min.js, etc.
+#
+# --- From .gitignore (uncomment to exclude) ---
+
+# *.swp
+# *.iml
+# .DS_Store
+# Thumbs.db
+# **/node_modules/
+# **/target/
+# **/build/
+# **/.gradle/
+# **/.venv/
+# **/__pycache__/
+# FoxChat-vue/dist_electron/
+# FoxChatRAG-python/store/
+# .troe/
+# .trae/
+# .trae-cn/
+# .opencode/
+# .claude/
+# .cline/
+# .anthropic/
+# .cursor/
+# .copilot/
+# .continue/
+# .aider/
+# .ai_completion/
+# .agents/
+# openspec/
+# .reasonix/
+# .env
+# .env.local
+# .env.*.local
+# **/application-local.yml
+# **/application-local.yaml
+# **/application-local.properties
+# **/application-secrets.yml
+# **/deploy/.env
+# config/secrets.py
+# config/local_settings.py
+# deploy/
+# **/logs/
+# *.db
+# chromadb/
+# minio/
+# mysql-docker/
+# redis-docker/
+# rabbitmq-docker/
+# nginx/
+# *.tmp
+# *.temp
+# *.swp
+# *~
+# *.bundle
+# pulls.json
+# repo_info.json
+# .github_guide.html
+# .omo/
+# .aider*
+# AGENTS.md
+# .codegraph/
+# docs/
+
+# --- Detected directories (uncomment to exclude) ---
+
+# docs/
+
+# --- Test file patterns (uncomment to exclude) ---
+
+# *.test.*
+# *.spec.*
+# *.snap

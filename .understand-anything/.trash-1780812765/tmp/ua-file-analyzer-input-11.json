@@ -1,0 +1,22 @@
+{
+  "projectRoot": "E:/WorkSpace/ProjectCode",
+  "batchFiles": [
+    {"path": "FoxChat-vue/src/App.vue", "language": "vue", "sizeLines": 28, "fileCategory": "code"},
+    {"path": "FoxChat-vue/src/main.js", "language": "javascript", "sizeLines": 18, "fileCategory": "code"},
+    {"path": "FoxChat-vue/src/router/index.js", "language": "javascript", "sizeLines": 37, "fileCategory": "code"},
+    {"path": "FoxChat-vue/src/utils/request.js", "language": "javascript", "sizeLines": 111, "fileCategory": "code"},
+    {"path": "FoxChat-vue/src/views/Home.vue", "language": "vue", "sizeLines": 2922, "fileCategory": "code"},
+    {"path": "FoxChat-vue/src/views/Login.vue", "language": "vue", "sizeLines": 93, "fileCategory": "code"},
+    {"path": "FoxChat-vue/src/views/Register.vue", "language": "vue", "sizeLines": 92, "fileCategory": "code"}
+  ],
+  "batchImportData": {
+    "FoxChat-vue/src/App.vue": [],
+    "FoxChat-vue/src/main.js": ["FoxChat-vue/src/App.vue", "FoxChat-vue/src/router/index.js"],
+    "FoxChat-vue/src/router/index.js": ["FoxChat-vue/src/views/Home.vue", "FoxChat-vue/src/views/Login.vue", "FoxChat-vue/src/views/Register.vue"],
+    "FoxChat-vue/src/utils/request.js": ["FoxChat-vue/src/router/index.js"],
+    "FoxChat-vue/src/views/Home.vue": [],
+    "FoxChat-vue/src/views/Login.vue": [],
+    "FoxChat-vue/src/views/Register.vue": []
+  },
+  "neighborMap": {}
+}

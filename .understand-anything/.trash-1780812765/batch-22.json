@@ -1,0 +1,178 @@
+{
+  "nodes": [
+    {
+      "id": "config:deploy/local-middleware/.env.example",
+      "type": "config",
+      "name": ".env.example",
+      "filePath": "deploy/local-middleware/.env.example",
+      "summary": "本地中间件环境变量示例文件，定义 MySQL、Redis、RabbitMQ、MinIO 的连接凭据，复制为 .env 即可使用，需与服务器 /root/home/docker-manager/.env 保持一致。",
+      "tags": ["configuration", "environment-variables", "middleware", "security"],
+      "complexity": "simple"
+    },
+    {
+      "id": "document:deploy/local-middleware/MIGRATE.md",
+      "type": "document",
+      "name": "MIGRATE.md",
+      "filePath": "deploy/local-middleware/MIGRATE.md",
+      "summary": "中间件数据迁移指南，详细说明如何将服务器上的 MySQL、MinIO、ChromaDB、Redis、RabbitMQ 数据通过 mysqldump、mc mirror、tar 打包等方式迁移到本机 WSL Docker 环境，并提供各服务的验证命令。",
+      "tags": ["documentation", "migration", "database", "deployment"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "service:deploy/local-middleware/docker-compose.yml",
+      "type": "service",
+      "name": "docker-compose.yml",
+      "filePath": "deploy/local-middleware/docker-compose.yml",
+      "summary": "本地中间件 Docker Compose 编排文件，定义 MySQL 8.0、Redis Stack、MinIO、RabbitMQ 3.12-management、ChromaDB 及 frp 隧道客户端共 6 个服务，通过 chat bridge 网络互联，用于搭建 FoxChat 本机 WSL 开发环境。",
+      "tags": ["orchestration", "infrastructure", "containerization", "middleware"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "service:deploy/local-middleware/docker-compose.yml:mysql",
+      "type": "service",
+      "name": "mysql",
+      "filePath": "deploy/local-middleware/docker-compose.yml",
+      "summary": "MySQL 8.0 数据库服务，存储 FoxChat 应用数据，挂载本地 data/log/conf 目录实现持久化，暴露 3306 端口。",
+      "tags": ["database", "mysql", "persistent-storage"],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:deploy/local-middleware/docker-compose.yml:redis",
+      "type": "service",
+      "name": "redis",
+      "filePath": "deploy/local-middleware/docker-compose.yml",
+      "summary": "Redis Stack 服务，提供缓存和消息队列功能，暴露 6379（数据）和 8001（UI）端口，支持密码认证。",
+      "tags": ["cache", "redis", "persistent-storage"],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:deploy/local-middleware/docker-compose.yml:minio",
+      "type": "service",
+      "name": "minio",
+      "filePath": "deploy/local-middleware/docker-compose.yml",
+      "summary": "MinIO 对象存储服务，用于存储 FoxChat 的文件和媒体资源，暴露 9000（API）和 9001（控制台）端口。",
+      "tags": ["object-storage", "minio", "persistent-storage"],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:deploy/local-middleware/docker-compose.yml:rabbitmq",
+      "type": "service",
+      "name": "rabbitmq",
+      "filePath": "deploy/local-middleware/docker-compose.yml",
+      "summary": "RabbitMQ 3.12 消息队列服务（含管理插件），用于服务间异步通信，暴露 5672（AMQP）和 15672（管理界面）端口。",
+      "tags": ["message-queue", "rabbitmq", "persistent-storage"],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:deploy/local-middleware/docker-compose.yml:chromadb",
+      "type": "service",
+      "name": "chromadb",
+      "filePath": "deploy/local-middleware/docker-compose.yml",
+      "summary": "ChromaDB 向量数据库服务，用于 RAG 检索增强生成场景的向量存储，持久化模式运行，映射 18000 端口。",
+      "tags": ["vector-database", "chromadb", "persistent-storage"],
+      "complexity": "simple"
+    },
+    {
+      "id": "service:deploy/local-middleware/docker-compose.yml:frpc",
+      "type": "service",
+      "name": "frpc",
+      "filePath": "deploy/local-middleware/docker-compose.yml",
+      "summary": "frp 隧道客户端，连接远程服务器 frps 以转发本机中间件端口，使远程服务可访问本地中间件，依赖所有其他中间件服务启动完成。",
+      "tags": ["networking", "tunnel", "frp"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:deploy/local-middleware/.env.example",
+      "target": "service:deploy/local-middleware/docker-compose.yml",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "document:deploy/local-middleware/MIGRATE.md",
+      "target": "service:deploy/local-middleware/docker-compose.yml",
+      "type": "documents",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "service:deploy/local-middleware/docker-compose.yml",
+      "target": "service:deploy/local-middleware/docker-compose.yml:mysql",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "service:deploy/local-middleware/docker-compose.yml",
+      "target": "service:deploy/local-middleware/docker-compose.yml:redis",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "service:deploy/local-middleware/docker-compose.yml",
+      "target": "service:deploy/local-middleware/docker-compose.yml:minio",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "service:deploy/local-middleware/docker-compose.yml",
+      "target": "service:deploy/local-middleware/docker-compose.yml:rabbitmq",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "service:deploy/local-middleware/docker-compose.yml",
+      "target": "service:deploy/local-middleware/docker-compose.yml:chromadb",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "service:deploy/local-middleware/docker-compose.yml",
+      "target": "service:deploy/local-middleware/docker-compose.yml:frpc",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "service:deploy/local-middleware/docker-compose.yml:frpc",
+      "target": "service:deploy/local-middleware/docker-compose.yml:mysql",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:deploy/local-middleware/docker-compose.yml:frpc",
+      "target": "service:deploy/local-middleware/docker-compose.yml:redis",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:deploy/local-middleware/docker-compose.yml:frpc",
+      "target": "service:deploy/local-middleware/docker-compose.yml:minio",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:deploy/local-middleware/docker-compose.yml:frpc",
+      "target": "service:deploy/local-middleware/docker-compose.yml:rabbitmq",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:deploy/local-middleware/docker-compose.yml:frpc",
+      "target": "service:deploy/local-middleware/docker-compose.yml:chromadb",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

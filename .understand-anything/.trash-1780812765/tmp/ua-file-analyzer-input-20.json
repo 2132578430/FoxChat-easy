@@ -1,0 +1,19 @@
+{
+  "projectRoot": "E:/WorkSpace/ProjectCode",
+  "batchFiles": [
+    {"path": "FoxChatRAG-python/Dockerfile.base", "language": "dockerfile", "sizeLines": 43, "fileCategory": "infra"},
+    {"path": "FoxChatRAG-python/MEMORY_UPLOAD.md", "language": "markdown", "sizeLines": 889, "fileCategory": "docs"},
+    {"path": "FoxChatRAG-python/Problem.md", "language": "markdown", "sizeLines": 82, "fileCategory": "docs"},
+    {"path": "FoxChatRAG-python/README.md", "language": "markdown", "sizeLines": 198, "fileCategory": "docs"},
+    {"path": "FoxChatRAG-python/requirements-core.txt", "language": "txt", "sizeLines": 24, "fileCategory": "docs"},
+    {"path": "FoxChatRAG-python/requirements.txt", "language": "txt", "sizeLines": 17, "fileCategory": "docs"}
+  ],
+  "batchImportData": {
+    "FoxChatRAG-python/Dockerfile.base": [],
+    "FoxChatRAG-python/MEMORY_UPLOAD.md": [],
+    "FoxChatRAG-python/Problem.md": [],
+    "FoxChatRAG-python/README.md": [],
+    "FoxChatRAG-python/requirements-core.txt": [],
+    "FoxChatRAG-python/requirements.txt": []
+  }
+}

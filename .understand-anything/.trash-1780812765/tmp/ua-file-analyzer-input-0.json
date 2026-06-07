@@ -1,0 +1,357 @@
+{
+  "projectRoot": "E:/WorkSpace/ProjectCode",
+  "batchFiles": [
+    {
+      "path": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/AuthConstant.java",
+      "language": "java",
+      "sizeLines": 10,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/CookieUtil.java",
+      "language": "java",
+      "sizeLines": 59,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/JwtUtil.java",
+      "language": "java",
+      "sizeLines": 107,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "language": "java",
+      "sizeLines": 33,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/CookieAuthHandler.java",
+      "language": "java",
+      "sizeLines": 79,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/CurrentUser.java",
+      "language": "java",
+      "sizeLines": 12,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Friends.java",
+      "language": "java",
+      "sizeLines": 64,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/FriendsRequest.java",
+      "language": "java",
+      "sizeLines": 74,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java",
+      "language": "java",
+      "sizeLines": 111,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/AddFriendDto.java",
+      "language": "java",
+      "sizeLines": 11,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/RegisterDto.java",
+      "language": "java",
+      "sizeLines": 13,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/SearchUserDto.java",
+      "language": "java",
+      "sizeLines": 11,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UpdateUserDto.java",
+      "language": "java",
+      "sizeLines": 12,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UserDto.java",
+      "language": "java",
+      "sizeLines": 12,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/FriendVo.java",
+      "language": "java",
+      "sizeLines": 21,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SearchUserVo.java",
+      "language": "java",
+      "sizeLines": 15,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SelectFriendVo.java",
+      "language": "java",
+      "sizeLines": 15,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/ShowUserInfo.java",
+      "language": "java",
+      "sizeLines": 13,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/UserInfo.java",
+      "language": "java",
+      "sizeLines": 13,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsMapper.java",
+      "language": "java",
+      "sizeLines": 25,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsRequestMapper.java",
+      "language": "java",
+      "sizeLines": 25,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/UsersMapper.java",
+      "language": "java",
+      "sizeLines": 18,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/AuthService.java",
+      "language": "java",
+      "sizeLines": 18,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsRequestService.java",
+      "language": "java",
+      "sizeLines": 17,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsService.java",
+      "language": "java",
+      "sizeLines": 28,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java",
+      "language": "java",
+      "sizeLines": 29,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "language": "java",
+      "sizeLines": 148,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsRequestServiceImpl.java",
+      "language": "java",
+      "sizeLines": 36,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "language": "java",
+      "sizeLines": 147,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "language": "java",
+      "sizeLines": 147,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/config/WebConfig.java",
+      "language": "java",
+      "sizeLines": 23,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/AuthController.java",
+      "language": "java",
+      "sizeLines": 71,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/FriendController.java",
+      "language": "java",
+      "sizeLines": 96,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/UserController.java",
+      "language": "java",
+      "sizeLines": 68,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/interceptor/LoginInterceptor.java",
+      "language": "java",
+      "sizeLines": 85,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/AuthConstant.java": [],
+    "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/CookieUtil.java": [],
+    "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/JwtUtil.java": [],
+    "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java": [
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/CurrentUser.java"
+    ],
+    "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/CookieAuthHandler.java": [
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/AuthConstant.java",
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/JwtUtil.java",
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/SpringUtil.java"
+    ],
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/CurrentUser.java": [],
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Friends.java": [],
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/FriendsRequest.java": [],
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java": [],
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/AddFriendDto.java": [],
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/RegisterDto.java": [],
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/SearchUserDto.java": [],
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UpdateUserDto.java": [],
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UserDto.java": [],
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/FriendVo.java": [],
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SearchUserVo.java": [],
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SelectFriendVo.java": [],
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/ShowUserInfo.java": [],
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/UserInfo.java": [],
+    "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsMapper.java": [
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Friends.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/FriendVo.java"
+    ],
+    "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsRequestMapper.java": [
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/FriendsRequest.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/FriendVo.java"
+    ],
+    "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/UsersMapper.java": [
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java"
+    ],
+    "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/AuthService.java": [
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/RegisterDto.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UserDto.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/UserInfo.java"
+    ],
+    "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsRequestService.java": [
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/FriendsRequest.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/FriendVo.java"
+    ],
+    "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsService.java": [
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Friends.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/AddFriendDto.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/FriendVo.java"
+    ],
+    "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java": [
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/SearchUserDto.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UpdateUserDto.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SearchUserVo.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SelectFriendVo.java"
+    ],
+    "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java": [
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/AuthConstant.java",
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ResultStatusConstant.java",
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/exception/BusinessException.java",
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/CookieUtil.java",
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/JwtUtil.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/RegisterDto.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UserDto.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/UserInfo.java",
+      "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/AuthService.java",
+      "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java"
+    ],
+    "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsRequestServiceImpl.java": [
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/FriendsRequest.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/FriendVo.java",
+      "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsRequestMapper.java",
+      "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsRequestService.java"
+    ],
+    "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java": [
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/exception/BusinessException.java",
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/CurrentUser.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Friends.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/AddFriendDto.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/FriendVo.java",
+      "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsMapper.java",
+      "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsRequestMapper.java",
+      "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsService.java",
+      "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmUserService.java"
+    ],
+    "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java": [
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/AuthConstant.java",
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/FileContstant.java",
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Friends.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/SearchUserDto.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UpdateUserDto.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SearchUserVo.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SelectFriendVo.java",
+      "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/UsersMapper.java",
+      "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsService.java",
+      "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java"
+    ],
+    "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/config/WebConfig.java": [
+      "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/interceptor/LoginInterceptor.java"
+    ],
+    "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/AuthController.java": [
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/R.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/RegisterDto.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UserDto.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/UserInfo.java",
+      "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/AuthService.java"
+    ],
+    "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/FriendController.java": [
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/R.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/AddFriendDto.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/SearchUserDto.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/FriendVo.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SearchUserVo.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SelectFriendVo.java",
+      "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsRequestService.java",
+      "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsService.java",
+      "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java"
+    ],
+    "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/UserController.java": [
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/R.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UpdateUserDto.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/ShowUserInfo.java",
+      "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java"
+    ],
+    "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/interceptor/LoginInterceptor.java": [
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/AuthConstant.java",
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/CookieUtil.java",
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/JwtUtil.java",
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/CurrentUser.java"
+    ]
+  }
+}

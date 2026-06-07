@@ -1,0 +1,249 @@
+{
+  "nodes": [
+    {
+      "id": "document:FoxChatRAG-python/app/core/prompts/character_card.md",
+      "type": "document",
+      "name": "character_card.md",
+      "filePath": "FoxChatRAG-python/app/core/prompts/character_card.md",
+      "summary": "角色卡生成提示词，指导 LLM 根据用户描述生成 AI 角色的结构化 JSON 角色卡，包含核心描述、性格关键词、动作风格、示例对话和行为指南等字段。",
+      "tags": ["prompt-template", "character-design", "ai-persona", "json-schema"],
+      "complexity": "moderate",
+      "languageNotes": "采用结构化 JSON 输出格式，包含角色声明、核心原则、动作表达指导等多个章节，使用 Show don't tell 原则。"
+    },
+    {
+      "id": "document:FoxChatRAG-python/app/core/prompts/chat_system.md",
+      "type": "document",
+      "name": "chat_system.md",
+      "filePath": "FoxChatRAG-python/app/core/prompts/chat_system.md",
+      "summary": "聊天系统主模板，通过占位符（静态锚点、用户画像、历史上下文、当前状态、行为指导、健谈程度指导）组装最终发送给 LLM 的对话 prompt。",
+      "tags": ["prompt-template", "chat-engine", "template-assembly", "core-system"],
+      "complexity": "simple",
+      "languageNotes": "纯占位符模板，所有动态内容通过 {placeholder} 注入，是整个对话系统的核心组装入口。"
+    },
+    {
+      "id": "document:FoxChatRAG-python/app/core/prompts/emotion_classifier.md",
+      "type": "document",
+      "name": "emotion_classifier.md",
+      "filePath": "FoxChatRAG-python/app/core/prompts/emotion_classifier.md",
+      "summary": "情绪分类提示词，分析角色回复中的情绪状态（开心、悲伤、愤怒、惊讶、恐惧、厌恶、neutral），输出 JSON 格式的情绪标签和确定性。",
+      "tags": ["prompt-template", "emotion-analysis", "classification", "nlp"],
+      "complexity": "simple",
+      "languageNotes": "极简 prompt，仅包含任务说明、情绪选项和输出格式约束。"
+    },
+    {
+      "id": "document:FoxChatRAG-python/app/core/prompts/focus_extractor.md",
+      "type": "document",
+      "name": "focus_extractor.md",
+      "filePath": "FoxChatRAG-python/app/core/prompts/focus_extractor.md",
+      "summary": "话题焦点提取提示词（已废弃）。原用于分析用户输入的核心话题并输出置信度，因置信度不可信且无明确用途于 2026-05-05 废弃，保留供后续参考。",
+      "tags": ["prompt-template", "deprecated", "topic-extraction", "nlp"],
+      "complexity": "simple",
+      "languageNotes": "文件已标注废弃，包含旧版话题分类规则（求职、感情、学业等11类），以及置信度判断逻辑。"
+    },
+    {
+      "id": "document:FoxChatRAG-python/app/core/prompts/memory_bank_compress.md",
+      "type": "document",
+      "name": "memory_bank_compress.md",
+      "filePath": "FoxChatRAG-python/app/core/prompts/memory_bank_compress.md",
+      "summary": "记忆库压缩提示词，将记忆库压缩到目标条数，要求保留高重要性事件（importance >= 0.7）原样不合并，合并相似低重要性事件。",
+      "tags": ["prompt-template", "memory-compression", "event-management", "json-io"],
+      "complexity": "simple",
+      "languageNotes": "通过 pinned_events_json 和 memory_bank_json 占位符注入数据，输出纯 JSON 数组。"
+    },
+    {
+      "id": "document:FoxChatRAG-python/app/core/prompts/memory_event_extractor.md",
+      "type": "document",
+      "name": "memory_event_extractor.md",
+      "filePath": "FoxChatRAG-python/app/core/prompts/memory_event_extractor.md",
+      "summary": "记忆事件提取提示词，从用户对话中统一提取事件（event）和状态（state）两类记忆，包含反话/阴阳怪气检测、event_type 细分类和 activity_score 活性评分。",
+      "tags": ["prompt-template", "memory-extraction", "event-detection", "sentiment-analysis"],
+      "complexity": "complex",
+      "languageNotes": "最复杂的提示词之一，包含核心原则、提取范围、判断规则表格、反话检测规则和详细的 JSON 输出 schema。"
+    },
+    {
+      "id": "document:FoxChatRAG-python/app/core/prompts/memory_summary.md",
+      "type": "document",
+      "name": "memory_summary.md",
+      "filePath": "FoxChatRAG-python/app/core/prompts/memory_summary.md",
+      "summary": "对话摘要提示词，将对话历史生成 100-200 字的自然语言总结，突出关键话题、用户意图和情绪基调变化，不提取具体事件细节。",
+      "tags": ["prompt-template", "summarization", "conversation-analysis", "memory-system"],
+      "complexity": "simple",
+      "languageNotes": "明确与 memory_event_extractor 分工：此 prompt 只做宏观摘要，细节事件由专门的提取器处理。"
+    },
+    {
+      "id": "document:FoxChatRAG-python/app/core/prompts/role_memory_core.md",
+      "type": "document",
+      "name": "role_memory_core.md",
+      "filePath": "FoxChatRAG-python/app/core/prompts/role_memory_core.md",
+      "summary": "角色核心记忆锚点生成提示词，从用户角色描述中提取 100-200 字的精炼核心锚点，包含角色身份、核心性格、说话方式和三条绝对边界。",
+      "tags": ["prompt-template", "character-design", "memory-anchor", "persona-core"],
+      "complexity": "simple",
+      "languageNotes": "与 character_card.md 互补：此 prompt 生成精简版核心锚点用于长期记忆，character_card 生成完整角色卡。"
+    },
+    {
+      "id": "document:FoxChatRAG-python/app/core/prompts/soul.md",
+      "type": "document",
+      "name": "soul.md",
+      "filePath": "FoxChatRAG-python/app/core/prompts/soul.md",
+      "summary": "通用角色灵魂约束提示词，定义所有 AI 角色的核心使命（陪伴优先于解决问题）、核心原则、绝对边界和输出格式白名单机制。",
+      "tags": ["prompt-template", "system-constraint", "persona-rules", "safety-boundary"],
+      "complexity": "simple",
+      "languageNotes": "系统级约束文件，所有角色共享此基础约束。采用白名单机制限制输出格式，只允许 action 标签和对话内容。"
+    },
+    {
+      "id": "document:FoxChatRAG-python/app/core/prompts/user_profile.md",
+      "type": "document",
+      "name": "user_profile.md",
+      "filePath": "FoxChatRAG-python/app/core/prompts/user_profile.md",
+      "summary": "用户画像初始提取提示词，从用户描述中提取标准化用户画像 JSON，覆盖核心身份、核心性格、语言风格、互动模式、价值观、长期兴趣、绝对边界七个维度。",
+      "tags": ["prompt-template", "user-profiling", "persona-analysis", "json-schema"],
+      "complexity": "moderate",
+      "languageNotes": "严格遵循 100% 原文提取原则，无信息字段统一标注 [未提及]，禁止脑补和推断。"
+    },
+    {
+      "id": "document:FoxChatRAG-python/app/core/prompts/user_profile_updater.md",
+      "type": "document",
+      "name": "user_profile_updater.md",
+      "filePath": "FoxChatRAG-python/app/core/prompts/user_profile_updater.md",
+      "summary": "用户画像增量更新提示词，根据最近对话历史更新用户长期稳定画像，严格过滤临时情绪和硬边界信息，采用增量更新策略只修改有变化的维度。",
+      "tags": ["prompt-template", "user-profiling", "incremental-update", "memory-system"],
+      "complexity": "moderate",
+      "languageNotes": "与 user_profile.md 配合使用：user_profile 负责初始提取，此 prompt 负责后续增量更新。边界类信息归 A2 边界层管理。"
+    }
+  ],
+  "edges": [
+    {
+      "source": "document:FoxChatRAG-python/app/core/prompts/soul.md",
+      "target": "document:FoxChatRAG-python/app/core/prompts/character_card.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/app/core/prompts/soul.md",
+      "target": "document:FoxChatRAG-python/app/core/prompts/role_memory_core.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/app/core/prompts/soul.md",
+      "target": "document:FoxChatRAG-python/app/core/prompts/chat_system.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/app/core/prompts/character_card.md",
+      "target": "document:FoxChatRAG-python/app/core/prompts/role_memory_core.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/app/core/prompts/chat_system.md",
+      "target": "document:FoxChatRAG-python/app/core/prompts/soul.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/app/core/prompts/chat_system.md",
+      "target": "document:FoxChatRAG-python/app/core/prompts/character_card.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/app/core/prompts/chat_system.md",
+      "target": "document:FoxChatRAG-python/app/core/prompts/user_profile.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/app/core/prompts/chat_system.md",
+      "target": "document:FoxChatRAG-python/app/core/prompts/memory_event_extractor.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/app/core/prompts/chat_system.md",
+      "target": "document:FoxChatRAG-python/app/core/prompts/memory_summary.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/app/core/prompts/memory_event_extractor.md",
+      "target": "document:FoxChatRAG-python/app/core/prompts/memory_summary.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/app/core/prompts/memory_event_extractor.md",
+      "target": "document:FoxChatRAG-python/app/core/prompts/memory_bank_compress.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/app/core/prompts/memory_summary.md",
+      "target": "document:FoxChatRAG-python/app/core/prompts/memory_event_extractor.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/app/core/prompts/memory_bank_compress.md",
+      "target": "document:FoxChatRAG-python/app/core/prompts/memory_event_extractor.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/app/core/prompts/user_profile.md",
+      "target": "document:FoxChatRAG-python/app/core/prompts/user_profile_updater.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/app/core/prompts/user_profile_updater.md",
+      "target": "document:FoxChatRAG-python/app/core/prompts/user_profile.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/app/core/prompts/emotion_classifier.md",
+      "target": "document:FoxChatRAG-python/app/core/prompts/chat_system.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/app/core/prompts/memory_summary.md",
+      "target": "document:FoxChatRAG-python/app/core/prompts/user_profile_updater.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/app/core/prompts/user_profile.md",
+      "target": "document:FoxChatRAG-python/app/core/prompts/chat_system.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "document:FoxChatRAG-python/app/core/prompts/character_card.md",
+      "target": "document:FoxChatRAG-python/app/core/prompts/chat_system.md",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    }
+  ]
+}

@@ -1,0 +1,1198 @@
+{
+  "nodes": [
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ChatRoleConstant.java",
+      "type": "file",
+      "name": "ChatRoleConstant.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ChatRoleConstant.java",
+      "summary": "定义聊天角色常量，区分人类用户（HUMAN=0）和大模型（LLM=1）两种角色类型。",
+      "tags": ["常量定义", "角色标识", "数据模型"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/TimeUtil.java",
+      "type": "file",
+      "name": "TimeUtil.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/TimeUtil.java",
+      "summary": "时间戳与 LocalDateTime 互转工具类，固定使用 Asia/Shanghai 时区，用于消息时间处理。",
+      "tags": ["工具类", "时间处理", "时区转换"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/TimeUtil.java:TimeUtil",
+      "type": "class",
+      "name": "TimeUtil",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/TimeUtil.java",
+      "lineRange": [12, 32],
+      "summary": "时间戳转换工具类，提供毫秒时间戳与 LocalDateTime 之间的双向转换，使用上海时区。",
+      "tags": ["工具类", "时间处理"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmChatMsg.java",
+      "type": "file",
+      "name": "LlmChatMsg.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmChatMsg.java",
+      "summary": "LLM 聊天消息实体类，映射 llm_chat_msg 表，包含消息内容、发送者、状态和模型ID等字段。",
+      "tags": ["数据模型", "领域实体", "MyBatis-Plus"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmConfig.java",
+      "type": "file",
+      "name": "LlmConfig.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmConfig.java",
+      "summary": "LLM 配置实体类，映射 llm_config 表，存储不同场景（chat/memory/summary/extraction/emotion）的模型参数配置。",
+      "tags": ["数据模型", "领域实体", "配置管理"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmUser.java",
+      "type": "file",
+      "name": "LlmUser.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmUser.java",
+      "summary": "LLM 用户实体类，映射 llm_user 表，存储用户创建的 AI 朋友信息，包括昵称、头像和初始化记忆。",
+      "tags": ["数据模型", "领域实体", "用户管理"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/AddLlmFriendDto.java",
+      "type": "file",
+      "name": "AddLlmFriendDto.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/AddLlmFriendDto.java",
+      "summary": "添加 LLM 好友请求 DTO，包含昵称、用户名称、伙伴名称和经历描述。",
+      "tags": ["数据传输对象", "请求DTO"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LlmConfigDto.java",
+      "type": "file",
+      "name": "LlmConfigDto.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LlmConfigDto.java",
+      "summary": "LLM 配置批量保存 DTO，包含 AI 朋友 ID 和 5 个场景的配置列表。",
+      "tags": ["数据传输对象", "配置管理", "批量操作"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LlmFriendUpdateDto.java",
+      "type": "file",
+      "name": "LlmFriendUpdateDto.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LlmFriendUpdateDto.java",
+      "summary": "更新 LLM 好友信息 DTO，包含 llmId、昵称和头像字段。",
+      "tags": ["数据传输对象", "更新操作"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LlmMsgHistoryReqDto.java",
+      "type": "file",
+      "name": "LlmMsgHistoryReqDto.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LlmMsgHistoryReqDto.java",
+      "summary": "获取消息历史请求 DTO，支持基于时间和ID的分页查询。",
+      "tags": ["数据传输对象", "分页查询"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/TestConnectionDto.java",
+      "type": "file",
+      "name": "TestConnectionDto.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/TestConnectionDto.java",
+      "summary": "测试连接请求 DTO，用于验证 LLM API 连接，包含模型名称、API 密钥和服务地址。",
+      "tags": ["数据传输对象", "连接测试"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/proto/ai/AIChatServiceGrpc.java",
+      "type": "file",
+      "name": "AIChatServiceGrpc.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/proto/ai/AIChatServiceGrpc.java",
+      "summary": "gRPC 自动生成的 AI 聊天服务桩代码，定义 Chat（服务端流式）和 DeleteMemory（一元调用）两个 RPC 方法。",
+      "tags": ["gRPC", "自动生成", "服务桩", "远程调用"],
+      "complexity": "complex",
+      "languageNotes": "由 protoc 编译器自动生成，使用双重检查锁定模式优化 MethodDescriptor 的懒加载。"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/proto/ai/AIChatServiceGrpc.java:AIChatServiceGrpc",
+      "type": "class",
+      "name": "AIChatServiceGrpc",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/proto/ai/AIChatServiceGrpc.java",
+      "lineRange": [7, 384],
+      "summary": "gRPC 服务桩主类，提供 Chat（服务端流式）和 DeleteMemory（一元调用）的 MethodDescriptor、Stub 工厂方法和 bindService 绑定。",
+      "tags": ["gRPC", "服务桩", "远程调用"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/proto/ai/AiChatProto.java",
+      "type": "file",
+      "name": "AiChatProto.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/proto/ai/AiChatProto.java",
+      "summary": "Protobuf 自动生成的消息类，定义 ChatRequest、ChatResponse、DeleteRequest、DeleteResponse 等 gRPC 通信消息结构。",
+      "tags": ["gRPC", "自动生成", "消息定义", "Protobuf"],
+      "complexity": "complex",
+      "languageNotes": "Protobuf Java 生成代码，包含消息类的 Builder 模式实现和序列化/反序列化逻辑。"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/ChatMqMsgTo.java",
+      "type": "file",
+      "name": "ChatMqMsgTo.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/ChatMqMsgTo.java",
+      "summary": "聊天消息队列传输对象，用于通过 MQ 发送用户 ID、经历描述和模型 ID 进行记忆初始化。",
+      "tags": ["传输对象", "消息队列"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/ChatMsgTo.java",
+      "type": "file",
+      "name": "ChatMsgTo.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/ChatMsgTo.java",
+      "summary": "聊天消息传输对象，用于 Feign 调用 Python RAG 服务，包含用户 ID、消息内容和模型 ID。",
+      "tags": ["传输对象", "Feign调用"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/LlmChatMsgVo.java",
+      "type": "file",
+      "name": "LlmChatMsgVo.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/LlmChatMsgVo.java",
+      "summary": "LLM 聊天消息响应 VO，包含 JSON 格式的消息内容（含 blocks 和 emotion），供前端解析。",
+      "tags": ["视图对象", "响应VO"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/LlmMemoryVo.java",
+      "type": "file",
+      "name": "LlmMemoryVo.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/LlmMemoryVo.java",
+      "summary": "模型记忆面板 VO，包含角色卡、核心锚点、用户画像、记忆银行事件和当前情绪等完整记忆数据。",
+      "tags": ["视图对象", "记忆系统", "AI角色"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/LlmMsgHistoryVo.java",
+      "type": "file",
+      "name": "LlmMsgHistoryVo.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/LlmMsgHistoryVo.java",
+      "summary": "消息历史响应 VO，包含消息 ID、发送者、时间、内容、模型 ID 和消息状态等字段。",
+      "tags": ["视图对象", "历史记录"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/client/grpc/GrpcChatClient.java",
+      "type": "file",
+      "name": "GrpcChatClient.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/client/grpc/GrpcChatClient.java",
+      "summary": "gRPC 流式聊天客户端，建立到 Python gRPC Server 的连接，通过 StreamObserver 接收逐 token 响应，失败时降级到 Feign REST。",
+      "tags": ["gRPC客户端", "流式通信", "降级策略"],
+      "complexity": "moderate",
+      "languageNotes": "使用 ManagedChannel 配置 keepalive 和空闲超时，支持 120 秒的总超时（含 LLM 推理时间）。"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/client/grpc/GrpcChatClient.java:GrpcChatClient",
+      "type": "class",
+      "name": "GrpcChatClient",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/client/grpc/GrpcChatClient.java",
+      "lineRange": [33, 102],
+      "summary": "gRPC 流式聊天客户端组件，管理到 Python 服务的 gRPC 连接，提供 streamChat 方法发送请求并通过回调接收流式响应。",
+      "tags": ["gRPC客户端", "流式通信", "Spring组件"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/client/grpc/GrpcChatClient.java:streamChat",
+      "type": "function",
+      "name": "streamChat",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/client/grpc/GrpcChatClient.java",
+      "lineRange": [69, 93],
+      "summary": "发起 gRPC 流式聊天请求，构建 ChatRequest 并通过 asyncStub 发送，设置 120 秒超时，通过 ChatStreamObserver 回调处理响应。",
+      "tags": ["gRPC调用", "流式处理", "异步回调"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/grpc/ChatStreamObserver.java",
+      "type": "file",
+      "name": "ChatStreamObserver.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/grpc/ChatStreamObserver.java",
+      "summary": "gRPC 流式响应观察者，处理逐 token 的 ChatResponse，包含首 token 日志、最终包处理和错误诊断（含 gRPC 状态码和 channel 状态）。",
+      "tags": ["gRPC", "流式观察者", "响应处理"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/grpc/ChatStreamObserver.java:ChatStreamObserver",
+      "type": "class",
+      "name": "ChatStreamObserver",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/grpc/ChatStreamObserver.java",
+      "lineRange": [15, 67],
+      "summary": "实现 StreamObserver 接口的 gRPC 响应观察者，通过 onToken/onComplete/onError 回调处理流式数据，并在错误时记录详细的诊断信息。",
+      "tags": ["gRPC", "观察者模式", "流式处理"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/LlmChatMsgMapper.java",
+      "type": "file",
+      "name": "LlmChatMsgMapper.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/LlmChatMsgMapper.java",
+      "summary": "llm_chat_msg 表的 MyBatis Mapper 接口，继承 BaseMapper 并提供基于时间和 ID 的消息历史查询方法。",
+      "tags": ["数据访问层", "MyBatis-Plus", "Mapper"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/LlmConfigMapper.java",
+      "type": "file",
+      "name": "LlmConfigMapper.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/LlmConfigMapper.java",
+      "summary": "llm_config 表的 MyBatis Mapper 接口，提供按 llmId 和 scenario 查询、批量插入、更新、删除等自定义方法。",
+      "tags": ["数据访问层", "MyBatis-Plus", "Mapper", "配置管理"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/LlmUserMapper.java",
+      "type": "file",
+      "name": "LlmUserMapper.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/LlmUserMapper.java",
+      "summary": "llm_user 表的 MyBatis Mapper 接口，继承 BaseMapper 提供基本 CRUD 操作。",
+      "tags": ["数据访问层", "MyBatis-Plus", "Mapper"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/remote/ChatClient.java",
+      "type": "file",
+      "name": "ChatClient.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/remote/ChatClient.java",
+      "summary": "Feign 远程调用客户端，定义与 Python RAG 服务的 REST 接口：聊天消息、删除消息和测试连接。",
+      "tags": ["Feign客户端", "远程调用", "REST接口"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmChatMsgService.java",
+      "type": "file",
+      "name": "LlmChatMsgService.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmChatMsgService.java",
+      "summary": "LLM 聊天消息服务接口，继承 IService，提供消息历史查询方法。",
+      "tags": ["服务接口", "消息管理"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmChatService.java",
+      "type": "file",
+      "name": "LlmChatService.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmChatService.java",
+      "summary": "LLM 聊天服务接口，定义同步聊天和 SSE 流式聊天两个核心方法。",
+      "tags": ["服务接口", "聊天服务", "SSE"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmConfigService.java",
+      "type": "file",
+      "name": "LlmConfigService.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmConfigService.java",
+      "summary": "LLM 配置服务接口，提供批量保存、查询、删除配置，测试连接，验证配置完整性和获取缺失场景等方法。",
+      "tags": ["服务接口", "配置管理", "连接测试"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmMemoryService.java",
+      "type": "file",
+      "name": "LlmMemoryService.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmMemoryService.java",
+      "summary": "模型记忆面板服务接口，提供获取模型完整记忆数据的方法。",
+      "tags": ["服务接口", "记忆系统"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmUserService.java",
+      "type": "file",
+      "name": "LlmUserService.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmUserService.java",
+      "summary": "LLM 用户服务接口，提供保存/删除/更新好友、上传头像和激活创造物等方法。",
+      "tags": ["服务接口", "用户管理", "好友系统"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatMsgServiceImpl.java",
+      "type": "file",
+      "name": "LlmChatMsgServiceImpl.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatMsgServiceImpl.java",
+      "summary": "LLM 聊天消息服务实现，使用 TimeUtil 进行时间戳转换，通过 Mapper 查询消息历史并转换为 VO。",
+      "tags": ["服务实现", "消息管理", "时间处理"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java",
+      "type": "file",
+      "name": "LlmChatServiceImpl.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java",
+      "summary": "LLM 聊天核心服务实现，支持同步 REST 调用和 SSE 流式聊天（gRPC 优先，失败降级 Feign），管理消息占位和增量 block 构建。",
+      "tags": ["服务实现", "聊天核心", "gRPC", "SSE", "降级策略"],
+      "complexity": "complex",
+      "languageNotes": "使用 CompletableFuture.runAsync 在 ForkJoinPool 中异步执行 gRPC 流式调用，通过 SseEmitter 推送增量 blocks 给前端。"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java:LlmChatServiceImpl",
+      "type": "class",
+      "name": "LlmChatServiceImpl",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java",
+      "lineRange": [36, 291],
+      "summary": "LLM 聊天核心实现类，协调 GrpcChatClient、ChatClient（Feign）和 LlmChatMsgService，实现同步和流式两种聊天模式，含 REST 降级机制。",
+      "tags": ["服务实现", "聊天核心", "降级策略"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java:llmChat",
+      "type": "function",
+      "name": "llmChat",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java",
+      "lineRange": [51, 93],
+      "summary": "同步聊天主逻辑：保存占位消息，通过 Feign 调用 Python 服务，解析 JSON 响应后更新占位消息状态，失败时抛出 BusinessException。",
+      "tags": ["聊天逻辑", "Feign调用", "异常处理"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java:llmChatStream",
+      "type": "function",
+      "name": "llmChatStream",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java",
+      "lineRange": [101, 198],
+      "summary": "SSE 流式聊天核心方法：创建 SseEmitter，异步调用 gRPC 流式接口，增量构建 blocks 并实时推送给前端，gRPC 失败时降级到 REST。",
+      "tags": ["SSE流式", "gRPC", "异步处理", "降级策略"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java:fallbackToRest",
+      "type": "function",
+      "name": "fallbackToRest",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java",
+      "lineRange": [216, 244],
+      "summary": "REST 降级方法：当 gRPC 失败时，通过 Feign 调用 Python REST 接口获取完整响应，通过 SSE 整段推送给前端。",
+      "tags": ["降级策略", "Feign调用", "SSE"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java",
+      "type": "file",
+      "name": "LlmConfigServiceImpl.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java",
+      "summary": "LLM 配置服务实现，提供批量保存（5 个场景）、查询、删除配置，测试连接（转发 Python），验证配置完整性等功能。",
+      "tags": ["服务实现", "配置管理", "连接测试"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java:LlmConfigServiceImpl",
+      "type": "class",
+      "name": "LlmConfigServiceImpl",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java",
+      "lineRange": [26, 181],
+      "summary": "LLM 配置服务实现类，管理 5 个场景（chat/memory/summary/extraction/emotion）的模型配置，支持批量保存、连接测试和配置完整性验证。",
+      "tags": ["服务实现", "配置管理", "场景配置"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java:saveConfigsBatch",
+      "type": "function",
+      "name": "saveConfigsBatch",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java",
+      "lineRange": [43, 96],
+      "summary": "批量保存配置方法：遍历 5 个场景配置，已存在则更新、不存在则创建，保存后自动触发 LLM 激活。",
+      "tags": ["批量操作", "配置保存", "自动激活"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java:testConnection",
+      "type": "function",
+      "name": "testConnection",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java",
+      "lineRange": [123, 150],
+      "summary": "测试 LLM API 连接：通过 Feign 转发请求到 Python 服务，处理 FeignException 和通用异常并返回结构化结果。",
+      "tags": ["连接测试", "Feign调用", "异常处理"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmMemoryServiceImpl.java",
+      "type": "file",
+      "name": "LlmMemoryServiceImpl.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmMemoryServiceImpl.java",
+      "summary": "模型记忆面板服务实现，纯 Redis 读取，解析角色卡、核心锚点、用户画像、记忆银行和当前情绪等 5 类记忆数据。",
+      "tags": ["服务实现", "记忆系统", "Redis", "AI角色"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmMemoryServiceImpl.java:LlmMemoryServiceImpl",
+      "type": "class",
+      "name": "LlmMemoryServiceImpl",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmMemoryServiceImpl.java",
+      "lineRange": [24, 151],
+      "summary": "记忆面板实现类，从 Redis 读取 5 类记忆数据（角色卡、核心锚点、用户画像、记忆银行、情绪状态），解析 JSON 并组装为 VO。",
+      "tags": ["服务实现", "Redis读取", "记忆系统"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmMemoryServiceImpl.java:getMemory",
+      "type": "function",
+      "name": "getMemory",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmMemoryServiceImpl.java",
+      "lineRange": [32, 127],
+      "summary": "获取模型完整记忆数据：从 Redis 读取角色卡、核心锚点、用户画像、记忆银行（最近 20 条）和当前情绪，解析为 LlmMemoryVo。",
+      "tags": ["记忆读取", "Redis操作", "JSON解析"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "type": "file",
+      "name": "LlmUserServiceImpl.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "summary": "LLM 用户服务实现，提供创建/删除/更新好友、上传头像和激活创造物（通过 MQ 发送记忆初始化消息）等功能。",
+      "tags": ["服务实现", "用户管理", "好友系统", "消息队列"],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java:LlmUserServiceImpl",
+      "type": "class",
+      "name": "LlmUserServiceImpl",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "lineRange": [40, 214],
+      "summary": "LLM 用户服务实现类，管理 AI 朋友的 CRUD 操作，激活创造物时验证配置完整性并通过 MQ 发送记忆初始化消息。",
+      "tags": ["服务实现", "用户管理", "MQ集成"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java:activateLlm",
+      "type": "function",
+      "name": "activateLlm",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "lineRange": [165, 214],
+      "summary": "激活创造物方法：验证权限和状态，检查 5 个场景配置完整性，通过 MQ 发送记忆初始化消息，更新 isApply 状态为 1。",
+      "tags": ["激活流程", "配置验证", "MQ发送"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java",
+      "type": "file",
+      "name": "LLMChatController.java",
+      "filePath": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java",
+      "summary": "LLM 聊天 REST 控制器，提供聊天、流式聊天（SSE）、记忆面板、添加/更新好友、消息历史、上传头像和激活创造物等 API 端点。",
+      "tags": ["REST控制器", "API端点", "聊天接口", "SSE"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java:LLMChatController",
+      "type": "class",
+      "name": "LLMChatController",
+      "filePath": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java",
+      "lineRange": [33, 161],
+      "summary": "LLM 聊天控制器，映射 /llm 路径，注入 5 个服务依赖，提供 8 个 API 端点覆盖聊天、好友管理和记忆查看等功能。",
+      "tags": ["REST控制器", "API端点"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LlmConfigController.java",
+      "type": "file",
+      "name": "LlmConfigController.java",
+      "filePath": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LlmConfigController.java",
+      "summary": "LLM 配置 REST 控制器，映射 /llm/config 路径，提供批量保存、查询、删除配置，测试连接和验证配置完整性等 API 端点。",
+      "tags": ["REST控制器", "API端点", "配置管理"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LlmConfigController.java:LlmConfigController",
+      "type": "class",
+      "name": "LlmConfigController",
+      "filePath": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LlmConfigController.java",
+      "lineRange": [25, 136],
+      "summary": "LLM 配置控制器，映射 /llm/config 路径，提供 5 个配置管理 API 端点，包括批量保存、查询、删除、测试连接和验证。",
+      "tags": ["REST控制器", "配置管理"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/TimeUtil.java",
+      "target": "class:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/TimeUtil.java:TimeUtil",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/proto/ai/AIChatServiceGrpc.java",
+      "target": "class:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/proto/ai/AIChatServiceGrpc.java:AIChatServiceGrpc",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/client/grpc/GrpcChatClient.java",
+      "target": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/client/grpc/GrpcChatClient.java:GrpcChatClient",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/client/grpc/GrpcChatClient.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/client/grpc/GrpcChatClient.java:streamChat",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/grpc/ChatStreamObserver.java",
+      "target": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/grpc/ChatStreamObserver.java:ChatStreamObserver",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java",
+      "target": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java:LlmChatServiceImpl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java:llmChat",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java:llmChatStream",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java:fallbackToRest",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java",
+      "target": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java:LlmConfigServiceImpl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java:saveConfigsBatch",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java:testConnection",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmMemoryServiceImpl.java",
+      "target": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmMemoryServiceImpl.java:LlmMemoryServiceImpl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmMemoryServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmMemoryServiceImpl.java:getMemory",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "target": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java:LlmUserServiceImpl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java:activateLlm",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java",
+      "target": "class:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java:LLMChatController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LlmConfigController.java",
+      "target": "class:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LlmConfigController.java:LlmConfigController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/client/grpc/GrpcChatClient.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/proto/ai/AiChatProto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/client/grpc/GrpcChatClient.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/proto/ai/AIChatServiceGrpc.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/client/grpc/GrpcChatClient.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/grpc/ChatStreamObserver.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/grpc/ChatStreamObserver.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/proto/ai/AiChatProto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/LlmChatMsgMapper.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmChatMsg.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/LlmConfigMapper.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmConfig.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/LlmUserMapper.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmUser.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/remote/ChatClient.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/ChatMsgTo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmChatMsgService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmChatMsg.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmChatMsgService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/LlmMsgHistoryVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmChatService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/LlmChatMsgVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmConfigService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmConfig.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmConfigService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LlmConfigDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmConfigService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/TestConnectionDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmMemoryService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/LlmMemoryVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmUserService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmUser.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmUserService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/AddLlmFriendDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmUserService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LlmFriendUpdateDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmUserService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/FriendVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/TimeUtil.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmChatMsg.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/LlmMsgHistoryVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/LlmChatMsgMapper.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmChatMsgService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ResultStatusConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/exception/BusinessException.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/M.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmChatMsg.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/ChatMsgTo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/LlmChatMsgVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/client/grpc/GrpcChatClient.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/remote/ChatClient.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmChatMsgService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmChatService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmConfig.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LlmConfigDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/TestConnectionDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/LlmConfigMapper.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/remote/ChatClient.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmConfigService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmUserService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmMemoryServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmMemoryServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/LlmMemoryVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmMemoryServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmMemoryService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ChatRoleConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/FileContstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ResultStatusConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MqUtil.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmChatMsg.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmUser.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/AddLlmFriendDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LlmFriendUpdateDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/ChatMqMsgTo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/FriendVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/LlmUserMapper.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/remote/ChatClient.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmChatMsgService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmConfigService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmUserService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ResultStatusConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/R.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/AddLlmFriendDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LlmFriendUpdateDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LlmMsgHistoryReqDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/LlmChatMsgVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/LlmMemoryVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/LlmMsgHistoryVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmChatMsgService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmChatService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmConfigService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmMemoryService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmUserService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LlmConfigController.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ResultStatusConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LlmConfigController.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/R.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LlmConfigController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmConfig.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LlmConfigController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LlmConfigDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LlmConfigController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/TestConnectionDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LlmConfigController.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmConfigService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

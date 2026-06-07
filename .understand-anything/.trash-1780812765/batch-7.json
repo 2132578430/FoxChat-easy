@@ -1,0 +1,582 @@
+{
+  "nodes": [
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/MsgStatus.java",
+      "type": "file",
+      "name": "MsgStatus.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/MsgStatus.java",
+      "summary": "消息状态实体类，映射 msg_status 表，记录每条消息对每个用户的存在/删除状态（1存在，0删除）。包含完整的 equals/hashCode/toString 方法。",
+      "tags": ["data-model", "entity", "domain"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/MsgStatus.java:MsgStatus",
+      "type": "class",
+      "name": "MsgStatus",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/MsgStatus.java",
+      "lineRange": [9, 73],
+      "summary": "消息状态实体，包含 id、userId、msgId、status 四个字段，用于追踪每条消息在各用户侧的可见状态。",
+      "tags": ["data-model", "entity", "lombok"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/DeleteMsgDto.java",
+      "type": "file",
+      "name": "DeleteMsgDto.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/DeleteMsgDto.java",
+      "summary": "删除消息的数据传输对象，携带待删除的消息 ID 列表。",
+      "tags": ["data-model", "dto"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryUserDto.java",
+      "type": "file",
+      "name": "HistoryUserDto.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryUserDto.java",
+      "summary": "查询历史消息的请求参数，包含好友 ID 和上次查询的时间戳，用于分页加载聊天记录。",
+      "tags": ["data-model", "dto"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/SignMsgFriendDto.java",
+      "type": "file",
+      "name": "SignMsgFriendDto.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/SignMsgFriendDto.java",
+      "summary": "签收消息请求参数，携带好友 ID，用于查询与该好友之间的未签收消息。",
+      "tags": ["data-model", "dto"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/WithdrawMsgDto.java",
+      "type": "file",
+      "name": "WithdrawMsgDto.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/WithdrawMsgDto.java",
+      "summary": "撤回消息的数据传输对象，携带待撤回的消息 ID 列表。",
+      "tags": ["data-model", "dto"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/UnreadMsgTo.java",
+      "type": "file",
+      "name": "UnreadMsgTo.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/UnreadMsgTo.java",
+      "summary": "未读消息传输对象，包含好友用户 ID 和对应的未读消息数量，用于数据库查询结果映射。",
+      "tags": ["data-model", "transfer-object"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/HistoryMsgVo.java",
+      "type": "file",
+      "name": "HistoryMsgVo.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/HistoryMsgVo.java",
+      "summary": "历史消息视图对象，包含消息 ID、内容、时间戳、发送者和状态等字段，用于向前端返回聊天记录。",
+      "tags": ["data-model", "view-object"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/ChatMsgMapper.java",
+      "type": "file",
+      "name": "ChatMsgMapper.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/ChatMsgMapper.java",
+      "summary": "聊天消息 MyBatis Mapper 接口，扩展 BaseMapper，提供按时间分页查询历史消息和按好友统计未读消息数量的自定义方法。",
+      "tags": ["mapper", "database", "mybatis"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/MsgStatusMapper.java",
+      "type": "file",
+      "name": "MsgStatusMapper.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/MsgStatusMapper.java",
+      "summary": "消息状态 MyBatis Mapper 接口，扩展 BaseMapper，提供对 msg_status 表的基本 CRUD 操作。",
+      "tags": ["mapper", "database", "mybatis"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/ChatMsgService.java",
+      "type": "file",
+      "name": "ChatMsgService.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/ChatMsgService.java",
+      "summary": "聊天消息服务接口，定义保存消息、签收消息、查询未签收消息、分页历史记录、未读计数和消息撤回等核心业务方法。",
+      "tags": ["service", "interface", "business-logic"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/MsgStatusService.java",
+      "type": "file",
+      "name": "MsgStatusService.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/MsgStatusService.java",
+      "summary": "消息状态服务接口，定义保存消息状态和逻辑删除消息两个业务方法。",
+      "tags": ["service", "interface", "business-logic"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "type": "file",
+      "name": "ChatMsgServiceImpl.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "summary": "聊天消息服务实现类，提供消息持久化、签收标记、未签收查询、按时间分页历史记录、未读计数聚合和消息撤回等完整业务逻辑，依赖 MsgStatusService 同步管理消息状态。",
+      "tags": ["service", "implementation", "business-logic", "transaction"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java:ChatMsgServiceImpl",
+      "type": "class",
+      "name": "ChatMsgServiceImpl",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "lineRange": [31, 150],
+      "summary": "聊天消息服务核心实现，继承 ServiceImpl 并实现 ChatMsgService，注入 ChatMsgMapper 和 MsgStatusService，负责消息的增删改查和未读统计。",
+      "tags": ["service", "implementation", "spring"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java:saveMsg",
+      "type": "function",
+      "name": "saveMsg",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "lineRange": [47, 63],
+      "summary": "保存聊天消息到数据库，设置签收标志为 false、创建时间为当前时间，同时调用 MsgStatusService 为发送者和接收者创建消息状态记录。",
+      "tags": ["persistence", "message"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java:signMsg",
+      "type": "function",
+      "name": "signMsg",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "lineRange": [69, 82],
+      "summary": "批量签收消息，将指定消息 ID 列表的签收标志设为 true，使用事务保证一致性。",
+      "tags": ["batch-update", "transaction"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java:noSignMsg",
+      "type": "function",
+      "name": "noSignMsg",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "lineRange": [88, 100],
+      "summary": "查询当前用户与指定好友之间未签收的消息 ID 列表，返回逗号分隔的字符串，无未签收消息时返回空串。",
+      "tags": ["query", "unread"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java:msgHistory",
+      "type": "function",
+      "name": "msgHistory",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "lineRange": [107, 121],
+      "summary": "按时间戳分页查询与好友的历史聊天记录，将数据库的 LocalDateTime 转换为时间戳字符串返回给前端。",
+      "tags": ["query", "pagination", "time-conversion"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java:getUnreadCount",
+      "type": "function",
+      "name": "getUnreadCount",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "lineRange": [128, 137],
+      "summary": "获取当前用户所有好友的未读消息数量，返回好友用户 ID 到未读数的映射 Map。",
+      "tags": ["query", "aggregation", "unread"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java:withdrawMsg",
+      "type": "function",
+      "name": "withdrawMsg",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "lineRange": [143, 149],
+      "summary": "撤回消息，根据消息 ID 列表批量删除聊天消息记录，使用事务保证一致性。",
+      "tags": ["delete", "transaction"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/MsgStatusServiceImpl.java",
+      "type": "file",
+      "name": "MsgStatusServiceImpl.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/MsgStatusServiceImpl.java",
+      "summary": "消息状态服务实现类，负责为发送者和接收者创建消息状态记录，以及逻辑删除消息（将 status 置为 0）。",
+      "tags": ["service", "implementation", "business-logic", "transaction"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/MsgStatusServiceImpl.java:MsgStatusServiceImpl",
+      "type": "class",
+      "name": "MsgStatusServiceImpl",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/MsgStatusServiceImpl.java",
+      "lineRange": [22, 66],
+      "summary": "消息状态服务实现，继承 ServiceImpl 并实现 MsgStatusService，注入 MsgStatusMapper，负责消息状态的批量保存和逻辑删除。",
+      "tags": ["service", "implementation", "spring"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/MsgController.java",
+      "type": "file",
+      "name": "MsgController.java",
+      "filePath": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/MsgController.java",
+      "summary": "消息 REST 控制器，映射 /msg 路径，提供未签收消息查询、历史消息分页、未读计数、消息撤回和消息删除等 HTTP 接口。",
+      "tags": ["api-handler", "controller", "rest-api"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/MsgController.java:MsgController",
+      "type": "class",
+      "name": "MsgController",
+      "filePath": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/MsgController.java",
+      "lineRange": [20, 84],
+      "summary": "消息控制器，注入 ChatMsgService 和 MsgStatusService，提供 /msg 下的消息管理 REST 接口。",
+      "tags": ["api-handler", "controller", "spring-web"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/MsgStatus.java",
+      "target": "class:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/MsgStatus.java:MsgStatus",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/ChatMsgMapper.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatMsg.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/ChatMsgMapper.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/UnreadMsgTo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/ChatMsgMapper.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/HistoryMsgVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/MsgStatusMapper.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/MsgStatus.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/ChatMsgService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatMsg.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/ChatMsgService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryUserDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/ChatMsgService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/WithdrawMsgDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/ChatMsgService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/HistoryMsgVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/MsgStatusService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatMsg.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/MsgStatusService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/MsgStatus.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/MsgStatusService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/DeleteMsgDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/TimeUtil.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatMsg.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryUserDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/WithdrawMsgDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/UnreadMsgTo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/HistoryMsgVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/ChatMsgMapper.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/ChatMsgService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/MsgStatusService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/MsgStatusServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/MsgStatusServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatMsg.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/MsgStatusServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/MsgStatus.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/MsgStatusServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/DeleteMsgDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/MsgStatusServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/MsgStatusMapper.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/MsgStatusServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/MsgStatusService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/MsgController.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/R.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/MsgController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/DeleteMsgDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/MsgController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryUserDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/MsgController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/SignMsgFriendDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/MsgController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/WithdrawMsgDto.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/MsgController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/HistoryMsgVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/MsgController.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/ChatMsgService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/MsgController.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/MsgStatusService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "target": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java:ChatMsgServiceImpl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java:saveMsg",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java:signMsg",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java:noSignMsg",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java:msgHistory",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java:getUnreadCount",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java:withdrawMsg",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/MsgStatusServiceImpl.java",
+      "target": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/MsgStatusServiceImpl.java:MsgStatusServiceImpl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/MsgController.java",
+      "target": "class:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/MsgController.java:MsgController",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java:ChatMsgServiceImpl",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/ChatMsgService.java",
+      "type": "implements",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/MsgStatusServiceImpl.java:MsgStatusServiceImpl",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/MsgStatusService.java",
+      "type": "implements",
+      "direction": "forward",
+      "weight": 0.9
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/MsgStatusService.java",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/MsgController.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/ChatMsgService.java",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/MsgController.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/MsgStatusService.java",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

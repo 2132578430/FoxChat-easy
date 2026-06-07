@@ -1,0 +1,104 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 7,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "FoxChat-vue/src/App.vue",
+      "language": "vue",
+      "fileCategory": "code",
+      "totalLines": 28,
+      "nonEmptyLines": 24,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-vue/src/main.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 18,
+      "nonEmptyLines": 14,
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChat-vue/src/router/index.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 37,
+      "nonEmptyLines": 34,
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChat-vue/src/utils/request.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 111,
+      "nonEmptyLines": 96,
+      "functions": [
+        {
+          "name": "startLoading",
+          "startLine": 17,
+          "endLine": 26,
+          "params": []
+        },
+        {
+          "name": "closeLoading",
+          "startLine": 29,
+          "endLine": 35,
+          "params": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "startLoading",
+          "callee": "ElLoading.service",
+          "lineNumber": 19
+        },
+        {
+          "caller": "closeLoading",
+          "callee": "loadingInstance?.close",
+          "lineNumber": 33
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChat-vue/src/views/Home.vue",
+      "language": "vue",
+      "fileCategory": "code",
+      "totalLines": 2922,
+      "nonEmptyLines": 2594,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-vue/src/views/Login.vue",
+      "language": "vue",
+      "fileCategory": "code",
+      "totalLines": 93,
+      "nonEmptyLines": 82,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-vue/src/views/Register.vue",
+      "language": "vue",
+      "fileCategory": "code",
+      "totalLines": 92,
+      "nonEmptyLines": 84,
+      "metrics": {}
+    }
+  ]
+}

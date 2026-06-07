@@ -1,0 +1,798 @@
+{
+  "nodes": [
+    {
+      "id": "file:FoxChatRAG-python/app/chroma/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "FoxChatRAG-python/app/chroma/__init__.py",
+      "summary": "Chroma 向量数据库模块的入口文件，聚合导出 chroma 和 splitter 子模块。",
+      "tags": ["entry-point", "barrel", "vector-db"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/chroma/chroma.py",
+      "type": "file",
+      "name": "chroma.py",
+      "filePath": "FoxChatRAG-python/app/chroma/chroma.py",
+      "summary": "管理 Chroma 向量集合的维度校验与重建逻辑，确保嵌入向量维度一致。",
+      "tags": ["vector-db", "service", "validation"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/chroma/chroma.py:ensure_collection_dimensions",
+      "type": "function",
+      "name": "ensure_collection_dimensions",
+      "filePath": "FoxChatRAG-python/app/chroma/chroma.py",
+      "lineRange": [32, 65],
+      "summary": "校验 Chroma 集合中已有向量的维度是否与当前嵌入模型匹配，若不匹配则删除并重建集合。",
+      "tags": ["vector-db", "validation", "maintenance"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/chroma/splitter.py",
+      "type": "file",
+      "name": "splitter.py",
+      "filePath": "FoxChatRAG-python/app/chroma/splitter.py",
+      "summary": "文本分块工具模块，基于 LLM 模型提供文本切分能力。",
+      "tags": ["utility", "text-processing", "chunking"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/common/constant/intent_config.py",
+      "type": "file",
+      "name": "intent_config.py",
+      "filePath": "FoxChatRAG-python/app/common/constant/intent_config.py",
+      "summary": "意图分类的核心配置文件，定义意图类型枚举、检索范围、检索策略映射表及意图分类结果数据结构。",
+      "tags": ["configuration", "type-definition", "intent-classification", "constants"],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:FoxChatRAG-python/app/common/constant/intent_config.py:IntentType",
+      "type": "class",
+      "name": "IntentType",
+      "filePath": "FoxChatRAG-python/app/common/constant/intent_config.py",
+      "lineRange": [428, 439],
+      "summary": "意图类型枚举类，定义聊天、记忆查询、文件检索等用户意图分类。",
+      "tags": ["enum", "type-definition", "intent-classification"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChatRAG-python/app/common/constant/intent_config.py:RetrievalScope",
+      "type": "class",
+      "name": "RetrievalScope",
+      "filePath": "FoxChatRAG-python/app/common/constant/intent_config.py",
+      "lineRange": [442, 456],
+      "summary": "检索范围枚举类，定义记忆、文件、全部及无检索等范围选项。",
+      "tags": ["enum", "type-definition", "retrieval"],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChatRAG-python/app/common/constant/intent_config.py:IntentResult",
+      "type": "class",
+      "name": "IntentResult",
+      "filePath": "FoxChatRAG-python/app/common/constant/intent_config.py",
+      "lineRange": [484, 490],
+      "summary": "意图分类结果数据类，包含意图类型、检索范围、top_k、是否跳过及置信度字段。",
+      "tags": ["data-model", "type-definition", "intent-classification"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/core/llm_model/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "FoxChatRAG-python/app/core/llm_model/__init__.py",
+      "summary": "LLM 模型模块的入口文件，聚合导出 model 子模块。",
+      "tags": ["entry-point", "barrel", "llm"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/core/llm_model/model.py",
+      "type": "file",
+      "name": "model.py",
+      "filePath": "FoxChatRAG-python/app/core/llm_model/model.py",
+      "summary": "定义嵌入模型封装层，包含 DashScope 通义千问嵌入模型适配器和统一的 ChromaModel 嵌入接口，支持 Ollama 和 DashScope 两种后端。",
+      "tags": ["llm", "embedding", "service", "adapter"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChatRAG-python/app/core/llm_model/model.py:DashScopeEmbeddings",
+      "type": "class",
+      "name": "DashScopeEmbeddings",
+      "filePath": "FoxChatRAG-python/app/core/llm_model/model.py",
+      "lineRange": [40, 89],
+      "summary": "通义千问 DashScope 嵌入模型适配器，封装 TextEmbedding API 调用，支持单条和批量文本嵌入。",
+      "tags": ["embedding", "adapter", "llm", "dashscope"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChatRAG-python/app/core/llm_model/model.py:ChromaModel",
+      "type": "class",
+      "name": "ChromaModel",
+      "filePath": "FoxChatRAG-python/app/core/llm_model/model.py",
+      "lineRange": [91, 132],
+      "summary": "统一嵌入模型封装类，根据配置自动选择 Ollama 或 DashScope 后端，提供 embed_query 和 embed_documents 接口。",
+      "tags": ["embedding", "factory", "llm", "abstraction"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/core/mq/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "FoxChatRAG-python/app/core/mq/__init__.py",
+      "summary": "消息队列模块的入口文件，聚合导出 rabbitmq_starter 子模块。",
+      "tags": ["entry-point", "barrel", "message-queue"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/core/mq/handler/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "FoxChatRAG-python/app/core/mq/handler/__init__.py",
+      "summary": "消息处理器模块的入口文件，聚合导出 chat_upload_handler 和 rag_file_handler。",
+      "tags": ["entry-point", "barrel", "message-queue"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/core/mq/handler/chat_upload_handler.py",
+      "type": "file",
+      "name": "chat_upload_handler.py",
+      "filePath": "FoxChatRAG-python/app/core/mq/handler/chat_upload_handler.py",
+      "summary": "RabbitMQ 聊天上传消息处理器，处理聊天初始化消息，支持重试计数与死信队列管理。",
+      "tags": ["message-queue", "event-handler", "chat"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/core/mq/handler/rag_file_handler.py",
+      "type": "file",
+      "name": "rag_file_handler.py",
+      "filePath": "FoxChatRAG-python/app/core/mq/handler/rag_file_handler.py",
+      "summary": "RabbitMQ RAG 文件消息处理器，处理文件上传消息并调用 RAG 服务，支持重试与死信队列。",
+      "tags": ["message-queue", "event-handler", "rag", "file-processing"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/core/mq/rabbitmq_connnect.py",
+      "type": "file",
+      "name": "rabbitmq_connnect.py",
+      "filePath": "FoxChatRAG-python/app/core/mq/rabbitmq_connnect.py",
+      "summary": "RabbitMQ 连接工厂模块，使用 aio_pika 建立异步健壮连接。",
+      "tags": ["message-queue", "connection", "infrastructure"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/core/mq/rabbitmq_connnect.py:rabbitmq_connect",
+      "type": "function",
+      "name": "rabbitmq_connect",
+      "filePath": "FoxChatRAG-python/app/core/mq/rabbitmq_connnect.py",
+      "lineRange": [7, 17],
+      "summary": "创建 RabbitMQ 异步健壮连接，从 Settings 读取连接参数。",
+      "tags": ["message-queue", "connection", "async"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/core/mq/rabbitmq_setup_queue.py",
+      "type": "file",
+      "name": "rabbitmq_setup_queue.py",
+      "filePath": "FoxChatRAG-python/app/core/mq/rabbitmq_setup_queue.py",
+      "summary": "RabbitMQ 队列声明模块，定义 RAG 文件处理和聊天上传两个持久化队列。",
+      "tags": ["message-queue", "infrastructure", "queue-setup"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/core/mq/rabbitmq_setup_queue.py:rag_setup_queue",
+      "type": "function",
+      "name": "rag_setup_queue",
+      "filePath": "FoxChatRAG-python/app/core/mq/rabbitmq_setup_queue.py",
+      "lineRange": [7, 13],
+      "summary": "声明 RAG 文件处理持久化队列。",
+      "tags": ["message-queue", "queue-setup"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/core/mq/rabbitmq_setup_queue.py:chat_setup_queue",
+      "type": "function",
+      "name": "chat_setup_queue",
+      "filePath": "FoxChatRAG-python/app/core/mq/rabbitmq_setup_queue.py",
+      "lineRange": [15, 21],
+      "summary": "声明聊天上传持久化队列。",
+      "tags": ["message-queue", "queue-setup"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/core/mq/rabbitmq_start_consumer.py",
+      "type": "file",
+      "name": "rabbitmq_start_consumer.py",
+      "filePath": "FoxChatRAG-python/app/core/mq/rabbitmq_start_consumer.py",
+      "summary": "RabbitMQ 消费者启动模块，分别为 RAG 文件队列和聊天队列创建异步消费者循环。",
+      "tags": ["message-queue", "consumer", "async"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/core/mq/rabbitmq_starter.py",
+      "type": "file",
+      "name": "rabbitmq_starter.py",
+      "filePath": "FoxChatRAG-python/app/core/mq/rabbitmq_starter.py",
+      "summary": "RabbitMQ 生命周期管理模块，负责连接、通道创建、队列声明及消费者任务启动，提供初始化和关闭接口。",
+      "tags": ["message-queue", "service", "lifecycle"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/core/mq/rabbitmq_starter.py:init_rabbitmq",
+      "type": "function",
+      "name": "init_rabbitmq",
+      "filePath": "FoxChatRAG-python/app/core/mq/rabbitmq_starter.py",
+      "lineRange": [10, 27],
+      "summary": "初始化 RabbitMQ 连接、通道、队列，并启动 RAG 和聊天两个消费者的异步任务。",
+      "tags": ["message-queue", "initialization", "async"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/core/settings.py",
+      "type": "file",
+      "name": "settings.py",
+      "filePath": "FoxChatRAG-python/app/core/settings.py",
+      "summary": "全局配置中心，使用 pydantic-settings 定义所有服务配置类，涵盖 RabbitMQ、MySQL、Redis、Ollama、Chroma、LLM 模型及 LangSmith 等配置。",
+      "tags": ["configuration", "settings", "pydantic", "type-definition"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChatRAG-python/app/core/settings.py:Settings",
+      "type": "class",
+      "name": "Settings",
+      "filePath": "FoxChatRAG-python/app/core/settings.py",
+      "lineRange": [80, 97],
+      "summary": "全局配置聚合类，组合 RabbitMQ、MySQL、Redis、Chroma、Ollama、模型、LangSmith 等子配置，作为应用的统一配置入口。",
+      "tags": ["configuration", "settings", "singleton"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "type": "file",
+      "name": "intent_classifier.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "summary": "意图分类引擎，采用规则匹配+语义向量双重策略对用户查询进行意图识别，支持聊天、记忆查询、文件检索等多种意图分类，并输出检索参数。",
+      "tags": ["service", "intent-classification", "nlp", "embedding"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/intent_classifier.py:match_intent_by_rule",
+      "type": "function",
+      "name": "match_intent_by_rule",
+      "filePath": "FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "lineRange": [71, 109],
+      "summary": "基于正则表达式的规则匹配意图分类，对用户查询进行模式匹配并返回对应的 IntentResult。",
+      "tags": ["intent-classification", "rule-engine", "regex"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/intent_classifier.py:match_intent_by_semantic",
+      "type": "function",
+      "name": "match_intent_by_semantic",
+      "filePath": "FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "lineRange": [116, 181],
+      "summary": "基于语义向量相似度的意图分类，计算查询嵌入与预计算意图示例嵌入的余弦相似度，选择最匹配的意图。",
+      "tags": ["intent-classification", "semantic-search", "embedding", "similarity"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/intent_classifier.py:classify_intent",
+      "type": "function",
+      "name": "classify_intent",
+      "filePath": "FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "lineRange": [188, 229],
+      "summary": "意图分类主入口，先尝试规则匹配，未命中则回退到语义匹配，最终返回 IntentResult。",
+      "tags": ["intent-classification", "service", "fallback"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/intent_classifier.py:classify_event_type",
+      "type": "function",
+      "name": "classify_event_type",
+      "filePath": "FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "lineRange": [236, 261],
+      "summary": "基于意图分类结果映射事件类型，将 IntentType 转换为对应的事件类型字符串。",
+      "tags": ["intent-classification", "mapping"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/intent_classifier.py:get_retrieval_params",
+      "type": "function",
+      "name": "get_retrieval_params",
+      "filePath": "FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "lineRange": [268, 282],
+      "summary": "根据意图分类结果提取检索参数，返回 scope、top_k 和 skip 标志。",
+      "tags": ["intent-classification", "utility"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/main.py",
+      "type": "file",
+      "name": "main.py",
+      "filePath": "FoxChatRAG-python/main.py",
+      "summary": "FastAPI 应用入口，通过 lifespan 管理 RabbitMQ、Redis、MySQL 连接初始化，启动 gRPC 服务、定时任务和 Chroma 维度校验。",
+      "tags": ["entry-point", "api-server", "lifecycle", "fastapi"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChatRAG-python/main.py:lifespan",
+      "type": "function",
+      "name": "lifespan",
+      "filePath": "FoxChatRAG-python/main.py",
+      "lineRange": [18, 55],
+      "summary": "FastAPI 生命周期管理函数，启动时初始化 Redis/MySQL 连接、RabbitMQ、定时任务和 gRPC 服务，关闭时清理资源。",
+      "tags": ["lifecycle", "initialization", "async", "fastapi"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:FoxChatRAG-python/app/chroma/__init__.py",
+      "target": "file:FoxChatRAG-python/app/chroma/chroma.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/chroma/__init__.py",
+      "target": "file:FoxChatRAG-python/app/chroma/splitter.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/chroma/chroma.py",
+      "target": "file:FoxChatRAG-python/app/common/constant/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/chroma/chroma.py",
+      "target": "file:FoxChatRAG-python/app/common/constant/ChromaTypeConstant.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/chroma/chroma.py",
+      "target": "file:FoxChatRAG-python/app/core/llm_model/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/chroma/chroma.py",
+      "target": "file:FoxChatRAG-python/app/core/llm_model/model.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/chroma/chroma.py",
+      "target": "file:FoxChatRAG-python/app/core/settings.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/chroma/splitter.py",
+      "target": "file:FoxChatRAG-python/app/core/llm_model/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/chroma/splitter.py",
+      "target": "file:FoxChatRAG-python/app/core/llm_model/model.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/llm_model/__init__.py",
+      "target": "file:FoxChatRAG-python/app/core/llm_model/model.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/llm_model/model.py",
+      "target": "file:FoxChatRAG-python/app/core/settings.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/mq/__init__.py",
+      "target": "file:FoxChatRAG-python/app/core/mq/rabbitmq_starter.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/mq/handler/__init__.py",
+      "target": "file:FoxChatRAG-python/app/core/mq/handler/chat_upload_handler.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/mq/handler/__init__.py",
+      "target": "file:FoxChatRAG-python/app/core/mq/handler/rag_file_handler.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/mq/handler/chat_upload_handler.py",
+      "target": "file:FoxChatRAG-python/app/service/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/mq/handler/rag_file_handler.py",
+      "target": "file:FoxChatRAG-python/app/service/rag/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/mq/rabbitmq_connnect.py",
+      "target": "file:FoxChatRAG-python/app/core/settings.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/mq/rabbitmq_setup_queue.py",
+      "target": "file:FoxChatRAG-python/app/core/settings.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/mq/rabbitmq_start_consumer.py",
+      "target": "file:FoxChatRAG-python/app/core/db/mysql_client.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/mq/rabbitmq_start_consumer.py",
+      "target": "file:FoxChatRAG-python/app/core/mq/handler/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/mq/rabbitmq_start_consumer.py",
+      "target": "file:FoxChatRAG-python/app/core/mq/handler/chat_upload_handler.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/mq/rabbitmq_start_consumer.py",
+      "target": "file:FoxChatRAG-python/app/core/mq/handler/rag_file_handler.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/mq/rabbitmq_starter.py",
+      "target": "file:FoxChatRAG-python/app/core/mq/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/mq/rabbitmq_starter.py",
+      "target": "file:FoxChatRAG-python/app/core/mq/rabbitmq_connnect.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/mq/rabbitmq_starter.py",
+      "target": "file:FoxChatRAG-python/app/core/mq/rabbitmq_setup_queue.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/mq/rabbitmq_starter.py",
+      "target": "file:FoxChatRAG-python/app/core/mq/rabbitmq_start_consumer.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "target": "file:FoxChatRAG-python/app/common/constant/intent_config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "target": "file:FoxChatRAG-python/app/core/llm_model/model.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/main.py",
+      "target": "file:FoxChatRAG-python/app/api/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/main.py",
+      "target": "file:FoxChatRAG-python/app/core/mq/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/main.py",
+      "target": "file:FoxChatRAG-python/app/core/settings.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/main.py",
+      "target": "file:FoxChatRAG-python/app/exception/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/main.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/timer_scheduler.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/chroma/chroma.py",
+      "target": "function:FoxChatRAG-python/app/chroma/chroma.py:ensure_collection_dimensions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/mq/rabbitmq_connnect.py",
+      "target": "function:FoxChatRAG-python/app/core/mq/rabbitmq_connnect.py:rabbitmq_connect",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/mq/rabbitmq_setup_queue.py",
+      "target": "function:FoxChatRAG-python/app/core/mq/rabbitmq_setup_queue.py:rag_setup_queue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/mq/rabbitmq_setup_queue.py",
+      "target": "function:FoxChatRAG-python/app/core/mq/rabbitmq_setup_queue.py:chat_setup_queue",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/mq/rabbitmq_starter.py",
+      "target": "function:FoxChatRAG-python/app/core/mq/rabbitmq_starter.py:init_rabbitmq",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/common/constant/intent_config.py",
+      "target": "class:FoxChatRAG-python/app/common/constant/intent_config.py:IntentType",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/common/constant/intent_config.py",
+      "target": "class:FoxChatRAG-python/app/common/constant/intent_config.py:RetrievalScope",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/common/constant/intent_config.py",
+      "target": "class:FoxChatRAG-python/app/common/constant/intent_config.py:IntentResult",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/llm_model/model.py",
+      "target": "class:FoxChatRAG-python/app/core/llm_model/model.py:DashScopeEmbeddings",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/llm_model/model.py",
+      "target": "class:FoxChatRAG-python/app/core/llm_model/model.py:ChromaModel",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/settings.py",
+      "target": "class:FoxChatRAG-python/app/core/settings.py:Settings",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/intent_classifier.py:match_intent_by_rule",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/intent_classifier.py:match_intent_by_semantic",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/intent_classifier.py:classify_intent",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/intent_classifier.py:classify_event_type",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/intent_classifier.py:get_retrieval_params",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/main.py",
+      "target": "function:FoxChatRAG-python/main.py:lifespan",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/chroma/chroma.py",
+      "target": "function:FoxChatRAG-python/app/chroma/chroma.py:ensure_collection_dimensions",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/common/constant/intent_config.py",
+      "target": "class:FoxChatRAG-python/app/common/constant/intent_config.py:IntentType",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/common/constant/intent_config.py",
+      "target": "class:FoxChatRAG-python/app/common/constant/intent_config.py:RetrievalScope",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/common/constant/intent_config.py",
+      "target": "class:FoxChatRAG-python/app/common/constant/intent_config.py:IntentResult",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/llm_model/model.py",
+      "target": "class:FoxChatRAG-python/app/core/llm_model/model.py:DashScopeEmbeddings",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/llm_model/model.py",
+      "target": "class:FoxChatRAG-python/app/core/llm_model/model.py:ChromaModel",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/settings.py",
+      "target": "class:FoxChatRAG-python/app/core/settings.py:Settings",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/mq/rabbitmq_connnect.py",
+      "target": "function:FoxChatRAG-python/app/core/mq/rabbitmq_connnect.py:rabbitmq_connect",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/mq/rabbitmq_setup_queue.py",
+      "target": "function:FoxChatRAG-python/app/core/mq/rabbitmq_setup_queue.py:rag_setup_queue",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/mq/rabbitmq_setup_queue.py",
+      "target": "function:FoxChatRAG-python/app/core/mq/rabbitmq_setup_queue.py:chat_setup_queue",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/mq/rabbitmq_starter.py",
+      "target": "function:FoxChatRAG-python/app/core/mq/rabbitmq_starter.py:init_rabbitmq",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/intent_classifier.py:match_intent_by_rule",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/intent_classifier.py:match_intent_by_semantic",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/intent_classifier.py:classify_intent",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/intent_classifier.py:classify_event_type",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/intent_classifier.py:get_retrieval_params",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/main.py",
+      "target": "function:FoxChatRAG-python/main.py:lifespan",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

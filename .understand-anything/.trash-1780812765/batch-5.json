@@ -1,0 +1,689 @@
+{
+  "nodes": [
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/FileContstant.java",
+      "type": "file",
+      "name": "FileContstant.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/FileContstant.java",
+      "summary": "定义文件上传相关的常量，包括文件状态（NEW_FILE、UPLOAD_MINIO、DOWNLOAD_RAG、UPLOAD_RAG）和各业务场景的存储路径前缀（聊天、RAG、LLM头像）。",
+      "tags": ["constant", "file-upload", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MqConstant.java",
+      "type": "file",
+      "name": "MqConstant.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MqConstant.java",
+      "summary": "定义 RabbitMQ 消息队列的交换机名称和路由键常量，用于 RAG 文件处理和聊天消息的异步通信。",
+      "tags": ["constant", "message-queue", "configuration"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ResultStatusConstant.java",
+      "type": "file",
+      "name": "ResultStatusConstant.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ResultStatusConstant.java",
+      "summary": "定义系统统一的响应状态码枚举，涵盖成功、认证失败、业务异常、文件上传错误、RAG 消息错误等各类状态，每个枚举值包含 code 和 msg 两个字段。",
+      "tags": ["constant", "error-handling", "api-response"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/exception/BusinessException.java",
+      "type": "file",
+      "name": "BusinessException.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/exception/BusinessException.java",
+      "summary": "自定义业务异常类，继承 RuntimeException，携带 ResultStatusConstant 状态码信息，用于在业务逻辑中抛出可预期的异常。",
+      "tags": ["exception", "error-handling", "business-logic"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/M.java",
+      "type": "file",
+      "name": "M.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/M.java",
+      "summary": "消息包装工具类，用于构造带 msgId 的消息对象。msgId 通过对 data 的 JSON 序列化结果取 MD5 生成，确保相同数据产生相同 ID，用于消息去重和幂等校验。",
+      "tags": ["utility", "message-queue", "serialization"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java",
+      "type": "file",
+      "name": "MinioUtil.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java",
+      "summary": "MinIO 对象存储工具类，提供文件上传（自动创建 Bucket 并设置公开读取策略）、基于 MD5 的文件名去重生成、预期文件路径计算以及批量文件删除功能。",
+      "tags": ["utility", "file-storage", "minio", "infrastructure"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MqUtil.java",
+      "type": "file",
+      "name": "MqUtil.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MqUtil.java",
+      "summary": "RabbitMQ 消息发送工具类，封装了 RAG 文件上传消息和聊天消息的发送方法，通过 M 类生成带 MD5 校验的消息 ID 并序列化为 JSON 后发送。",
+      "tags": ["utility", "message-queue", "rabbitmq"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/R.java",
+      "type": "file",
+      "name": "R.java",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/R.java",
+      "summary": "统一 API 响应包装类，提供 ok/error 静态工厂方法构造标准响应结构（code、msg、data），被所有 Controller 使用以保持一致的返回格式。",
+      "tags": ["utility", "api-response", "serialization"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/RagFile.java",
+      "type": "file",
+      "name": "RagFile.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/RagFile.java",
+      "summary": "RAG 文件领域实体类，映射数据库 rag_file 表，包含文件名、存储路径、用户 ID、文件状态和创建时间等字段，用于文件上传流程的状态追踪。",
+      "tags": ["data-model", "domain-entity", "rag"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/RagMqMsgTo.java",
+      "type": "file",
+      "name": "RagMqMsgTo.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/RagMqMsgTo.java",
+      "summary": "RAG 文件处理的 MQ 消息传输对象，携带 userId 和 filePath 两个字段，用于通知 Python RAG 服务对指定文件进行向量化处理。",
+      "tags": ["data-model", "transfer-object", "message-queue"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/RagSearchFileMsgResTo.java",
+      "type": "file",
+      "name": "RagSearchFileMsgResTo.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/RagSearchFileMsgResTo.java",
+      "summary": "RAG 文件搜索结果的传输对象，包含匹配文件路径和相似度评分，用于从 Python RAG 服务返回的向量检索结果。",
+      "tags": ["data-model", "transfer-object", "rag"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/RagSearchFileMsgTo.java",
+      "type": "file",
+      "name": "RagSearchFileMsgTo.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/RagSearchFileMsgTo.java",
+      "summary": "RAG 文件搜索请求的传输对象，携带 userId 和搜索消息内容，用于向 Python RAG 服务发起向量相似度检索请求。",
+      "tags": ["data-model", "transfer-object", "rag"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/RagSearchVo.java",
+      "type": "file",
+      "name": "RagSearchVo.java",
+      "filePath": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/RagSearchVo.java",
+      "summary": "RAG 文件搜索的视图对象，包含文件名、文件路径和相似度评分，用于向前端返回格式化的搜索结果。",
+      "tags": ["data-model", "view-object", "rag"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/RagFileMapper.java",
+      "type": "file",
+      "name": "RagFileMapper.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/RagFileMapper.java",
+      "summary": "RagFile 的 MyBatis-Plus Mapper 接口，继承 BaseMapper 提供基本 CRUD，并定义 selectZombieFile 自定义查询用于查找僵尸文件（MinIO 中存在但数据库中已删除的记录）。",
+      "tags": ["mapper", "database", "mybatis"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/remote/RagClient.java",
+      "type": "file",
+      "name": "RagClient.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/remote/RagClient.java",
+      "summary": "调用 Python RAG 服务的 Feign 客户端接口，定义 searchFile 方法通过 HTTP POST 向 RAG 服务发送搜索请求并获取相似文件列表。",
+      "tags": ["remote-client", "feign", "rag", "api-client"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/RAGService.java",
+      "type": "file",
+      "name": "RAGService.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/RAGService.java",
+      "summary": "RAG 功能的服务接口，定义文件上传（单文件/批量）、文件列表查询和 RAG 语义搜索等核心业务方法。",
+      "tags": ["service-interface", "rag", "api-design"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/RagFileService.java",
+      "type": "file",
+      "name": "RagFileService.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/RagFileService.java",
+      "summary": "RagFile 实体的服务接口，继承 IService<RagFile> 提供基本 CRUD，并扩展 selectZombieFile 方法用于僵尸文件检测。",
+      "tags": ["service-interface", "database", "crud"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "type": "file",
+      "name": "RAGServiceImpl.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "summary": "RAG 功能的核心服务实现类，编排文件上传到 MinIO、数据库元数据持久化、通过 RabbitMQ 通知 Python 服务进行向量化、调用 Feign 客户端执行语义搜索，并通过 MD5 校验确保消息幂等性。",
+      "tags": ["service-implementation", "rag", "orchestration", "file-upload"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RagFileServiceImpl.java",
+      "type": "file",
+      "name": "RagFileServiceImpl.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RagFileServiceImpl.java",
+      "summary": "RagFile 服务的实现类，继承 ServiceImpl 提供基本 CRUD 操作，并委托 RagFileMapper 执行僵尸文件查询。",
+      "tags": ["service-implementation", "database", "crud"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/task/RAGTask.java",
+      "type": "file",
+      "name": "RAGTask.java",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/task/RAGTask.java",
+      "summary": "RAG 僵尸文件清理定时任务，定期扫描数据库中已删除但 MinIO 中仍存在的文件记录，批量删除 MinIO 对象和数据库残留数据，使用 Collectors.teeing 同时收集文件名和 ID。",
+      "tags": ["scheduled-task", "cleanup", "rag", "maintenance"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/RAGController.java",
+      "type": "file",
+      "name": "RAGController.java",
+      "filePath": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/RAGController.java",
+      "summary": "RAG 功能的 REST 控制器，提供文件上传（单文件/批量）、文件列表查询和语义搜索三个 HTTP 接口，统一使用 R 类包装响应。",
+      "tags": ["api-handler", "controller", "rag", "rest-api"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/exception/GlobalExceptionHandler.java",
+      "type": "file",
+      "name": "GlobalExceptionHandler.java",
+      "filePath": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/exception/GlobalExceptionHandler.java",
+      "summary": "全局异常处理器，通过 @RestControllerAdvice 捕获 BusinessException 和未预期异常，统一转换为 R 类错误响应返回前端。",
+      "tags": ["exception-handler", "middleware", "error-handling"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java:uploadFile",
+      "type": "function",
+      "name": "uploadFile",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java",
+      "lineRange": [43, 83],
+      "summary": "将 MultipartFile 上传到 MinIO，自动检测并创建 Bucket（设置公开读取策略），使用 MD5 哈希生成唯一文件名避免冲突。",
+      "tags": ["file-upload", "minio", "storage"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java:deleteBatchFileNames",
+      "type": "function",
+      "name": "deleteBatchFileNames",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java",
+      "lineRange": [115, 127],
+      "summary": "批量删除 MinIO 中的文件对象，将文件名列表转换为 DeleteObject 列表后调用 removeObjects 批量删除。",
+      "tags": ["file-deletion", "minio", "batch-operation"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MqUtil.java:sendMsg",
+      "type": "function",
+      "name": "sendMsg",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MqUtil.java",
+      "lineRange": [41, 52],
+      "summary": "通用消息发送方法，通过 M 类生成带 MD5 校验的消息 ID，将数据 JSON 序列化后通过 RabbitTemplate 发送到指定交换机和路由键。",
+      "tags": ["message-queue", "rabbitmq", "serialization"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java:upload",
+      "type": "function",
+      "name": "upload",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "lineRange": [59, 88],
+      "summary": "单文件上传方法：创建 RagFile 元数据并持久化到数据库，上传文件到 MinIO，更新文件路径和状态后发送 MQ 消息通知 Python RAG 服务进行向量化处理。",
+      "tags": ["file-upload", "rag", "orchestration"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java:uploadBatch",
+      "type": "function",
+      "name": "uploadBatch",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "lineRange": [94, 165],
+      "summary": "批量文件上传方法：预计算文件路径避免重复，通过 saveOrUpdateBatch 批量持久化元数据，并行上传文件到 MinIO，最后批量发送 MQ 消息触发向量化。",
+      "tags": ["file-upload", "batch-operation", "rag", "parallel-processing"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java:searchRagFile",
+      "type": "function",
+      "name": "searchRagFile",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "lineRange": [182, 221],
+      "summary": "RAG 语义搜索方法：构造搜索请求发送到 Python RAG 服务，校验响应消息的 MD5 幂等性，将返回的文件路径列表转换为包含文件名和相似度评分的 RagSearchVo 列表。",
+      "tags": ["rag", "semantic-search", "remote-call"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/task/RAGTask.java:cleanZombieFiles",
+      "type": "function",
+      "name": "cleanZombieFiles",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/task/RAGTask.java",
+      "lineRange": [36, 68],
+      "summary": "僵尸文件清理定时任务方法：查询数据库中缺失的文件记录，使用 Collectors.teeing 同时收集 MinIO 对象名和数据库 ID，分别执行批量删除以保持存储和数据库一致性。",
+      "tags": ["scheduled-task", "cleanup", "data-consistency"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java:RAGServiceImpl",
+      "type": "class",
+      "name": "RAGServiceImpl",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "lineRange": [39, 239],
+      "summary": "RAG 核心服务实现类，依赖注入 RagFileService、RagClient、MinioUtil、MqUtil 四个组件，编排文件存储、数据库持久化、消息队列通信和远程语义搜索的完整流程。",
+      "tags": ["service-implementation", "rag", "orchestration", "dependency-injection"],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/task/RAGTask.java:RAGTask",
+      "type": "class",
+      "name": "RAGTask",
+      "filePath": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/task/RAGTask.java",
+      "lineRange": [21, 69],
+      "summary": "RAG 定时任务类，注入 RagFileService 和 MinioUtil，负责定期清理僵尸文件以维护存储与数据库的一致性。",
+      "tags": ["scheduled-task", "maintenance", "rag"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java:MinioUtil",
+      "type": "class",
+      "name": "MinioUtil",
+      "filePath": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java",
+      "lineRange": [24, 128],
+      "summary": "MinIO 对象存储操作封装类，管理 MinioClient 连接和 Bucket 策略，提供文件上传、路径计算和批量删除等操作。",
+      "tags": ["utility", "file-storage", "minio", "infrastructure"],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/exception/BusinessException.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ResultStatusConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ResultStatusConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/exception/BusinessException.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MqUtil.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MqConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/R.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ResultStatusConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/RagFileMapper.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/RagFile.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/remote/RagClient.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/M.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/remote/RagClient.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/RagSearchFileMsgTo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/RAGService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/RagFile.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/RAGService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/RagSearchVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/RagFileService.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/RagFile.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/FileContstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ResultStatusConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/exception/BusinessException.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/M.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MqUtil.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/RagFile.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/RagMqMsgTo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/RagSearchFileMsgResTo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/RagSearchFileMsgTo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/RagSearchVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/remote/RagClient.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/RagFileService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/RAGService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RagFileServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/RagFile.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RagFileServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/RagFileMapper.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RagFileServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/RagFileService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/task/RAGTask.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/task/RAGTask.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/RagFile.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/task/RAGTask.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/RagFileService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/RAGController.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/R.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/RAGController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/RagFile.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/RAGController.java",
+      "target": "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/RagSearchVo.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/RAGController.java",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/RAGService.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/exception/GlobalExceptionHandler.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ResultStatusConstant.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/exception/GlobalExceptionHandler.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/exception/BusinessException.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/exception/GlobalExceptionHandler.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/R.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java",
+      "target": "class:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java:MinioUtil",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java",
+      "target": "function:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java:uploadFile",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java",
+      "target": "function:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java:deleteBatchFileNames",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MqUtil.java",
+      "target": "function:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MqUtil.java:sendMsg",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "target": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java:RAGServiceImpl",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java:upload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java:uploadBatch",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java:searchRagFile",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/task/RAGTask.java",
+      "target": "class:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/task/RAGTask.java:RAGTask",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/task/RAGTask.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/task/RAGTask.java:cleanZombieFiles",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "target": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java",
+      "target": "function:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java:uploadFile",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java",
+      "target": "function:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java:deleteBatchFileNames",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java:upload",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java:uploadBatch",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java:searchRagFile",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/task/RAGTask.java",
+      "target": "function:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/task/RAGTask.java:cleanZombieFiles",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

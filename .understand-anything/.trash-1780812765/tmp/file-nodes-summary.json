@@ -1,0 +1,49 @@
+{
+  "total": 392,
+  "byCategory": {
+    "config": 31,
+    "docs": 26,
+    "code": 316,
+    "script": 3,
+    "infra": 9,
+    "data": 4,
+    "markup": 3
+  },
+  "sample": [
+    {
+      "id": "file:.env.example",
+      "type": "file",
+      "name": ".env.example",
+      "filePath": ".env.example",
+      "fileCategory": "config"
+    },
+    {
+      "id": "file:.gitea/workflows/deploy.yml",
+      "type": "file",
+      "name": "deploy.yml",
+      "filePath": ".gitea/workflows/deploy.yml",
+      "fileCategory": "config"
+    },
+    {
+      "id": "file:.reasonix/truncated-results/1780141453720-308a5b32-web_fetch.txt",
+      "type": "file",
+      "name": "1780141453720-308a5b32-web_fetch.txt",
+      "filePath": ".reasonix/truncated-results/1780141453720-308a5b32-web_fetch.txt",
+      "fileCategory": "docs"
+    },
+    {
+      "id": "file:.reasonix/truncated-results/1780298383943-ab106a2d-web_fetch.txt",
+      "type": "file",
+      "name": "1780298383943-ab106a2d-web_fetch.txt",
+      "filePath": ".reasonix/truncated-results/1780298383943-ab106a2d-web_fetch.txt",
+      "fileCategory": "docs"
+    },
+    {
+      "id": "file:.understand-anything/.understandignore",
+      "type": "file",
+      "name": ".understandignore",
+      "filePath": ".understand-anything/.understandignore",
+      "fileCategory": "code"
+    }
+  ]
+}

@@ -1,0 +1,1613 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 9,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "FoxChatRAG-python/app/service/chat/graph/__init__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 5,
+      "nonEmptyLines": 4,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/util/token_monitor.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 313,
+      "nonEmptyLines": 251,
+      "classes": [
+        {
+          "name": "TokenRecord",
+          "startLine": 30,
+          "endLine": 63,
+          "methods": [],
+          "properties": [
+            "timestamp",
+            "round_number",
+            "user_id",
+            "llm_id",
+            "user_input",
+            "prompt_tokens",
+            "completion_tokens",
+            "total_tokens",
+            "memory_bank_total_items",
+            "memory_bank_injected_items",
+            "memory_bank_chars",
+            "soul_chars",
+            "anchor_chars",
+            "profile_chars",
+            "current_state_chars",
+            "history_chars",
+            "user_input_chars",
+            "historical_context_chars",
+            "retrieval_triggered",
+            "retrieval_items",
+            "retrieval_chars",
+            "response_chars"
+          ]
+        },
+        {
+          "name": "TokenMonitorConfig",
+          "startLine": 67,
+          "endLine": 72,
+          "methods": [],
+          "properties": [
+            "max_memory_bank_items",
+            "enable_retrieval",
+            "log_to_file",
+            "log_file_path"
+          ]
+        },
+        {
+          "name": "TokenMonitor",
+          "startLine": 75,
+          "endLine": 285,
+          "methods": [
+            "__init__",
+            "set_memory_bank_limit",
+            "parse_memory_bank_with_limit",
+            "traced_invoke_llm",
+            "_write_record",
+            "generate_report"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "TokenRecord",
+          "line": 29,
+          "isDefault": false
+        },
+        {
+          "name": "TokenMonitorConfig",
+          "line": 66,
+          "isDefault": false
+        },
+        {
+          "name": "TokenMonitor",
+          "line": 75,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "__init__",
+          "callee": "TokenMonitorConfig",
+          "lineNumber": 79
+        },
+        {
+          "caller": "set_memory_bank_limit",
+          "callee": "logger.info",
+          "lineNumber": 86
+        },
+        {
+          "caller": "parse_memory_bank_with_limit",
+          "callee": "json.loads",
+          "lineNumber": 99
+        },
+        {
+          "caller": "parse_memory_bank_with_limit",
+          "callee": "isinstance",
+          "lineNumber": 100
+        },
+        {
+          "caller": "parse_memory_bank_with_limit",
+          "callee": "len",
+          "lineNumber": 105
+        },
+        {
+          "caller": "parse_memory_bank_with_limit",
+          "callee": "item.get",
+          "lineNumber": 109
+        },
+        {
+          "caller": "parse_memory_bank_with_limit",
+          "callee": "item.get",
+          "lineNumber": 110
+        },
+        {
+          "caller": "parse_memory_bank_with_limit",
+          "callee": "item.get",
+          "lineNumber": 111
+        },
+        {
+          "caller": "parse_memory_bank_with_limit",
+          "callee": "lines.append",
+          "lineNumber": 112
+        },
+        {
+          "caller": "parse_memory_bank_with_limit",
+          "callee": "\"\\n\".join",
+          "lineNumber": 114
+        },
+        {
+          "caller": "parse_memory_bank_with_limit",
+          "callee": "len",
+          "lineNumber": 115
+        },
+        {
+          "caller": "parse_memory_bank_with_limit",
+          "callee": "logger.warning",
+          "lineNumber": 118
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "self.parse_memory_bank_with_limit",
+          "lineNumber": 152
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "json.loads",
+          "lineNumber": 158
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "len",
+          "lineNumber": 159
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "isinstance",
+          "lineNumber": 159
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "TokenRecord",
+          "lineNumber": 164
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "datetime.now().isoformat",
+          "lineNumber": 165
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "datetime.now",
+          "lineNumber": 165
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "len",
+          "lineNumber": 169
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "len",
+          "lineNumber": 173
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "len",
+          "lineNumber": 175
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "len",
+          "lineNumber": 176
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "len",
+          "lineNumber": 177
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "len",
+          "lineNumber": 178
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "str",
+          "lineNumber": 178
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "len",
+          "lineNumber": 179
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "len",
+          "lineNumber": 180
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "len",
+          "lineNumber": 184
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "len",
+          "lineNumber": 190
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "hasattr",
+          "lineNumber": 193
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "aimessage.response_metadata.get",
+          "lineNumber": 194
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "usage.get",
+          "lineNumber": 196
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "usage.get",
+          "lineNumber": 197
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "usage.get",
+          "lineNumber": 198
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "hasattr",
+          "lineNumber": 201
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "meta.get",
+          "lineNumber": 203
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "meta.get",
+          "lineNumber": 204
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "self.records.append",
+          "lineNumber": 208
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "logger.info",
+          "lineNumber": 211
+        },
+        {
+          "caller": "traced_invoke_llm",
+          "callee": "self._write_record",
+          "lineNumber": 222
+        },
+        {
+          "caller": "_write_record",
+          "callee": "Path",
+          "lineNumber": 229
+        },
+        {
+          "caller": "_write_record",
+          "callee": "log_dir.mkdir",
+          "lineNumber": 230
+        },
+        {
+          "caller": "_write_record",
+          "callee": "open",
+          "lineNumber": 232
+        },
+        {
+          "caller": "_write_record",
+          "callee": "f.write",
+          "lineNumber": 233
+        },
+        {
+          "caller": "_write_record",
+          "callee": "json.dumps",
+          "lineNumber": 233
+        },
+        {
+          "caller": "_write_record",
+          "callee": "asdict",
+          "lineNumber": 233
+        },
+        {
+          "caller": "generate_report",
+          "callee": "sum",
+          "lineNumber": 241
+        },
+        {
+          "caller": "generate_report",
+          "callee": "sum",
+          "lineNumber": 242
+        },
+        {
+          "caller": "generate_report",
+          "callee": "sum",
+          "lineNumber": 243
+        },
+        {
+          "caller": "generate_report",
+          "callee": "len",
+          "lineNumber": 243
+        },
+        {
+          "caller": "generate_report",
+          "callee": "len",
+          "lineNumber": 260
+        },
+        {
+          "caller": "generate_report",
+          "callee": "len",
+          "lineNumber": 265
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 0,
+        "classCount": 3
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/proto/ai_chat.proto",
+      "language": "protobuf",
+      "fileCategory": "data",
+      "totalLines": 78,
+      "nonEmptyLines": 57,
+      "definitions": [
+        {
+          "name": "ChatRequest",
+          "kind": "message",
+          "fields": [
+            "user_id",
+            "llm_id",
+            "msg_content"
+          ],
+          "startLine": 28,
+          "endLine": 32
+        },
+        {
+          "name": "ChatResponse",
+          "kind": "message",
+          "fields": [
+            "content",
+            "is_final",
+            "block_type",
+            "is_block_start",
+            "is_block_end",
+            "emotion",
+            "error_code",
+            "error_msg",
+            "sequence"
+          ],
+          "startLine": 34,
+          "endLine": 63
+        },
+        {
+          "name": "DeleteRequest",
+          "kind": "message",
+          "fields": [
+            "user_id",
+            "llm_id"
+          ],
+          "startLine": 70,
+          "endLine": 73
+        },
+        {
+          "name": "DeleteResponse",
+          "kind": "message",
+          "fields": [
+            "success",
+            "message"
+          ],
+          "startLine": 75,
+          "endLine": 78
+        }
+      ],
+      "endpoints": [
+        {
+          "method": "rpc",
+          "path": "AIChatService.Chat",
+          "startLine": 17,
+          "endLine": 17
+        },
+        {
+          "method": "rpc",
+          "path": "AIChatService.DeleteMemory",
+          "startLine": 20,
+          "endLine": 20
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 4,
+        "endpointCount": 2
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/README",
+      "language": "unknown",
+      "fileCategory": "code",
+      "totalLines": 118,
+      "nonEmptyLines": 84,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChatRAG-python/test/memory_stress_test.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 471,
+      "nonEmptyLines": 428,
+      "functions": [
+        {
+          "name": "build_verification_items",
+          "startLine": 230,
+          "endLine": 239,
+          "params": []
+        },
+        {
+          "name": "_extract_reply",
+          "startLine": 316,
+          "endLine": 344,
+          "params": [
+            "response_data"
+          ]
+        },
+        {
+          "name": "check_answer",
+          "startLine": 350,
+          "endLine": 356,
+          "params": [
+            "response",
+            "expected_keywords"
+          ]
+        },
+        {
+          "name": "print_report",
+          "startLine": 362,
+          "endLine": 393,
+          "params": [
+            "items",
+            "elapsed"
+          ]
+        },
+        {
+          "name": "main",
+          "startLine": 399,
+          "endLine": 467,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "VerificationItem",
+          "startLine": 222,
+          "endLine": 227,
+          "methods": [],
+          "properties": [
+            "question",
+            "expected_keywords",
+            "passed",
+            "actual_response",
+            "latency_ms"
+          ]
+        },
+        {
+          "name": "ChatClient",
+          "startLine": 245,
+          "endLine": 313,
+          "methods": [
+            "__init__",
+            "clear_memory",
+            "send_message",
+            "send_message_with_latency",
+            "send_message_quiet"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "VerificationItem",
+          "line": 221,
+          "isDefault": false
+        },
+        {
+          "name": "build_verification_items",
+          "line": 230,
+          "isDefault": false
+        },
+        {
+          "name": "ChatClient",
+          "line": 245,
+          "isDefault": false
+        },
+        {
+          "name": "_extract_reply",
+          "line": 316,
+          "isDefault": false
+        },
+        {
+          "name": "check_answer",
+          "line": 350,
+          "isDefault": false
+        },
+        {
+          "name": "print_report",
+          "line": 362,
+          "isDefault": false
+        },
+        {
+          "name": "main",
+          "line": 399,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "build_verification_items",
+          "callee": "set",
+          "lineNumber": 233
+        },
+        {
+          "caller": "build_verification_items",
+          "callee": "seen.add",
+          "lineNumber": 237
+        },
+        {
+          "caller": "build_verification_items",
+          "callee": "items.append",
+          "lineNumber": 238
+        },
+        {
+          "caller": "build_verification_items",
+          "callee": "VerificationItem",
+          "lineNumber": 238
+        },
+        {
+          "caller": "__init__",
+          "callee": "base_url.rstrip",
+          "lineNumber": 247
+        },
+        {
+          "caller": "clear_memory",
+          "callee": "httpx.AsyncClient",
+          "lineNumber": 254
+        },
+        {
+          "caller": "clear_memory",
+          "callee": "client.post",
+          "lineNumber": 255
+        },
+        {
+          "caller": "clear_memory",
+          "callee": "print",
+          "lineNumber": 259
+        },
+        {
+          "caller": "clear_memory",
+          "callee": "print",
+          "lineNumber": 262
+        },
+        {
+          "caller": "send_message",
+          "callee": "httpx.AsyncClient",
+          "lineNumber": 268
+        },
+        {
+          "caller": "send_message",
+          "callee": "client.post",
+          "lineNumber": 269
+        },
+        {
+          "caller": "send_message",
+          "callee": "resp.json",
+          "lineNumber": 278
+        },
+        {
+          "caller": "send_message",
+          "callee": "_extract_reply",
+          "lineNumber": 279
+        },
+        {
+          "caller": "send_message_with_latency",
+          "callee": "httpx.AsyncClient",
+          "lineNumber": 290
+        },
+        {
+          "caller": "send_message_with_latency",
+          "callee": "time.time",
+          "lineNumber": 291
+        },
+        {
+          "caller": "send_message_with_latency",
+          "callee": "client.post",
+          "lineNumber": 292
+        },
+        {
+          "caller": "send_message_with_latency",
+          "callee": "time.time",
+          "lineNumber": 300
+        },
+        {
+          "caller": "send_message_with_latency",
+          "callee": "resp.json",
+          "lineNumber": 302
+        },
+        {
+          "caller": "send_message_with_latency",
+          "callee": "_extract_reply",
+          "lineNumber": 303
+        },
+        {
+          "caller": "send_message_quiet",
+          "callee": "self.send_message",
+          "lineNumber": 313
+        },
+        {
+          "caller": "_extract_reply",
+          "callee": "response_data.get",
+          "lineNumber": 321
+        },
+        {
+          "caller": "_extract_reply",
+          "callee": "isinstance",
+          "lineNumber": 322
+        },
+        {
+          "caller": "_extract_reply",
+          "callee": "isinstance",
+          "lineNumber": 324
+        },
+        {
+          "caller": "_extract_reply",
+          "callee": "data.get",
+          "lineNumber": 326
+        },
+        {
+          "caller": "_extract_reply",
+          "callee": "isinstance",
+          "lineNumber": 327
+        },
+        {
+          "caller": "_extract_reply",
+          "callee": "data.get",
+          "lineNumber": 330
+        },
+        {
+          "caller": "_extract_reply",
+          "callee": "isinstance",
+          "lineNumber": 331
+        },
+        {
+          "caller": "_extract_reply",
+          "callee": "isinstance",
+          "lineNumber": 333
+        },
+        {
+          "caller": "_extract_reply",
+          "callee": "isinstance",
+          "lineNumber": 338
+        },
+        {
+          "caller": "_extract_reply",
+          "callee": "block.get",
+          "lineNumber": 339
+        },
+        {
+          "caller": "_extract_reply",
+          "callee": "block.get",
+          "lineNumber": 339
+        },
+        {
+          "caller": "_extract_reply",
+          "callee": "block.get",
+          "lineNumber": 339
+        },
+        {
+          "caller": "_extract_reply",
+          "callee": "texts.append",
+          "lineNumber": 341
+        },
+        {
+          "caller": "_extract_reply",
+          "callee": "str",
+          "lineNumber": 341
+        },
+        {
+          "caller": "_extract_reply",
+          "callee": "\" \".join",
+          "lineNumber": 343
+        },
+        {
+          "caller": "_extract_reply",
+          "callee": "str",
+          "lineNumber": 344
+        },
+        {
+          "caller": "check_answer",
+          "callee": "response.lower",
+          "lineNumber": 352
+        },
+        {
+          "caller": "check_answer",
+          "callee": "kw.lower",
+          "lineNumber": 354
+        },
+        {
+          "caller": "print_report",
+          "callee": "sum",
+          "lineNumber": 363
+        },
+        {
+          "caller": "print_report",
+          "callee": "sum",
+          "lineNumber": 364
+        },
+        {
+          "caller": "print_report",
+          "callee": "len",
+          "lineNumber": 365
+        },
+        {
+          "caller": "print_report",
+          "callee": "sum",
+          "lineNumber": 370
+        },
+        {
+          "caller": "print_report",
+          "callee": "len",
+          "lineNumber": 370
+        },
+        {
+          "caller": "print_report",
+          "callee": "max",
+          "lineNumber": 371
+        },
+        {
+          "caller": "print_report",
+          "callee": "min",
+          "lineNumber": 372
+        },
+        {
+          "caller": "print_report",
+          "callee": "print",
+          "lineNumber": 374
+        },
+        {
+          "caller": "print_report",
+          "callee": "print",
+          "lineNumber": 375
+        },
+        {
+          "caller": "print_report",
+          "callee": "print",
+          "lineNumber": 376
+        },
+        {
+          "caller": "print_report",
+          "callee": "print",
+          "lineNumber": 377
+        },
+        {
+          "caller": "print_report",
+          "callee": "print",
+          "lineNumber": 378
+        },
+        {
+          "caller": "print_report",
+          "callee": "print",
+          "lineNumber": 379
+        },
+        {
+          "caller": "print_report",
+          "callee": "print",
+          "lineNumber": 380
+        },
+        {
+          "caller": "print_report",
+          "callee": "print",
+          "lineNumber": 381
+        },
+        {
+          "caller": "print_report",
+          "callee": "print",
+          "lineNumber": 382
+        },
+        {
+          "caller": "print_report",
+          "callee": "item.actual_response[:50].replace",
+          "lineNumber": 386
+        },
+        {
+          "caller": "print_report",
+          "callee": "print",
+          "lineNumber": 387
+        },
+        {
+          "caller": "print_report",
+          "callee": "print",
+          "lineNumber": 388
+        },
+        {
+          "caller": "print_report",
+          "callee": "' / '.join",
+          "lineNumber": 388
+        },
+        {
+          "caller": "print_report",
+          "callee": "print",
+          "lineNumber": 390
+        },
+        {
+          "caller": "print_report",
+          "callee": "print",
+          "lineNumber": 391
+        },
+        {
+          "caller": "print_report",
+          "callee": "print",
+          "lineNumber": 392
+        },
+        {
+          "caller": "print_report",
+          "callee": "print",
+          "lineNumber": 393
+        },
+        {
+          "caller": "main",
+          "callee": "ChatClient",
+          "lineNumber": 400
+        },
+        {
+          "caller": "main",
+          "callee": "build_verification_items",
+          "lineNumber": 401
+        },
+        {
+          "caller": "main",
+          "callee": "time.time",
+          "lineNumber": 402
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 404
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 405
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 406
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 407
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 408
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 409
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 412
+        },
+        {
+          "caller": "main",
+          "callee": "client.clear_memory",
+          "lineNumber": 413
+        },
+        {
+          "caller": "main",
+          "callee": "asyncio.sleep",
+          "lineNumber": 414
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 417
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 418
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 419
+        },
+        {
+          "caller": "main",
+          "callee": "enumerate",
+          "lineNumber": 421
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 422
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 423
+        },
+        {
+          "caller": "main",
+          "callee": "client.send_message",
+          "lineNumber": 424
+        },
+        {
+          "caller": "main",
+          "callee": "reply[:80].replace",
+          "lineNumber": 425
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 426
+        },
+        {
+          "caller": "main",
+          "callee": "asyncio.sleep",
+          "lineNumber": 427
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 429
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 432
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 433
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 434
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 436
+        },
+        {
+          "caller": "main",
+          "callee": "range",
+          "lineNumber": 437
+        },
+        {
+          "caller": "main",
+          "callee": "client.send_message_quiet",
+          "lineNumber": 439
+        },
+        {
+          "caller": "main",
+          "callee": "reply[:60].replace",
+          "lineNumber": 442
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 443
+        },
+        {
+          "caller": "main",
+          "callee": "asyncio.sleep",
+          "lineNumber": 444
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 446
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 449
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 450
+        },
+        {
+          "caller": "main",
+          "callee": "len",
+          "lineNumber": 450
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 451
+        },
+        {
+          "caller": "main",
+          "callee": "enumerate",
+          "lineNumber": 453
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 454
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 455
+        },
+        {
+          "caller": "main",
+          "callee": "client.send_message_with_latency",
+          "lineNumber": 456
+        },
+        {
+          "caller": "main",
+          "callee": "check_answer",
+          "lineNumber": 459
+        },
+        {
+          "caller": "main",
+          "callee": "reply[:60].replace",
+          "lineNumber": 461
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 462
+        },
+        {
+          "caller": "main",
+          "callee": "print",
+          "lineNumber": 463
+        },
+        {
+          "caller": "main",
+          "callee": "asyncio.sleep",
+          "lineNumber": 464
+        },
+        {
+          "caller": "main",
+          "callee": "time.time",
+          "lineNumber": 466
+        },
+        {
+          "caller": "main",
+          "callee": "print_report",
+          "lineNumber": 467
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 7,
+        "functionCount": 5,
+        "classCount": 2
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/test/test_deduplication.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 86,
+      "nonEmptyLines": 68,
+      "functions": [
+        {
+          "name": "_calculate_content_similarity",
+          "startLine": 15,
+          "endLine": 25,
+          "params": [
+            "content1",
+            "content2"
+          ]
+        },
+        {
+          "name": "should_deduplicate",
+          "startLine": 28,
+          "endLine": 37,
+          "params": [
+            "event1",
+            "event2"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "MemoryEvent",
+          "startLine": 6,
+          "endLine": 9,
+          "methods": [],
+          "properties": [
+            "event_id",
+            "content"
+          ]
+        },
+        {
+          "name": "TestShouldDeduplicate",
+          "startLine": 40,
+          "endLine": 82,
+          "methods": [
+            "test_identical_content_deduplicated",
+            "test_different_content_retained",
+            "test_same_event_id_deduplicated",
+            "test_empty_event_id_different_content_retained",
+            "test_high_similarity_deduplicated",
+            "test_medium_similarity_retained"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "MemoryEvent",
+          "line": 5,
+          "isDefault": false
+        },
+        {
+          "name": "_calculate_content_similarity",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "should_deduplicate",
+          "line": 28,
+          "isDefault": false
+        },
+        {
+          "name": "TestShouldDeduplicate",
+          "line": 40,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_calculate_content_similarity",
+          "callee": "set",
+          "lineNumber": 19
+        },
+        {
+          "caller": "_calculate_content_similarity",
+          "callee": "set",
+          "lineNumber": 20
+        },
+        {
+          "caller": "_calculate_content_similarity",
+          "callee": "len",
+          "lineNumber": 21
+        },
+        {
+          "caller": "_calculate_content_similarity",
+          "callee": "len",
+          "lineNumber": 22
+        },
+        {
+          "caller": "should_deduplicate",
+          "callee": "_calculate_content_similarity",
+          "lineNumber": 34
+        },
+        {
+          "caller": "test_identical_content_deduplicated",
+          "callee": "MemoryEvent",
+          "lineNumber": 45
+        },
+        {
+          "caller": "test_identical_content_deduplicated",
+          "callee": "MemoryEvent",
+          "lineNumber": 46
+        },
+        {
+          "caller": "test_identical_content_deduplicated",
+          "callee": "self.assertTrue",
+          "lineNumber": 47
+        },
+        {
+          "caller": "test_identical_content_deduplicated",
+          "callee": "should_deduplicate",
+          "lineNumber": 47
+        },
+        {
+          "caller": "test_different_content_retained",
+          "callee": "MemoryEvent",
+          "lineNumber": 51
+        },
+        {
+          "caller": "test_different_content_retained",
+          "callee": "MemoryEvent",
+          "lineNumber": 52
+        },
+        {
+          "caller": "test_different_content_retained",
+          "callee": "self.assertFalse",
+          "lineNumber": 54
+        },
+        {
+          "caller": "test_different_content_retained",
+          "callee": "should_deduplicate",
+          "lineNumber": 54
+        },
+        {
+          "caller": "test_same_event_id_deduplicated",
+          "callee": "MemoryEvent",
+          "lineNumber": 58
+        },
+        {
+          "caller": "test_same_event_id_deduplicated",
+          "callee": "MemoryEvent",
+          "lineNumber": 59
+        },
+        {
+          "caller": "test_same_event_id_deduplicated",
+          "callee": "self.assertTrue",
+          "lineNumber": 60
+        },
+        {
+          "caller": "test_same_event_id_deduplicated",
+          "callee": "should_deduplicate",
+          "lineNumber": 60
+        },
+        {
+          "caller": "test_empty_event_id_different_content_retained",
+          "callee": "MemoryEvent",
+          "lineNumber": 64
+        },
+        {
+          "caller": "test_empty_event_id_different_content_retained",
+          "callee": "MemoryEvent",
+          "lineNumber": 65
+        },
+        {
+          "caller": "test_empty_event_id_different_content_retained",
+          "callee": "self.assertFalse",
+          "lineNumber": 66
+        },
+        {
+          "caller": "test_empty_event_id_different_content_retained",
+          "callee": "should_deduplicate",
+          "lineNumber": 66
+        },
+        {
+          "caller": "test_high_similarity_deduplicated",
+          "callee": "MemoryEvent",
+          "lineNumber": 71
+        },
+        {
+          "caller": "test_high_similarity_deduplicated",
+          "callee": "MemoryEvent",
+          "lineNumber": 72
+        },
+        {
+          "caller": "test_high_similarity_deduplicated",
+          "callee": "self.assertTrue",
+          "lineNumber": 73
+        },
+        {
+          "caller": "test_high_similarity_deduplicated",
+          "callee": "should_deduplicate",
+          "lineNumber": 73
+        },
+        {
+          "caller": "test_medium_similarity_retained",
+          "callee": "MemoryEvent",
+          "lineNumber": 78
+        },
+        {
+          "caller": "test_medium_similarity_retained",
+          "callee": "MemoryEvent",
+          "lineNumber": 79
+        },
+        {
+          "caller": "test_medium_similarity_retained",
+          "callee": "self.assertFalse",
+          "lineNumber": 82
+        },
+        {
+          "caller": "test_medium_similarity_retained",
+          "callee": "should_deduplicate",
+          "lineNumber": 82
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 4,
+        "functionCount": 2,
+        "classCount": 2
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/test/test_history_event_retrieval_service_compile.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 21,
+      "nonEmptyLines": 16,
+      "classes": [
+        {
+          "name": "TestHistoryEventRetrievalServiceCompile",
+          "startLine": 6,
+          "endLine": 17,
+          "methods": [
+            "test_module_compiles_cleanly"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "TestHistoryEventRetrievalServiceCompile",
+          "line": 6,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "test_module_compiles_cleanly",
+          "callee": "Path(__file__).resolve",
+          "lineNumber": 8
+        },
+        {
+          "caller": "test_module_compiles_cleanly",
+          "callee": "Path",
+          "lineNumber": 8
+        },
+        {
+          "caller": "test_module_compiles_cleanly",
+          "callee": "py_compile.compile",
+          "lineNumber": 12
+        },
+        {
+          "caller": "test_module_compiles_cleanly",
+          "callee": "str",
+          "lineNumber": 12
+        },
+        {
+          "caller": "test_module_compiles_cleanly",
+          "callee": "self.fail",
+          "lineNumber": 14
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/test/test_structure_injection.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 97,
+      "nonEmptyLines": 76,
+      "functions": [
+        {
+          "name": "format_history_events",
+          "startLine": 42,
+          "endLine": 56,
+          "params": [
+            "events"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "EventActor",
+          "startLine": 10,
+          "endLine": 12,
+          "methods": [],
+          "properties": []
+        },
+        {
+          "name": "EventDetailType",
+          "startLine": 15,
+          "endLine": 19,
+          "methods": [],
+          "properties": []
+        },
+        {
+          "name": "MemoryEvent",
+          "startLine": 23,
+          "endLine": 28,
+          "methods": [],
+          "properties": [
+            "event_id",
+            "content",
+            "actor",
+            "event_type",
+            "occurred_at"
+          ]
+        },
+        {
+          "name": "TestFormatHistoryEvents",
+          "startLine": 59,
+          "endLine": 93,
+          "methods": [
+            "test_follow_up_format",
+            "test_boundary_format",
+            "test_commitment_format"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "EventActor",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "EventDetailType",
+          "line": 15,
+          "isDefault": false
+        },
+        {
+          "name": "MemoryEvent",
+          "line": 22,
+          "isDefault": false
+        },
+        {
+          "name": "format_history_events",
+          "line": 42,
+          "isDefault": false
+        },
+        {
+          "name": "TestFormatHistoryEvents",
+          "line": 59,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "format_history_events",
+          "callee": "EVENT_TYPE_LABELS.get",
+          "lineNumber": 52
+        },
+        {
+          "caller": "format_history_events",
+          "callee": "lines.append",
+          "lineNumber": 54
+        },
+        {
+          "caller": "format_history_events",
+          "callee": "\"\\n\".join",
+          "lineNumber": 56
+        },
+        {
+          "caller": "test_follow_up_format",
+          "callee": "MemoryEvent",
+          "lineNumber": 64
+        },
+        {
+          "caller": "test_follow_up_format",
+          "callee": "format_history_events",
+          "lineNumber": 70
+        },
+        {
+          "caller": "test_follow_up_format",
+          "callee": "self.assertIn",
+          "lineNumber": 71
+        },
+        {
+          "caller": "test_boundary_format",
+          "callee": "MemoryEvent",
+          "lineNumber": 75
+        },
+        {
+          "caller": "test_boundary_format",
+          "callee": "format_history_events",
+          "lineNumber": 81
+        },
+        {
+          "caller": "test_boundary_format",
+          "callee": "self.assertIn",
+          "lineNumber": 82
+        },
+        {
+          "caller": "test_commitment_format",
+          "callee": "MemoryEvent",
+          "lineNumber": 86
+        },
+        {
+          "caller": "test_commitment_format",
+          "callee": "format_history_events",
+          "lineNumber": 92
+        },
+        {
+          "caller": "test_commitment_format",
+          "callee": "self.assertIn",
+          "lineNumber": 93
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 5,
+        "functionCount": 1,
+        "classCount": 4
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/test/test.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 23,
+      "nonEmptyLines": 17,
+      "classes": [
+        {
+          "name": "Solution",
+          "startLine": 5,
+          "endLine": 16,
+          "methods": [
+            "firstMissingPositive"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "Solution",
+          "line": 5,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "firstMissingPositive",
+          "callee": "len",
+          "lineNumber": 7
+        },
+        {
+          "caller": "firstMissingPositive",
+          "callee": "range",
+          "lineNumber": 9
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    }
+  ]
+}

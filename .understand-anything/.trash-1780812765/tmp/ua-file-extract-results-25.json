@@ -1,0 +1,3107 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 25,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "FoxChat-vue/src/components/Chat/GroupList.vue",
+      "language": "vue",
+      "fileCategory": "code",
+      "totalLines": 264,
+      "nonEmptyLines": 233,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-vue/src/components/Chat/MessageList.vue",
+      "language": "vue",
+      "fileCategory": "code",
+      "totalLines": 692,
+      "nonEmptyLines": 604,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-vue/src/components/Chat/ModelMemoryPanel.vue",
+      "language": "vue",
+      "fileCategory": "code",
+      "totalLines": 363,
+      "nonEmptyLines": 314,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-vue/src/components/HelloWorld.vue",
+      "language": "vue",
+      "fileCategory": "code",
+      "totalLines": 43,
+      "nonEmptyLines": 37,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-vue/src/components/LlmConfig/LlmConfigPanel.vue",
+      "language": "vue",
+      "fileCategory": "code",
+      "totalLines": 653,
+      "nonEmptyLines": 582,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-vue/src/components/LlmConfig/ScenarioConfigForm.vue",
+      "language": "vue",
+      "fileCategory": "code",
+      "totalLines": 513,
+      "nonEmptyLines": 452,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-vue/src/components/TitleBar.vue",
+      "language": "vue",
+      "fileCategory": "code",
+      "totalLines": 105,
+      "nonEmptyLines": 94,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-vue/src/composables/useLlmFallback.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 116,
+      "nonEmptyLines": 108,
+      "functions": [
+        {
+          "name": "fallbackLlmRest",
+          "startLine": 8,
+          "endLine": 116,
+          "params": [
+            "llmId",
+            "msgContent",
+            "currentFriend",
+            "friendList",
+            "messageList"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "fallbackLlmRest",
+          "line": 8,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "fallbackLlmRest",
+          "callee": "request.post",
+          "lineNumber": 12
+        },
+        {
+          "caller": "fallbackLlmRest",
+          "callee": "Array.isArray",
+          "lineNumber": 25
+        },
+        {
+          "caller": "fallbackLlmRest",
+          "callee": "actualResponse.find",
+          "lineNumber": 26
+        },
+        {
+          "caller": "fallbackLlmRest",
+          "callee": "JSON.parse",
+          "lineNumber": 29
+        },
+        {
+          "caller": "fallbackLlmRest",
+          "callee": "Array.isArray",
+          "lineNumber": 30
+        },
+        {
+          "caller": "fallbackLlmRest",
+          "callee": "Array.isArray",
+          "lineNumber": 38
+        },
+        {
+          "caller": "fallbackLlmRest",
+          "callee": "innerData.find",
+          "lineNumber": 39
+        },
+        {
+          "caller": "fallbackLlmRest",
+          "callee": "JSON.parse",
+          "lineNumber": 42
+        },
+        {
+          "caller": "fallbackLlmRest",
+          "callee": "Array.isArray",
+          "lineNumber": 43
+        },
+        {
+          "caller": "fallbackLlmRest",
+          "callee": "JSON.stringify",
+          "lineNumber": 53
+        },
+        {
+          "caller": "fallbackLlmRest",
+          "callee": "messageList.value.findIndex",
+          "lineNumber": 62
+        },
+        {
+          "caller": "fallbackLlmRest",
+          "callee": "import",
+          "lineNumber": 70
+        },
+        {
+          "caller": "fallbackLlmRest",
+          "callee": "messageList.value.push",
+          "lineNumber": 71
+        },
+        {
+          "caller": "fallbackLlmRest",
+          "callee": "snowflake.nextId",
+          "lineNumber": 72
+        },
+        {
+          "caller": "fallbackLlmRest",
+          "callee": "new Date().toISOString",
+          "lineNumber": 78
+        },
+        {
+          "caller": "fallbackLlmRest",
+          "callee": "friendList.value.find",
+          "lineNumber": 88
+        },
+        {
+          "caller": "fallbackLlmRest",
+          "callee": "String",
+          "lineNumber": 88
+        },
+        {
+          "caller": "fallbackLlmRest",
+          "callee": "String",
+          "lineNumber": 88
+        },
+        {
+          "caller": "fallbackLlmRest",
+          "callee": "console.error",
+          "lineNumber": 93
+        },
+        {
+          "caller": "fallbackLlmRest",
+          "callee": "messageList.value.findIndex",
+          "lineNumber": 96
+        },
+        {
+          "caller": "fallbackLlmRest",
+          "callee": "messageList.value.push",
+          "lineNumber": 105
+        },
+        {
+          "caller": "fallbackLlmRest",
+          "callee": "Date.now",
+          "lineNumber": 106
+        },
+        {
+          "caller": "fallbackLlmRest",
+          "callee": "new Date().toISOString",
+          "lineNumber": 112
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChat-vue/src/composables/useLlmStream.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 217,
+      "nonEmptyLines": 199,
+      "functions": [
+        {
+          "name": "useLlmStream",
+          "startLine": 84,
+          "endLine": 217,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "useLlmStream",
+          "line": 84,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "useLlmStream",
+          "callee": "ref",
+          "lineNumber": 85
+        },
+        {
+          "caller": "sendStreamMessage",
+          "callee": "fetch",
+          "lineNumber": 99
+        },
+        {
+          "caller": "sendStreamMessage",
+          "callee": "JSON.stringify",
+          "lineNumber": 102
+        },
+        {
+          "caller": "sendStreamMessage",
+          "callee": "response.body.getReader",
+          "lineNumber": 111
+        },
+        {
+          "caller": "sendStreamMessage",
+          "callee": "reader.read",
+          "lineNumber": 116
+        },
+        {
+          "caller": "sendStreamMessage",
+          "callee": "decoder.decode",
+          "lineNumber": 119
+        },
+        {
+          "caller": "sendStreamMessage",
+          "callee": "buffer.split",
+          "lineNumber": 122
+        },
+        {
+          "caller": "sendStreamMessage",
+          "callee": "lines.pop",
+          "lineNumber": 123
+        },
+        {
+          "caller": "sendStreamMessage",
+          "callee": "line.startsWith",
+          "lineNumber": 127
+        },
+        {
+          "caller": "sendStreamMessage",
+          "callee": "line.slice(6).trim",
+          "lineNumber": 128
+        },
+        {
+          "caller": "sendStreamMessage",
+          "callee": "line.slice",
+          "lineNumber": 128
+        },
+        {
+          "caller": "sendStreamMessage",
+          "callee": "line.startsWith",
+          "lineNumber": 129
+        },
+        {
+          "caller": "sendStreamMessage",
+          "callee": "line.slice(5).trim",
+          "lineNumber": 130
+        },
+        {
+          "caller": "sendStreamMessage",
+          "callee": "line.slice",
+          "lineNumber": 130
+        },
+        {
+          "caller": "sendStreamMessage",
+          "callee": "handleEvent",
+          "lineNumber": 131
+        },
+        {
+          "caller": "sendStreamMessage",
+          "callee": "buffer.trim",
+          "lineNumber": 139
+        },
+        {
+          "caller": "sendStreamMessage",
+          "callee": "onDone",
+          "lineNumber": 145
+        },
+        {
+          "caller": "sendStreamMessage",
+          "callee": "console.error",
+          "lineNumber": 150
+        },
+        {
+          "caller": "sendStreamMessage",
+          "callee": "onError",
+          "lineNumber": 151
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "JSON.parse",
+          "lineNumber": 163
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "onBlocks",
+          "lineNumber": 164
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "onToken",
+          "lineNumber": 167
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "data.lastIndexOf",
+          "lineNumber": 173
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "data.slice",
+          "lineNumber": 174
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "data.slice",
+          "lineNumber": 175
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "onToken",
+          "lineNumber": 177
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "onEmotion",
+          "lineNumber": 181
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "onToken",
+          "lineNumber": 186
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "JSON.parse",
+          "lineNumber": 192
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "onBlocks",
+          "lineNumber": 194
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "onEmotion",
+          "lineNumber": 197
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "onDone",
+          "lineNumber": 199
+        },
+        {
+          "caller": "handleEvent",
+          "callee": "onDone",
+          "lineNumber": 202
+        },
+        {
+          "caller": "cancel",
+          "callee": "abortController.abort",
+          "lineNumber": 212
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChat-vue/src/composables/useWebSocket.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 396,
+      "nonEmptyLines": 351,
+      "functions": [
+        {
+          "name": "useWebSocket",
+          "startLine": 20,
+          "endLine": 394,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "useWebSocket",
+          "line": 20,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "useWebSocket",
+          "callee": "ref",
+          "lineNumber": 30
+        },
+        {
+          "caller": "useWebSocket",
+          "callee": "ref",
+          "lineNumber": 31
+        },
+        {
+          "caller": "useWebSocket",
+          "callee": "ref",
+          "lineNumber": 37
+        },
+        {
+          "caller": "useWebSocket",
+          "callee": "ref",
+          "lineNumber": 38
+        },
+        {
+          "caller": "sendBinaryMessage",
+          "callee": "console.log",
+          "lineNumber": 43
+        },
+        {
+          "caller": "sendBinaryMessage",
+          "callee": "ws.value.send",
+          "lineNumber": 46
+        },
+        {
+          "caller": "sendBinaryMessage",
+          "callee": "console.log",
+          "lineNumber": 47
+        },
+        {
+          "caller": "sendBinaryMessage",
+          "callee": "console.error",
+          "lineNumber": 49
+        },
+        {
+          "caller": "sendBinaryMessage",
+          "callee": "console.error",
+          "lineNumber": 52
+        },
+        {
+          "caller": "stopHeartbeat",
+          "callee": "clearInterval",
+          "lineNumber": 59
+        },
+        {
+          "caller": "startHeartbeat",
+          "callee": "stopHeartbeat",
+          "lineNumber": 66
+        },
+        {
+          "caller": "startHeartbeat",
+          "callee": "setInterval",
+          "lineNumber": 67
+        },
+        {
+          "caller": "startHeartbeat",
+          "callee": "encodeProtocol",
+          "lineNumber": 75
+        },
+        {
+          "caller": "startHeartbeat",
+          "callee": "sendBinaryMessage",
+          "lineNumber": 76
+        },
+        {
+          "caller": "startHeartbeat",
+          "callee": "console.error",
+          "lineNumber": 78
+        },
+        {
+          "caller": "connect",
+          "callee": "console.error",
+          "lineNumber": 90
+        },
+        {
+          "caller": "connect",
+          "callee": "console.log",
+          "lineNumber": 95
+        },
+        {
+          "caller": "connect",
+          "callee": "ws.value.close",
+          "lineNumber": 98
+        },
+        {
+          "caller": "connect",
+          "callee": "console.log",
+          "lineNumber": 105
+        },
+        {
+          "caller": "connect",
+          "callee": "localStorage.getItem",
+          "lineNumber": 110
+        },
+        {
+          "caller": "connect",
+          "callee": "console.log",
+          "lineNumber": 118
+        },
+        {
+          "caller": "connect",
+          "callee": "encodeProtocol",
+          "lineNumber": 119
+        },
+        {
+          "caller": "connect",
+          "callee": "sendBinaryMessage",
+          "lineNumber": 120
+        },
+        {
+          "caller": "connect",
+          "callee": "console.error",
+          "lineNumber": 122
+        },
+        {
+          "caller": "connect",
+          "callee": "startHeartbeat",
+          "lineNumber": 126
+        },
+        {
+          "caller": "connect",
+          "callee": "onConnect",
+          "lineNumber": 127
+        },
+        {
+          "caller": "connect",
+          "callee": "console.error",
+          "lineNumber": 131
+        },
+        {
+          "caller": "connect",
+          "callee": "onError",
+          "lineNumber": 132
+        },
+        {
+          "caller": "connect",
+          "callee": "handleMessage",
+          "lineNumber": 138
+        },
+        {
+          "caller": "connect",
+          "callee": "console.error",
+          "lineNumber": 140
+        },
+        {
+          "caller": "connect",
+          "callee": "console.log",
+          "lineNumber": 145
+        },
+        {
+          "caller": "connect",
+          "callee": "stopHeartbeat",
+          "lineNumber": 147
+        },
+        {
+          "caller": "connect",
+          "callee": "console.error",
+          "lineNumber": 151
+        },
+        {
+          "caller": "connect",
+          "callee": "onError",
+          "lineNumber": 152
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "console.warn",
+          "lineNumber": 163
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "window.atob",
+          "lineNumber": 165
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "binaryString.charCodeAt",
+          "lineNumber": 169
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "console.error",
+          "lineNumber": 173
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "console.error",
+          "lineNumber": 177
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "decodeProtocol",
+          "lineNumber": 182
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "console.log",
+          "lineNumber": 185
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "onMessage",
+          "lineNumber": 189
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "String",
+          "lineNumber": 193
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "String",
+          "lineNumber": 197
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "String",
+          "lineNumber": 197
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "onFriendRequest",
+          "lineNumber": 202
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "String",
+          "lineNumber": 210
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "String",
+          "lineNumber": 211
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "String",
+          "lineNumber": 221
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "sendBinaryMessage",
+          "lineNumber": 223
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "encodeProtocol",
+          "lineNumber": 223
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "JSON.parse",
+          "lineNumber": 230
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "Array.isArray",
+          "lineNumber": 231
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "Array.isArray",
+          "lineNumber": 234
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "Date.now",
+          "lineNumber": 243
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "new Date().toISOString",
+          "lineNumber": 248
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "onPrivateMessage",
+          "lineNumber": 254
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "Date.now",
+          "lineNumber": 259
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "onPrivateMessage",
+          "lineNumber": 267
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "onPrivateMessage",
+          "lineNumber": 277
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "String",
+          "lineNumber": 282
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "onOnlineStatus",
+          "lineNumber": 284
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "String",
+          "lineNumber": 291
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "onOnlineStatus",
+          "lineNumber": 293
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "String",
+          "lineNumber": 302
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "String",
+          "lineNumber": 303
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "console.log",
+          "lineNumber": 305
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "String",
+          "lineNumber": 308
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "String",
+          "lineNumber": 309
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "String",
+          "lineNumber": 310
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "Date.now",
+          "lineNumber": 315
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "new Date().toISOString",
+          "lineNumber": 319
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "onGroupMessage",
+          "lineNumber": 325
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "onGroupMessage",
+          "lineNumber": 334
+        },
+        {
+          "caller": "handleMessage",
+          "callee": "console.error",
+          "lineNumber": 339
+        },
+        {
+          "caller": "sendMessage",
+          "callee": "console.error",
+          "lineNumber": 346
+        },
+        {
+          "caller": "sendMessage",
+          "callee": "encodeProtocol",
+          "lineNumber": 351
+        },
+        {
+          "caller": "sendMessage",
+          "callee": "sendBinaryMessage",
+          "lineNumber": 352
+        },
+        {
+          "caller": "sendMessage",
+          "callee": "console.error",
+          "lineNumber": 355
+        },
+        {
+          "caller": "disconnect",
+          "callee": "ws.value.close",
+          "lineNumber": 364
+        },
+        {
+          "caller": "disconnect",
+          "callee": "console.error",
+          "lineNumber": 366
+        },
+        {
+          "caller": "disconnect",
+          "callee": "stopHeartbeat",
+          "lineNumber": 369
+        },
+        {
+          "caller": "useWebSocket",
+          "callee": "onMounted",
+          "lineNumber": 374
+        },
+        {
+          "caller": "useWebSocket",
+          "callee": "connect",
+          "lineNumber": 375
+        },
+        {
+          "caller": "useWebSocket",
+          "callee": "onUnmounted",
+          "lineNumber": 379
+        },
+        {
+          "caller": "useWebSocket",
+          "callee": "disconnect",
+          "lineNumber": 380
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChat-vue/src/proto/chat.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 905,
+      "nonEmptyLines": 771,
+      "functions": [
+        {
+          "name": "encodeMessage",
+          "startLine": 1,
+          "endLine": 5,
+          "params": [
+            "message"
+          ]
+        },
+        {
+          "name": "_encodeMessage",
+          "startLine": 7,
+          "endLine": 50,
+          "params": [
+            "message",
+            "bb"
+          ]
+        },
+        {
+          "name": "decodeMessage",
+          "startLine": 52,
+          "endLine": 54,
+          "params": [
+            "binary"
+          ]
+        },
+        {
+          "name": "_decodeMessage",
+          "startLine": 56,
+          "endLine": 106,
+          "params": [
+            "bb"
+          ]
+        },
+        {
+          "name": "encodeChatMsg",
+          "startLine": 108,
+          "endLine": 112,
+          "params": [
+            "message"
+          ]
+        },
+        {
+          "name": "_encodeChatMsg",
+          "startLine": 114,
+          "endLine": 160,
+          "params": [
+            "message",
+            "bb"
+          ]
+        },
+        {
+          "name": "encodeGroupMsg",
+          "startLine": 162,
+          "endLine": 166,
+          "params": [
+            "message"
+          ]
+        },
+        {
+          "name": "_encodeGroupMsg",
+          "startLine": 168,
+          "endLine": 214,
+          "params": [
+            "message",
+            "bb"
+          ]
+        },
+        {
+          "name": "decodeGroupMsg",
+          "startLine": 216,
+          "endLine": 218,
+          "params": [
+            "binary"
+          ]
+        },
+        {
+          "name": "_decodeGroupMsg",
+          "startLine": 220,
+          "endLine": 274,
+          "params": [
+            "bb"
+          ]
+        },
+        {
+          "name": "decodeChatMsg",
+          "startLine": 276,
+          "endLine": 278,
+          "params": [
+            "binary"
+          ]
+        },
+        {
+          "name": "_decodeChatMsg",
+          "startLine": 280,
+          "endLine": 342,
+          "params": [
+            "bb"
+          ]
+        },
+        {
+          "name": "encodeUserDef",
+          "startLine": 344,
+          "endLine": 348,
+          "params": [
+            "message"
+          ]
+        },
+        {
+          "name": "_encodeUserDef",
+          "startLine": 350,
+          "endLine": 378,
+          "params": [
+            "message",
+            "bb"
+          ]
+        },
+        {
+          "name": "decodeUserDef",
+          "startLine": 380,
+          "endLine": 382,
+          "params": [
+            "binary"
+          ]
+        },
+        {
+          "name": "_decodeUserDef",
+          "startLine": 384,
+          "endLine": 424,
+          "params": [
+            "bb"
+          ]
+        },
+        {
+          "name": "pushTemporaryLength",
+          "startLine": 426,
+          "endLine": 431,
+          "params": [
+            "bb"
+          ]
+        },
+        {
+          "name": "skipUnknownField",
+          "startLine": 433,
+          "endLine": 441,
+          "params": [
+            "bb",
+            "type"
+          ]
+        },
+        {
+          "name": "stringToLong",
+          "startLine": 443,
+          "endLine": 449,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "longToString",
+          "startLine": 451,
+          "endLine": 459,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "intToLong",
+          "startLine": 470,
+          "endLine": 477,
+          "params": [
+            "value"
+          ]
+        },
+        {
+          "name": "popByteBuffer",
+          "startLine": 481,
+          "endLine": 486,
+          "params": []
+        },
+        {
+          "name": "pushByteBuffer",
+          "startLine": 488,
+          "endLine": 490,
+          "params": [
+            "bb"
+          ]
+        },
+        {
+          "name": "wrapByteBuffer",
+          "startLine": 492,
+          "endLine": 494,
+          "params": [
+            "bytes"
+          ]
+        },
+        {
+          "name": "toUint8Array",
+          "startLine": 496,
+          "endLine": 500,
+          "params": [
+            "bb"
+          ]
+        },
+        {
+          "name": "skip",
+          "startLine": 502,
+          "endLine": 507,
+          "params": [
+            "bb",
+            "offset"
+          ]
+        },
+        {
+          "name": "isAtEnd",
+          "startLine": 509,
+          "endLine": 511,
+          "params": [
+            "bb"
+          ]
+        },
+        {
+          "name": "grow",
+          "startLine": 513,
+          "endLine": 528,
+          "params": [
+            "bb",
+            "count"
+          ]
+        },
+        {
+          "name": "advance",
+          "startLine": 530,
+          "endLine": 537,
+          "params": [
+            "bb",
+            "count"
+          ]
+        },
+        {
+          "name": "readBytes",
+          "startLine": 539,
+          "endLine": 542,
+          "params": [
+            "bb",
+            "count"
+          ]
+        },
+        {
+          "name": "writeBytes",
+          "startLine": 544,
+          "endLine": 547,
+          "params": [
+            "bb",
+            "buffer"
+          ]
+        },
+        {
+          "name": "readString",
+          "startLine": 549,
+          "endLine": 624,
+          "params": [
+            "bb",
+            "count"
+          ]
+        },
+        {
+          "name": "writeString",
+          "startLine": 626,
+          "endLine": 667,
+          "params": [
+            "bb",
+            "text"
+          ]
+        },
+        {
+          "name": "writeByteBuffer",
+          "startLine": 669,
+          "endLine": 678,
+          "params": [
+            "bb",
+            "buffer"
+          ]
+        },
+        {
+          "name": "readByte",
+          "startLine": 680,
+          "endLine": 682,
+          "params": [
+            "bb"
+          ]
+        },
+        {
+          "name": "writeByte",
+          "startLine": 684,
+          "endLine": 687,
+          "params": [
+            "bb",
+            "value"
+          ]
+        },
+        {
+          "name": "readFloat",
+          "startLine": 689,
+          "endLine": 699,
+          "params": [
+            "bb"
+          ]
+        },
+        {
+          "name": "writeFloat",
+          "startLine": 701,
+          "endLine": 711,
+          "params": [
+            "bb",
+            "value"
+          ]
+        },
+        {
+          "name": "readDouble",
+          "startLine": 713,
+          "endLine": 727,
+          "params": [
+            "bb"
+          ]
+        },
+        {
+          "name": "writeDouble",
+          "startLine": 729,
+          "endLine": 743,
+          "params": [
+            "bb",
+            "value"
+          ]
+        },
+        {
+          "name": "readInt32",
+          "startLine": 745,
+          "endLine": 754,
+          "params": [
+            "bb"
+          ]
+        },
+        {
+          "name": "writeInt32",
+          "startLine": 756,
+          "endLine": 763,
+          "params": [
+            "bb",
+            "value"
+          ]
+        },
+        {
+          "name": "readInt64",
+          "startLine": 765,
+          "endLine": 771,
+          "params": [
+            "bb",
+            "unsigned"
+          ]
+        },
+        {
+          "name": "writeInt64",
+          "startLine": 773,
+          "endLine": 776,
+          "params": [
+            "bb",
+            "value"
+          ]
+        },
+        {
+          "name": "readVarint32",
+          "startLine": 778,
+          "endLine": 788,
+          "params": [
+            "bb"
+          ]
+        },
+        {
+          "name": "writeVarint32",
+          "startLine": 790,
+          "endLine": 797,
+          "params": [
+            "bb",
+            "value"
+          ]
+        },
+        {
+          "name": "readVarint64",
+          "startLine": 799,
+          "endLine": 832,
+          "params": [
+            "bb",
+            "unsigned"
+          ]
+        },
+        {
+          "name": "writeVarint64",
+          "startLine": 834,
+          "endLine": 866,
+          "params": [
+            "bb",
+            "value"
+          ]
+        },
+        {
+          "name": "readVarint32ZigZag",
+          "startLine": 868,
+          "endLine": 873,
+          "params": [
+            "bb"
+          ]
+        },
+        {
+          "name": "writeVarint32ZigZag",
+          "startLine": 875,
+          "endLine": 878,
+          "params": [
+            "bb",
+            "value"
+          ]
+        },
+        {
+          "name": "readVarint64ZigZag",
+          "startLine": 880,
+          "endLine": 892,
+          "params": [
+            "bb"
+          ]
+        },
+        {
+          "name": "writeVarint64ZigZag",
+          "startLine": 894,
+          "endLine": 905,
+          "params": [
+            "bb",
+            "value"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "encodeMessage",
+          "line": 1,
+          "isDefault": false
+        },
+        {
+          "name": "decodeMessage",
+          "line": 52,
+          "isDefault": false
+        },
+        {
+          "name": "encodeChatMsg",
+          "line": 108,
+          "isDefault": false
+        },
+        {
+          "name": "encodeGroupMsg",
+          "line": 162,
+          "isDefault": false
+        },
+        {
+          "name": "decodeGroupMsg",
+          "line": 216,
+          "isDefault": false
+        },
+        {
+          "name": "decodeChatMsg",
+          "line": 276,
+          "isDefault": false
+        },
+        {
+          "name": "encodeUserDef",
+          "line": 344,
+          "isDefault": false
+        },
+        {
+          "name": "decodeUserDef",
+          "line": 380,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "encodeMessage",
+          "callee": "popByteBuffer",
+          "lineNumber": 2
+        },
+        {
+          "caller": "encodeMessage",
+          "callee": "_encodeMessage",
+          "lineNumber": 3
+        },
+        {
+          "caller": "encodeMessage",
+          "callee": "toUint8Array",
+          "lineNumber": 4
+        },
+        {
+          "caller": "_encodeMessage",
+          "callee": "writeVarint32",
+          "lineNumber": 11
+        },
+        {
+          "caller": "_encodeMessage",
+          "callee": "writeVarint32",
+          "lineNumber": 12
+        },
+        {
+          "caller": "_encodeMessage",
+          "callee": "writeVarint32",
+          "lineNumber": 18
+        },
+        {
+          "caller": "_encodeMessage",
+          "callee": "writeString",
+          "lineNumber": 19
+        },
+        {
+          "caller": "_encodeMessage",
+          "callee": "writeVarint32",
+          "lineNumber": 25
+        },
+        {
+          "caller": "_encodeMessage",
+          "callee": "popByteBuffer",
+          "lineNumber": 26
+        },
+        {
+          "caller": "_encodeMessage",
+          "callee": "_encodeChatMsg",
+          "lineNumber": 27
+        },
+        {
+          "caller": "_encodeMessage",
+          "callee": "writeVarint32",
+          "lineNumber": 28
+        },
+        {
+          "caller": "_encodeMessage",
+          "callee": "writeByteBuffer",
+          "lineNumber": 29
+        },
+        {
+          "caller": "_encodeMessage",
+          "callee": "pushByteBuffer",
+          "lineNumber": 30
+        },
+        {
+          "caller": "_encodeMessage",
+          "callee": "writeVarint32",
+          "lineNumber": 36
+        },
+        {
+          "caller": "_encodeMessage",
+          "callee": "writeVarint32",
+          "lineNumber": 37
+        },
+        {
+          "caller": "_encodeMessage",
+          "callee": "writeVarint32",
+          "lineNumber": 43
+        },
+        {
+          "caller": "_encodeMessage",
+          "callee": "popByteBuffer",
+          "lineNumber": 44
+        },
+        {
+          "caller": "_encodeMessage",
+          "callee": "_encodeGroupMsg",
+          "lineNumber": 45
+        },
+        {
+          "caller": "_encodeMessage",
+          "callee": "writeVarint32",
+          "lineNumber": 46
+        },
+        {
+          "caller": "_encodeMessage",
+          "callee": "writeByteBuffer",
+          "lineNumber": 47
+        },
+        {
+          "caller": "_encodeMessage",
+          "callee": "pushByteBuffer",
+          "lineNumber": 48
+        },
+        {
+          "caller": "decodeMessage",
+          "callee": "_decodeMessage",
+          "lineNumber": 53
+        },
+        {
+          "caller": "decodeMessage",
+          "callee": "wrapByteBuffer",
+          "lineNumber": 53
+        },
+        {
+          "caller": "_decodeMessage",
+          "callee": "isAtEnd",
+          "lineNumber": 59
+        },
+        {
+          "caller": "_decodeMessage",
+          "callee": "readVarint32",
+          "lineNumber": 60
+        },
+        {
+          "caller": "_decodeMessage",
+          "callee": "readVarint32",
+          "lineNumber": 68
+        },
+        {
+          "caller": "_decodeMessage",
+          "callee": "readString",
+          "lineNumber": 74
+        },
+        {
+          "caller": "_decodeMessage",
+          "callee": "readVarint32",
+          "lineNumber": 74
+        },
+        {
+          "caller": "_decodeMessage",
+          "callee": "pushTemporaryLength",
+          "lineNumber": 80
+        },
+        {
+          "caller": "_decodeMessage",
+          "callee": "_decodeChatMsg",
+          "lineNumber": 81
+        },
+        {
+          "caller": "_decodeMessage",
+          "callee": "readVarint32",
+          "lineNumber": 88
+        },
+        {
+          "caller": "_decodeMessage",
+          "callee": "pushTemporaryLength",
+          "lineNumber": 94
+        },
+        {
+          "caller": "_decodeMessage",
+          "callee": "_decodeGroupMsg",
+          "lineNumber": 95
+        },
+        {
+          "caller": "_decodeMessage",
+          "callee": "skipUnknownField",
+          "lineNumber": 101
+        },
+        {
+          "caller": "encodeChatMsg",
+          "callee": "popByteBuffer",
+          "lineNumber": 109
+        },
+        {
+          "caller": "encodeChatMsg",
+          "callee": "_encodeChatMsg",
+          "lineNumber": 110
+        },
+        {
+          "caller": "encodeChatMsg",
+          "callee": "toUint8Array",
+          "lineNumber": 111
+        },
+        {
+          "caller": "_encodeChatMsg",
+          "callee": "writeVarint32",
+          "lineNumber": 118
+        },
+        {
+          "caller": "_encodeChatMsg",
+          "callee": "writeString",
+          "lineNumber": 119
+        },
+        {
+          "caller": "_encodeChatMsg",
+          "callee": "writeVarint32",
+          "lineNumber": 125
+        },
+        {
+          "caller": "_encodeChatMsg",
+          "callee": "popByteBuffer",
+          "lineNumber": 126
+        },
+        {
+          "caller": "_encodeChatMsg",
+          "callee": "_encodeUserDef",
+          "lineNumber": 127
+        },
+        {
+          "caller": "_encodeChatMsg",
+          "callee": "writeVarint32",
+          "lineNumber": 128
+        },
+        {
+          "caller": "_encodeChatMsg",
+          "callee": "writeByteBuffer",
+          "lineNumber": 129
+        },
+        {
+          "caller": "_encodeChatMsg",
+          "callee": "pushByteBuffer",
+          "lineNumber": 130
+        },
+        {
+          "caller": "_encodeChatMsg",
+          "callee": "writeVarint32",
+          "lineNumber": 136
+        },
+        {
+          "caller": "_encodeChatMsg",
+          "callee": "writeString",
+          "lineNumber": 137
+        },
+        {
+          "caller": "_encodeChatMsg",
+          "callee": "writeVarint32",
+          "lineNumber": 143
+        },
+        {
+          "caller": "_encodeChatMsg",
+          "callee": "writeString",
+          "lineNumber": 144
+        },
+        {
+          "caller": "_encodeChatMsg",
+          "callee": "writeVarint32",
+          "lineNumber": 150
+        },
+        {
+          "caller": "_encodeChatMsg",
+          "callee": "writeByte",
+          "lineNumber": 151
+        },
+        {
+          "caller": "_encodeChatMsg",
+          "callee": "writeVarint32",
+          "lineNumber": 157
+        },
+        {
+          "caller": "_encodeChatMsg",
+          "callee": "writeString",
+          "lineNumber": 158
+        },
+        {
+          "caller": "encodeGroupMsg",
+          "callee": "popByteBuffer",
+          "lineNumber": 163
+        },
+        {
+          "caller": "encodeGroupMsg",
+          "callee": "_encodeGroupMsg",
+          "lineNumber": 164
+        },
+        {
+          "caller": "encodeGroupMsg",
+          "callee": "toUint8Array",
+          "lineNumber": 165
+        },
+        {
+          "caller": "_encodeGroupMsg",
+          "callee": "writeVarint32",
+          "lineNumber": 172
+        },
+        {
+          "caller": "_encodeGroupMsg",
+          "callee": "writeString",
+          "lineNumber": 173
+        },
+        {
+          "caller": "_encodeGroupMsg",
+          "callee": "writeVarint32",
+          "lineNumber": 179
+        },
+        {
+          "caller": "_encodeGroupMsg",
+          "callee": "writeString",
+          "lineNumber": 180
+        },
+        {
+          "caller": "_encodeGroupMsg",
+          "callee": "writeVarint32",
+          "lineNumber": 186
+        },
+        {
+          "caller": "_encodeGroupMsg",
+          "callee": "popByteBuffer",
+          "lineNumber": 187
+        },
+        {
+          "caller": "_encodeGroupMsg",
+          "callee": "_encodeUserDef",
+          "lineNumber": 188
+        },
+        {
+          "caller": "_encodeGroupMsg",
+          "callee": "writeVarint32",
+          "lineNumber": 189
+        },
+        {
+          "caller": "_encodeGroupMsg",
+          "callee": "writeByteBuffer",
+          "lineNumber": 190
+        },
+        {
+          "caller": "_encodeGroupMsg",
+          "callee": "pushByteBuffer",
+          "lineNumber": 191
+        },
+        {
+          "caller": "_encodeGroupMsg",
+          "callee": "writeVarint32",
+          "lineNumber": 197
+        },
+        {
+          "caller": "_encodeGroupMsg",
+          "callee": "writeString",
+          "lineNumber": 198
+        },
+        {
+          "caller": "_encodeGroupMsg",
+          "callee": "writeVarint32",
+          "lineNumber": 204
+        },
+        {
+          "caller": "_encodeGroupMsg",
+          "callee": "writeString",
+          "lineNumber": 205
+        },
+        {
+          "caller": "_encodeGroupMsg",
+          "callee": "writeVarint32",
+          "lineNumber": 211
+        },
+        {
+          "caller": "_encodeGroupMsg",
+          "callee": "writeString",
+          "lineNumber": 212
+        },
+        {
+          "caller": "decodeGroupMsg",
+          "callee": "_decodeGroupMsg",
+          "lineNumber": 217
+        },
+        {
+          "caller": "decodeGroupMsg",
+          "callee": "wrapByteBuffer",
+          "lineNumber": 217
+        },
+        {
+          "caller": "_decodeGroupMsg",
+          "callee": "isAtEnd",
+          "lineNumber": 223
+        },
+        {
+          "caller": "_decodeGroupMsg",
+          "callee": "readVarint32",
+          "lineNumber": 224
+        },
+        {
+          "caller": "_decodeGroupMsg",
+          "callee": "readString",
+          "lineNumber": 232
+        },
+        {
+          "caller": "_decodeGroupMsg",
+          "callee": "readVarint32",
+          "lineNumber": 232
+        },
+        {
+          "caller": "_decodeGroupMsg",
+          "callee": "readString",
+          "lineNumber": 238
+        },
+        {
+          "caller": "_decodeGroupMsg",
+          "callee": "readVarint32",
+          "lineNumber": 238
+        },
+        {
+          "caller": "_decodeGroupMsg",
+          "callee": "pushTemporaryLength",
+          "lineNumber": 244
+        },
+        {
+          "caller": "_decodeGroupMsg",
+          "callee": "_decodeUserDef",
+          "lineNumber": 245
+        },
+        {
+          "caller": "_decodeGroupMsg",
+          "callee": "readString",
+          "lineNumber": 252
+        },
+        {
+          "caller": "_decodeGroupMsg",
+          "callee": "readVarint32",
+          "lineNumber": 252
+        },
+        {
+          "caller": "_decodeGroupMsg",
+          "callee": "readString",
+          "lineNumber": 258
+        },
+        {
+          "caller": "_decodeGroupMsg",
+          "callee": "readVarint32",
+          "lineNumber": 258
+        },
+        {
+          "caller": "_decodeGroupMsg",
+          "callee": "readString",
+          "lineNumber": 264
+        },
+        {
+          "caller": "_decodeGroupMsg",
+          "callee": "readVarint32",
+          "lineNumber": 264
+        },
+        {
+          "caller": "_decodeGroupMsg",
+          "callee": "skipUnknownField",
+          "lineNumber": 269
+        },
+        {
+          "caller": "decodeChatMsg",
+          "callee": "_decodeChatMsg",
+          "lineNumber": 277
+        },
+        {
+          "caller": "decodeChatMsg",
+          "callee": "wrapByteBuffer",
+          "lineNumber": 277
+        },
+        {
+          "caller": "_decodeChatMsg",
+          "callee": "isAtEnd",
+          "lineNumber": 283
+        },
+        {
+          "caller": "_decodeChatMsg",
+          "callee": "readVarint32",
+          "lineNumber": 284
+        },
+        {
+          "caller": "_decodeChatMsg",
+          "callee": "readString",
+          "lineNumber": 292
+        },
+        {
+          "caller": "_decodeChatMsg",
+          "callee": "readVarint32",
+          "lineNumber": 292
+        },
+        {
+          "caller": "_decodeChatMsg",
+          "callee": "pushTemporaryLength",
+          "lineNumber": 298
+        },
+        {
+          "caller": "_decodeChatMsg",
+          "callee": "_decodeUserDef",
+          "lineNumber": 299
+        },
+        {
+          "caller": "_decodeChatMsg",
+          "callee": "readString",
+          "lineNumber": 306
+        },
+        {
+          "caller": "_decodeChatMsg",
+          "callee": "readVarint32",
+          "lineNumber": 306
+        },
+        {
+          "caller": "_decodeChatMsg",
+          "callee": "readString",
+          "lineNumber": 312
+        },
+        {
+          "caller": "_decodeChatMsg",
+          "callee": "readVarint32",
+          "lineNumber": 312
+        },
+        {
+          "caller": "_decodeChatMsg",
+          "callee": "readByte",
+          "lineNumber": 318
+        },
+        {
+          "caller": "_decodeChatMsg",
+          "callee": "readString",
+          "lineNumber": 324
+        },
+        {
+          "caller": "_decodeChatMsg",
+          "callee": "readVarint32",
+          "lineNumber": 324
+        },
+        {
+          "caller": "_decodeChatMsg",
+          "callee": "skipUnknownField",
+          "lineNumber": 332
+        },
+        {
+          "caller": "_decodeChatMsg",
+          "callee": "console.warn",
+          "lineNumber": 334
+        },
+        {
+          "caller": "encodeUserDef",
+          "callee": "popByteBuffer",
+          "lineNumber": 345
+        },
+        {
+          "caller": "encodeUserDef",
+          "callee": "_encodeUserDef",
+          "lineNumber": 346
+        },
+        {
+          "caller": "encodeUserDef",
+          "callee": "toUint8Array",
+          "lineNumber": 347
+        },
+        {
+          "caller": "_encodeUserDef",
+          "callee": "writeVarint32",
+          "lineNumber": 354
+        },
+        {
+          "caller": "_encodeUserDef",
+          "callee": "writeString",
+          "lineNumber": 355
+        },
+        {
+          "caller": "_encodeUserDef",
+          "callee": "writeVarint32",
+          "lineNumber": 361
+        },
+        {
+          "caller": "_encodeUserDef",
+          "callee": "writeString",
+          "lineNumber": 362
+        },
+        {
+          "caller": "_encodeUserDef",
+          "callee": "writeVarint32",
+          "lineNumber": 368
+        },
+        {
+          "caller": "_encodeUserDef",
+          "callee": "writeString",
+          "lineNumber": 369
+        },
+        {
+          "caller": "_encodeUserDef",
+          "callee": "writeVarint32",
+          "lineNumber": 375
+        },
+        {
+          "caller": "_encodeUserDef",
+          "callee": "writeString",
+          "lineNumber": 376
+        },
+        {
+          "caller": "decodeUserDef",
+          "callee": "_decodeUserDef",
+          "lineNumber": 381
+        },
+        {
+          "caller": "decodeUserDef",
+          "callee": "wrapByteBuffer",
+          "lineNumber": 381
+        },
+        {
+          "caller": "_decodeUserDef",
+          "callee": "isAtEnd",
+          "lineNumber": 387
+        },
+        {
+          "caller": "_decodeUserDef",
+          "callee": "readVarint32",
+          "lineNumber": 388
+        },
+        {
+          "caller": "_decodeUserDef",
+          "callee": "readString",
+          "lineNumber": 396
+        },
+        {
+          "caller": "_decodeUserDef",
+          "callee": "readVarint32",
+          "lineNumber": 396
+        },
+        {
+          "caller": "_decodeUserDef",
+          "callee": "readString",
+          "lineNumber": 402
+        },
+        {
+          "caller": "_decodeUserDef",
+          "callee": "readVarint32",
+          "lineNumber": 402
+        },
+        {
+          "caller": "_decodeUserDef",
+          "callee": "readString",
+          "lineNumber": 408
+        },
+        {
+          "caller": "_decodeUserDef",
+          "callee": "readVarint32",
+          "lineNumber": 408
+        },
+        {
+          "caller": "_decodeUserDef",
+          "callee": "readString",
+          "lineNumber": 414
+        },
+        {
+          "caller": "_decodeUserDef",
+          "callee": "readVarint32",
+          "lineNumber": 414
+        },
+        {
+          "caller": "_decodeUserDef",
+          "callee": "skipUnknownField",
+          "lineNumber": 419
+        },
+        {
+          "caller": "pushTemporaryLength",
+          "callee": "readVarint32",
+          "lineNumber": 427
+        },
+        {
+          "caller": "skipUnknownField",
+          "callee": "readByte",
+          "lineNumber": 435
+        },
+        {
+          "caller": "skipUnknownField",
+          "callee": "skip",
+          "lineNumber": 436
+        },
+        {
+          "caller": "skipUnknownField",
+          "callee": "readVarint32",
+          "lineNumber": 436
+        },
+        {
+          "caller": "skipUnknownField",
+          "callee": "skip",
+          "lineNumber": 437
+        },
+        {
+          "caller": "skipUnknownField",
+          "callee": "skip",
+          "lineNumber": 438
+        },
+        {
+          "caller": "stringToLong",
+          "callee": "value.charCodeAt",
+          "lineNumber": 445
+        },
+        {
+          "caller": "stringToLong",
+          "callee": "value.charCodeAt",
+          "lineNumber": 445
+        },
+        {
+          "caller": "stringToLong",
+          "callee": "value.charCodeAt",
+          "lineNumber": 446
+        },
+        {
+          "caller": "stringToLong",
+          "callee": "value.charCodeAt",
+          "lineNumber": 446
+        },
+        {
+          "caller": "longToString",
+          "callee": "String.fromCharCode",
+          "lineNumber": 454
+        },
+        {
+          "caller": "popByteBuffer",
+          "callee": "bbStack.pop",
+          "lineNumber": 482
+        },
+        {
+          "caller": "pushByteBuffer",
+          "callee": "bbStack.push",
+          "lineNumber": 489
+        },
+        {
+          "caller": "toUint8Array",
+          "callee": "bytes.subarray",
+          "lineNumber": 499
+        },
+        {
+          "caller": "grow",
+          "callee": "newBytes.set",
+          "lineNumber": 520
+        },
+        {
+          "caller": "readBytes",
+          "callee": "advance",
+          "lineNumber": 540
+        },
+        {
+          "caller": "readBytes",
+          "callee": "bb.bytes.subarray",
+          "lineNumber": 541
+        },
+        {
+          "caller": "writeBytes",
+          "callee": "grow",
+          "lineNumber": 545
+        },
+        {
+          "caller": "writeBytes",
+          "callee": "bb.bytes.set",
+          "lineNumber": 546
+        },
+        {
+          "caller": "readString",
+          "callee": "advance",
+          "lineNumber": 551
+        },
+        {
+          "caller": "readString",
+          "callee": "fromCharCode",
+          "lineNumber": 562
+        },
+        {
+          "caller": "readString",
+          "callee": "fromCharCode",
+          "lineNumber": 575
+        },
+        {
+          "caller": "readString",
+          "callee": "fromCharCode",
+          "lineNumber": 593
+        },
+        {
+          "caller": "readString",
+          "callee": "fromCharCode",
+          "lineNumber": 613
+        },
+        {
+          "caller": "writeString",
+          "callee": "text.charCodeAt",
+          "lineNumber": 633
+        },
+        {
+          "caller": "writeString",
+          "callee": "text.charCodeAt",
+          "lineNumber": 635
+        },
+        {
+          "caller": "writeString",
+          "callee": "writeVarint32",
+          "lineNumber": 639
+        },
+        {
+          "caller": "writeString",
+          "callee": "grow",
+          "lineNumber": 641
+        },
+        {
+          "caller": "writeString",
+          "callee": "text.charCodeAt",
+          "lineNumber": 646
+        },
+        {
+          "caller": "writeString",
+          "callee": "text.charCodeAt",
+          "lineNumber": 648
+        },
+        {
+          "caller": "writeByteBuffer",
+          "callee": "grow",
+          "lineNumber": 670
+        },
+        {
+          "caller": "readByte",
+          "callee": "advance",
+          "lineNumber": 681
+        },
+        {
+          "caller": "writeByte",
+          "callee": "grow",
+          "lineNumber": 685
+        },
+        {
+          "caller": "readFloat",
+          "callee": "advance",
+          "lineNumber": 690
+        },
+        {
+          "caller": "writeFloat",
+          "callee": "grow",
+          "lineNumber": 702
+        },
+        {
+          "caller": "readDouble",
+          "callee": "advance",
+          "lineNumber": 714
+        },
+        {
+          "caller": "writeDouble",
+          "callee": "grow",
+          "lineNumber": 730
+        },
+        {
+          "caller": "readInt32",
+          "callee": "advance",
+          "lineNumber": 746
+        },
+        {
+          "caller": "writeInt32",
+          "callee": "grow",
+          "lineNumber": 757
+        },
+        {
+          "caller": "readInt64",
+          "callee": "readInt32",
+          "lineNumber": 767
+        },
+        {
+          "caller": "readInt64",
+          "callee": "readInt32",
+          "lineNumber": 768
+        },
+        {
+          "caller": "writeInt64",
+          "callee": "writeInt32",
+          "lineNumber": 774
+        },
+        {
+          "caller": "writeInt64",
+          "callee": "writeInt32",
+          "lineNumber": 775
+        },
+        {
+          "caller": "readVarint32",
+          "callee": "readByte",
+          "lineNumber": 783
+        },
+        {
+          "caller": "writeVarint32",
+          "callee": "writeByte",
+          "lineNumber": 793
+        },
+        {
+          "caller": "writeVarint32",
+          "callee": "writeByte",
+          "lineNumber": 796
+        },
+        {
+          "caller": "readVarint64",
+          "callee": "readByte",
+          "lineNumber": 805
+        },
+        {
+          "caller": "readVarint64",
+          "callee": "readByte",
+          "lineNumber": 806
+        },
+        {
+          "caller": "readVarint64",
+          "callee": "readByte",
+          "lineNumber": 807
+        },
+        {
+          "caller": "readVarint64",
+          "callee": "readByte",
+          "lineNumber": 808
+        },
+        {
+          "caller": "readVarint64",
+          "callee": "readByte",
+          "lineNumber": 810
+        },
+        {
+          "caller": "readVarint64",
+          "callee": "readByte",
+          "lineNumber": 811
+        },
+        {
+          "caller": "readVarint64",
+          "callee": "readByte",
+          "lineNumber": 812
+        },
+        {
+          "caller": "readVarint64",
+          "callee": "readByte",
+          "lineNumber": 813
+        },
+        {
+          "caller": "readVarint64",
+          "callee": "readByte",
+          "lineNumber": 815
+        },
+        {
+          "caller": "readVarint64",
+          "callee": "readByte",
+          "lineNumber": 816
+        },
+        {
+          "caller": "writeVarint64",
+          "callee": "grow",
+          "lineNumber": 851
+        },
+        {
+          "caller": "readVarint32ZigZag",
+          "callee": "readVarint32",
+          "lineNumber": 869
+        },
+        {
+          "caller": "writeVarint32ZigZag",
+          "callee": "writeVarint32",
+          "lineNumber": 877
+        },
+        {
+          "caller": "readVarint64ZigZag",
+          "callee": "readVarint64",
+          "lineNumber": 881
+        },
+        {
+          "caller": "writeVarint64ZigZag",
+          "callee": "writeVarint64",
+          "lineNumber": 900
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 8,
+        "functionCount": 52,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChat-vue/src/proto/chat.proto",
+      "language": "protobuf",
+      "fileCategory": "data",
+      "totalLines": 18,
+      "nonEmptyLines": 15,
+      "definitions": [
+        {
+          "name": "Message",
+          "kind": "message",
+          "fields": [
+            "type",
+            "extend",
+            "chatMsg"
+          ],
+          "startLine": 5,
+          "endLine": 9
+        },
+        {
+          "name": "ChatMsg",
+          "kind": "message",
+          "fields": [
+            "id",
+            "sendUserId",
+            "acceptUserId",
+            "msg",
+            "signFlag",
+            "createTime"
+          ],
+          "startLine": 11,
+          "endLine": 18
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 2,
+        "endpointCount": 0
+      }
+    },
+    {
+      "path": "FoxChat-vue/src/style.css",
+      "language": "css",
+      "fileCategory": "markup",
+      "totalLines": 83,
+      "nonEmptyLines": 73,
+      "metrics": {}
+    },
+    {
+      "path": "FoxChat-vue/src/utils/config.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 47,
+      "nonEmptyLines": 40,
+      "exports": [
+        {
+          "name": "WS_BASE_URL",
+          "line": 26,
+          "isDefault": false
+        },
+        {
+          "name": "CHAT_SERVICE_URL",
+          "line": 31,
+          "isDefault": false
+        },
+        {
+          "name": "OSS_BASE_URL",
+          "line": 37,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChat-vue/src/utils/protocol.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 104,
+      "nonEmptyLines": 88,
+      "functions": [
+        {
+          "name": "encodeProtocol",
+          "startLine": 21,
+          "endLine": 52,
+          "params": [
+            "messageObj"
+          ]
+        },
+        {
+          "name": "decodeProtocol",
+          "startLine": 57,
+          "endLine": 104,
+          "params": [
+            "arrayBuffer"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "encodeProtocol",
+          "line": 21,
+          "isDefault": false
+        },
+        {
+          "name": "decodeProtocol",
+          "line": 57,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "encodeProtocol",
+          "callee": "encodeMessage",
+          "lineNumber": 23
+        },
+        {
+          "caller": "encodeProtocol",
+          "callee": "view.setInt32",
+          "lineNumber": 35
+        },
+        {
+          "caller": "encodeProtocol",
+          "callee": "view.setInt8",
+          "lineNumber": 36
+        },
+        {
+          "caller": "encodeProtocol",
+          "callee": "view.setInt8",
+          "lineNumber": 37
+        },
+        {
+          "caller": "encodeProtocol",
+          "callee": "view.setInt16",
+          "lineNumber": 38
+        },
+        {
+          "caller": "encodeProtocol",
+          "callee": "view.setInt32",
+          "lineNumber": 39
+        },
+        {
+          "caller": "encodeProtocol",
+          "callee": "view.setInt32",
+          "lineNumber": 40
+        },
+        {
+          "caller": "encodeProtocol",
+          "callee": "uint8View.set",
+          "lineNumber": 43
+        },
+        {
+          "caller": "encodeProtocol",
+          "callee": "Array.from(new Uint8Array(buffer, 0, 16))\n    .map(b => b.toString(16).padStart(2, '0').toUpperCase())\n    .join",
+          "lineNumber": 46
+        },
+        {
+          "caller": "encodeProtocol",
+          "callee": "Array.from(new Uint8Array(buffer, 0, 16))\n    .map",
+          "lineNumber": 46
+        },
+        {
+          "caller": "encodeProtocol",
+          "callee": "Array.from",
+          "lineNumber": 46
+        },
+        {
+          "caller": "encodeProtocol",
+          "callee": "b.toString(16).padStart(2, '0').toUpperCase",
+          "lineNumber": 47
+        },
+        {
+          "caller": "encodeProtocol",
+          "callee": "b.toString(16).padStart",
+          "lineNumber": 47
+        },
+        {
+          "caller": "encodeProtocol",
+          "callee": "b.toString",
+          "lineNumber": 47
+        },
+        {
+          "caller": "encodeProtocol",
+          "callee": "console.log",
+          "lineNumber": 49
+        },
+        {
+          "caller": "decodeProtocol",
+          "callee": "console.error",
+          "lineNumber": 62
+        },
+        {
+          "caller": "decodeProtocol",
+          "callee": "view.getInt32",
+          "lineNumber": 67
+        },
+        {
+          "caller": "decodeProtocol",
+          "callee": "console.error",
+          "lineNumber": 70
+        },
+        {
+          "caller": "decodeProtocol",
+          "callee": "view.getInt16",
+          "lineNumber": 77
+        },
+        {
+          "caller": "decodeProtocol",
+          "callee": "view.getInt32",
+          "lineNumber": 78
+        },
+        {
+          "caller": "decodeProtocol",
+          "callee": "console.error",
+          "lineNumber": 83
+        },
+        {
+          "caller": "decodeProtocol",
+          "callee": "arrayBuffer.slice",
+          "lineNumber": 91
+        },
+        {
+          "caller": "decodeProtocol",
+          "callee": "decodeMessage",
+          "lineNumber": 94
+        },
+        {
+          "caller": "decodeProtocol",
+          "callee": "console.error",
+          "lineNumber": 101
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChat-vue/src/utils/snowflake.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 74,
+      "nonEmptyLines": 60,
+      "classes": [
+        {
+          "name": "Snowflake",
+          "startLine": 5,
+          "endLine": 66,
+          "methods": [
+            "constructor",
+            "nextId",
+            "tilNextMillis"
+          ],
+          "properties": []
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "nextId",
+          "callee": "BigInt",
+          "lineNumber": 34
+        },
+        {
+          "caller": "nextId",
+          "callee": "Date.now",
+          "lineNumber": 34
+        },
+        {
+          "caller": "nextId",
+          "callee": "Number",
+          "lineNumber": 41
+        },
+        {
+          "caller": "nextId",
+          "callee": "this.tilNextMillis",
+          "lineNumber": 43
+        },
+        {
+          "caller": "nextId",
+          "callee": "BigInt",
+          "lineNumber": 52
+        },
+        {
+          "caller": "nextId",
+          "callee": "BigInt",
+          "lineNumber": 53
+        },
+        {
+          "caller": "nextId",
+          "callee": "BigInt",
+          "lineNumber": 54
+        },
+        {
+          "caller": "nextId",
+          "callee": "id.toString",
+          "lineNumber": 56
+        },
+        {
+          "caller": "tilNextMillis",
+          "callee": "BigInt",
+          "lineNumber": 60
+        },
+        {
+          "caller": "tilNextMillis",
+          "callee": "Date.now",
+          "lineNumber": 60
+        },
+        {
+          "caller": "tilNextMillis",
+          "callee": "BigInt",
+          "lineNumber": 62
+        },
+        {
+          "caller": "tilNextMillis",
+          "callee": "Date.now",
+          "lineNumber": 62
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-vue/vite.config.js",
+      "language": "javascript",
+      "fileCategory": "code",
+      "totalLines": 56,
+      "nonEmptyLines": 54,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/__init__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 1,
+      "nonEmptyLines": 0,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/config.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 3,
+      "nonEmptyLines": 1,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/health_check.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 80,
+      "nonEmptyLines": 65,
+      "functions": [
+        {
+          "name": "retry_connect",
+          "startLine": 19,
+          "endLine": 63,
+          "params": [
+            "name",
+            "connect_fn",
+            "max_retries",
+            "base_delay"
+          ]
+        },
+        {
+          "name": "check_redis",
+          "startLine": 66,
+          "endLine": 72,
+          "params": []
+        },
+        {
+          "name": "check_mysql",
+          "startLine": 75,
+          "endLine": 80,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "retry_connect",
+          "line": 19,
+          "isDefault": false
+        },
+        {
+          "name": "check_redis",
+          "line": 66,
+          "isDefault": false
+        },
+        {
+          "name": "check_mysql",
+          "line": 75,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "retry_connect",
+          "callee": "range",
+          "lineNumber": 42
+        },
+        {
+          "caller": "retry_connect",
+          "callee": "connect_fn",
+          "lineNumber": 44
+        },
+        {
+          "caller": "retry_connect",
+          "callee": "logger.info",
+          "lineNumber": 45
+        },
+        {
+          "caller": "retry_connect",
+          "callee": "logger.warning",
+          "lineNumber": 51
+        },
+        {
+          "caller": "retry_connect",
+          "callee": "asyncio.sleep",
+          "lineNumber": 55
+        },
+        {
+          "caller": "retry_connect",
+          "callee": "logger.error",
+          "lineNumber": 57
+        },
+        {
+          "caller": "retry_connect",
+          "callee": "ConnectionError",
+          "lineNumber": 61
+        },
+        {
+          "caller": "check_redis",
+          "callee": "asyncio.to_thread",
+          "lineNumber": 70
+        },
+        {
+          "caller": "check_redis",
+          "callee": "ConnectionError",
+          "lineNumber": 72
+        },
+        {
+          "caller": "check_mysql",
+          "callee": "async_session_local",
+          "lineNumber": 79
+        },
+        {
+          "caller": "check_mysql",
+          "callee": "session.execute",
+          "lineNumber": 80
+        },
+        {
+          "caller": "check_mysql",
+          "callee": "text",
+          "lineNumber": 80
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/net/ip_client.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 60,
+      "nonEmptyLines": 43,
+      "functions": [
+        {
+          "name": "get_read_ip",
+          "startLine": 6,
+          "endLine": 13,
+          "params": [
+            "request"
+          ]
+        },
+        {
+          "name": "get_current_location",
+          "startLine": 16,
+          "endLine": 40,
+          "params": [
+            "ip"
+          ]
+        },
+        {
+          "name": "get_weather",
+          "startLine": 42,
+          "endLine": 60,
+          "params": [
+            "lat",
+            "lon"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "get_read_ip",
+          "line": 6,
+          "isDefault": false
+        },
+        {
+          "name": "get_current_location",
+          "line": 16,
+          "isDefault": false
+        },
+        {
+          "name": "get_weather",
+          "line": 42,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "get_read_ip",
+          "callee": "request.headers.get",
+          "lineNumber": 7
+        },
+        {
+          "caller": "get_read_ip",
+          "callee": "x_forwarded_for.split(\",\")[0].strip",
+          "lineNumber": 10
+        },
+        {
+          "caller": "get_read_ip",
+          "callee": "x_forwarded_for.split",
+          "lineNumber": 10
+        },
+        {
+          "caller": "get_current_location",
+          "callee": "requests.get(ip_info_url, timeout=8).json",
+          "lineNumber": 29
+        },
+        {
+          "caller": "get_current_location",
+          "callee": "requests.get",
+          "lineNumber": 29
+        },
+        {
+          "caller": "get_current_location",
+          "callee": "res.get",
+          "lineNumber": 32
+        },
+        {
+          "caller": "get_current_location",
+          "callee": "res.get",
+          "lineNumber": 32
+        },
+        {
+          "caller": "get_current_location",
+          "callee": "res.get",
+          "lineNumber": 32
+        },
+        {
+          "caller": "get_current_location",
+          "callee": "res.get",
+          "lineNumber": 33
+        },
+        {
+          "caller": "get_current_location",
+          "callee": "res.get",
+          "lineNumber": 34
+        },
+        {
+          "caller": "get_current_location",
+          "callee": "logger.debug",
+          "lineNumber": 38
+        },
+        {
+          "caller": "get_weather",
+          "callee": "logger.debug",
+          "lineNumber": 49
+        },
+        {
+          "caller": "get_weather",
+          "callee": "requests.get(weather_url, timeout=5).json",
+          "lineNumber": 50
+        },
+        {
+          "caller": "get_weather",
+          "callee": "requests.get",
+          "lineNumber": 50
+        },
+        {
+          "caller": "get_weather",
+          "callee": "weather_resp.get",
+          "lineNumber": 53
+        },
+        {
+          "caller": "get_weather",
+          "callee": "current_weather.get",
+          "lineNumber": 55
+        },
+        {
+          "caller": "get_weather",
+          "callee": "current_weather.get",
+          "lineNumber": 56
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 3,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/prompts/__init__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 1,
+      "nonEmptyLines": 0,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/grpc/foxchat/__init__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 1,
+      "nonEmptyLines": 0,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/grpc/foxchat/ai/__init__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 1,
+      "nonEmptyLines": 0,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2.pyi",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 53,
+      "nonEmptyLines": 48,
+      "classes": [
+        {
+          "name": "ChatRequest",
+          "startLine": 7,
+          "endLine": 15,
+          "methods": [
+            "__init__"
+          ],
+          "properties": [
+            "USER_ID_FIELD_NUMBER",
+            "LLM_ID_FIELD_NUMBER",
+            "MSG_CONTENT_FIELD_NUMBER",
+            "user_id",
+            "llm_id",
+            "msg_content"
+          ]
+        },
+        {
+          "name": "ChatResponse",
+          "startLine": 17,
+          "endLine": 37,
+          "methods": [
+            "__init__"
+          ],
+          "properties": [
+            "CONTENT_FIELD_NUMBER",
+            "IS_FINAL_FIELD_NUMBER",
+            "BLOCK_TYPE_FIELD_NUMBER",
+            "IS_BLOCK_START_FIELD_NUMBER",
+            "IS_BLOCK_END_FIELD_NUMBER",
+            "EMOTION_FIELD_NUMBER",
+            "ERROR_CODE_FIELD_NUMBER",
+            "ERROR_MSG_FIELD_NUMBER",
+            "SEQUENCE_FIELD_NUMBER",
+            "content",
+            "is_final",
+            "block_type",
+            "is_block_start",
+            "is_block_end",
+            "emotion",
+            "error_code",
+            "error_msg",
+            "sequence"
+          ]
+        },
+        {
+          "name": "DeleteRequest",
+          "startLine": 39,
+          "endLine": 45,
+          "methods": [
+            "__init__"
+          ],
+          "properties": [
+            "USER_ID_FIELD_NUMBER",
+            "LLM_ID_FIELD_NUMBER",
+            "user_id",
+            "llm_id"
+          ]
+        },
+        {
+          "name": "DeleteResponse",
+          "startLine": 47,
+          "endLine": 53,
+          "methods": [
+            "__init__"
+          ],
+          "properties": [
+            "SUCCESS_FIELD_NUMBER",
+            "MESSAGE_FIELD_NUMBER",
+            "success",
+            "message"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ChatRequest",
+          "line": 7,
+          "isDefault": false
+        },
+        {
+          "name": "ChatResponse",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "DeleteRequest",
+          "line": 39,
+          "isDefault": false
+        },
+        {
+          "name": "DeleteResponse",
+          "line": 47,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 4,
+        "functionCount": 0,
+        "classCount": 4
+      }
+    }
+  ]
+}

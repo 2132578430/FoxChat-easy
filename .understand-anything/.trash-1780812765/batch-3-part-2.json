@@ -1,0 +1,1330 @@
+{
+  "nodes": [
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/state_manager.py",
+      "type": "file",
+      "name": "state_manager.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/state_manager.py",
+      "summary": "状态管理器，通过 RedisJSON 存储和管理 CurrentState 对象，支持字段级原子更新、过期检查、来源优先级覆盖规则和从旧格式迁移。",
+      "tags": [
+        "service",
+        "state",
+        "redis",
+        "json"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/state_manager.py:get_current_state",
+      "type": "function",
+      "name": "get_current_state",
+      "filePath": "FoxChatRAG-python/app/service/chat/state_manager.py",
+      "summary": "获取当前状态，从 RedisJSON 读取并反序列化为 CurrentState 对象，不存在时创建默认状态或从旧格式迁移。",
+      "tags": [
+        "state",
+        "read",
+        "redis"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        77,
+        108
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/state_manager.py:update_current_state",
+      "type": "function",
+      "name": "update_current_state",
+      "filePath": "FoxChatRAG-python/app/service/chat/state_manager.py",
+      "summary": "更新当前状态字段，应用来源优先级覆盖规则和置信度比较，支持字段级原子更新。",
+      "tags": [
+        "state",
+        "update",
+        "priority"
+      ],
+      "complexity": "complex",
+      "lineRange": [
+        222,
+        294
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/state_manager.py:_apply_state_overwrite_rules",
+      "type": "function",
+      "name": "_apply_state_overwrite_rules",
+      "filePath": "FoxChatRAG-python/app/service/chat/state_manager.py",
+      "summary": "状态覆盖规则引擎，根据更新来源优先级、置信度和轮次有效期决定是否允许覆盖现有值。",
+      "tags": [
+        "rule-engine",
+        "priority",
+        "state"
+      ],
+      "complexity": "complex",
+      "lineRange": [
+        297,
+        355
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/state_manager.py:check_and_expire_fields",
+      "type": "function",
+      "name": "check_and_expire_fields",
+      "filePath": "FoxChatRAG-python/app/service/chat/state_manager.py",
+      "summary": "检查并过期超期的状态字段，将过期字段重置为默认值。",
+      "tags": [
+        "state",
+        "expire",
+        "cleanup"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        358,
+        386
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/state_manager.py:increment_round_counter",
+      "type": "function",
+      "name": "increment_round_counter",
+      "filePath": "FoxChatRAG-python/app/service/chat/state_manager.py",
+      "summary": "递增 Redis 中的轮次计数器，用于跟踪对话轮次。",
+      "tags": [
+        "counter",
+        "redis"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        396,
+        406
+      ]
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/strategy/base_strategy.py",
+      "type": "file",
+      "name": "base_strategy.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/strategy/base_strategy.py",
+      "summary": "LLM 调用策略基类，使用策略模式封装不同场景（聊天、记忆、摘要、提取、情感）的 LLM 调用参数配置和重试逻辑。",
+      "tags": [
+        "strategy",
+        "llm",
+        "invoke",
+        "pattern"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "class:FoxChatRAG-python/app/service/chat/strategy/base_strategy.py:LLMInvokeStrategy",
+      "type": "class",
+      "name": "LLMInvokeStrategy",
+      "filePath": "FoxChatRAG-python/app/service/chat/strategy/base_strategy.py",
+      "summary": "LLM 调用策略基类，包含场景配置、模型参数获取、调用重试、错误分类和 JSON 输出解析，是 Chat/Memory/Summary/Extraction/Emotion 策略的父类。",
+      "tags": [
+        "strategy",
+        "base-class",
+        "llm",
+        "retry"
+      ],
+      "complexity": "complex",
+      "lineRange": [
+        30,
+        170
+      ]
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/streaming_tag_parser.py",
+      "type": "file",
+      "name": "streaming_tag_parser.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/streaming_tag_parser.py",
+      "summary": "流式标签解析器，实时解析 LLM 流式输出中的动作标签（如思考、动作等），将流式 token 分类为普通文本或标签内容。",
+      "tags": [
+        "parser",
+        "streaming",
+        "tag",
+        "real-time"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChatRAG-python/app/service/chat/streaming_tag_parser.py:StreamingTagParser",
+      "type": "class",
+      "name": "StreamingTagParser",
+      "filePath": "FoxChatRAG-python/app/service/chat/streaming_tag_parser.py",
+      "summary": "流式标签解析器核心类，维护解析状态机，逐字符处理输入流，识别动作标签的开始/结束边界，输出 StreamToken 序列。",
+      "tags": [
+        "parser",
+        "state-machine",
+        "streaming"
+      ],
+      "complexity": "complex",
+      "lineRange": [
+        42,
+        179
+      ]
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/timer_scheduler.py",
+      "type": "file",
+      "name": "timer_scheduler.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/timer_scheduler.py",
+      "summary": "定时摘要调度器，定期扫描活跃会话并在超过时间阈值时触发自动摘要，防止长时间未摘要导致消息丢失。",
+      "tags": [
+        "service",
+        "scheduler",
+        "timer",
+        "summary"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/timer_scheduler.py:get_active_sessions",
+      "type": "function",
+      "name": "get_active_sessions",
+      "filePath": "FoxChatRAG-python/app/service/chat/timer_scheduler.py",
+      "summary": "通过 Redis SCAN 扫描所有活跃会话的计数器键，解析出 user_id 和 llm_id 对。",
+      "tags": [
+        "scanner",
+        "redis",
+        "session"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        66,
+        92
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/timer_scheduler.py:timer_summary_check_single",
+      "type": "function",
+      "name": "timer_summary_check_single",
+      "filePath": "FoxChatRAG-python/app/service/chat/timer_scheduler.py",
+      "summary": "对单个会话检查是否需要触发定时摘要，比较距上次摘要的时间间隔。",
+      "tags": [
+        "timer",
+        "check",
+        "summary"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        95,
+        136
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/timer_scheduler.py:timer_scheduler",
+      "type": "function",
+      "name": "timer_scheduler",
+      "filePath": "FoxChatRAG-python/app/service/chat/timer_scheduler.py",
+      "summary": "定时调度主循环，周期性扫描所有活跃会话并触发超时摘要。",
+      "tags": [
+        "scheduler",
+        "loop",
+        "async"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        139,
+        175
+      ]
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/types.py",
+      "type": "file",
+      "name": "types.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/types.py",
+      "summary": "聊天记忆系统的数据类型定义，包含 ChatMemories（原始记忆数据）和 ParsedMemories（解析后的结构化记忆）两个 TypedDict。",
+      "tags": [
+        "type-definition",
+        "data-model",
+        "typeddict"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "class:FoxChatRAG-python/app/service/chat/types.py:ChatMemories",
+      "type": "class",
+      "name": "ChatMemories",
+      "filePath": "FoxChatRAG-python/app/service/chat/types.py",
+      "summary": "原始聊天记忆 TypedDict，包含 init_memory、recent_msg、character_card_json 等 7 个字段。",
+      "tags": [
+        "type-definition",
+        "data-model"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        12,
+        20
+      ]
+    },
+    {
+      "id": "class:FoxChatRAG-python/app/service/chat/types.py:ParsedMemories",
+      "type": "class",
+      "name": "ParsedMemories",
+      "filePath": "FoxChatRAG-python/app/service/chat/types.py",
+      "summary": "解析后记忆 TypedDict，包含 character_card_examples、behavior_guide_text、user_profile_summary 等 10 个结构化字段。",
+      "tags": [
+        "type-definition",
+        "data-model"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        24,
+        34
+      ]
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/chat/user_profile_service.py",
+      "type": "file",
+      "name": "user_profile_service.py",
+      "filePath": "FoxChatRAG-python/app/service/chat/user_profile_service.py",
+      "summary": "用户画像服务，负责从聊天消息中使用 LLM 提取和更新用户画像，支持增量更新和结构验证。",
+      "tags": [
+        "service",
+        "user-profile",
+        "llm",
+        "extraction"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/user_profile_service.py:_build_profile_updater_chain",
+      "type": "function",
+      "name": "_build_profile_updater_chain",
+      "filePath": "FoxChatRAG-python/app/service/chat/user_profile_service.py",
+      "summary": "构建用户画像更新的 LLM Chain，配置 MemoryJSONInvokeStrategy 和 ChatPromptTemplate。",
+      "tags": [
+        "builder",
+        "chain",
+        "llm"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        65,
+        89
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/user_profile_service.py:_update_user_profile",
+      "type": "function",
+      "name": "_update_user_profile",
+      "filePath": "FoxChatRAG-python/app/service/chat/user_profile_service.py",
+      "summary": "使用 LLM 从最近消息中提取用户画像增量，与现有画像合并后验证结构。",
+      "tags": [
+        "service",
+        "update",
+        "llm"
+      ],
+      "complexity": "complex",
+      "lineRange": [
+        101,
+        157
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/chat/user_profile_service.py:update_user_profile_in_summary",
+      "type": "function",
+      "name": "update_user_profile_in_summary",
+      "filePath": "FoxChatRAG-python/app/service/chat/user_profile_service.py",
+      "summary": "用户画像更新主入口，并行获取现有画像和构建 Chain，然后调用 LLM 更新并保存。",
+      "tags": [
+        "service",
+        "entry-point",
+        "async"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        160,
+        207
+      ]
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/llm_config_service.py",
+      "type": "file",
+      "name": "llm_config_service.py",
+      "filePath": "FoxChatRAG-python/app/service/llm_config_service.py",
+      "summary": "LLM 配置管理服务，提供 LLM 模型配置的 CRUD 操作、连接测试和场景完整性校验，支持按场景（聊天、记忆、摘要等）分组管理多个 LLM 配置。",
+      "tags": [
+        "service",
+        "config",
+        "llm",
+        "crud"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/llm_config_service.py:test_llm_connection",
+      "type": "function",
+      "name": "test_llm_connection",
+      "filePath": "FoxChatRAG-python/app/service/llm_config_service.py",
+      "summary": "测试 LLM 连接，发送简单请求验证 API Key、Base URL 和模型名称是否有效。",
+      "tags": [
+        "service",
+        "test",
+        "connection"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        21,
+        74
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/llm_config_service.py:get_llm_configs_batch",
+      "type": "function",
+      "name": "get_llm_configs_batch",
+      "filePath": "FoxChatRAG-python/app/service/llm_config_service.py",
+      "summary": "批量获取指定 LLM 的所有场景配置，返回 scenario→config 映射字典。",
+      "tags": [
+        "service",
+        "config",
+        "batch-read"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        77,
+        109
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/llm_config_service.py:save_llm_config",
+      "type": "function",
+      "name": "save_llm_config",
+      "filePath": "FoxChatRAG-python/app/service/llm_config_service.py",
+      "summary": "保存单条 LLM 配置，支持新增和更新（基于 llm_id+scenario 唯一键）。",
+      "tags": [
+        "service",
+        "config",
+        "upsert"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        112,
+        171
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/llm_config_service.py:delete_llm_config",
+      "type": "function",
+      "name": "delete_llm_config",
+      "filePath": "FoxChatRAG-python/app/service/llm_config_service.py",
+      "summary": "删除指定场景的 LLM 配置。",
+      "tags": [
+        "service",
+        "config",
+        "delete"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        200,
+        226
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/llm_config_service.py:validate_config_count",
+      "type": "function",
+      "name": "validate_config_count",
+      "filePath": "FoxChatRAG-python/app/service/llm_config_service.py",
+      "summary": "校验 LLM 配置完整性，检查是否所有必要场景都已配置。",
+      "tags": [
+        "service",
+        "config",
+        "validation"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        229,
+        252
+      ]
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/rag/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "FoxChatRAG-python/app/service/rag/__init__.py",
+      "summary": "RAG 服务包初始化文件，导入并暴露 rag_search_service 和 vector_upload_service 模块。",
+      "tags": [
+        "barrel",
+        "re-export"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/service/rag/vector_upload_service.py",
+      "type": "file",
+      "name": "vector_upload_service.py",
+      "filePath": "FoxChatRAG-python/app/service/rag/vector_upload_service.py",
+      "summary": "RAG 文件上传服务，处理文件下载、内容摘要和向量化上传到 ChromaDB，支持多种文件格式。",
+      "tags": [
+        "service",
+        "upload",
+        "rag",
+        "vector"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/service/rag/vector_upload_service.py:upload_file",
+      "type": "function",
+      "name": "upload_file",
+      "filePath": "FoxChatRAG-python/app/service/rag/vector_upload_service.py",
+      "summary": "文件上传主函数，下载文件→加载文档→LLM 摘要→分块→上传 ChromaDB→更新状态。",
+      "tags": [
+        "service",
+        "upload",
+        "pipeline"
+      ],
+      "complexity": "complex",
+      "lineRange": [
+        65,
+        125
+      ]
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/util/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "FoxChatRAG-python/app/util/__init__.py",
+      "summary": "工具包初始化文件，导入并暴露 redis_json_util 和 template_util 模块。",
+      "tags": [
+        "barrel",
+        "re-export"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/util/chroma_util.py",
+      "type": "file",
+      "name": "chroma_util.py",
+      "filePath": "FoxChatRAG-python/app/util/chroma_util.py",
+      "summary": "ChromaDB 向量数据库工具库，封装向量存储的增删查操作，支持通用文档上传、历史事件批量上传和语义搜索。",
+      "tags": [
+        "utility",
+        "chroma",
+        "vector-db",
+        "crud"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/util/chroma_util.py:search",
+      "type": "function",
+      "name": "search",
+      "filePath": "FoxChatRAG-python/app/util/chroma_util.py",
+      "summary": "向量相似度搜索，支持元数据过滤、嵌入预计算、空集合探测和结果格式化。",
+      "tags": [
+        "search",
+        "vector",
+        "chroma"
+      ],
+      "complexity": "complex",
+      "lineRange": [
+        35,
+        103
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/util/chroma_util.py:upload",
+      "type": "function",
+      "name": "upload",
+      "filePath": "FoxChatRAG-python/app/util/chroma_util.py",
+      "summary": "通用文档上传，对文档分块后批量写入 ChromaDB，使用 MD5 生成文档 ID。",
+      "tags": [
+        "upload",
+        "vector",
+        "chunking"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        113,
+        136
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/util/chroma_util.py:upload_history_events_batch",
+      "type": "function",
+      "name": "upload_history_events_batch",
+      "filePath": "FoxChatRAG-python/app/util/chroma_util.py",
+      "summary": "历史事件批量上传，将事件列表转换为 Document 对象并批量写入 ChromaDB，包含丰富的元数据。",
+      "tags": [
+        "upload",
+        "batch",
+        "history"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        142,
+        202
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/util/chroma_util.py:upload_history_event",
+      "type": "function",
+      "name": "upload_history_event",
+      "filePath": "FoxChatRAG-python/app/util/chroma_util.py",
+      "summary": "单条历史事件上传，构建完整元数据后调用通用 upload 函数。",
+      "tags": [
+        "upload",
+        "single",
+        "history"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        205,
+        266
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/util/chroma_util.py:search_history_events",
+      "type": "function",
+      "name": "search_history_events",
+      "filePath": "FoxChatRAG-python/app/util/chroma_util.py",
+      "summary": "历史事件语义搜索，构建元数据过滤条件后调用通用 search 函数。",
+      "tags": [
+        "search",
+        "history",
+        "semantic"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        269,
+        309
+      ]
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/util/loader_util.py",
+      "type": "file",
+      "name": "loader_util.py",
+      "filePath": "FoxChatRAG-python/app/util/loader_util.py",
+      "summary": "文件加载工具，提供 TXT/CSV/PDF/DOCX/Markdown 等多格式文档加载器，支持元数据增强和标题层级提取。",
+      "tags": [
+        "utility",
+        "loader",
+        "document",
+        "multi-format"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/util/redis_json_util.py",
+      "type": "file",
+      "name": "redis_json_util.py",
+      "filePath": "FoxChatRAG-python/app/util/redis_json_util.py",
+      "summary": "Redis JSON 安全写入工具，提供 JSON 值序列化和 RedisJSON SET 命令的安全封装。",
+      "tags": [
+        "utility",
+        "redis",
+        "json"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/util/template_util.py",
+      "type": "file",
+      "name": "template_util.py",
+      "filePath": "FoxChatRAG-python/app/util/template_util.py",
+      "summary": "模板和文本处理工具，提供 prompt 模板转义、思考标签清除、Markdown 代码块剥离和 JSON 文本提取等功能。",
+      "tags": [
+        "utility",
+        "template",
+        "text-processing",
+        "json"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/util/template_util.py:escape_template",
+      "type": "function",
+      "name": "escape_template",
+      "filePath": "FoxChatRAG-python/app/util/template_util.py",
+      "summary": "转义 prompt 模板中的花括号，将非变量占位符的 {} 替换为 {{}}，防止 LangChain 模板解析报错。",
+      "tags": [
+        "utility",
+        "template",
+        "escape"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        9,
+        35
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/util/template_util.py:strip_all_tags",
+      "type": "function",
+      "name": "strip_all_tags",
+      "filePath": "FoxChatRAG-python/app/util/template_util.py",
+      "summary": "清除文本中所有标签（思考标签、动作标签等），返回纯文本内容。",
+      "tags": [
+        "utility",
+        "text",
+        "cleanup"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        60,
+        80
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/util/template_util.py:strip_think_only",
+      "type": "function",
+      "name": "strip_think_only",
+      "filePath": "FoxChatRAG-python/app/util/template_util.py",
+      "summary": "仅清除思考标签，保留其他标签内容。",
+      "tags": [
+        "utility",
+        "text",
+        "cleanup"
+      ],
+      "complexity": "simple",
+      "lineRange": [
+        83,
+        96
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/util/template_util.py:extract_json_text",
+      "type": "function",
+      "name": "extract_json_text",
+      "filePath": "FoxChatRAG-python/app/util/template_util.py",
+      "summary": "从原始文本中提取 JSON 字符串，支持 Markdown 代码块和嵌套括号匹配。",
+      "tags": [
+        "utility",
+        "json",
+        "extraction"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        99,
+        131
+      ]
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/util/template_util.py:try_parse_json",
+      "type": "function",
+      "name": "try_parse_json",
+      "filePath": "FoxChatRAG-python/app/util/template_util.py",
+      "summary": "安全 JSON 解析，依次尝试直接解析、提取 JSON 文本解析和正则清理后解析，全部失败返回 None。",
+      "tags": [
+        "utility",
+        "json",
+        "parsing"
+      ],
+      "complexity": "moderate",
+      "lineRange": [
+        134,
+        167
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/state_manager.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/state_manager.py:get_current_state",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/state_manager.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/state_manager.py:update_current_state",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/state_manager.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/state_manager.py:_apply_state_overwrite_rules",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/state_manager.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/state_manager.py:check_and_expire_fields",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/state_manager.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/state_manager.py:increment_round_counter",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/strategy/base_strategy.py",
+      "target": "class:FoxChatRAG-python/app/service/chat/strategy/base_strategy.py:LLMInvokeStrategy",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/streaming_tag_parser.py",
+      "target": "class:FoxChatRAG-python/app/service/chat/streaming_tag_parser.py:StreamingTagParser",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/timer_scheduler.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/timer_scheduler.py:get_active_sessions",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/timer_scheduler.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/timer_scheduler.py:timer_summary_check_single",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/timer_scheduler.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/timer_scheduler.py:timer_scheduler",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/types.py",
+      "target": "class:FoxChatRAG-python/app/service/chat/types.py:ChatMemories",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/types.py",
+      "target": "class:FoxChatRAG-python/app/service/chat/types.py:ParsedMemories",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/user_profile_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/user_profile_service.py:_build_profile_updater_chain",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/user_profile_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/user_profile_service.py:_update_user_profile",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/user_profile_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/user_profile_service.py:update_user_profile_in_summary",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/llm_config_service.py",
+      "target": "function:FoxChatRAG-python/app/service/llm_config_service.py:test_llm_connection",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/llm_config_service.py",
+      "target": "function:FoxChatRAG-python/app/service/llm_config_service.py:get_llm_configs_batch",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/llm_config_service.py",
+      "target": "function:FoxChatRAG-python/app/service/llm_config_service.py:save_llm_config",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/llm_config_service.py",
+      "target": "function:FoxChatRAG-python/app/service/llm_config_service.py:delete_llm_config",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/llm_config_service.py",
+      "target": "function:FoxChatRAG-python/app/service/llm_config_service.py:validate_config_count",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/rag/vector_upload_service.py",
+      "target": "function:FoxChatRAG-python/app/service/rag/vector_upload_service.py:upload_file",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/chroma_util.py",
+      "target": "function:FoxChatRAG-python/app/util/chroma_util.py:search",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/chroma_util.py",
+      "target": "function:FoxChatRAG-python/app/util/chroma_util.py:upload",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/chroma_util.py",
+      "target": "function:FoxChatRAG-python/app/util/chroma_util.py:upload_history_events_batch",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/chroma_util.py",
+      "target": "function:FoxChatRAG-python/app/util/chroma_util.py:upload_history_event",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/chroma_util.py",
+      "target": "function:FoxChatRAG-python/app/util/chroma_util.py:search_history_events",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/template_util.py",
+      "target": "function:FoxChatRAG-python/app/util/template_util.py:escape_template",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/template_util.py",
+      "target": "function:FoxChatRAG-python/app/util/template_util.py:strip_all_tags",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/template_util.py",
+      "target": "function:FoxChatRAG-python/app/util/template_util.py:strip_think_only",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/template_util.py",
+      "target": "function:FoxChatRAG-python/app/util/template_util.py:extract_json_text",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/template_util.py",
+      "target": "function:FoxChatRAG-python/app/util/template_util.py:try_parse_json",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/state_manager.py",
+      "target": "file:FoxChatRAG-python/app/common/constant/LLMChatConstant.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/state_manager.py",
+      "target": "file:FoxChatRAG-python/app/core/db/redis_client.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/state_manager.py",
+      "target": "file:FoxChatRAG-python/app/schemas/current_state.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/state_manager.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/common/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/state_manager.py",
+      "target": "file:FoxChatRAG-python/app/util/redis_json_util.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/timer_scheduler.py",
+      "target": "file:FoxChatRAG-python/app/common/constant/LLMChatConstant.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/timer_scheduler.py",
+      "target": "file:FoxChatRAG-python/app/core/db/redis_client.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/user_profile_service.py",
+      "target": "file:FoxChatRAG-python/app/common/constant/LLMChatConstant.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/user_profile_service.py",
+      "target": "file:FoxChatRAG-python/app/common/constant/MsgStatusConstant.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/user_profile_service.py",
+      "target": "file:FoxChatRAG-python/app/core/db/mysql_client.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/user_profile_service.py",
+      "target": "file:FoxChatRAG-python/app/core/db/redis_client.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/user_profile_service.py",
+      "target": "file:FoxChatRAG-python/app/core/prompts/prompt_manager.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/user_profile_service.py",
+      "target": "file:FoxChatRAG-python/app/exception/BusinessException.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/user_profile_service.py",
+      "target": "file:FoxChatRAG-python/app/service/chat/strategy/base_strategy.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/user_profile_service.py",
+      "target": "file:FoxChatRAG-python/app/util/template_util.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/llm_config_service.py",
+      "target": "file:FoxChatRAG-python/app/models/llm_config.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/rag/__init__.py",
+      "target": "file:FoxChatRAG-python/app/service/rag/rag_search_service.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/rag/__init__.py",
+      "target": "file:FoxChatRAG-python/app/service/rag/vector_upload_service.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/rag/vector_upload_service.py",
+      "target": "file:FoxChatRAG-python/app/common/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/rag/vector_upload_service.py",
+      "target": "file:FoxChatRAG-python/app/common/constant/ChromaTypeConstant.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/rag/vector_upload_service.py",
+      "target": "file:FoxChatRAG-python/app/common/constant/LLMChatConstant.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/rag/vector_upload_service.py",
+      "target": "file:FoxChatRAG-python/app/core/db/redis_client.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/rag/vector_upload_service.py",
+      "target": "file:FoxChatRAG-python/app/core/net/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/rag/vector_upload_service.py",
+      "target": "file:FoxChatRAG-python/app/models/rag_file.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/rag/vector_upload_service.py",
+      "target": "file:FoxChatRAG-python/app/util/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/rag/vector_upload_service.py",
+      "target": "file:FoxChatRAG-python/app/util/chroma_util.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/rag/vector_upload_service.py",
+      "target": "file:FoxChatRAG-python/app/util/loader_util.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/__init__.py",
+      "target": "file:FoxChatRAG-python/app/util/redis_json_util.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/__init__.py",
+      "target": "file:FoxChatRAG-python/app/util/template_util.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/chroma_util.py",
+      "target": "file:FoxChatRAG-python/app/chroma/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/chroma_util.py",
+      "target": "file:FoxChatRAG-python/app/common/constant/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/chroma_util.py",
+      "target": "file:FoxChatRAG-python/app/common/constant/ChromaTypeConstant.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/loader_util.py",
+      "target": "file:FoxChatRAG-python/app/common/__init__.py",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/state_manager.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/state_manager.py:get_current_state",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/state_manager.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/state_manager.py:update_current_state",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/state_manager.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/state_manager.py:increment_round_counter",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/strategy/base_strategy.py",
+      "target": "class:FoxChatRAG-python/app/service/chat/strategy/base_strategy.py:LLMInvokeStrategy",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/streaming_tag_parser.py",
+      "target": "class:FoxChatRAG-python/app/service/chat/streaming_tag_parser.py:StreamingTagParser",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/timer_scheduler.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/timer_scheduler.py:timer_scheduler",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/types.py",
+      "target": "class:FoxChatRAG-python/app/service/chat/types.py:ChatMemories",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/types.py",
+      "target": "class:FoxChatRAG-python/app/service/chat/types.py:ParsedMemories",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/chat/user_profile_service.py",
+      "target": "function:FoxChatRAG-python/app/service/chat/user_profile_service.py:update_user_profile_in_summary",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/llm_config_service.py",
+      "target": "function:FoxChatRAG-python/app/service/llm_config_service.py:get_llm_configs_batch",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/llm_config_service.py",
+      "target": "function:FoxChatRAG-python/app/service/llm_config_service.py:test_llm_connection",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/llm_config_service.py",
+      "target": "function:FoxChatRAG-python/app/service/llm_config_service.py:save_llm_config",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/service/rag/vector_upload_service.py",
+      "target": "function:FoxChatRAG-python/app/service/rag/vector_upload_service.py:upload_file",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/chroma_util.py",
+      "target": "function:FoxChatRAG-python/app/util/chroma_util.py:search",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/chroma_util.py",
+      "target": "function:FoxChatRAG-python/app/util/chroma_util.py:upload",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/chroma_util.py",
+      "target": "function:FoxChatRAG-python/app/util/chroma_util.py:upload_history_events_batch",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/chroma_util.py",
+      "target": "function:FoxChatRAG-python/app/util/chroma_util.py:upload_history_event",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/chroma_util.py",
+      "target": "function:FoxChatRAG-python/app/util/chroma_util.py:search_history_events",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/template_util.py",
+      "target": "function:FoxChatRAG-python/app/util/template_util.py:escape_template",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/template_util.py",
+      "target": "function:FoxChatRAG-python/app/util/template_util.py:strip_all_tags",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/template_util.py",
+      "target": "function:FoxChatRAG-python/app/util/template_util.py:strip_think_only",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/template_util.py",
+      "target": "function:FoxChatRAG-python/app/util/template_util.py:try_parse_json",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/util/template_util.py",
+      "target": "function:FoxChatRAG-python/app/util/template_util.py:extract_json_text",
+      "type": "exports",
+      "direction": "forward",
+      "weight": 0.8
+    }
+  ]
+}

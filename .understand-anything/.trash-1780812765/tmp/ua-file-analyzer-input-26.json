@@ -1,0 +1,25 @@
+{
+  "projectRoot": "E:/WorkSpace/ProjectCode",
+  "batchFiles": [
+    {"path": "FoxChatRAG-python/app/service/chat/graph/__init__.py", "language": "python", "sizeLines": 5, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/app/util/token_monitor.py", "language": "python", "sizeLines": 312, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/proto/ai_chat.proto", "language": "protobuf", "sizeLines": 78, "fileCategory": "data"},
+    {"path": "FoxChatRAG-python/README", "language": "unknown", "sizeLines": 118, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/test/memory_stress_test.py", "language": "python", "sizeLines": 471, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/test/test_deduplication.py", "language": "python", "sizeLines": 85, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/test/test_history_event_retrieval_service_compile.py", "language": "python", "sizeLines": 20, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/test/test_structure_injection.py", "language": "python", "sizeLines": 96, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/test/test.py", "language": "python", "sizeLines": 22, "fileCategory": "code"}
+  ],
+  "batchImportData": {
+    "FoxChatRAG-python/app/service/chat/graph/__init__.py":[],
+    "FoxChatRAG-python/app/util/token_monitor.py":[],
+    "FoxChatRAG-python/proto/ai_chat.proto":[],
+    "FoxChatRAG-python/README":[],
+    "FoxChatRAG-python/test/memory_stress_test.py":[],
+    "FoxChatRAG-python/test/test_deduplication.py":[],
+    "FoxChatRAG-python/test/test_history_event_retrieval_service_compile.py":[],
+    "FoxChatRAG-python/test/test_structure_injection.py":[],
+    "FoxChatRAG-python/test/test.py":[]
+  }
+}

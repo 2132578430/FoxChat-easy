@@ -1,0 +1,15 @@
+{
+  "nodes": [
+    {
+      "id": "service:FoxChatRAG-python/Dockerfile",
+      "type": "service",
+      "name": "Dockerfile",
+      "filePath": "FoxChatRAG-python/Dockerfile",
+      "summary": "基于 foxchat-python-base 镜像构建的 Python 应用容器，将 FastAPI 应用代码复制到容器中，暴露 HTTP (8000) 和 gRPC (50051) 端口，并通过 uvicorn 启动服务。",
+      "tags": ["containerization", "infrastructure", "deployment", "python", "fastapi"],
+      "complexity": "simple",
+      "languageNotes": "采用分层构建策略，依赖安装在 base 镜像 foxchat-python-base:latest 中完成，本 Dockerfile 仅负责复制应用代码并配置运行命令，有效利用 Docker 缓存层。"
+    }
+  ],
+  "edges": []
+}

@@ -1,0 +1,57 @@
+{
+  "nodes": [
+    {
+      "id": "service:FoxChat-java/Dockerfile",
+      "type": "service",
+      "name": "Dockerfile",
+      "filePath": "FoxChat-java/Dockerfile",
+      "summary": "多阶段 Docker 构建文件，第一阶段使用 Gradle 构建 fat JAR（包含 foxChat-common、foxChat-pojo、foxChat-service、foxChat-netty、foxChat-web 五个模块），第二阶段基于 eclipse-temurin:17-jre-alpine 最小镜像运行应用，暴露 12000（HTTP）和 13000（gRPC）端口。",
+      "tags": ["containerization", "infrastructure", "deployment", "java", "multi-stage-build"],
+      "complexity": "moderate",
+      "languageNotes": "多阶段构建利用 Gradle 构建缓存（--mount=type=cache）加速依赖下载，运行时使用 G1GC + 512MB 堆限制，适配容器环境。"
+    },
+    {
+      "id": "service:FoxChat-java/Dockerfile:build",
+      "type": "service",
+      "name": "build",
+      "filePath": "FoxChat-java/Dockerfile",
+      "lineRange": [4, 20],
+      "summary": "Gradle 构建阶段，基于 foxchat-java-build-base 自定义基础镜像，复制五个 Java 模块源码并执行 bootJar 构建，利用 Gradle 缓存挂载加速构建。",
+      "tags": ["build-stage", "gradle", "java", "cache-optimization"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "service:FoxChat-java/Dockerfile:eclipse-temurin",
+      "type": "service",
+      "name": "eclipse-temurin",
+      "filePath": "FoxChat-java/Dockerfile",
+      "lineRange": [21, 37],
+      "summary": "运行时阶段，基于 eclipse-temurin:17-jre-alpine 最小 JRE 镜像，复制构建产物 foxChat-web-1.0.0-SNAPSHOT.jar 并以优化的 JVM 参数启动，暴露 12000 和 13000 端口。",
+      "tags": ["runtime-stage", "jre-alpine", "jvm-tuning", "production"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "service:FoxChat-java/Dockerfile",
+      "target": "service:FoxChat-java/Dockerfile:build",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "service:FoxChat-java/Dockerfile",
+      "target": "service:FoxChat-java/Dockerfile:eclipse-temurin",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "service:FoxChat-java/Dockerfile",
+      "target": "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/BedfoxChatApplication.java",
+      "type": "deploys",
+      "direction": "forward",
+      "weight": 0.7
+    }
+  ]
+}

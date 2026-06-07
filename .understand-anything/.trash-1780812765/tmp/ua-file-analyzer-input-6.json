@@ -1,0 +1,51 @@
+{
+  "projectRoot": "E:/WorkSpace/ProjectCode",
+  "batchFiles": [
+    {"path": "FoxChatRAG-python/app/chroma/__init__.py", "language": "python", "sizeLines": 2, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/app/chroma/chroma.py", "language": "python", "sizeLines": 64, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/app/chroma/splitter.py", "language": "python", "sizeLines": 19, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/app/common/constant/intent_config.py", "language": "python", "sizeLines": 490, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/app/core/llm_model/__init__.py", "language": "python", "sizeLines": 0, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/app/core/llm_model/model.py", "language": "python", "sizeLines": 147, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/app/core/mq/__init__.py", "language": "python", "sizeLines": 1, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/app/core/mq/handler/__init__.py", "language": "python", "sizeLines": 1, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/app/core/mq/handler/chat_upload_handler.py", "language": "python", "sizeLines": 43, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/app/core/mq/handler/rag_file_handler.py", "language": "python", "sizeLines": 45, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/app/core/mq/rabbitmq_connnect.py", "language": "python", "sizeLines": 16, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/app/core/mq/rabbitmq_setup_queue.py", "language": "python", "sizeLines": 20, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/app/core/mq/rabbitmq_start_consumer.py", "language": "python", "sizeLines": 23, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/app/core/mq/rabbitmq_starter.py", "language": "python", "sizeLines": 31, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/app/core/settings.py", "language": "python", "sizeLines": 100, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/app/service/chat/intent_classifier.py", "language": "python", "sizeLines": 281, "fileCategory": "code"},
+    {"path": "FoxChatRAG-python/main.py", "language": "python", "sizeLines": 76, "fileCategory": "code"}
+  ],
+  "batchImportData": {
+    "FoxChatRAG-python/app/chroma/__init__.py": ["FoxChatRAG-python/app/chroma/chroma.py","FoxChatRAG-python/app/chroma/splitter.py"],
+    "FoxChatRAG-python/app/chroma/chroma.py": ["FoxChatRAG-python/app/common/constant/__init__.py","FoxChatRAG-python/app/common/constant/ChromaTypeConstant.py","FoxChatRAG-python/app/core/llm_model/__init__.py","FoxChatRAG-python/app/core/llm_model/model.py","FoxChatRAG-python/app/core/settings.py"],
+    "FoxChatRAG-python/app/chroma/splitter.py": ["FoxChatRAG-python/app/core/llm_model/__init__.py","FoxChatRAG-python/app/core/llm_model/model.py"],
+    "FoxChatRAG-python/app/common/constant/intent_config.py": [],
+    "FoxChatRAG-python/app/core/llm_model/__init__.py": ["FoxChatRAG-python/app/core/llm_model/model.py"],
+    "FoxChatRAG-python/app/core/llm_model/model.py": ["FoxChatRAG-python/app/core/settings.py"],
+    "FoxChatRAG-python/app/core/mq/__init__.py": ["FoxChatRAG-python/app/core/mq/rabbitmq_starter.py"],
+    "FoxChatRAG-python/app/core/mq/handler/__init__.py": ["FoxChatRAG-python/app/core/mq/handler/chat_upload_handler.py","FoxChatRAG-python/app/core/mq/handler/rag_file_handler.py"],
+    "FoxChatRAG-python/app/core/mq/handler/chat_upload_handler.py": ["FoxChatRAG-python/app/service/__init__.py"],
+    "FoxChatRAG-python/app/core/mq/handler/rag_file_handler.py": ["FoxChatRAG-python/app/service/rag/__init__.py"],
+    "FoxChatRAG-python/app/core/mq/rabbitmq_connnect.py": ["FoxChatRAG-python/app/core/settings.py"],
+    "FoxChatRAG-python/app/core/mq/rabbitmq_setup_queue.py": ["FoxChatRAG-python/app/core/settings.py"],
+    "FoxChatRAG-python/app/core/mq/rabbitmq_start_consumer.py": ["FoxChatRAG-python/app/core/db/mysql_client.py","FoxChatRAG-python/app/core/mq/handler/__init__.py","FoxChatRAG-python/app/core/mq/handler/chat_upload_handler.py","FoxChatRAG-python/app/core/mq/handler/rag_file_handler.py"],
+    "FoxChatRAG-python/app/core/mq/rabbitmq_starter.py": ["FoxChatRAG-python/app/core/mq/__init__.py","FoxChatRAG-python/app/core/mq/rabbitmq_connnect.py","FoxChatRAG-python/app/core/mq/rabbitmq_setup_queue.py","FoxChatRAG-python/app/core/mq/rabbitmq_start_consumer.py"],
+    "FoxChatRAG-python/app/core/settings.py": [],
+    "FoxChatRAG-python/app/service/chat/intent_classifier.py": ["FoxChatRAG-python/app/common/constant/intent_config.py","FoxChatRAG-python/app/core/llm_model/model.py"],
+    "FoxChatRAG-python/main.py": ["FoxChatRAG-python/app/api/__init__.py","FoxChatRAG-python/app/core/mq/__init__.py","FoxChatRAG-python/app/core/settings.py","FoxChatRAG-python/app/exception/__init__.py","FoxChatRAG-python/app/service/chat/timer_scheduler.py"]
+  },
+  "neighborMap": {
+    "FoxChatRAG-python/app/chroma/__init__.py": [{"path":"FoxChatRAG-python/app/service/rag/rag_search_service.py","batchIndex":10,"symbols":["search_file","file_group_path"]},{"path":"FoxChatRAG-python/app/util/chroma_util.py","batchIndex":4,"symbols":["_build_chroma_filter","delete","search","_split_chunk","upload","upload_history_events_batch","upload_history_event","search_history_events"]}],
+    "FoxChatRAG-python/app/chroma/chroma.py": [{"path":"FoxChatRAG-python/app/common/constant/__init__.py","batchIndex":3,"symbols":[]},{"path":"FoxChatRAG-python/app/common/constant/ChromaTypeConstant.py","batchIndex":3,"symbols":["ChromaTypeConstant"]}],
+    "FoxChatRAG-python/app/core/mq/handler/chat_upload_handler.py": [{"path":"FoxChatRAG-python/app/service/__init__.py","batchIndex":3,"symbols":[]}],
+    "FoxChatRAG-python/app/core/mq/handler/rag_file_handler.py": [{"path":"FoxChatRAG-python/app/service/rag/__init__.py","batchIndex":4,"symbols":[]}],
+    "FoxChatRAG-python/app/core/mq/rabbitmq_start_consumer.py": [{"path":"FoxChatRAG-python/app/core/db/mysql_client.py","batchIndex":3,"symbols":["get_db"]}],
+    "FoxChatRAG-python/app/core/settings.py": [{"path":"FoxChatRAG-python/app/core/db/mysql_client.py","batchIndex":3,"symbols":["get_db"]},{"path":"FoxChatRAG-python/app/core/db/redis_client.py","batchIndex":3,"symbols":[]}],
+    "FoxChatRAG-python/app/service/chat/intent_classifier.py": [{"path":"FoxChatRAG-python/app/service/chat/graph/nodes.py","batchIndex":4,"symbols":["pre_flight","fetch_memory","parse_memory","classify_intent_node","retrieve","skip_retrieval","invoke_llm","save_message","format_output","classify_emotion","trigger_summary","unlock"]}],
+    "FoxChatRAG-python/main.py": [{"path":"FoxChatRAG-python/app/api/__init__.py","batchIndex":10,"symbols":[]},{"path":"FoxChatRAG-python/app/exception/__init__.py","batchIndex":3,"symbols":[]},{"path":"FoxChatRAG-python/app/service/chat/timer_scheduler.py","batchIndex":4,"symbols":["get_last_summary_time","reset_timer","get_active_sessions","timer_summary_check_single","timer_scheduler"]}]
+  }
+}

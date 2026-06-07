@@ -1,0 +1,59 @@
+{
+  "projectRoot": "E:/WorkSpace/ProjectCode",
+  "batchFiles": [
+    {"path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMsg.java", "language": "java", "sizeLines": 90, "fileCategory": "code"},
+    {"path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryGroupDto.java", "language": "java", "sizeLines": 12, "fileCategory": "code"},
+    {"path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/GroupMsgHistoryVo.java", "language": "java", "sizeLines": 28, "fileCategory": "code"},
+    {"path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/GroupMsgMapper.java", "language": "java", "sizeLines": 23, "fileCategory": "code"},
+    {"path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/GroupMsgService.java", "language": "java", "sizeLines": 18, "fileCategory": "code"},
+    {"path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java", "language": "java", "sizeLines": 70, "fileCategory": "code"},
+    {"path": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/GroupMsgController.java", "language": "java", "sizeLines": 30, "fileCategory": "code"}
+  ],
+  "batchImportData": {
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMsg.java": [],
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryGroupDto.java": [],
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/GroupMsgHistoryVo.java": [],
+    "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/GroupMsgMapper.java": [
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMsg.java"
+    ],
+    "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/GroupMsgService.java": [
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMsg.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryGroupDto.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/GroupMsgHistoryVo.java"
+    ],
+    "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java": [
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/TimeUtil.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMsg.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryGroupDto.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/GroupMsgHistoryVo.java",
+      "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/GroupMsgMapper.java",
+      "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/GroupMsgService.java",
+      "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java"
+    ],
+    "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/GroupMsgController.java": [
+      "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/R.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryGroupDto.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/GroupMsgHistoryVo.java",
+      "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/GroupMsgService.java"
+    ]
+  },
+  "neighborMap": {
+    "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMsg.java": [
+      {"path": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java", "batchIndex": 5, "symbols": ["msgDtoToProtocol", "protocolToMsgDto", "toProtocolBase64", "protocolToBase64", "ProtocolUtil"]},
+      {"path": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java", "batchIndex": 5, "symbols": ["getMsgType", "handler", "GroupChatHandler"]},
+      {"path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/MsgDto.java", "batchIndex": 5, "symbols": ["MsgDto"]}
+    ],
+    "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/GroupMsgService.java": [
+      {"path": "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java", "batchIndex": 5, "symbols": ["getMsgType", "handler", "GroupChatHandler"]}
+    ],
+    "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java": [
+      {"path": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/TimeUtil.java", "batchIndex": 2, "symbols": ["timestampToLdt", "ldtToTimestamp", "TimeUtil"]},
+      {"path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java", "batchIndex": 1, "symbols": ["equals", "hashCode", "toString", "Users"]},
+      {"path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java", "batchIndex": 1, "symbols": ["UsersService"]}
+    ],
+    "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/GroupMsgController.java": [
+      {"path": "FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/R.java", "batchIndex": 6, "symbols": ["R", "R", "ok", "ok", "error", "error", "error", "error", "R"]}
+    ]
+  }
+}

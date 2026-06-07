@@ -1,0 +1,330 @@
+{
+  "projectRoot": "E:/WorkSpace/ProjectCode",
+  "batchFiles": [
+    {
+      "path": "FoxChatRAG-python/app/service/chat/common/json_parser.py",
+      "language": "python",
+      "sizeLines": 52,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/chat/common/redis_keys.py",
+      "language": "python",
+      "sizeLines": 37,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/chat/common/similarity.py",
+      "language": "python",
+      "sizeLines": 64,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/chat/emotion_classifier.py",
+      "language": "python",
+      "sizeLines": 164,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/chat/graph/graph.py",
+      "language": "python",
+      "sizeLines": 122,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "language": "python",
+      "sizeLines": 242,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/chat/graph/router.py",
+      "language": "python",
+      "sizeLines": 18,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/chat/graph/state.py",
+      "language": "python",
+      "sizeLines": 38,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "language": "python",
+      "sizeLines": 706,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "language": "python",
+      "sizeLines": 365,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "language": "python",
+      "sizeLines": 281,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "language": "python",
+      "sizeLines": 598,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/chat/memory_upload_service.py",
+      "language": "python",
+      "sizeLines": 274,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/chat/prompt_payload_builder.py",
+      "language": "python",
+      "sizeLines": 402,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/chat/session_lock.py",
+      "language": "python",
+      "sizeLines": 58,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/chat/state_manager.py",
+      "language": "python",
+      "sizeLines": 418,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/chat/strategy/base_strategy.py",
+      "language": "python",
+      "sizeLines": 222,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/chat/streaming_tag_parser.py",
+      "language": "python",
+      "sizeLines": 179,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/chat/timer_scheduler.py",
+      "language": "python",
+      "sizeLines": 174,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/chat/types.py",
+      "language": "python",
+      "sizeLines": 33,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/chat/user_profile_service.py",
+      "language": "python",
+      "sizeLines": 207,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/llm_config_service.py",
+      "language": "python",
+      "sizeLines": 273,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/rag/__init__.py",
+      "language": "python",
+      "sizeLines": 10,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/rag/vector_upload_service.py",
+      "language": "python",
+      "sizeLines": 124,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/util/__init__.py",
+      "language": "python",
+      "sizeLines": 18,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/util/chroma_util.py",
+      "language": "python",
+      "sizeLines": 309,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/util/loader_util.py",
+      "language": "python",
+      "sizeLines": 139,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/util/redis_json_util.py",
+      "language": "python",
+      "sizeLines": 16,
+      "fileCategory": "code"
+    },
+    {
+      "path": "FoxChatRAG-python/app/util/template_util.py",
+      "language": "python",
+      "sizeLines": 166,
+      "fileCategory": "code"
+    }
+  ],
+  "batchImportData": {
+    "FoxChatRAG-python/app/service/chat/common/json_parser.py": [],
+    "FoxChatRAG-python/app/service/chat/common/redis_keys.py": [
+      "FoxChatRAG-python/app/common/constant/LLMChatConstant.py"
+    ],
+    "FoxChatRAG-python/app/service/chat/common/similarity.py": [],
+    "FoxChatRAG-python/app/service/chat/emotion_classifier.py": [
+      "FoxChatRAG-python/app/core/db/mysql_client.py",
+      "FoxChatRAG-python/app/core/prompts/prompt_manager.py",
+      "FoxChatRAG-python/app/schemas/current_state.py",
+      "FoxChatRAG-python/app/service/chat/state_manager.py",
+      "FoxChatRAG-python/app/service/chat/strategy/base_strategy.py",
+      "FoxChatRAG-python/app/util/template_util.py"
+    ],
+    "FoxChatRAG-python/app/service/chat/graph/graph.py": [
+      "FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "FoxChatRAG-python/app/service/chat/graph/router.py",
+      "FoxChatRAG-python/app/service/chat/graph/state.py"
+    ],
+    "FoxChatRAG-python/app/service/chat/graph/nodes.py": [
+      "FoxChatRAG-python/app/service/chat/chat_redis_service.py",
+      "FoxChatRAG-python/app/service/chat/common/__init__.py",
+      "FoxChatRAG-python/app/service/chat/emotion_classifier.py",
+      "FoxChatRAG-python/app/service/chat/graph/state.py",
+      "FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "FoxChatRAG-python/app/service/chat/response_parser.py",
+      "FoxChatRAG-python/app/service/chat/state_manager.py",
+      "FoxChatRAG-python/app/service/chat/timer_scheduler.py",
+      "FoxChatRAG-python/app/service/chat/types.py",
+      "FoxChatRAG-python/app/util/__init__.py"
+    ],
+    "FoxChatRAG-python/app/service/chat/graph/router.py": [
+      "FoxChatRAG-python/app/service/chat/graph/state.py"
+    ],
+    "FoxChatRAG-python/app/service/chat/graph/state.py": [
+      "FoxChatRAG-python/app/service/chat/types.py"
+    ],
+    "FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py": [
+      "FoxChatRAG-python/app/common/constant/LLMChatConstant.py",
+      "FoxChatRAG-python/app/core/db/redis_client.py",
+      "FoxChatRAG-python/app/schemas/memory_event.py",
+      "FoxChatRAG-python/app/service/chat/common/__init__.py",
+      "FoxChatRAG-python/app/util/chroma_util.py"
+    ],
+    "FoxChatRAG-python/app/service/chat/llm_invoke_service.py": [
+      "FoxChatRAG-python/app/common/constant/ChromaTypeConstant.py",
+      "FoxChatRAG-python/app/core/db/mysql_client.py",
+      "FoxChatRAG-python/app/core/prompts/prompt_manager.py",
+      "FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "FoxChatRAG-python/app/service/chat/prompt_payload_builder.py",
+      "FoxChatRAG-python/app/service/chat/strategy/base_strategy.py",
+      "FoxChatRAG-python/app/service/llm_config_service.py",
+      "FoxChatRAG-python/app/util/__init__.py",
+      "FoxChatRAG-python/app/util/chroma_util.py",
+      "FoxChatRAG-python/app/util/template_util.py"
+    ],
+    "FoxChatRAG-python/app/service/chat/memory_parser.py": [
+      "FoxChatRAG-python/app/service/chat/common/__init__.py"
+    ],
+    "FoxChatRAG-python/app/service/chat/memory_summary_service.py": [
+      "FoxChatRAG-python/app/common/constant/ChromaTypeConstant.py",
+      "FoxChatRAG-python/app/common/constant/FileTypeConstant.py",
+      "FoxChatRAG-python/app/common/constant/LLMChatConstant.py",
+      "FoxChatRAG-python/app/core/db/mysql_client.py",
+      "FoxChatRAG-python/app/core/db/redis_client.py",
+      "FoxChatRAG-python/app/core/prompts/prompt_manager.py",
+      "FoxChatRAG-python/app/service/chat/common/__init__.py",
+      "FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "FoxChatRAG-python/app/service/chat/strategy/base_strategy.py",
+      "FoxChatRAG-python/app/service/chat/user_profile_service.py",
+      "FoxChatRAG-python/app/util/__init__.py",
+      "FoxChatRAG-python/app/util/chroma_util.py",
+      "FoxChatRAG-python/app/util/loader_util.py",
+      "FoxChatRAG-python/app/util/template_util.py"
+    ],
+    "FoxChatRAG-python/app/service/chat/memory_upload_service.py": [
+      "FoxChatRAG-python/app/common/constant/LLMChatConstant.py",
+      "FoxChatRAG-python/app/core/__init__.py",
+      "FoxChatRAG-python/app/core/db/mysql_client.py",
+      "FoxChatRAG-python/app/core/prompts/prompt_manager.py",
+      "FoxChatRAG-python/app/service/chat/common/__init__.py",
+      "FoxChatRAG-python/app/service/chat/strategy/base_strategy.py",
+      "FoxChatRAG-python/app/service/llm_config_service.py",
+      "FoxChatRAG-python/app/util/__init__.py",
+      "FoxChatRAG-python/app/util/chroma_util.py",
+      "FoxChatRAG-python/app/util/template_util.py"
+    ],
+    "FoxChatRAG-python/app/service/chat/prompt_payload_builder.py": [],
+    "FoxChatRAG-python/app/service/chat/session_lock.py": [
+      "FoxChatRAG-python/app/core/db/redis_client.py"
+    ],
+    "FoxChatRAG-python/app/service/chat/state_manager.py": [
+      "FoxChatRAG-python/app/common/constant/LLMChatConstant.py",
+      "FoxChatRAG-python/app/core/db/redis_client.py",
+      "FoxChatRAG-python/app/schemas/current_state.py",
+      "FoxChatRAG-python/app/service/chat/common/__init__.py",
+      "FoxChatRAG-python/app/util/redis_json_util.py"
+    ],
+    "FoxChatRAG-python/app/service/chat/strategy/base_strategy.py": [],
+    "FoxChatRAG-python/app/service/chat/streaming_tag_parser.py": [],
+    "FoxChatRAG-python/app/service/chat/timer_scheduler.py": [
+      "FoxChatRAG-python/app/common/constant/LLMChatConstant.py",
+      "FoxChatRAG-python/app/core/db/redis_client.py"
+    ],
+    "FoxChatRAG-python/app/service/chat/types.py": [],
+    "FoxChatRAG-python/app/service/chat/user_profile_service.py": [
+      "FoxChatRAG-python/app/common/constant/LLMChatConstant.py",
+      "FoxChatRAG-python/app/common/constant/MsgStatusConstant.py",
+      "FoxChatRAG-python/app/core/db/mysql_client.py",
+      "FoxChatRAG-python/app/core/db/redis_client.py",
+      "FoxChatRAG-python/app/core/prompts/prompt_manager.py",
+      "FoxChatRAG-python/app/exception/BusinessException.py",
+      "FoxChatRAG-python/app/service/chat/strategy/base_strategy.py",
+      "FoxChatRAG-python/app/util/template_util.py"
+    ],
+    "FoxChatRAG-python/app/service/llm_config_service.py": [
+      "FoxChatRAG-python/app/models/llm_config.py"
+    ],
+    "FoxChatRAG-python/app/service/rag/__init__.py": [
+      "FoxChatRAG-python/app/service/rag/rag_search_service.py",
+      "FoxChatRAG-python/app/service/rag/vector_upload_service.py"
+    ],
+    "FoxChatRAG-python/app/service/rag/vector_upload_service.py": [
+      "FoxChatRAG-python/app/common/__init__.py",
+      "FoxChatRAG-python/app/common/constant/ChromaTypeConstant.py",
+      "FoxChatRAG-python/app/common/constant/LLMChatConstant.py",
+      "FoxChatRAG-python/app/core/db/redis_client.py",
+      "FoxChatRAG-python/app/core/net/__init__.py",
+      "FoxChatRAG-python/app/models/rag_file.py",
+      "FoxChatRAG-python/app/util/__init__.py",
+      "FoxChatRAG-python/app/util/chroma_util.py",
+      "FoxChatRAG-python/app/util/loader_util.py"
+    ],
+    "FoxChatRAG-python/app/util/__init__.py": [
+      "FoxChatRAG-python/app/util/redis_json_util.py",
+      "FoxChatRAG-python/app/util/template_util.py"
+    ],
+    "FoxChatRAG-python/app/util/chroma_util.py": [
+      "FoxChatRAG-python/app/chroma/__init__.py",
+      "FoxChatRAG-python/app/common/constant/__init__.py",
+      "FoxChatRAG-python/app/common/constant/ChromaTypeConstant.py"
+    ],
+    "FoxChatRAG-python/app/util/loader_util.py": [
+      "FoxChatRAG-python/app/common/__init__.py"
+    ],
+    "FoxChatRAG-python/app/util/redis_json_util.py": [],
+    "FoxChatRAG-python/app/util/template_util.py": []
+  }
+}

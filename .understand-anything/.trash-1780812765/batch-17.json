@@ -1,0 +1,93 @@
+{
+  "nodes": [
+    {
+      "id": "service:FoxChat-java/Dockerfile.base",
+      "type": "service",
+      "name": "Dockerfile.base",
+      "filePath": "FoxChat-java/Dockerfile.base",
+      "summary": "基础 Docker 镜像定义文件，仅用于预下载 Gradle 依赖以加速后续构建。基于 gradle:9.4.0-jdk17，通过 buildEnvironment 和 dependencies 任务缓存所有依赖。",
+      "tags": ["containerization", "infrastructure", "build-system", "caching"],
+      "complexity": "simple",
+      "languageNotes": "使用 --mount=type=cache 挂载 Gradle 缓存目录，利用 Docker 多阶段构建层缓存策略减少重复下载。"
+    },
+    {
+      "id": "document:FoxChat-java/README.md",
+      "type": "document",
+      "name": "README.md",
+      "filePath": "FoxChat-java/README.md",
+      "summary": "FoxChat 项目完整文档，涵盖项目亮点（Netty 高性能通信、RAG 智能知识库、社交功能、安全存储）、技术栈（Spring Boot 3.5.10 + Netty + Protobuf + MySQL + Redis + RabbitMQ + Minio）、模块结构、快速上手指南及自定义二进制通信协议说明。",
+      "tags": ["documentation", "entry-point", "overview", "protocol"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:FoxChat-java/build.gradle",
+      "type": "config",
+      "name": "build.gradle",
+      "filePath": "FoxChat-java/build.gradle",
+      "summary": "Gradle 根构建脚本，定义 Java 17 编译目标、Spring Boot 3.4.3 和 Spring Dependency Management 插件。为所有子模块统一配置阿里云 Maven 仓库、Lombok、Fastjson2 依赖，并默认禁用 bootJar 打包（仅 web 模块启用）。",
+      "tags": ["configuration", "build-system", "gradle", "dependency-management"],
+      "complexity": "moderate",
+      "languageNotes": "使用 version catalog (libs.versions.toml) 管理依赖版本；subprojects 块统一应用 java-library、Spring Boot 和 dependency-management 插件。"
+    },
+    {
+      "id": "config:FoxChat-java/gradle.properties",
+      "type": "config",
+      "name": "gradle.properties",
+      "filePath": "FoxChat-java/gradle.properties",
+      "summary": "Gradle 配置属性文件，启用 configuration-cache 特性以加速增量构建。",
+      "tags": ["configuration", "build-system", "gradle"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/gradlew.bat",
+      "type": "file",
+      "name": "gradlew.bat",
+      "filePath": "FoxChat-java/gradlew.bat",
+      "summary": "Windows 平台 Gradle Wrapper 启动脚本，负责检测 JAVA_HOME、解析 JVM 参数并启动 gradle-wrapper.jar。标准 Gradle 生成文件，确保团队使用一致的 Gradle 版本。",
+      "tags": ["build-system", "gradle", "wrapper", "script"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-java/mvnw.cmd",
+      "type": "file",
+      "name": "mvnw.cmd",
+      "filePath": "FoxChat-java/mvnw.cmd",
+      "summary": "Windows 平台 Maven Wrapper 启动脚本（版本 3.3.4），包含 Batch 和 PowerShell 混合逻辑。自动下载并缓存 Maven 发行版，支持 SHA-256 校验和 mvnd 加速模式。",
+      "tags": ["build-system", "maven", "wrapper", "script"],
+      "complexity": "moderate",
+      "languageNotes": "采用 Batch + PowerShell 混合脚本模式：前半段为 Batch 调度逻辑，后半段通过内联 PowerShell 实现下载、校验和解压。"
+    },
+    {
+      "id": "config:FoxChat-java/settings.gradle",
+      "type": "config",
+      "name": "settings.gradle",
+      "filePath": "FoxChat-java/settings.gradle",
+      "summary": "Gradle 设置文件，定义根项目名称为 bedfox-Chat 并声明五个子模块：foxChat-pojo、foxChat-service、foxChat-netty、foxChat-web、foxChat-common。",
+      "tags": ["configuration", "build-system", "gradle", "module-definition"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "service:FoxChat-java/Dockerfile.base",
+      "target": "config:FoxChat-java/build.gradle",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "service:FoxChat-java/Dockerfile.base",
+      "target": "config:FoxChat-java/settings.gradle",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-java/settings.gradle",
+      "target": "config:FoxChat-java/build.gradle",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

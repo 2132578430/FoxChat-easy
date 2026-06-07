@@ -1,0 +1,8 @@
+{
+  "projectRoot": "E:/WorkSpace/ProjectCode",
+  "batchFiles": [
+    {"path": "FoxChat-vue/Dockerfile", "language": "dockerfile", "sizeLines": 34, "fileCategory": "infra"}
+  ],
+  "batchImportData": {"FoxChat-vue/Dockerfile": []},
+  "neighborMap": {}
+}

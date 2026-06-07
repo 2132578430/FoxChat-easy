@@ -1,0 +1,1984 @@
+{
+  "scriptCompleted": true,
+  "directoryGroups": {
+    "FoxChat-java:foxChat-common": [
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/AuthConstant.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/CookieUtil.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/JwtUtil.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ChatRoleConstant.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/TimeUtil.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/FriendConstant.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MsgTargetTypeConstant.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MsgTypeConstant.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ProtocolConstant.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/RedisConstant.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/SpringUtil.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/FileContstant.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MqConstant.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ResultStatusConstant.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/exception/BusinessException.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/M.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MqUtil.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/R.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/GroupConstant.java",
+      "config:FoxChat-java/foxChat-common/build.gradle",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/config/MinioConfig.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/config/ThreadExecutor.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/LuaConstant.java"
+    ],
+    "FoxChat-java:foxChat-netty": [
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/CookieAuthHandler.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/codec/ProtocolMsgDecoder.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/codec/ProtocolMsgEncoder.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/config/RedisConfig.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/ChatHandlerFactory.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/MsgHandler.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/HeartHandler.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/RequestFriendHandler.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/SignMsgHandler.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/listener/RedisMessageListener.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/ChatWebSocketHandler.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/GroupChannelRelation.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/UserChannelRelation.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/WebSocketSeverInitializer.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/publisher/MsgPublisher.java",
+      "config:FoxChat-java/foxChat-netty/build.gradle",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/HeartBeatHandler.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/NettyServer.java"
+    ],
+    "FoxChat-java:foxChat-pojo": [
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/CurrentUser.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Friends.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/FriendsRequest.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/AddFriendDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/RegisterDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/SearchUserDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UpdateUserDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UserDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/FriendVo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SearchUserVo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SelectFriendVo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/ShowUserInfo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/UserInfo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmChatMsg.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmConfig.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmUser.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/AddLlmFriendDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LlmConfigDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LlmFriendUpdateDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LlmMsgHistoryReqDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/TestConnectionDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/proto/ai/AIChatServiceGrpc.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/proto/ai/AiChatProto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/ChatMqMsgTo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/ChatMsgTo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/LlmChatMsgVo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/LlmMemoryVo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/LlmMsgHistoryVo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatMsg.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatProtocol.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/MsgDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/RagFile.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/RagMqMsgTo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/RagSearchFileMsgResTo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/RagSearchFileMsgTo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/RagSearchVo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/MsgStatus.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/DeleteMsgDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryUserDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/SignMsgFriendDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/WithdrawMsgDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/UnreadMsgTo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/HistoryMsgVo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatGroup.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMember.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/ApplyGroupDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/GroupDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/GroupVo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMsg.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryGroupDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/GroupMsgHistoryVo.java",
+      "config:FoxChat-java/foxChat-pojo/build.gradle",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/FileDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LLMChatMsgDto.java"
+    ],
+    "FoxChat-java:foxChat-service": [
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsRequestMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/UsersMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/AuthService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsRequestService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsRequestServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/client/grpc/GrpcChatClient.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/grpc/ChatStreamObserver.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/LlmChatMsgMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/LlmConfigMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/LlmUserMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/remote/ChatClient.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmChatMsgService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmChatService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmConfigService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmMemoryService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmUserService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatMsgServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmMemoryServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/RagFileMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/remote/RagClient.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/RAGService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/RagFileService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RagFileServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/task/RAGTask.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/ChatMsgMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/MsgStatusMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/ChatMsgService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/MsgStatusService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/MsgStatusServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/ChatGroupMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/GroupMemberMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/ChatGroupService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/GroupMemberService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatGroupServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMemberServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/GroupMsgMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/GroupMsgService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/ChatGroupMapper.xml",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/ChatMsgMapper.xml",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/FriendsMapper.xml",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/FriendsRequestMapper.xml",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/GroupMemberMapper.xml",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/GroupMsgMapper.xml",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/LlmChatMsgMapper.xml",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/LlmConfigMapper.xml",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/LlmUserMapper.xml",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/MsgStatusMapper.xml",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/RagFileMapper.xml",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/UsersMapper.xml",
+      "config:FoxChat-java/foxChat-service/build.gradle",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/config/RagRabbitMqConfig.java",
+      "schema:FoxChat-java/foxChat-service/src/main/proto/ai_chat.proto"
+    ],
+    "FoxChat-java:foxChat-web": [
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/config/WebConfig.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/AuthController.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/FriendController.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/UserController.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/interceptor/LoginInterceptor.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LlmConfigController.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/RAGController.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/exception/GlobalExceptionHandler.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/MsgController.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/GroupController.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/GroupMsgController.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/BedfoxChatApplication.java"
+    ],
+    "FoxChatRAG-python:app/common": [
+      "file:FoxChatRAG-python/app/common/__init__.py",
+      "file:FoxChatRAG-python/app/common/constant/ChromaTypeConstant.py",
+      "file:FoxChatRAG-python/app/common/constant/FileTypeConstant.py",
+      "file:FoxChatRAG-python/app/common/constant/LLMChatConstant.py",
+      "file:FoxChatRAG-python/app/common/constant/MsgStatusConstant.py",
+      "file:FoxChatRAG-python/app/common/constant/__init__.py",
+      "file:FoxChatRAG-python/app/common/constant/intent_config.py"
+    ],
+    "FoxChatRAG-python:app/core": [
+      "file:FoxChatRAG-python/app/core/__init__.py",
+      "file:FoxChatRAG-python/app/core/db/__init__.py",
+      "file:FoxChatRAG-python/app/core/db/mysql_client.py",
+      "file:FoxChatRAG-python/app/core/db/redis_client.py",
+      "file:FoxChatRAG-python/app/core/llm_model/litellm_wrapper.py",
+      "file:FoxChatRAG-python/app/core/net/__init__.py",
+      "file:FoxChatRAG-python/app/core/net/file_client.py",
+      "file:FoxChatRAG-python/app/core/prompts/prompt_manager.py",
+      "file:FoxChatRAG-python/app/core/llm_model/__init__.py",
+      "file:FoxChatRAG-python/app/core/llm_model/model.py",
+      "file:FoxChatRAG-python/app/core/mq/__init__.py",
+      "file:FoxChatRAG-python/app/core/mq/handler/__init__.py",
+      "file:FoxChatRAG-python/app/core/mq/handler/chat_upload_handler.py",
+      "file:FoxChatRAG-python/app/core/mq/handler/rag_file_handler.py",
+      "file:FoxChatRAG-python/app/core/mq/rabbitmq_connnect.py",
+      "file:FoxChatRAG-python/app/core/mq/rabbitmq_setup_queue.py",
+      "file:FoxChatRAG-python/app/core/mq/rabbitmq_start_consumer.py",
+      "file:FoxChatRAG-python/app/core/mq/rabbitmq_starter.py",
+      "file:FoxChatRAG-python/app/core/settings.py",
+      "document:FoxChatRAG-python/app/core/prompts/character_card.md",
+      "document:FoxChatRAG-python/app/core/prompts/chat_system.md",
+      "document:FoxChatRAG-python/app/core/prompts/emotion_classifier.md",
+      "document:FoxChatRAG-python/app/core/prompts/focus_extractor.md",
+      "document:FoxChatRAG-python/app/core/prompts/memory_bank_compress.md",
+      "document:FoxChatRAG-python/app/core/prompts/memory_event_extractor.md",
+      "document:FoxChatRAG-python/app/core/prompts/memory_summary.md",
+      "document:FoxChatRAG-python/app/core/prompts/role_memory_core.md",
+      "document:FoxChatRAG-python/app/core/prompts/soul.md",
+      "document:FoxChatRAG-python/app/core/prompts/user_profile.md",
+      "document:FoxChatRAG-python/app/core/prompts/user_profile_updater.md",
+      "file:FoxChatRAG-python/app/core/config.py",
+      "file:FoxChatRAG-python/app/core/health_check.py",
+      "file:FoxChatRAG-python/app/core/net/ip_client.py",
+      "file:FoxChatRAG-python/app/core/prompts/__init__.py"
+    ],
+    "FoxChatRAG-python:app/exception": [
+      "file:FoxChatRAG-python/app/exception/BusinessException.py",
+      "file:FoxChatRAG-python/app/exception/GlobalExceptionHandler.py",
+      "file:FoxChatRAG-python/app/exception/__init__.py"
+    ],
+    "FoxChatRAG-python:app/grpc": [
+      "file:FoxChatRAG-python/app/grpc/ai_chat_server.py",
+      "file:FoxChatRAG-python/app/grpc/__init__.py",
+      "file:FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2.py",
+      "file:FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2_grpc.py",
+      "file:FoxChatRAG-python/app/grpc/foxchat/__init__.py",
+      "file:FoxChatRAG-python/app/grpc/foxchat/ai/__init__.py",
+      "file:FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2.pyi"
+    ],
+    "FoxChatRAG-python:app/models": [
+      "file:FoxChatRAG-python/app/models/__init__.py",
+      "file:FoxChatRAG-python/app/models/llm_config.py",
+      "file:FoxChatRAG-python/app/models/llm_user.py",
+      "file:FoxChatRAG-python/app/models/rag_file.py"
+    ],
+    "FoxChatRAG-python:app/schemas": [
+      "file:FoxChatRAG-python/app/schemas/current_state.py",
+      "file:FoxChatRAG-python/app/schemas/memory_event.py",
+      "file:FoxChatRAG-python/app/schemas/M.py",
+      "file:FoxChatRAG-python/app/schemas/__init__.py",
+      "file:FoxChatRAG-python/app/schemas/chat_msg_resp.py",
+      "file:FoxChatRAG-python/app/schemas/chat_msg_to.py",
+      "file:FoxChatRAG-python/app/schemas/rag_search_file_msg.py"
+    ],
+    "FoxChatRAG-python:app/service": [
+      "file:FoxChatRAG-python/app/service/__init__.py",
+      "file:FoxChatRAG-python/app/service/llm_config_service.py"
+    ],
+    "FoxChatRAG-python:app/service/chat": [
+      "file:FoxChatRAG-python/app/service/chat/__init__.py",
+      "file:FoxChatRAG-python/app/service/chat/chat_msg_service.py",
+      "file:FoxChatRAG-python/app/service/chat/chat_redis_service.py",
+      "file:FoxChatRAG-python/app/service/chat/common/__init__.py",
+      "file:FoxChatRAG-python/app/service/chat/common/emotion_mapper.py",
+      "file:FoxChatRAG-python/app/service/chat/common/json_parser.py",
+      "file:FoxChatRAG-python/app/service/chat/common/redis_keys.py",
+      "file:FoxChatRAG-python/app/service/chat/common/similarity.py",
+      "file:FoxChatRAG-python/app/service/chat/emotion_classifier.py",
+      "file:FoxChatRAG-python/app/service/chat/graph/graph.py",
+      "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "file:FoxChatRAG-python/app/service/chat/graph/router.py",
+      "file:FoxChatRAG-python/app/service/chat/graph/state.py",
+      "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "file:FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "file:FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "file:FoxChatRAG-python/app/service/chat/memory_upload_service.py",
+      "file:FoxChatRAG-python/app/service/chat/prompt_payload_builder.py",
+      "file:FoxChatRAG-python/app/service/chat/session_lock.py",
+      "file:FoxChatRAG-python/app/service/chat/state_manager.py",
+      "file:FoxChatRAG-python/app/service/chat/strategy/base_strategy.py",
+      "file:FoxChatRAG-python/app/service/chat/streaming_tag_parser.py",
+      "file:FoxChatRAG-python/app/service/chat/timer_scheduler.py",
+      "file:FoxChatRAG-python/app/service/chat/types.py",
+      "file:FoxChatRAG-python/app/service/chat/user_profile_service.py",
+      "file:FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "file:FoxChatRAG-python/app/service/chat/response_parser.py",
+      "file:FoxChatRAG-python/app/service/chat/graph/__init__.py"
+    ],
+    "FoxChatRAG-python:app/service/rag": [
+      "file:FoxChatRAG-python/app/service/rag/__init__.py",
+      "file:FoxChatRAG-python/app/service/rag/vector_upload_service.py",
+      "file:FoxChatRAG-python/app/service/rag/rag_search_service.py"
+    ],
+    "FoxChatRAG-python:app/util": [
+      "file:FoxChatRAG-python/app/util/__init__.py",
+      "file:FoxChatRAG-python/app/util/chroma_util.py",
+      "file:FoxChatRAG-python/app/util/loader_util.py",
+      "file:FoxChatRAG-python/app/util/redis_json_util.py",
+      "file:FoxChatRAG-python/app/util/template_util.py",
+      "file:FoxChatRAG-python/app/util/token_monitor.py"
+    ],
+    "FoxChatRAG-python:app/chroma": [
+      "file:FoxChatRAG-python/app/chroma/__init__.py",
+      "file:FoxChatRAG-python/app/chroma/chroma.py",
+      "file:FoxChatRAG-python/app/chroma/splitter.py"
+    ],
+    "FoxChatRAG-python:root": [
+      "file:FoxChatRAG-python/main.py",
+      "service:FoxChatRAG-python/Dockerfile",
+      "service:FoxChatRAG-python/Dockerfile.base",
+      "document:FoxChatRAG-python/MEMORY_UPLOAD.md",
+      "document:FoxChatRAG-python/Problem.md",
+      "document:FoxChatRAG-python/README.md",
+      "document:FoxChatRAG-python/requirements-core.txt",
+      "document:FoxChatRAG-python/requirements.txt",
+      "document:FoxChatRAG-python/README"
+    ],
+    "FoxChatRAG-python:app/api": [
+      "file:FoxChatRAG-python/app/api/__init__.py",
+      "file:FoxChatRAG-python/app/api/chat.py",
+      "file:FoxChatRAG-python/app/api/llm_config.py",
+      "file:FoxChatRAG-python/app/api/rag.py"
+    ],
+    "FoxChatRAG-python:app/retriever": [
+      "file:FoxChatRAG-python/app/retriever/__init__.py",
+      "file:FoxChatRAG-python/app/retriever/project_retriever.py"
+    ],
+    "FoxChat-vue:src": [
+      "file:FoxChat-vue/src/App.vue",
+      "file:FoxChat-vue/src/main.js",
+      "file:FoxChat-vue/src/style.css"
+    ],
+    "FoxChat-vue:src/router": [
+      "file:FoxChat-vue/src/router/index.js"
+    ],
+    "FoxChat-vue:src/utils": [
+      "file:FoxChat-vue/src/utils/request.js",
+      "file:FoxChat-vue/src/utils/config.js",
+      "file:FoxChat-vue/src/utils/protocol.js",
+      "file:FoxChat-vue/src/utils/snowflake.js"
+    ],
+    "FoxChat-vue:src/views": [
+      "file:FoxChat-vue/src/views/Home.vue",
+      "file:FoxChat-vue/src/views/Login.vue",
+      "file:FoxChat-vue/src/views/Register.vue"
+    ],
+    "FoxChat-java:root": [
+      "service:FoxChat-java/Dockerfile",
+      "service:FoxChat-java/Dockerfile:build",
+      "service:FoxChat-java/Dockerfile:eclipse-temurin",
+      "service:FoxChat-java/Dockerfile.base",
+      "document:FoxChat-java/README.md",
+      "config:FoxChat-java/build.gradle",
+      "config:FoxChat-java/gradle.properties",
+      "file:FoxChat-java/gradlew.bat",
+      "file:FoxChat-java/mvnw.cmd",
+      "config:FoxChat-java/settings.gradle",
+      "file:FoxChat-java/.gitattributes",
+      "config:FoxChat-java/.mvn/wrapper/maven-wrapper.properties"
+    ],
+    "FoxChat-vue:root": [
+      "service:FoxChat-vue/Dockerfile",
+      "service:FoxChat-vue/Dockerfile:build",
+      "service:FoxChat-vue/Dockerfile:nginx",
+      "config:FoxChat-vue/.env.development",
+      "config:FoxChat-vue/.env.production",
+      "document:FoxChat-vue/AI-Project.md",
+      "document:FoxChat-vue/API_INTERFACE.md",
+      "service:FoxChat-vue/Dockerfile.base",
+      "document:FoxChat-vue/README.md",
+      "file:FoxChat-vue/index.html",
+      "config:FoxChat-vue/package.json",
+      "config:FoxChat-vue/vite.config.js"
+    ],
+    "tooling": [
+      "config:.env.example",
+      "document:.reasonix/truncated-results/1780141453720-308a5b32-web_fetch.txt",
+      "document:.reasonix/truncated-results/1780298383943-ab106a2d-web_fetch.txt",
+      "file:.understand-anything/.understandignore",
+      "config:.understand-anything/config.json"
+    ],
+    "root": [
+      "table:FoxChat.sql:chat_group",
+      "table:FoxChat.sql:chat_msg",
+      "table:FoxChat.sql:friends",
+      "table:FoxChat.sql:friends_request",
+      "table:FoxChat.sql:group_member",
+      "table:FoxChat.sql:group_msg",
+      "table:FoxChat.sql:llm_chat_msg",
+      "table:FoxChat.sql:llm_user",
+      "table:FoxChat.sql:msg_status",
+      "table:FoxChat.sql:rag_file",
+      "table:FoxChat.sql:users",
+      "table:FoxChat.sql:llm_config",
+      "document:README.md",
+      "document:项目介绍.md",
+      "service:docker-compose.yml:mysql",
+      "service:docker-compose.yml:redis",
+      "service:docker-compose.yml:minio",
+      "service:docker-compose.yml:rabbitmq",
+      "service:docker-compose.prod.yml:java-app",
+      "service:docker-compose.prod.yml:python-app",
+      "service:docker-compose.prod.yml:vue-nginx"
+    ],
+    "deploy:local-middleware": [
+      "config:deploy/local-middleware/.env.example",
+      "document:deploy/local-middleware/MIGRATE.md",
+      "service:deploy/local-middleware/docker-compose.yml",
+      "service:deploy/local-middleware/docker-compose.yml:mysql",
+      "service:deploy/local-middleware/docker-compose.yml:redis",
+      "service:deploy/local-middleware/docker-compose.yml:minio",
+      "service:deploy/local-middleware/docker-compose.yml:rabbitmq",
+      "service:deploy/local-middleware/docker-compose.yml:chromadb",
+      "service:deploy/local-middleware/docker-compose.yml:frpc",
+      "file:deploy/local-middleware/frpc-docker.toml.example"
+    ],
+    "ci-cd": [
+      "pipeline:.gitea/workflows/deploy.yml"
+    ],
+    "deploy:root": [
+      "document:deploy/DEPLOY.md"
+    ],
+    "deploy:frp": [
+      "file:deploy/frp/frpc.toml.example",
+      "file:deploy/frp/frps.toml.example",
+      "file:deploy/frp/install-frps.sh"
+    ],
+    "FoxChat-vue:src/components": [
+      "file:FoxChat-vue/src/components/Chat/GroupList.vue",
+      "file:FoxChat-vue/src/components/Chat/MessageList.vue",
+      "file:FoxChat-vue/src/components/Chat/ModelMemoryPanel.vue",
+      "file:FoxChat-vue/src/components/HelloWorld.vue",
+      "file:FoxChat-vue/src/components/LlmConfig/LlmConfigPanel.vue",
+      "file:FoxChat-vue/src/components/LlmConfig/ScenarioConfigForm.vue",
+      "file:FoxChat-vue/src/components/TitleBar.vue"
+    ],
+    "FoxChat-vue:src/composables": [
+      "file:FoxChat-vue/src/composables/useLlmFallback.js",
+      "file:FoxChat-vue/src/composables/useLlmStream.js",
+      "file:FoxChat-vue/src/composables/useWebSocket.js"
+    ],
+    "FoxChat-vue:src/proto": [
+      "file:FoxChat-vue/src/proto/chat.js",
+      "schema:FoxChat-vue/src/proto/chat.proto"
+    ],
+    "FoxChatRAG-python:app": [
+      "file:FoxChatRAG-python/app/__init__.py"
+    ],
+    "FoxChatRAG-python:proto": [
+      "schema:FoxChatRAG-python/proto/ai_chat.proto",
+      "endpoint:FoxChatRAG-python/proto/ai_chat.proto:AIChatService.Chat",
+      "endpoint:FoxChatRAG-python/proto/ai_chat.proto:AIChatService.DeleteMemory",
+      "schema:FoxChatRAG-python/proto/ai_chat.proto:ChatRequest",
+      "schema:FoxChatRAG-python/proto/ai_chat.proto:ChatResponse",
+      "schema:FoxChatRAG-python/proto/ai_chat.proto:DeleteRequest",
+      "schema:FoxChatRAG-python/proto/ai_chat.proto:DeleteResponse"
+    ],
+    "FoxChatRAG-python:test": [
+      "file:FoxChatRAG-python/test/memory_stress_test.py",
+      "file:FoxChatRAG-python/test/test_deduplication.py",
+      "file:FoxChatRAG-python/test/test_history_event_retrieval_service_compile.py",
+      "file:FoxChatRAG-python/test/test_structure_injection.py",
+      "file:FoxChatRAG-python/test/test.py"
+    ]
+  },
+  "nodeTypeGroups": {
+    "file": [
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/AuthConstant.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/CookieUtil.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/JwtUtil.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/CookieAuthHandler.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/CurrentUser.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Friends.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/FriendsRequest.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/AddFriendDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/RegisterDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/SearchUserDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UpdateUserDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/UserDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/FriendVo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SearchUserVo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/SelectFriendVo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/ShowUserInfo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/UserInfo.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsRequestMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/UsersMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/AuthService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsRequestService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/FriendsService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsRequestServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/config/WebConfig.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/AuthController.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/FriendController.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/UserController.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/interceptor/LoginInterceptor.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ChatRoleConstant.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/TimeUtil.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmChatMsg.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmConfig.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmUser.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/AddLlmFriendDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LlmConfigDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LlmFriendUpdateDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LlmMsgHistoryReqDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/TestConnectionDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/proto/ai/AIChatServiceGrpc.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/proto/ai/AiChatProto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/ChatMqMsgTo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/ChatMsgTo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/LlmChatMsgVo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/LlmMemoryVo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/LlmMsgHistoryVo.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/client/grpc/GrpcChatClient.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/grpc/ChatStreamObserver.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/LlmChatMsgMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/LlmConfigMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/LlmUserMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/remote/ChatClient.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmChatMsgService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmChatService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmConfigService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmMemoryService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/LlmUserService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatMsgServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmMemoryServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LlmConfigController.java",
+      "file:FoxChatRAG-python/app/common/__init__.py",
+      "file:FoxChatRAG-python/app/common/constant/ChromaTypeConstant.py",
+      "file:FoxChatRAG-python/app/common/constant/FileTypeConstant.py",
+      "file:FoxChatRAG-python/app/common/constant/LLMChatConstant.py",
+      "file:FoxChatRAG-python/app/common/constant/MsgStatusConstant.py",
+      "file:FoxChatRAG-python/app/common/constant/__init__.py",
+      "file:FoxChatRAG-python/app/core/__init__.py",
+      "file:FoxChatRAG-python/app/core/db/__init__.py",
+      "file:FoxChatRAG-python/app/core/db/mysql_client.py",
+      "file:FoxChatRAG-python/app/core/db/redis_client.py",
+      "file:FoxChatRAG-python/app/core/llm_model/litellm_wrapper.py",
+      "file:FoxChatRAG-python/app/core/net/__init__.py",
+      "file:FoxChatRAG-python/app/core/net/file_client.py",
+      "file:FoxChatRAG-python/app/core/prompts/prompt_manager.py",
+      "file:FoxChatRAG-python/app/exception/BusinessException.py",
+      "file:FoxChatRAG-python/app/exception/GlobalExceptionHandler.py",
+      "file:FoxChatRAG-python/app/exception/__init__.py",
+      "file:FoxChatRAG-python/app/grpc/ai_chat_server.py",
+      "file:FoxChatRAG-python/app/models/__init__.py",
+      "file:FoxChatRAG-python/app/models/llm_config.py",
+      "file:FoxChatRAG-python/app/models/llm_user.py",
+      "file:FoxChatRAG-python/app/models/rag_file.py",
+      "file:FoxChatRAG-python/app/schemas/current_state.py",
+      "file:FoxChatRAG-python/app/schemas/memory_event.py",
+      "file:FoxChatRAG-python/app/service/__init__.py",
+      "file:FoxChatRAG-python/app/service/chat/__init__.py",
+      "file:FoxChatRAG-python/app/service/chat/chat_msg_service.py",
+      "file:FoxChatRAG-python/app/service/chat/chat_redis_service.py",
+      "file:FoxChatRAG-python/app/service/chat/common/__init__.py",
+      "file:FoxChatRAG-python/app/service/chat/common/emotion_mapper.py",
+      "file:FoxChatRAG-python/app/service/chat/common/json_parser.py",
+      "file:FoxChatRAG-python/app/service/chat/common/redis_keys.py",
+      "file:FoxChatRAG-python/app/service/chat/common/similarity.py",
+      "file:FoxChatRAG-python/app/service/chat/emotion_classifier.py",
+      "file:FoxChatRAG-python/app/service/chat/graph/graph.py",
+      "file:FoxChatRAG-python/app/service/chat/graph/nodes.py",
+      "file:FoxChatRAG-python/app/service/chat/graph/router.py",
+      "file:FoxChatRAG-python/app/service/chat/graph/state.py",
+      "file:FoxChatRAG-python/app/service/chat/history_event_retrieval_service.py",
+      "file:FoxChatRAG-python/app/service/chat/llm_invoke_service.py",
+      "file:FoxChatRAG-python/app/service/chat/memory_parser.py",
+      "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py",
+      "file:FoxChatRAG-python/app/service/chat/memory_upload_service.py",
+      "file:FoxChatRAG-python/app/service/chat/prompt_payload_builder.py",
+      "file:FoxChatRAG-python/app/service/chat/session_lock.py",
+      "file:FoxChatRAG-python/app/service/chat/state_manager.py",
+      "file:FoxChatRAG-python/app/service/chat/strategy/base_strategy.py",
+      "file:FoxChatRAG-python/app/service/chat/streaming_tag_parser.py",
+      "file:FoxChatRAG-python/app/service/chat/timer_scheduler.py",
+      "file:FoxChatRAG-python/app/service/chat/types.py",
+      "file:FoxChatRAG-python/app/service/chat/user_profile_service.py",
+      "file:FoxChatRAG-python/app/service/llm_config_service.py",
+      "file:FoxChatRAG-python/app/service/rag/__init__.py",
+      "file:FoxChatRAG-python/app/service/rag/vector_upload_service.py",
+      "file:FoxChatRAG-python/app/util/__init__.py",
+      "file:FoxChatRAG-python/app/util/chroma_util.py",
+      "file:FoxChatRAG-python/app/util/loader_util.py",
+      "file:FoxChatRAG-python/app/util/redis_json_util.py",
+      "file:FoxChatRAG-python/app/util/template_util.py",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/FriendConstant.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MsgTargetTypeConstant.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MsgTypeConstant.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ProtocolConstant.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/RedisConstant.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/ProtocolUtil.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/SpringUtil.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/codec/ProtocolMsgDecoder.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/codec/ProtocolMsgEncoder.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/config/RedisConfig.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/ChatHandlerFactory.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/MsgHandler.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/HeartHandler.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/RequestFriendHandler.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/SignMsgHandler.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/listener/RedisMessageListener.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/ChatWebSocketHandler.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/GroupChannelRelation.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/UserChannelRelation.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/WebSocketSeverInitializer.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/publisher/MsgPublisher.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatMsg.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatProtocol.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/MsgDto.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/FileContstant.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MqConstant.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ResultStatusConstant.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/exception/BusinessException.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/M.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MinioUtil.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/MqUtil.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/R.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/RagFile.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/RagMqMsgTo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/RagSearchFileMsgResTo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/RagSearchFileMsgTo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/RagSearchVo.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/RagFileMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/remote/RagClient.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/RAGService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/RagFileService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RagFileServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/task/RAGTask.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/RAGController.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/exception/GlobalExceptionHandler.java",
+      "file:FoxChatRAG-python/app/chroma/__init__.py",
+      "file:FoxChatRAG-python/app/chroma/chroma.py",
+      "file:FoxChatRAG-python/app/chroma/splitter.py",
+      "file:FoxChatRAG-python/app/common/constant/intent_config.py",
+      "file:FoxChatRAG-python/app/core/llm_model/__init__.py",
+      "file:FoxChatRAG-python/app/core/llm_model/model.py",
+      "file:FoxChatRAG-python/app/core/mq/__init__.py",
+      "file:FoxChatRAG-python/app/core/mq/handler/__init__.py",
+      "file:FoxChatRAG-python/app/core/mq/handler/chat_upload_handler.py",
+      "file:FoxChatRAG-python/app/core/mq/handler/rag_file_handler.py",
+      "file:FoxChatRAG-python/app/core/mq/rabbitmq_connnect.py",
+      "file:FoxChatRAG-python/app/core/mq/rabbitmq_setup_queue.py",
+      "file:FoxChatRAG-python/app/core/mq/rabbitmq_start_consumer.py",
+      "file:FoxChatRAG-python/app/core/mq/rabbitmq_starter.py",
+      "file:FoxChatRAG-python/app/core/settings.py",
+      "file:FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "file:FoxChatRAG-python/main.py",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/MsgStatus.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/DeleteMsgDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryUserDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/SignMsgFriendDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/WithdrawMsgDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/to/UnreadMsgTo.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/HistoryMsgVo.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/ChatMsgMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/MsgStatusMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/ChatMsgService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/MsgStatusService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/MsgStatusServiceImpl.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/MsgController.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/GroupConstant.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatGroup.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMember.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/ApplyGroupDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/GroupDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/GroupVo.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/ChatGroupMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/GroupMemberMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/ChatGroupService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/GroupMemberService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatGroupServiceImpl.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMemberServiceImpl.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/GroupController.java",
+      "file:FoxChatRAG-python/app/api/__init__.py",
+      "file:FoxChatRAG-python/app/api/chat.py",
+      "file:FoxChatRAG-python/app/api/llm_config.py",
+      "file:FoxChatRAG-python/app/api/rag.py",
+      "file:FoxChatRAG-python/app/retriever/__init__.py",
+      "file:FoxChatRAG-python/app/retriever/project_retriever.py",
+      "file:FoxChatRAG-python/app/schemas/M.py",
+      "file:FoxChatRAG-python/app/schemas/__init__.py",
+      "file:FoxChatRAG-python/app/schemas/chat_msg_resp.py",
+      "file:FoxChatRAG-python/app/schemas/chat_msg_to.py",
+      "file:FoxChatRAG-python/app/schemas/rag_search_file_msg.py",
+      "file:FoxChatRAG-python/app/service/chat/response_parser.py",
+      "file:FoxChatRAG-python/app/service/rag/rag_search_service.py",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMsg.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryGroupDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/GroupMsgHistoryVo.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/GroupMsgMapper.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/GroupMsgService.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/GroupMsgController.java",
+      "file:FoxChat-vue/src/App.vue",
+      "file:FoxChat-vue/src/main.js",
+      "file:FoxChat-vue/src/router/index.js",
+      "file:FoxChat-vue/src/utils/request.js",
+      "file:FoxChat-vue/src/views/Home.vue",
+      "file:FoxChat-vue/src/views/Login.vue",
+      "file:FoxChat-vue/src/views/Register.vue",
+      "file:FoxChatRAG-python/app/grpc/__init__.py",
+      "file:FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2.py",
+      "file:FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2_grpc.py",
+      "file:FoxChat-java/gradlew.bat",
+      "file:FoxChat-java/mvnw.cmd",
+      "file:FoxChat-vue/index.html",
+      "file:.understand-anything/.understandignore",
+      "file:deploy/frp/frpc.toml.example",
+      "file:deploy/frp/frps.toml.example",
+      "file:deploy/frp/install-frps.sh",
+      "file:deploy/local-middleware/frpc-docker.toml.example",
+      "file:FoxChat-java/.gitattributes",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/config/MinioConfig.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/config/ThreadExecutor.java",
+      "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/LuaConstant.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/HeartBeatHandler.java",
+      "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/NettyServer.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/FileDto.java",
+      "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/LLMChatMsgDto.java",
+      "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/config/RagRabbitMqConfig.java",
+      "file:FoxChat-vue/src/components/Chat/GroupList.vue",
+      "file:FoxChat-vue/src/components/Chat/MessageList.vue",
+      "file:FoxChat-vue/src/components/Chat/ModelMemoryPanel.vue",
+      "file:FoxChat-vue/src/components/HelloWorld.vue",
+      "file:FoxChat-vue/src/components/LlmConfig/LlmConfigPanel.vue",
+      "file:FoxChat-vue/src/components/LlmConfig/ScenarioConfigForm.vue",
+      "file:FoxChat-vue/src/components/TitleBar.vue",
+      "file:FoxChat-vue/src/composables/useLlmFallback.js",
+      "file:FoxChat-vue/src/composables/useLlmStream.js",
+      "file:FoxChat-vue/src/composables/useWebSocket.js",
+      "file:FoxChat-vue/src/proto/chat.js",
+      "file:FoxChat-vue/src/style.css",
+      "file:FoxChat-vue/src/utils/config.js",
+      "file:FoxChat-vue/src/utils/protocol.js",
+      "file:FoxChat-vue/src/utils/snowflake.js",
+      "file:FoxChatRAG-python/app/__init__.py",
+      "file:FoxChatRAG-python/app/core/config.py",
+      "file:FoxChatRAG-python/app/core/health_check.py",
+      "file:FoxChatRAG-python/app/core/net/ip_client.py",
+      "file:FoxChatRAG-python/app/core/prompts/__init__.py",
+      "file:FoxChatRAG-python/app/grpc/foxchat/__init__.py",
+      "file:FoxChatRAG-python/app/grpc/foxchat/ai/__init__.py",
+      "file:FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2.pyi",
+      "file:FoxChatRAG-python/app/service/chat/graph/__init__.py",
+      "file:FoxChatRAG-python/app/util/token_monitor.py",
+      "file:FoxChatRAG-python/test/memory_stress_test.py",
+      "file:FoxChatRAG-python/test/test_deduplication.py",
+      "file:FoxChatRAG-python/test/test_history_event_retrieval_service_compile.py",
+      "file:FoxChatRAG-python/test/test_structure_injection.py",
+      "file:FoxChatRAG-python/test/test.py",
+      "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/BedfoxChatApplication.java"
+    ],
+    "service": [
+      "service:FoxChat-java/Dockerfile",
+      "service:FoxChat-java/Dockerfile:build",
+      "service:FoxChat-java/Dockerfile:eclipse-temurin",
+      "service:FoxChat-vue/Dockerfile",
+      "service:FoxChat-vue/Dockerfile:build",
+      "service:FoxChat-vue/Dockerfile:nginx",
+      "service:FoxChatRAG-python/Dockerfile",
+      "service:docker-compose.yml:mysql",
+      "service:docker-compose.yml:redis",
+      "service:docker-compose.yml:minio",
+      "service:docker-compose.yml:rabbitmq",
+      "service:docker-compose.prod.yml:java-app",
+      "service:docker-compose.prod.yml:python-app",
+      "service:docker-compose.prod.yml:vue-nginx",
+      "service:FoxChat-java/Dockerfile.base",
+      "service:FoxChat-vue/Dockerfile.base",
+      "service:FoxChatRAG-python/Dockerfile.base",
+      "service:deploy/local-middleware/docker-compose.yml",
+      "service:deploy/local-middleware/docker-compose.yml:mysql",
+      "service:deploy/local-middleware/docker-compose.yml:redis",
+      "service:deploy/local-middleware/docker-compose.yml:minio",
+      "service:deploy/local-middleware/docker-compose.yml:rabbitmq",
+      "service:deploy/local-middleware/docker-compose.yml:chromadb",
+      "service:deploy/local-middleware/docker-compose.yml:frpc"
+    ],
+    "config": [
+      "config:.env.example",
+      "config:FoxChat-java/build.gradle",
+      "config:FoxChat-java/gradle.properties",
+      "config:FoxChat-java/settings.gradle",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/ChatGroupMapper.xml",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/ChatMsgMapper.xml",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/FriendsMapper.xml",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/FriendsRequestMapper.xml",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/GroupMemberMapper.xml",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/GroupMsgMapper.xml",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/LlmChatMsgMapper.xml",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/LlmConfigMapper.xml",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/LlmUserMapper.xml",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/MsgStatusMapper.xml",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/RagFileMapper.xml",
+      "config:FoxChat-java/foxChat-service/src/main/resources/mapper/UsersMapper.xml",
+      "config:FoxChat-vue/.env.development",
+      "config:FoxChat-vue/.env.production",
+      "config:FoxChat-vue/package.json",
+      "config:deploy/local-middleware/.env.example",
+      "config:.understand-anything/config.json",
+      "config:FoxChat-java/.mvn/wrapper/maven-wrapper.properties",
+      "config:FoxChat-java/foxChat-common/build.gradle",
+      "config:FoxChat-java/foxChat-netty/build.gradle",
+      "config:FoxChat-java/foxChat-pojo/build.gradle",
+      "config:FoxChat-java/foxChat-service/build.gradle",
+      "config:FoxChat-vue/vite.config.js"
+    ],
+    "table": [
+      "table:FoxChat.sql:chat_group",
+      "table:FoxChat.sql:chat_msg",
+      "table:FoxChat.sql:friends",
+      "table:FoxChat.sql:friends_request",
+      "table:FoxChat.sql:group_member",
+      "table:FoxChat.sql:group_msg",
+      "table:FoxChat.sql:llm_chat_msg",
+      "table:FoxChat.sql:llm_user",
+      "table:FoxChat.sql:msg_status",
+      "table:FoxChat.sql:rag_file",
+      "table:FoxChat.sql:users",
+      "table:FoxChat.sql:llm_config"
+    ],
+    "document": [
+      "document:README.md",
+      "document:项目介绍.md",
+      "document:FoxChat-java/README.md",
+      "document:FoxChat-vue/AI-Project.md",
+      "document:FoxChat-vue/API_INTERFACE.md",
+      "document:FoxChat-vue/README.md",
+      "document:FoxChatRAG-python/MEMORY_UPLOAD.md",
+      "document:FoxChatRAG-python/Problem.md",
+      "document:FoxChatRAG-python/README.md",
+      "document:FoxChatRAG-python/requirements-core.txt",
+      "document:FoxChatRAG-python/requirements.txt",
+      "document:FoxChatRAG-python/app/core/prompts/character_card.md",
+      "document:FoxChatRAG-python/app/core/prompts/chat_system.md",
+      "document:FoxChatRAG-python/app/core/prompts/emotion_classifier.md",
+      "document:FoxChatRAG-python/app/core/prompts/focus_extractor.md",
+      "document:FoxChatRAG-python/app/core/prompts/memory_bank_compress.md",
+      "document:FoxChatRAG-python/app/core/prompts/memory_event_extractor.md",
+      "document:FoxChatRAG-python/app/core/prompts/memory_summary.md",
+      "document:FoxChatRAG-python/app/core/prompts/role_memory_core.md",
+      "document:FoxChatRAG-python/app/core/prompts/soul.md",
+      "document:FoxChatRAG-python/app/core/prompts/user_profile.md",
+      "document:FoxChatRAG-python/app/core/prompts/user_profile_updater.md",
+      "document:deploy/local-middleware/MIGRATE.md",
+      "document:.reasonix/truncated-results/1780141453720-308a5b32-web_fetch.txt",
+      "document:.reasonix/truncated-results/1780298383943-ab106a2d-web_fetch.txt",
+      "document:deploy/DEPLOY.md",
+      "document:FoxChatRAG-python/README"
+    ],
+    "pipeline": [
+      "pipeline:.gitea/workflows/deploy.yml"
+    ],
+    "schema": [
+      "schema:FoxChat-java/foxChat-service/src/main/proto/ai_chat.proto",
+      "schema:FoxChat-vue/src/proto/chat.proto",
+      "schema:FoxChatRAG-python/proto/ai_chat.proto",
+      "schema:FoxChatRAG-python/proto/ai_chat.proto:ChatRequest",
+      "schema:FoxChatRAG-python/proto/ai_chat.proto:ChatResponse",
+      "schema:FoxChatRAG-python/proto/ai_chat.proto:DeleteRequest",
+      "schema:FoxChatRAG-python/proto/ai_chat.proto:DeleteResponse"
+    ],
+    "endpoint": [
+      "endpoint:FoxChatRAG-python/proto/ai_chat.proto:AIChatService.Chat",
+      "endpoint:FoxChatRAG-python/proto/ai_chat.proto:AIChatService.DeleteMemory"
+    ]
+  },
+  "crossCategoryEdges": [
+    {
+      "fromType": "file",
+      "toType": "file",
+      "edgeType": "imports",
+      "count": 589
+    },
+    {
+      "fromType": "file",
+      "toType": "file",
+      "edgeType": "depends_on",
+      "count": 21
+    },
+    {
+      "fromType": "file",
+      "toType": "file",
+      "edgeType": "exports",
+      "count": 2
+    },
+    {
+      "fromType": "file",
+      "toType": "file",
+      "edgeType": "contains",
+      "count": 1
+    },
+    {
+      "fromType": "service",
+      "toType": "service",
+      "edgeType": "contains",
+      "count": 10
+    },
+    {
+      "fromType": "service",
+      "toType": "service",
+      "edgeType": "depends_on",
+      "count": 15
+    },
+    {
+      "fromType": "config",
+      "toType": "service",
+      "edgeType": "configures",
+      "count": 5
+    },
+    {
+      "fromType": "document",
+      "toType": "document",
+      "edgeType": "related",
+      "count": 23
+    },
+    {
+      "fromType": "document",
+      "toType": "config",
+      "edgeType": "documents",
+      "count": 1
+    },
+    {
+      "fromType": "document",
+      "toType": "service",
+      "edgeType": "documents",
+      "count": 11
+    },
+    {
+      "fromType": "document",
+      "toType": "table",
+      "edgeType": "documents",
+      "count": 4
+    },
+    {
+      "fromType": "service",
+      "toType": "table",
+      "edgeType": "provisions",
+      "count": 12
+    },
+    {
+      "fromType": "service",
+      "toType": "config",
+      "edgeType": "depends_on",
+      "count": 3
+    },
+    {
+      "fromType": "config",
+      "toType": "config",
+      "edgeType": "configures",
+      "count": 1
+    },
+    {
+      "fromType": "config",
+      "toType": "file",
+      "edgeType": "configures",
+      "count": 30
+    },
+    {
+      "fromType": "document",
+      "toType": "file",
+      "edgeType": "documents",
+      "count": 9
+    },
+    {
+      "fromType": "service",
+      "toType": "file",
+      "edgeType": "deploys",
+      "count": 2
+    },
+    {
+      "fromType": "service",
+      "toType": "document",
+      "edgeType": "depends_on",
+      "count": 2
+    },
+    {
+      "fromType": "document",
+      "toType": "document",
+      "edgeType": "documents",
+      "count": 2
+    },
+    {
+      "fromType": "document",
+      "toType": "service",
+      "edgeType": "configures",
+      "count": 2
+    },
+    {
+      "fromType": "pipeline",
+      "toType": "file",
+      "edgeType": "deploys",
+      "count": 1
+    },
+    {
+      "fromType": "document",
+      "toType": "pipeline",
+      "edgeType": "documents",
+      "count": 1
+    },
+    {
+      "fromType": "config",
+      "toType": "schema",
+      "edgeType": "configures",
+      "count": 1
+    },
+    {
+      "fromType": "schema",
+      "toType": "file",
+      "edgeType": "defines_schema",
+      "count": 1
+    },
+    {
+      "fromType": "file",
+      "toType": "schema",
+      "edgeType": "related",
+      "count": 1
+    },
+    {
+      "fromType": "schema",
+      "toType": "endpoint",
+      "edgeType": "defines_schema",
+      "count": 2
+    },
+    {
+      "fromType": "schema",
+      "toType": "schema",
+      "edgeType": "defines_schema",
+      "count": 4
+    },
+    {
+      "fromType": "document",
+      "toType": "schema",
+      "edgeType": "documents",
+      "count": 1
+    },
+    {
+      "fromType": "file",
+      "toType": "endpoint",
+      "edgeType": "depends_on",
+      "count": 2
+    }
+  ],
+  "interGroupImports": [
+    {
+      "from": "FoxChat-java:foxChat-service",
+      "to": "FoxChat-java:foxChat-pojo",
+      "count": 119
+    },
+    {
+      "from": "FoxChat-java:foxChat-service",
+      "to": "FoxChat-java:foxChat-common",
+      "count": 38
+    },
+    {
+      "from": "FoxChat-java:foxChat-web",
+      "to": "FoxChat-java:foxChat-pojo",
+      "count": 33
+    },
+    {
+      "from": "FoxChat-java:foxChat-netty",
+      "to": "FoxChat-java:foxChat-common",
+      "count": 28
+    },
+    {
+      "from": "FoxChat-java:foxChat-netty",
+      "to": "FoxChat-java:foxChat-pojo",
+      "count": 22
+    },
+    {
+      "from": "FoxChat-java:foxChat-web",
+      "to": "FoxChat-java:foxChat-common",
+      "count": 20
+    },
+    {
+      "from": "FoxChatRAG-python:app/service/chat",
+      "to": "FoxChatRAG-python:app/core",
+      "count": 20
+    },
+    {
+      "from": "FoxChatRAG-python:app/service/chat",
+      "to": "FoxChatRAG-python:app/util",
+      "count": 17
+    },
+    {
+      "from": "FoxChat-java:foxChat-web",
+      "to": "FoxChat-java:foxChat-service",
+      "count": 16
+    },
+    {
+      "from": "FoxChatRAG-python:app/service/chat",
+      "to": "FoxChatRAG-python:app/common",
+      "count": 16
+    },
+    {
+      "from": "FoxChat-java:foxChat-netty",
+      "to": "FoxChat-java:foxChat-service",
+      "count": 6
+    },
+    {
+      "from": "FoxChat-java:foxChat-common",
+      "to": "FoxChat-java:foxChat-pojo",
+      "count": 5
+    },
+    {
+      "from": "FoxChatRAG-python:app/grpc",
+      "to": "FoxChatRAG-python:app/service/chat",
+      "count": 5
+    },
+    {
+      "from": "FoxChatRAG-python:app/chroma",
+      "to": "FoxChatRAG-python:app/core",
+      "count": 5
+    },
+    {
+      "from": "FoxChatRAG-python:app/api",
+      "to": "FoxChatRAG-python:app/schemas",
+      "count": 5
+    },
+    {
+      "from": "FoxChatRAG-python:app/service/chat",
+      "to": "FoxChatRAG-python:app/schemas",
+      "count": 4
+    },
+    {
+      "from": "FoxChatRAG-python:app/service/rag",
+      "to": "FoxChatRAG-python:app/common",
+      "count": 3
+    },
+    {
+      "from": "FoxChatRAG-python:app/service/rag",
+      "to": "FoxChatRAG-python:app/util",
+      "count": 3
+    },
+    {
+      "from": "FoxChatRAG-python:app/util",
+      "to": "FoxChatRAG-python:app/common",
+      "count": 3
+    },
+    {
+      "from": "FoxChatRAG-python:app/api",
+      "to": "FoxChatRAG-python:app/service/chat",
+      "count": 3
+    },
+    {
+      "from": "FoxChat-vue:src/router",
+      "to": "FoxChat-vue:src/views",
+      "count": 3
+    },
+    {
+      "from": "FoxChatRAG-python:app/exception",
+      "to": "FoxChatRAG-python:app/common",
+      "count": 2
+    },
+    {
+      "from": "FoxChatRAG-python:app/service",
+      "to": "FoxChatRAG-python:app/service/chat",
+      "count": 2
+    },
+    {
+      "from": "FoxChatRAG-python:app/service/chat",
+      "to": "FoxChatRAG-python:app/exception",
+      "count": 2
+    },
+    {
+      "from": "FoxChatRAG-python:app/service/chat",
+      "to": "FoxChatRAG-python:app/service",
+      "count": 2
+    },
+    {
+      "from": "FoxChatRAG-python:app/service/rag",
+      "to": "FoxChatRAG-python:app/core",
+      "count": 2
+    },
+    {
+      "from": "FoxChatRAG-python:app/chroma",
+      "to": "FoxChatRAG-python:app/common",
+      "count": 2
+    },
+    {
+      "from": "FoxChatRAG-python:root",
+      "to": "FoxChatRAG-python:app/core",
+      "count": 2
+    },
+    {
+      "from": "FoxChatRAG-python:app/service/rag",
+      "to": "FoxChatRAG-python:app/retriever",
+      "count": 2
+    },
+    {
+      "from": "FoxChatRAG-python:app/service/rag",
+      "to": "FoxChatRAG-python:app/schemas",
+      "count": 2
+    },
+    {
+      "from": "FoxChatRAG-python:app/exception",
+      "to": "FoxChatRAG-python:app/schemas",
+      "count": 1
+    },
+    {
+      "from": "FoxChatRAG-python:app/service",
+      "to": "FoxChatRAG-python:app/service/rag",
+      "count": 1
+    },
+    {
+      "from": "FoxChatRAG-python:app/service",
+      "to": "FoxChatRAG-python:app/models",
+      "count": 1
+    },
+    {
+      "from": "FoxChatRAG-python:app/service/rag",
+      "to": "FoxChatRAG-python:app/models",
+      "count": 1
+    },
+    {
+      "from": "FoxChatRAG-python:app/util",
+      "to": "FoxChatRAG-python:app/chroma",
+      "count": 1
+    },
+    {
+      "from": "FoxChatRAG-python:app/core",
+      "to": "FoxChatRAG-python:app/service",
+      "count": 1
+    },
+    {
+      "from": "FoxChatRAG-python:app/core",
+      "to": "FoxChatRAG-python:app/service/rag",
+      "count": 1
+    },
+    {
+      "from": "FoxChatRAG-python:root",
+      "to": "FoxChatRAG-python:app/api",
+      "count": 1
+    },
+    {
+      "from": "FoxChatRAG-python:root",
+      "to": "FoxChatRAG-python:app/exception",
+      "count": 1
+    },
+    {
+      "from": "FoxChatRAG-python:root",
+      "to": "FoxChatRAG-python:app/service/chat",
+      "count": 1
+    },
+    {
+      "from": "FoxChatRAG-python:app/api",
+      "to": "FoxChatRAG-python:app/core",
+      "count": 1
+    },
+    {
+      "from": "FoxChatRAG-python:app/api",
+      "to": "FoxChatRAG-python:app/service",
+      "count": 1
+    },
+    {
+      "from": "FoxChatRAG-python:app/api",
+      "to": "FoxChatRAG-python:app/service/rag",
+      "count": 1
+    },
+    {
+      "from": "FoxChatRAG-python:app/service/rag",
+      "to": "FoxChatRAG-python:app/chroma",
+      "count": 1
+    },
+    {
+      "from": "FoxChat-vue:src",
+      "to": "FoxChat-vue:src/router",
+      "count": 1
+    },
+    {
+      "from": "FoxChat-vue:src/utils",
+      "to": "FoxChat-vue:src/router",
+      "count": 1
+    },
+    {
+      "from": "FoxChat-vue:src/components",
+      "to": "FoxChat-vue:src/utils",
+      "count": 1
+    },
+    {
+      "from": "FoxChat-vue:src/utils",
+      "to": "FoxChat-vue:src/proto",
+      "count": 1
+    }
+  ],
+  "intraGroupDensity": {
+    "FoxChat-java:foxChat-common": {
+      "internalEdges": 6,
+      "totalEdges": 97,
+      "density": 0.06
+    },
+    "FoxChat-java:foxChat-netty": {
+      "internalEdges": 27,
+      "totalEdges": 83,
+      "density": 0.33
+    },
+    "FoxChat-java:foxChat-pojo": {
+      "internalEdges": 3,
+      "totalEdges": 182,
+      "density": 0.02
+    },
+    "FoxChat-java:foxChat-service": {
+      "internalEdges": 48,
+      "totalEdges": 227,
+      "density": 0.21
+    },
+    "FoxChat-java:foxChat-web": {
+      "internalEdges": 1,
+      "totalEdges": 70,
+      "density": 0.01
+    },
+    "FoxChatRAG-python:app/common": {
+      "internalEdges": 4,
+      "totalEdges": 30,
+      "density": 0.13
+    },
+    "FoxChatRAG-python:app/core": {
+      "internalEdges": 22,
+      "totalEdges": 54,
+      "density": 0.41
+    },
+    "FoxChatRAG-python:app/exception": {
+      "internalEdges": 3,
+      "totalEdges": 9,
+      "density": 0.33
+    },
+    "FoxChatRAG-python:app/grpc": {
+      "internalEdges": 3,
+      "totalEdges": 8,
+      "density": 0.38
+    },
+    "FoxChatRAG-python:app/models": {
+      "internalEdges": 3,
+      "totalEdges": 5,
+      "density": 0.6
+    },
+    "FoxChatRAG-python:app/schemas": {
+      "internalEdges": 3,
+      "totalEdges": 15,
+      "density": 0.2
+    },
+    "FoxChatRAG-python:app/service": {
+      "internalEdges": 0,
+      "totalEdges": 8,
+      "density": 0
+    },
+    "FoxChatRAG-python:app/service/chat": {
+      "internalEdges": 45,
+      "totalEdges": 117,
+      "density": 0.38
+    },
+    "FoxChatRAG-python:app/service/rag": {
+      "internalEdges": 2,
+      "totalEdges": 19,
+      "density": 0.11
+    },
+    "FoxChatRAG-python:app/util": {
+      "internalEdges": 2,
+      "totalEdges": 26,
+      "density": 0.08
+    },
+    "FoxChatRAG-python:app/chroma": {
+      "internalEdges": 2,
+      "totalEdges": 11,
+      "density": 0.18
+    },
+    "FoxChatRAG-python:root": {
+      "internalEdges": 0,
+      "totalEdges": 5,
+      "density": 0
+    },
+    "FoxChatRAG-python:app/api": {
+      "internalEdges": 3,
+      "totalEdges": 15,
+      "density": 0.2
+    },
+    "FoxChatRAG-python:app/retriever": {
+      "internalEdges": 0,
+      "totalEdges": 2,
+      "density": 0
+    },
+    "FoxChat-vue:src": {
+      "internalEdges": 1,
+      "totalEdges": 2,
+      "density": 0.5
+    },
+    "FoxChat-vue:src/router": {
+      "internalEdges": 0,
+      "totalEdges": 5,
+      "density": 0
+    },
+    "FoxChat-vue:src/utils": {
+      "internalEdges": 0,
+      "totalEdges": 3,
+      "density": 0
+    },
+    "FoxChat-vue:src/views": {
+      "internalEdges": 0,
+      "totalEdges": 3,
+      "density": 0
+    },
+    "FoxChat-java:root": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    },
+    "FoxChat-vue:root": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    },
+    "tooling": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    },
+    "root": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    },
+    "deploy:local-middleware": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    },
+    "ci-cd": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    },
+    "deploy:root": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    },
+    "deploy:frp": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    },
+    "FoxChat-vue:src/components": {
+      "internalEdges": 1,
+      "totalEdges": 2,
+      "density": 0.5
+    },
+    "FoxChat-vue:src/composables": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    },
+    "FoxChat-vue:src/proto": {
+      "internalEdges": 0,
+      "totalEdges": 1,
+      "density": 0
+    },
+    "FoxChatRAG-python:app": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    },
+    "FoxChatRAG-python:proto": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    },
+    "FoxChatRAG-python:test": {
+      "internalEdges": 0,
+      "totalEdges": 0,
+      "density": 0
+    }
+  },
+  "patternMatches": {
+    "FoxChat-java:foxChat-common": "utility",
+    "FoxChat-java:foxChat-netty": "middleware",
+    "FoxChat-java:foxChat-pojo": "types",
+    "FoxChat-java:foxChat-service": "service",
+    "FoxChat-java:foxChat-web": "api",
+    "FoxChatRAG-python:app/common": "utility",
+    "FoxChatRAG-python:app/core": "service",
+    "FoxChatRAG-python:app/exception": "middleware",
+    "FoxChatRAG-python:app/grpc": "middleware",
+    "FoxChatRAG-python:app/models": "data",
+    "FoxChatRAG-python:app/schemas": "types",
+    "FoxChatRAG-python:app/service": "service",
+    "FoxChatRAG-python:app/service/chat": "service",
+    "FoxChatRAG-python:app/service/rag": "service",
+    "FoxChatRAG-python:app/util": "utility",
+    "FoxChatRAG-python:app/chroma": "data",
+    "FoxChatRAG-python:root": "config",
+    "FoxChatRAG-python:app/api": "api",
+    "FoxChatRAG-python:app/retriever": "service",
+    "FoxChat-vue:src/router": "config",
+    "FoxChat-vue:src/utils": "utility",
+    "FoxChat-vue:src/views": "ui",
+    "FoxChat-java:root": "config",
+    "FoxChat-vue:root": "config",
+    "tooling": "config",
+    "root": "config",
+    "deploy:local-middleware": "infrastructure",
+    "ci-cd": "ci-cd",
+    "deploy:root": "infrastructure",
+    "deploy:frp": "infrastructure",
+    "FoxChat-vue:src/components": "ui",
+    "FoxChat-vue:src/composables": "service",
+    "FoxChat-vue:src/proto": "types",
+    "FoxChatRAG-python:test": "test"
+  },
+  "deploymentTopology": {
+    "hasDockerfile": true,
+    "hasCompose": true,
+    "hasK8s": false,
+    "hasTerraform": false,
+    "hasCI": true,
+    "infraFiles": [
+      "FoxChat-java/Dockerfile",
+      "FoxChat-java/Dockerfile",
+      "FoxChat-java/Dockerfile",
+      "FoxChat-vue/Dockerfile",
+      "FoxChat-vue/Dockerfile",
+      "FoxChat-vue/Dockerfile",
+      "FoxChatRAG-python/Dockerfile",
+      "docker-compose.yml",
+      "docker-compose.yml",
+      "docker-compose.yml",
+      "docker-compose.yml",
+      "docker-compose.prod.yml",
+      "docker-compose.prod.yml",
+      "docker-compose.prod.yml",
+      "FoxChat-java/Dockerfile.base",
+      "FoxChat-vue/Dockerfile.base",
+      "FoxChatRAG-python/Dockerfile.base",
+      "deploy/local-middleware/.env.example",
+      "deploy/local-middleware/MIGRATE.md",
+      "deploy/local-middleware/docker-compose.yml",
+      "deploy/local-middleware/docker-compose.yml",
+      "deploy/local-middleware/docker-compose.yml",
+      "deploy/local-middleware/docker-compose.yml",
+      "deploy/local-middleware/docker-compose.yml",
+      "deploy/local-middleware/docker-compose.yml",
+      "deploy/local-middleware/docker-compose.yml",
+      ".gitea/workflows/deploy.yml",
+      "deploy/DEPLOY.md",
+      "deploy/frp/frpc.toml.example",
+      "deploy/frp/frps.toml.example"
+    ]
+  },
+  "dataPipeline": {
+    "schemaFiles": [
+      "FoxChat-java/foxChat-service/src/main/proto/ai_chat.proto",
+      "FoxChat-vue/src/proto/chat.proto",
+      "FoxChatRAG-python/proto/ai_chat.proto",
+      "FoxChatRAG-python/proto/ai_chat.proto",
+      "FoxChatRAG-python/proto/ai_chat.proto",
+      "FoxChatRAG-python/proto/ai_chat.proto",
+      "FoxChatRAG-python/proto/ai_chat.proto",
+      "FoxChatRAG-python/proto/ai_chat.proto",
+      "FoxChatRAG-python/proto/ai_chat.proto"
+    ],
+    "migrationFiles": [],
+    "dataModelFiles": [
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/CurrentUser.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Friends.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/FriendsRequest.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmChatMsg.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmConfig.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmUser.java",
+      "FoxChatRAG-python/app/core/llm_model/litellm_wrapper.py",
+      "FoxChatRAG-python/app/models/__init__.py",
+      "FoxChatRAG-python/app/models/llm_config.py",
+      "FoxChatRAG-python/app/models/llm_user.py",
+      "FoxChatRAG-python/app/models/rag_file.py",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatMsg.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatProtocol.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/RagFile.java",
+      "FoxChatRAG-python/app/core/llm_model/__init__.py",
+      "FoxChatRAG-python/app/core/llm_model/model.py",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/MsgStatus.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatGroup.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMember.java",
+      "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMsg.java"
+    ],
+    "apiHandlerFiles": [
+      "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/CookieAuthHandler.java",
+      "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/AuthController.java",
+      "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/FriendController.java",
+      "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/UserController.java",
+      "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java",
+      "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LlmConfigController.java",
+      "FoxChatRAG-python/app/exception/GlobalExceptionHandler.py",
+      "FoxChatRAG-python/app/service/chat/graph/router.py",
+      "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/ChatHandlerFactory.java",
+      "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java",
+      "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java",
+      "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java",
+      "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/MsgHandler.java",
+      "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/HeartHandler.java",
+      "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/RequestFriendHandler.java",
+      "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/SignMsgHandler.java",
+      "FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/ChatWebSocketHandler.java",
+      "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/RAGController.java",
+      "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/exception/GlobalExceptionHandler.java",
+      "FoxChatRAG-python/app/core/mq/handler/__init__.py",
+      "FoxChatRAG-python/app/core/mq/handler/chat_upload_handler.py",
+      "FoxChatRAG-python/app/core/mq/handler/rag_file_handler.py",
+      "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/MsgController.java",
+      "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/GroupController.java",
+      "FoxChatRAG-python/app/api/__init__.py",
+      "FoxChatRAG-python/app/api/chat.py",
+      "FoxChatRAG-python/app/api/llm_config.py",
+      "FoxChatRAG-python/app/api/rag.py",
+      "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/GroupMsgController.java",
+      "FoxChat-vue/src/router/index.js"
+    ]
+  },
+  "docCoverage": {
+    "groupsWithDocs": 8,
+    "totalGroups": 37,
+    "coverageRatio": 0.22,
+    "undocumentedGroups": [
+      "FoxChat-java:foxChat-common",
+      "FoxChat-java:foxChat-netty",
+      "FoxChat-java:foxChat-pojo",
+      "FoxChat-java:foxChat-service",
+      "FoxChat-java:foxChat-web",
+      "FoxChatRAG-python:app/common",
+      "FoxChatRAG-python:app/exception",
+      "FoxChatRAG-python:app/grpc",
+      "FoxChatRAG-python:app/models",
+      "FoxChatRAG-python:app/schemas",
+      "FoxChatRAG-python:app/service",
+      "FoxChatRAG-python:app/service/chat",
+      "FoxChatRAG-python:app/service/rag",
+      "FoxChatRAG-python:app/util",
+      "FoxChatRAG-python:app/chroma",
+      "FoxChatRAG-python:app/api",
+      "FoxChatRAG-python:app/retriever",
+      "FoxChat-vue:src",
+      "FoxChat-vue:src/router",
+      "FoxChat-vue:src/utils",
+      "FoxChat-vue:src/views",
+      "ci-cd",
+      "deploy:frp",
+      "FoxChat-vue:src/components",
+      "FoxChat-vue:src/composables",
+      "FoxChat-vue:src/proto",
+      "FoxChatRAG-python:app",
+      "FoxChatRAG-python:proto",
+      "FoxChatRAG-python:test"
+    ]
+  },
+  "dependencyDirection": [
+    {
+      "dependent": "FoxChat-java:foxChat-pojo",
+      "dependsOn": "FoxChat-java:foxChat-common"
+    },
+    {
+      "dependent": "FoxChat-java:foxChat-common",
+      "dependsOn": "FoxChat-java:foxChat-netty"
+    },
+    {
+      "dependent": "FoxChat-java:foxChat-pojo",
+      "dependsOn": "FoxChat-java:foxChat-service"
+    },
+    {
+      "dependent": "FoxChat-java:foxChat-common",
+      "dependsOn": "FoxChat-java:foxChat-service"
+    },
+    {
+      "dependent": "FoxChat-java:foxChat-common",
+      "dependsOn": "FoxChat-java:foxChat-web"
+    },
+    {
+      "dependent": "FoxChat-java:foxChat-pojo",
+      "dependsOn": "FoxChat-java:foxChat-web"
+    },
+    {
+      "dependent": "FoxChat-java:foxChat-service",
+      "dependsOn": "FoxChat-java:foxChat-web"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/common",
+      "dependsOn": "FoxChatRAG-python:app/exception"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/schemas",
+      "dependsOn": "FoxChatRAG-python:app/exception"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/service/chat",
+      "dependsOn": "FoxChatRAG-python:app/grpc"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/service/chat",
+      "dependsOn": "FoxChatRAG-python:app/service"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/service/rag",
+      "dependsOn": "FoxChatRAG-python:app/service"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/common",
+      "dependsOn": "FoxChatRAG-python:app/service/chat"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/core",
+      "dependsOn": "FoxChatRAG-python:app/service/chat"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/util",
+      "dependsOn": "FoxChatRAG-python:app/service/chat"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/exception",
+      "dependsOn": "FoxChatRAG-python:app/service/chat"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/schemas",
+      "dependsOn": "FoxChatRAG-python:app/service/chat"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/models",
+      "dependsOn": "FoxChatRAG-python:app/service"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/common",
+      "dependsOn": "FoxChatRAG-python:app/service/rag"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/core",
+      "dependsOn": "FoxChatRAG-python:app/service/rag"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/models",
+      "dependsOn": "FoxChatRAG-python:app/service/rag"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/util",
+      "dependsOn": "FoxChatRAG-python:app/service/rag"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/chroma",
+      "dependsOn": "FoxChatRAG-python:app/util"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/common",
+      "dependsOn": "FoxChatRAG-python:app/util"
+    },
+    {
+      "dependent": "FoxChat-java:foxChat-pojo",
+      "dependsOn": "FoxChat-java:foxChat-netty"
+    },
+    {
+      "dependent": "FoxChat-java:foxChat-service",
+      "dependsOn": "FoxChat-java:foxChat-netty"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/common",
+      "dependsOn": "FoxChatRAG-python:app/chroma"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/core",
+      "dependsOn": "FoxChatRAG-python:app/chroma"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/service",
+      "dependsOn": "FoxChatRAG-python:app/core"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/api",
+      "dependsOn": "FoxChatRAG-python:root"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/core",
+      "dependsOn": "FoxChatRAG-python:root"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/exception",
+      "dependsOn": "FoxChatRAG-python:root"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/service/chat",
+      "dependsOn": "FoxChatRAG-python:root"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/schemas",
+      "dependsOn": "FoxChatRAG-python:app/api"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/service/chat",
+      "dependsOn": "FoxChatRAG-python:app/api"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/core",
+      "dependsOn": "FoxChatRAG-python:app/api"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/service",
+      "dependsOn": "FoxChatRAG-python:app/api"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/service/rag",
+      "dependsOn": "FoxChatRAG-python:app/api"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/chroma",
+      "dependsOn": "FoxChatRAG-python:app/service/rag"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/retriever",
+      "dependsOn": "FoxChatRAG-python:app/service/rag"
+    },
+    {
+      "dependent": "FoxChatRAG-python:app/schemas",
+      "dependsOn": "FoxChatRAG-python:app/service/rag"
+    },
+    {
+      "dependent": "FoxChat-vue:src/router",
+      "dependsOn": "FoxChat-vue:src"
+    },
+    {
+      "dependent": "FoxChat-vue:src/views",
+      "dependsOn": "FoxChat-vue:src/router"
+    },
+    {
+      "dependent": "FoxChat-vue:src/router",
+      "dependsOn": "FoxChat-vue:src/utils"
+    },
+    {
+      "dependent": "FoxChat-vue:src/utils",
+      "dependsOn": "FoxChat-vue:src/components"
+    },
+    {
+      "dependent": "FoxChat-vue:src/proto",
+      "dependsOn": "FoxChat-vue:src/utils"
+    }
+  ],
+  "fileStats": {
+    "totalFileNodes": 400,
+    "filesPerGroup": {
+      "FoxChat-java:foxChat-common": 26,
+      "FoxChat-java:foxChat-netty": 21,
+      "FoxChat-java:foxChat-pojo": 55,
+      "FoxChat-java:foxChat-service": 64,
+      "FoxChat-java:foxChat-web": 13,
+      "FoxChatRAG-python:app/common": 7,
+      "FoxChatRAG-python:app/core": 34,
+      "FoxChatRAG-python:app/exception": 3,
+      "FoxChatRAG-python:app/grpc": 7,
+      "FoxChatRAG-python:app/models": 4,
+      "FoxChatRAG-python:app/schemas": 7,
+      "FoxChatRAG-python:app/service": 2,
+      "FoxChatRAG-python:app/service/chat": 29,
+      "FoxChatRAG-python:app/service/rag": 3,
+      "FoxChatRAG-python:app/util": 6,
+      "FoxChatRAG-python:app/chroma": 3,
+      "FoxChatRAG-python:root": 9,
+      "FoxChatRAG-python:app/api": 4,
+      "FoxChatRAG-python:app/retriever": 2,
+      "FoxChat-vue:src": 3,
+      "FoxChat-vue:src/router": 1,
+      "FoxChat-vue:src/utils": 4,
+      "FoxChat-vue:src/views": 3,
+      "FoxChat-java:root": 12,
+      "FoxChat-vue:root": 12,
+      "tooling": 5,
+      "root": 21,
+      "deploy:local-middleware": 10,
+      "ci-cd": 1,
+      "deploy:root": 1,
+      "deploy:frp": 3,
+      "FoxChat-vue:src/components": 7,
+      "FoxChat-vue:src/composables": 3,
+      "FoxChat-vue:src/proto": 2,
+      "FoxChatRAG-python:app": 1,
+      "FoxChatRAG-python:proto": 7,
+      "FoxChatRAG-python:test": 5
+    },
+    "nodeTypeCounts": {
+      "file": 300,
+      "service": 24,
+      "config": 27,
+      "table": 12,
+      "document": 27,
+      "pipeline": 1,
+      "schema": 7,
+      "endpoint": 2
+    }
+  },
+  "fileFanIn": {
+    "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/LoginUserHolder.java": 12,
+    "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatMsg.java": 12,
+    "file:FoxChatRAG-python/app/common/constant/LLMChatConstant.py": 10,
+    "file:FoxChatRAG-python/app/core/db/redis_client.py": 10,
+    "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/MsgDto.java": 10,
+    "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/ResultStatusConstant.java": 10,
+    "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/R.java": 10,
+    "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/Users.java": 9,
+    "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/FriendVo.java": 9,
+    "file:FoxChatRAG-python/app/core/db/mysql_client.py": 9,
+    "file:FoxChatRAG-python/app/common/constant/ChromaTypeConstant.py": 7,
+    "file:FoxChatRAG-python/app/service/chat/common/__init__.py": 7,
+    "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/MsgTypeConstant.java": 7,
+    "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/MsgHandler.java": 7,
+    "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/RagFile.java": 7,
+    "file:FoxChatRAG-python/app/core/settings.py": 7,
+    "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/UsersService.java": 6,
+    "file:FoxChatRAG-python/app/util/__init__.py": 6,
+    "file:FoxChatRAG-python/app/util/chroma_util.py": 6,
+    "file:FoxChatRAG-python/app/util/template_util.py": 6,
+    "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/util/SpringUtil.java": 6,
+    "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/exception/BusinessException.java": 6,
+    "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMsg.java": 6,
+    "file:FoxChat-java/foxChat-common/src/main/java/com/bedfox/common/constant/AuthConstant.java": 5,
+    "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/LlmChatMsg.java": 5,
+    "file:FoxChatRAG-python/app/core/prompts/prompt_manager.py": 5,
+    "file:FoxChatRAG-python/app/service/chat/strategy/base_strategy.py": 5,
+    "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/publisher/MsgPublisher.java": 5,
+    "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/ChatProtocol.java": 5,
+    "file:FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/GroupVo.java": 5
+  },
+  "fileFanOut": {
+    "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmUserServiceImpl.java": 17,
+    "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/RAGServiceImpl.java": 15,
+    "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LLMChatController.java": 14,
+    "file:FoxChatRAG-python/app/service/chat/memory_summary_service.py": 14,
+    "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/UsersServiceImpl.java": 13,
+    "file:FoxChatRAG-python/app/service/chat/graph/nodes.py": 13,
+    "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/AuthServiceImpl.java": 11,
+    "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/GroupChatHandler.java": 11,
+    "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/netty/ChatWebSocketHandler.java": 11,
+    "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/FriendsServiceImpl.java": 10,
+    "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmChatServiceImpl.java": 10,
+    "file:FoxChatRAG-python/app/service/chat/llm_invoke_service.py": 10,
+    "file:FoxChatRAG-python/app/service/chat/memory_upload_service.py": 10,
+    "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ChatHandler.java": 10,
+    "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/ConnectHandler.java": 10,
+    "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/RequestFriendHandler.java": 10,
+    "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatMsgServiceImpl.java": 10,
+    "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/ChatGroupServiceImpl.java": 10,
+    "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/FriendController.java": 9,
+    "file:FoxChatRAG-python/app/service/rag/vector_upload_service.py": 9,
+    "file:FoxChatRAG-python/app/service/chat/user_profile_service.py": 8,
+    "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/MsgController.java": 8,
+    "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java": 8,
+    "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/LlmConfigServiceImpl.java": 7,
+    "file:FoxChatRAG-python/app/service/chat/__init__.py": 7,
+    "file:FoxChat-java/foxChat-netty/src/main/java/com/bedfox/netty/handler/impl/SignMsgHandler.java": 7,
+    "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/UserController.java": 6,
+    "file:FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/LlmConfigController.java": 6,
+    "file:FoxChatRAG-python/app/grpc/ai_chat_server.py": 6,
+    "file:FoxChatRAG-python/app/service/chat/chat_redis_service.py": 6
+  }
+}

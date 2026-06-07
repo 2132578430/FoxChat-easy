@@ -1,0 +1,801 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 7,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/domain/GroupMsg.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 91,
+      "nonEmptyLines": 80,
+      "functions": [
+        {
+          "name": "equals",
+          "startLine": 43,
+          "endLine": 61,
+          "params": [
+            "that"
+          ]
+        },
+        {
+          "name": "hashCode",
+          "startLine": 63,
+          "endLine": 74,
+          "params": []
+        },
+        {
+          "name": "toString",
+          "startLine": 76,
+          "endLine": 90,
+          "params": []
+        }
+      ],
+      "classes": [
+        {
+          "name": "GroupMsg",
+          "startLine": 11,
+          "endLine": 91,
+          "methods": [
+            "equals",
+            "hashCode",
+            "toString"
+          ],
+          "properties": [
+            "id",
+            "groupId",
+            "sendUserId",
+            "msgContent",
+            "msgType",
+            "createTime"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "equals",
+          "line": 43,
+          "isDefault": false
+        },
+        {
+          "name": "hashCode",
+          "line": 63,
+          "isDefault": false
+        },
+        {
+          "name": "toString",
+          "line": 76,
+          "isDefault": false
+        },
+        {
+          "name": "GroupMsg",
+          "line": 11,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "equals",
+          "callee": "getClass",
+          "lineNumber": 51
+        },
+        {
+          "caller": "equals",
+          "callee": "that.getClass",
+          "lineNumber": 51
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getId",
+          "lineNumber": 55
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getId",
+          "lineNumber": 55
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getId().equals",
+          "lineNumber": 55
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getId",
+          "lineNumber": 55
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getId",
+          "lineNumber": 55
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getGroupId",
+          "lineNumber": 56
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getGroupId",
+          "lineNumber": 56
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getGroupId().equals",
+          "lineNumber": 56
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getGroupId",
+          "lineNumber": 56
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getGroupId",
+          "lineNumber": 56
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getSendUserId",
+          "lineNumber": 57
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getSendUserId",
+          "lineNumber": 57
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getSendUserId().equals",
+          "lineNumber": 57
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getSendUserId",
+          "lineNumber": 57
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getSendUserId",
+          "lineNumber": 57
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getMsgContent",
+          "lineNumber": 58
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getMsgContent",
+          "lineNumber": 58
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getMsgContent().equals",
+          "lineNumber": 58
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getMsgContent",
+          "lineNumber": 58
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getMsgContent",
+          "lineNumber": 58
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getMsgType",
+          "lineNumber": 59
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getMsgType",
+          "lineNumber": 59
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getMsgType().equals",
+          "lineNumber": 59
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getMsgType",
+          "lineNumber": 59
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getMsgType",
+          "lineNumber": 59
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getCreateTime",
+          "lineNumber": 60
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getCreateTime",
+          "lineNumber": 60
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getCreateTime().equals",
+          "lineNumber": 60
+        },
+        {
+          "caller": "equals",
+          "callee": "this.getCreateTime",
+          "lineNumber": 60
+        },
+        {
+          "caller": "equals",
+          "callee": "other.getCreateTime",
+          "lineNumber": 60
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getId",
+          "lineNumber": 67
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getId().hashCode",
+          "lineNumber": 67
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getId",
+          "lineNumber": 67
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getGroupId",
+          "lineNumber": 68
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getGroupId().hashCode",
+          "lineNumber": 68
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getGroupId",
+          "lineNumber": 68
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getSendUserId",
+          "lineNumber": 69
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getSendUserId().hashCode",
+          "lineNumber": 69
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getSendUserId",
+          "lineNumber": 69
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getMsgContent",
+          "lineNumber": 70
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getMsgContent().hashCode",
+          "lineNumber": 70
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getMsgContent",
+          "lineNumber": 70
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getMsgType",
+          "lineNumber": 71
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getMsgType().hashCode",
+          "lineNumber": 71
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getMsgType",
+          "lineNumber": 71
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getCreateTime",
+          "lineNumber": 72
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getCreateTime().hashCode",
+          "lineNumber": 72
+        },
+        {
+          "caller": "hashCode",
+          "callee": "getCreateTime",
+          "lineNumber": 72
+        },
+        {
+          "caller": "toString",
+          "callee": "new StringBuilder",
+          "lineNumber": 78
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 79
+        },
+        {
+          "caller": "toString",
+          "callee": "getClass().getSimpleName",
+          "lineNumber": 79
+        },
+        {
+          "caller": "toString",
+          "callee": "getClass",
+          "lineNumber": 79
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 80
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\"Hash = \").append",
+          "lineNumber": 81
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 81
+        },
+        {
+          "caller": "toString",
+          "callee": "hashCode",
+          "lineNumber": 81
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\", id=\").append",
+          "lineNumber": 82
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 82
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\", groupId=\").append",
+          "lineNumber": 83
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 83
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\", sendUserId=\").append",
+          "lineNumber": 84
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 84
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\", msgContent=\").append",
+          "lineNumber": 85
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 85
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\", msgType=\").append",
+          "lineNumber": 86
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 86
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append(\", createTime=\").append",
+          "lineNumber": 87
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 87
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.append",
+          "lineNumber": 88
+        },
+        {
+          "caller": "toString",
+          "callee": "sb.toString",
+          "lineNumber": 89
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 4,
+        "functionCount": 3,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/dto/HistoryGroupDto.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 12,
+      "nonEmptyLines": 10,
+      "classes": [
+        {
+          "name": "HistoryGroupDto",
+          "startLine": 8,
+          "endLine": 12,
+          "methods": [],
+          "properties": [
+            "groupId",
+            "lastTimestamp"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "HistoryGroupDto",
+          "line": 8,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-pojo/src/main/java/com/bedfox/pojo/vo/GroupMsgHistoryVo.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 28,
+      "nonEmptyLines": 23,
+      "classes": [
+        {
+          "name": "GroupMsgHistoryVo",
+          "startLine": 10,
+          "endLine": 28,
+          "methods": [],
+          "properties": [
+            "id",
+            "groupId",
+            "msgContent",
+            "msgType",
+            "tempTime",
+            "createTime",
+            "sendUserId",
+            "username",
+            "faceImage",
+            "nickname"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "GroupMsgHistoryVo",
+          "line": 10,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/GroupMsgMapper.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 23,
+      "nonEmptyLines": 15,
+      "classes": [
+        {
+          "name": "GroupMsgMapper",
+          "startLine": 16,
+          "endLine": 19,
+          "methods": [
+            "historyMsg"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "GroupMsgMapper",
+          "line": 16,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/GroupMsgService.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 18,
+      "nonEmptyLines": 14,
+      "classes": [
+        {
+          "name": "GroupMsgService",
+          "startLine": 15,
+          "endLine": 18,
+          "methods": [
+            "historyMsg"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "GroupMsgService",
+          "line": 15,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/service/impl/GroupMsgServiceImpl.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 70,
+      "nonEmptyLines": 53,
+      "functions": [
+        {
+          "name": "historyMsg",
+          "startLine": 34,
+          "endLine": 65,
+          "params": [
+            "historyGroupDto"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "GroupMsgServiceImpl",
+          "startLine": 24,
+          "endLine": 66,
+          "methods": [
+            "historyMsg"
+          ],
+          "properties": [
+            "groupMsgMapper",
+            "usersService"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "historyMsg",
+          "line": 34,
+          "isDefault": false
+        },
+        {
+          "name": "GroupMsgServiceImpl",
+          "line": 24,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "historyMsg",
+          "callee": "historyGroupDto.getGroupId",
+          "lineNumber": 36
+        },
+        {
+          "caller": "historyMsg",
+          "callee": "historyGroupDto.getLastTimestamp",
+          "lineNumber": 37
+        },
+        {
+          "caller": "historyMsg",
+          "callee": "LocalDateTime.now",
+          "lineNumber": 41
+        },
+        {
+          "caller": "historyMsg",
+          "callee": "TimeUtil.timestampToLdt",
+          "lineNumber": 43
+        },
+        {
+          "caller": "historyMsg",
+          "callee": "groupMsgMapper.historyMsg",
+          "lineNumber": 46
+        },
+        {
+          "caller": "historyMsg",
+          "callee": "groupMsgList.stream()\r\n                .map(groupMsg -> {\r\n                    GroupMsgHistoryVo historyVo = new GroupMsgHistoryVo();\r\n                    Long createTime = TimeUtil.ldtToTimestamp(groupMsg.getCreateTime());\r\n                    historyVo.setCreateTime(createTime.toString());\r\n\r\n                    BeanUtils.copyProperties(groupMsg, historyVo);\r\n\r\n                    Users users = usersService.getById(groupMsg.getSendUserId());\r\n\r\n                    historyVo.setUsername(users.getUsername());\r\n                    historyVo.setNickname(users.getNickname());\r\n                    historyVo.setFaceImage(users.getFaceImage());\r\n\r\n                    return historyVo;\r\n                }).toList",
+          "lineNumber": 48
+        },
+        {
+          "caller": "historyMsg",
+          "callee": "groupMsgList.stream().map",
+          "lineNumber": 48
+        },
+        {
+          "caller": "historyMsg",
+          "callee": "groupMsgList.stream",
+          "lineNumber": 48
+        },
+        {
+          "caller": "historyMsg",
+          "callee": "new GroupMsgHistoryVo",
+          "lineNumber": 50
+        },
+        {
+          "caller": "historyMsg",
+          "callee": "TimeUtil.ldtToTimestamp",
+          "lineNumber": 51
+        },
+        {
+          "caller": "historyMsg",
+          "callee": "groupMsg.getCreateTime",
+          "lineNumber": 51
+        },
+        {
+          "caller": "historyMsg",
+          "callee": "historyVo.setCreateTime",
+          "lineNumber": 52
+        },
+        {
+          "caller": "historyMsg",
+          "callee": "createTime.toString",
+          "lineNumber": 52
+        },
+        {
+          "caller": "historyMsg",
+          "callee": "BeanUtils.copyProperties",
+          "lineNumber": 54
+        },
+        {
+          "caller": "historyMsg",
+          "callee": "usersService.getById",
+          "lineNumber": 56
+        },
+        {
+          "caller": "historyMsg",
+          "callee": "groupMsg.getSendUserId",
+          "lineNumber": 56
+        },
+        {
+          "caller": "historyMsg",
+          "callee": "historyVo.setUsername",
+          "lineNumber": 58
+        },
+        {
+          "caller": "historyMsg",
+          "callee": "users.getUsername",
+          "lineNumber": 58
+        },
+        {
+          "caller": "historyMsg",
+          "callee": "historyVo.setNickname",
+          "lineNumber": 59
+        },
+        {
+          "caller": "historyMsg",
+          "callee": "users.getNickname",
+          "lineNumber": 59
+        },
+        {
+          "caller": "historyMsg",
+          "callee": "historyVo.setFaceImage",
+          "lineNumber": 60
+        },
+        {
+          "caller": "historyMsg",
+          "callee": "users.getFaceImage",
+          "lineNumber": 60
+        }
+      ],
+      "metrics": {
+        "importCount": 8,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChat-java/foxChat-web/src/main/java/com/bedfox/web/controller/GroupMsgController.java",
+      "language": "java",
+      "fileCategory": "code",
+      "totalLines": 30,
+      "nonEmptyLines": 25,
+      "functions": [
+        {
+          "name": "historyMsg",
+          "startLine": 25,
+          "endLine": 29,
+          "params": [
+            "historyGroupDto"
+          ]
+        }
+      ],
+      "classes": [
+        {
+          "name": "GroupMsgController",
+          "startLine": 18,
+          "endLine": 30,
+          "methods": [
+            "historyMsg"
+          ],
+          "properties": [
+            "groupMsgService"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "historyMsg",
+          "line": 25,
+          "isDefault": false
+        },
+        {
+          "name": "GroupMsgController",
+          "line": 18,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "historyMsg",
+          "callee": "groupMsgService.historyMsg",
+          "lineNumber": 27
+        },
+        {
+          "caller": "historyMsg",
+          "callee": "R.ok",
+          "lineNumber": 28
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 2,
+        "functionCount": 1,
+        "classCount": 1
+      }
+    }
+  ]
+}

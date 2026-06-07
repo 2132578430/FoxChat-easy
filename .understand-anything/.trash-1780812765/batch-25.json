@@ -1,0 +1,554 @@
+{
+  "nodes": [
+    {
+      "id": "file:FoxChat-vue/src/components/Chat/GroupList.vue",
+      "type": "file",
+      "name": "GroupList.vue",
+      "filePath": "FoxChat-vue/src/components/Chat/GroupList.vue",
+      "summary": "群组列表侧边栏组件，支持群组搜索、创建、加入和选择，展示未读消息数和群主标识。",
+      "tags": ["component", "chat", "ui", "sidebar"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-vue/src/components/Chat/MessageList.vue",
+      "type": "file",
+      "name": "MessageList.vue",
+      "filePath": "FoxChat-vue/src/components/Chat/MessageList.vue",
+      "summary": "聊天消息列表组件，支持普通文本消息、结构化AI回复（动作/文字块）、RAG知识库文件列表展示、撤回消息和失败重试。",
+      "tags": ["component", "chat", "ui", "message-rendering"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:FoxChat-vue/src/components/Chat/ModelMemoryPanel.vue",
+      "type": "file",
+      "name": "ModelMemoryPanel.vue",
+      "filePath": "FoxChat-vue/src/components/Chat/ModelMemoryPanel.vue",
+      "summary": "模型记忆面板组件，展示AI角色卡信息（性格、动作风格）、记忆事件时间线和用户画像数据。",
+      "tags": ["component", "ai-memory", "ui", "panel"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-vue/src/components/HelloWorld.vue",
+      "type": "file",
+      "name": "HelloWorld.vue",
+      "filePath": "FoxChat-vue/src/components/HelloWorld.vue",
+      "summary": "Vue 脚手架默认的 HelloWorld 示例组件，含简单计数器，用于验证 HMR 热更新。",
+      "tags": ["component", "boilerplate", "example"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-vue/src/components/LlmConfig/LlmConfigPanel.vue",
+      "type": "file",
+      "name": "LlmConfigPanel.vue",
+      "filePath": "FoxChat-vue/src/components/LlmConfig/LlmConfigPanel.vue",
+      "summary": "LLM 模型配置主面板，左侧展示AI创造物列表，右侧提供外观编辑和五种场景（聊天/记忆/总结/提取/情绪）的模型参数配置，支持一键配置和批量保存。",
+      "tags": ["component", "llm-config", "ui", "admin"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:FoxChat-vue/src/components/LlmConfig/ScenarioConfigForm.vue",
+      "type": "file",
+      "name": "ScenarioConfigForm.vue",
+      "filePath": "FoxChat-vue/src/components/LlmConfig/ScenarioConfigForm.vue",
+      "summary": "单场景LLM配置表单，支持OpenAI/DeepSeek/Claude/Gemini/Kimi/Ollama等服务商预设选择，提供模型名称、API Key、Base URL、Temperature、Max Tokens 参数配置和连接测试。",
+      "tags": ["component", "llm-config", "form", "provider-preset"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:FoxChat-vue/src/components/TitleBar.vue",
+      "type": "file",
+      "name": "TitleBar.vue",
+      "filePath": "FoxChat-vue/src/components/TitleBar.vue",
+      "summary": "Electron 自定义标题栏组件，提供最小化、最大化、关闭窗口操作，使用 -webkit-app-region 实现拖拽。",
+      "tags": ["component", "electron", "title-bar", "window-controls"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-vue/src/composables/useLlmFallback.js",
+      "type": "file",
+      "name": "useLlmFallback.js",
+      "filePath": "FoxChat-vue/src/composables/useLlmFallback.js",
+      "summary": "LLM REST 降级函数，当 SSE 流式请求失败时自动回退到同步 REST 调用，解析AI回复的结构化块和情绪数据，更新消息列表。",
+      "tags": ["composable", "llm", "fallback", "error-handling"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:FoxChat-vue/src/composables/useLlmStream.js",
+      "type": "file",
+      "name": "useLlmStream.js",
+      "filePath": "FoxChat-vue/src/composables/useLlmStream.js",
+      "summary": "LLM 流式聊天 Composable，通过 SSE (Server-Sent Events) 实现逐 token 流式输出，支持 blocks/token/emotion/done 四种事件类型，提供 AbortController 取消能力。",
+      "tags": ["composable", "llm", "sse", "streaming"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-vue/src/composables/useWebSocket.js",
+      "type": "file",
+      "name": "useWebSocket.js",
+      "filePath": "FoxChat-vue/src/composables/useWebSocket.js",
+      "summary": "WebSocket 核心 Composable，管理连接生命周期、心跳保活（30秒间隔）、二进制协议收发，处理私聊消息(1101)、消息回执(1102)、好友请求(1105)、上下线通知(1106/1107)和群聊消息(1201)。",
+      "tags": ["composable", "websocket", "real-time", "messaging"],
+      "complexity": "complex"
+    },
+    {
+      "id": "file:FoxChat-vue/src/proto/chat.js",
+      "type": "file",
+      "name": "chat.js",
+      "filePath": "FoxChat-vue/src/proto/chat.js",
+      "summary": "Protobuf 编解码实现（手写），提供 encodeMessage/decodeMessage 函数，处理 Message/ChatMsg/GroupMsg 三种消息类型的序列化和反序列化。",
+      "tags": ["protobuf", "codec", "serialization", "generated"],
+      "complexity": "complex"
+    },
+    {
+      "id": "schema:FoxChat-vue/src/proto/chat.proto",
+      "type": "schema",
+      "name": "chat.proto",
+      "filePath": "FoxChat-vue/src/proto/chat.proto",
+      "summary": "Protobuf 消息格式定义，定义 Message（含 type/extend/chatMsg）和 ChatMsg（含 id/sendUserId/acceptUserId/msg/signFlag/createTime）两个核心消息结构。",
+      "tags": ["schema-definition", "protobuf", "messaging", "protocol"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-vue/src/style.css",
+      "type": "file",
+      "name": "style.css",
+      "filePath": "FoxChat-vue/src/style.css",
+      "summary": "全局样式表，引入 HarmonyOS Sans 和 JetBrains Mono 字体，定义根变量、基础元素样式和亮暗色方案切换。",
+      "tags": ["stylesheet", "global-styles", "typography", "theme"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-vue/src/utils/config.js",
+      "type": "file",
+      "name": "config.js",
+      "filePath": "FoxChat-vue/src/utils/config.js",
+      "summary": "全局配置模块，集中管理 WebSocket 连接地址（WS_BASE_URL/CHAT_SERVICE_URL）和 OSS 文件服务地址，支持环境变量覆盖和自动推断。",
+      "tags": ["utility", "configuration", "url-config", "environment"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChat-vue/src/utils/protocol.js",
+      "type": "file",
+      "name": "protocol.js",
+      "filePath": "FoxChat-vue/src/utils/protocol.js",
+      "summary": "自定义二进制协议编解码器，实现 16 字节协议头（Magic Number 0xCAFEBABE + Version + Serialization + MsgType + DataLength + Reserved）+ Protobuf 数据体的封装和解析。",
+      "tags": ["utility", "protocol", "binary-encoding", "networking"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChat-vue/src/utils/snowflake.js",
+      "type": "file",
+      "name": "snowflake.js",
+      "filePath": "FoxChat-vue/src/utils/snowflake.js",
+      "summary": "雪花算法 ID 生成器，使用 41位时间戳 + 10位机器ID + 12位序列号结构，在前端生成全局唯一消息 ID。",
+      "tags": ["utility", "id-generator", "snowflake", "singleton"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:FoxChat-vue/vite.config.js",
+      "type": "config",
+      "name": "vite.config.js",
+      "filePath": "FoxChat-vue/vite.config.js",
+      "summary": "Vite 构建配置，设置 @ 路径别名、Vue 插件、API/WebSocket/OSS 三路代理规则（开发和预览环境均配置），支持 Electron 打包。",
+      "tags": ["configuration", "build-system", "vite", "proxy"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "FoxChatRAG-python/app/__init__.py",
+      "summary": "RAG 应用包的空初始化文件。",
+      "tags": ["python-package", "init"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/core/config.py",
+      "type": "file",
+      "name": "config.py",
+      "filePath": "FoxChatRAG-python/app/core/config.py",
+      "summary": "核心配置模块，当前仅导入 os 模块，为后续配置加载预留。",
+      "tags": ["configuration", "python", "core"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/core/health_check.py",
+      "type": "file",
+      "name": "health_check.py",
+      "filePath": "FoxChatRAG-python/app/core/health_check.py",
+      "summary": "中间件启动健康检查模块，提供指数退避重试连接器（1s/2s/4s），验证 Redis PING 和 MySQL SELECT 1 可用性。",
+      "tags": ["health-check", "middleware", "retry-logic", "startup"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/core/net/ip_client.py",
+      "type": "file",
+      "name": "ip_client.py",
+      "filePath": "FoxChatRAG-python/app/core/net/ip_client.py",
+      "summary": "IP 地理位置和天气查询工具，通过 ip-api.com 获取 IP 归属地，通过 Open-Meteo API 获取实时天气数据。",
+      "tags": ["utility", "geolocation", "weather", "http-client"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/core/prompts/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "FoxChatRAG-python/app/core/prompts/__init__.py",
+      "summary": "Prompts 包的空初始化文件。",
+      "tags": ["python-package", "init"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/grpc/foxchat/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "FoxChatRAG-python/app/grpc/foxchat/__init__.py",
+      "summary": "gRPC foxchat 包的空初始化文件。",
+      "tags": ["python-package", "init", "grpc"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/grpc/foxchat/ai/__init__.py",
+      "type": "file",
+      "name": "__init__.py",
+      "filePath": "FoxChatRAG-python/app/grpc/foxchat/ai/__init__.py",
+      "summary": "gRPC AI 模块包的空初始化文件。",
+      "tags": ["python-package", "init", "grpc"],
+      "complexity": "simple"
+    },
+    {
+      "id": "file:FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2.pyi",
+      "type": "file",
+      "name": "ai_chat_pb2.pyi",
+      "filePath": "FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2.pyi",
+      "summary": "AI 聊天 gRPC 服务的 Protobuf 类型存根文件，定义 ChatRequest/ChatResponse/DeleteRequest/DeleteResponse 四个消息类型，支持流式响应（is_final/block_type/emotion/sequence）。",
+      "tags": ["type-definition", "protobuf", "grpc", "stub"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-vue/src/composables/useLlmFallback.js:fallbackLlmRest",
+      "type": "function",
+      "name": "fallbackLlmRest",
+      "filePath": "FoxChat-vue/src/composables/useLlmFallback.js",
+      "lineRange": [8, 116],
+      "summary": "LLM REST 降级调用函数，SSE 流失败时回退到同步 POST /llm/chat，解析多层嵌套响应结构提取AI回复块和情绪数据，支持原地更新流式占位或新建消息。",
+      "tags": ["fallback", "llm", "error-recovery", "async"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:FoxChat-vue/src/composables/useLlmStream.js:useLlmStream",
+      "type": "function",
+      "name": "useLlmStream",
+      "filePath": "FoxChat-vue/src/composables/useLlmStream.js",
+      "lineRange": [84, 217],
+      "summary": "LLM 流式聊天 Composable 函数，通过 fetch SSE 实现实时 token 推送，解析 blocks/token/emotion/full/done 五种事件类型，提供 AbortController 取消机制。",
+      "tags": ["composable", "sse", "streaming", "llm"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:FoxChat-vue/src/composables/useWebSocket.js:useWebSocket",
+      "type": "function",
+      "name": "useWebSocket",
+      "filePath": "FoxChat-vue/src/composables/useWebSocket.js",
+      "lineRange": [20, 395],
+      "summary": "WebSocket 连接管理函数，封装连接建立/断开、心跳保活（30秒）、二进制协议收发、消息路由（私聊1101/回执1102/好友请求1105/上下线1106-1107/群聊1201），自动挂载/卸载生命周期。",
+      "tags": ["composable", "websocket", "real-time", "protocol"],
+      "complexity": "complex"
+    },
+    {
+      "id": "function:FoxChat-vue/src/utils/protocol.js:encodeProtocol",
+      "type": "function",
+      "name": "encodeProtocol",
+      "filePath": "FoxChat-vue/src/utils/protocol.js",
+      "lineRange": [21, 52],
+      "summary": "将 JS 消息对象编码为自定义二进制协议帧：16字节头（Magic 0xCAFEBABE + Version + Serial + MsgType + DataLength + Reserved）+ Protobuf 数据体，Big-Endian 字节序。",
+      "tags": ["encoding", "protocol", "binary", "networking"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChat-vue/src/utils/protocol.js:decodeProtocol",
+      "type": "function",
+      "name": "decodeProtocol",
+      "filePath": "FoxChat-vue/src/utils/protocol.js",
+      "lineRange": [57, 104],
+      "summary": "将二进制协议帧解码为 JS 对象：校验 Magic Number、读取协议头、提取 Protobuf 数据体并反序列化，不足16字节或 Magic 不匹配时返回 null。",
+      "tags": ["decoding", "protocol", "binary", "networking"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:FoxChat-vue/src/utils/snowflake.js:Snowflake",
+      "type": "class",
+      "name": "Snowflake",
+      "filePath": "FoxChat-vue/src/utils/snowflake.js",
+      "lineRange": [5, 66],
+      "summary": "雪花算法 ID 生成器类，41位时间戳 + 10位workerId + 10位datacenterId + 12位序列号，使用 BigInt 运算避免精度丢失，含时钟回拨保护。",
+      "tags": ["id-generator", "snowflake", "class", "utility"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/core/health_check.py:retry_connect",
+      "type": "function",
+      "name": "retry_connect",
+      "filePath": "FoxChatRAG-python/app/core/health_check.py",
+      "lineRange": [19, 63],
+      "summary": "通用中间件连接重试器，指数退避策略（1s/2s/4s），最多3次重试，成功返回连接结果，失败抛出 ConnectionError。",
+      "tags": ["retry", "health-check", "async", "resilience"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/core/health_check.py:check_redis",
+      "type": "function",
+      "name": "check_redis",
+      "filePath": "FoxChatRAG-python/app/core/health_check.py",
+      "lineRange": [66, 72],
+      "summary": "Redis 连接健康检查，通过 asyncio.to_thread 执行同步 ping 命令验证连接存活。",
+      "tags": ["health-check", "redis", "async"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/core/health_check.py:check_mysql",
+      "type": "function",
+      "name": "check_mysql",
+      "filePath": "FoxChatRAG-python/app/core/health_check.py",
+      "lineRange": [75, 80],
+      "summary": "MySQL 连接健康检查，通过 SQLAlchemy 异步会话执行 SELECT 1 验证连接池可用。",
+      "tags": ["health-check", "mysql", "async"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/core/net/ip_client.py:get_read_ip",
+      "type": "function",
+      "name": "get_read_ip",
+      "filePath": "FoxChatRAG-python/app/core/net/ip_client.py",
+      "lineRange": [6, 13],
+      "summary": "从 FastAPI Request 中提取客户端真实 IP，优先读取 X-Forwarded-For 头（取第一个），回退到 request.client.host。",
+      "tags": ["utility", "ip-address", "http", "fastapi"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/core/net/ip_client.py:get_current_location",
+      "type": "function",
+      "name": "get_current_location",
+      "filePath": "FoxChatRAG-python/app/core/net/ip_client.py",
+      "lineRange": [16, 40],
+      "summary": "通过 ip-api.com 查询 IP 归属地，返回包含国家/省/市、经纬度的位置字典。",
+      "tags": ["utility", "geolocation", "http-client", "api"],
+      "complexity": "simple"
+    },
+    {
+      "id": "function:FoxChatRAG-python/app/core/net/ip_client.py:get_weather",
+      "type": "function",
+      "name": "get_weather",
+      "filePath": "FoxChatRAG-python/app/core/net/ip_client.py",
+      "lineRange": [42, 60],
+      "summary": "通过 Open-Meteo API 根据经纬度获取实时天气数据（温度和风速）。",
+      "tags": ["utility", "weather", "http-client", "api"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:FoxChat-vue/src/composables/useLlmFallback.js",
+      "target": "function:FoxChat-vue/src/composables/useLlmFallback.js:fallbackLlmRest",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/composables/useLlmStream.js",
+      "target": "function:FoxChat-vue/src/composables/useLlmStream.js:useLlmStream",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/composables/useWebSocket.js",
+      "target": "function:FoxChat-vue/src/composables/useWebSocket.js:useWebSocket",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/utils/protocol.js",
+      "target": "function:FoxChat-vue/src/utils/protocol.js:encodeProtocol",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/utils/protocol.js",
+      "target": "function:FoxChat-vue/src/utils/protocol.js:decodeProtocol",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/utils/snowflake.js",
+      "target": "class:FoxChat-vue/src/utils/snowflake.js:Snowflake",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/health_check.py",
+      "target": "function:FoxChatRAG-python/app/core/health_check.py:retry_connect",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/health_check.py",
+      "target": "function:FoxChatRAG-python/app/core/health_check.py:check_redis",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/health_check.py",
+      "target": "function:FoxChatRAG-python/app/core/health_check.py:check_mysql",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/net/ip_client.py",
+      "target": "function:FoxChatRAG-python/app/core/net/ip_client.py:get_read_ip",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/net/ip_client.py",
+      "target": "function:FoxChatRAG-python/app/core/net/ip_client.py:get_current_location",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/net/ip_client.py",
+      "target": "function:FoxChatRAG-python/app/core/net/ip_client.py:get_weather",
+      "type": "contains",
+      "direction": "forward",
+      "weight": 1.0
+    },
+    {
+      "source": "file:FoxChat-vue/src/components/Chat/MessageList.vue",
+      "target": "file:FoxChat-vue/src/utils/config.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-vue/src/components/LlmConfig/LlmConfigPanel.vue",
+      "target": "file:FoxChat-vue/src/components/LlmConfig/ScenarioConfigForm.vue",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-vue/src/utils/protocol.js",
+      "target": "file:FoxChat-vue/src/proto/chat.js",
+      "type": "imports",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "file:FoxChat-vue/src/composables/useWebSocket.js",
+      "target": "file:FoxChat-vue/src/utils/protocol.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:FoxChat-vue/src/composables/useLlmFallback.js",
+      "target": "file:FoxChat-vue/src/utils/snowflake.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "schema:FoxChat-vue/src/proto/chat.proto",
+      "target": "file:FoxChat-vue/src/proto/chat.js",
+      "type": "defines_schema",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "config:FoxChat-vue/vite.config.js",
+      "target": "file:FoxChat-vue/src/components/Chat/MessageList.vue",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-vue/vite.config.js",
+      "target": "file:FoxChat-vue/src/components/LlmConfig/LlmConfigPanel.vue",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-vue/vite.config.js",
+      "target": "file:FoxChat-vue/src/components/LlmConfig/ScenarioConfigForm.vue",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-vue/vite.config.js",
+      "target": "file:FoxChat-vue/src/composables/useLlmFallback.js",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-vue/vite.config.js",
+      "target": "file:FoxChat-vue/src/composables/useLlmStream.js",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-vue/vite.config.js",
+      "target": "file:FoxChat-vue/src/composables/useWebSocket.js",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-vue/vite.config.js",
+      "target": "file:FoxChat-vue/src/utils/config.js",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/core/health_check.py",
+      "target": "file:FoxChatRAG-python/app/core/config.py",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:FoxChatRAG-python/app/grpc/foxchat/ai/ai_chat_pb2.pyi",
+      "target": "schema:FoxChat-vue/src/proto/chat.proto",
+      "type": "related",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "file:FoxChat-vue/src/components/Chat/MessageList.vue",
+      "target": "file:FoxChat-vue/src/composables/useLlmFallback.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "file:FoxChat-vue/src/components/Chat/MessageList.vue",
+      "target": "file:FoxChat-vue/src/composables/useLlmStream.js",
+      "type": "depends_on",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

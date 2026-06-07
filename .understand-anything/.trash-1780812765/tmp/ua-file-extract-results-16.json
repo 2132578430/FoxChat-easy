@@ -1,0 +1,530 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 6,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": ".env.example",
+      "language": "config",
+      "fileCategory": "config",
+      "totalLines": 59,
+      "nonEmptyLines": 47,
+      "definitions": [
+        {
+          "name": "RABBITMQ__HOST",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 5,
+          "endLine": 5
+        },
+        {
+          "name": "RABBITMQ__PORT",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 6,
+          "endLine": 6
+        },
+        {
+          "name": "RABBITMQ__USER",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 7,
+          "endLine": 7
+        },
+        {
+          "name": "RABBITMQ__PASSWORD",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 8,
+          "endLine": 8
+        },
+        {
+          "name": "RABBITMQ__RAG_QUEUE",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 9,
+          "endLine": 9
+        },
+        {
+          "name": "RABBITMQ__CHAT_QUEUE",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 10,
+          "endLine": 10
+        },
+        {
+          "name": "MYSQL__HOST",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 13,
+          "endLine": 13
+        },
+        {
+          "name": "MYSQL__PORT",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 14,
+          "endLine": 14
+        },
+        {
+          "name": "MYSQL__USER",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 15,
+          "endLine": 15
+        },
+        {
+          "name": "MYSQL__PASSWORD",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 16,
+          "endLine": 16
+        },
+        {
+          "name": "MYSQL__DATABASE",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 17,
+          "endLine": 17
+        },
+        {
+          "name": "REDIS__HOST",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 20,
+          "endLine": 20
+        },
+        {
+          "name": "REDIS__PORT",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 21,
+          "endLine": 21
+        },
+        {
+          "name": "REDIS__USER",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 22,
+          "endLine": 22
+        },
+        {
+          "name": "REDIS__PASSWORD",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 23,
+          "endLine": 23
+        },
+        {
+          "name": "REDIS__DB",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 24,
+          "endLine": 24
+        },
+        {
+          "name": "KEY__DS_MODEL",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 27,
+          "endLine": 27
+        },
+        {
+          "name": "KEY__KIMI_MODEL",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 28,
+          "endLine": 28
+        },
+        {
+          "name": "KEY__QWEN_MODEL",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 29,
+          "endLine": 29
+        },
+        {
+          "name": "KEY__MiniMax_MODEL",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 30,
+          "endLine": 30
+        },
+        {
+          "name": "SERVER__PORT",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 33,
+          "endLine": 33
+        },
+        {
+          "name": "MODEL__DEFAULT_LLM",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 39,
+          "endLine": 39
+        },
+        {
+          "name": "MODEL__DEFAULT_JSON_LLM",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 40,
+          "endLine": 40
+        },
+        {
+          "name": "MODEL__DEFAULT_EMBEDDING",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 41,
+          "endLine": 41
+        },
+        {
+          "name": "MODEL_BY_SCENARIO__CHAT_LLM",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 48,
+          "endLine": 48
+        },
+        {
+          "name": "MODEL_BY_SCENARIO__CHAT_JSON_LLM",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 49,
+          "endLine": 49
+        },
+        {
+          "name": "MODEL_BY_SCENARIO__MEMORY_LLM",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 52,
+          "endLine": 52
+        },
+        {
+          "name": "MODEL_BY_SCENARIO__MEMORY_JSON_LLM",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 53,
+          "endLine": 53
+        },
+        {
+          "name": "MODEL_BY_SCENARIO__SUMMARY_LLM",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 56,
+          "endLine": 56
+        },
+        {
+          "name": "MODEL_BY_SCENARIO__EXTRACTION_LLM",
+          "kind": "variable",
+          "fields": [],
+          "startLine": 59,
+          "endLine": 59
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 30
+      }
+    },
+    {
+      "path": "FoxChat.sql",
+      "language": "sql",
+      "fileCategory": "data",
+      "totalLines": 194,
+      "nonEmptyLines": 177,
+      "definitions": [
+        {
+          "name": "chat_group",
+          "kind": "table",
+          "fields": [],
+          "startLine": 24,
+          "endLine": 29
+        },
+        {
+          "name": "chat_msg",
+          "kind": "table",
+          "fields": [],
+          "startLine": 37,
+          "endLine": 42
+        },
+        {
+          "name": "friends",
+          "kind": "table",
+          "fields": [],
+          "startLine": 51,
+          "endLine": 56
+        },
+        {
+          "name": "friends_request",
+          "kind": "table",
+          "fields": [],
+          "startLine": 63,
+          "endLine": 68
+        },
+        {
+          "name": "group_member",
+          "kind": "table",
+          "fields": [],
+          "startLine": 75,
+          "endLine": 80
+        },
+        {
+          "name": "group_msg",
+          "kind": "table",
+          "fields": [],
+          "startLine": 90,
+          "endLine": 95
+        },
+        {
+          "name": "llm_chat_msg",
+          "kind": "table",
+          "fields": [],
+          "startLine": 104,
+          "endLine": 109
+        },
+        {
+          "name": "llm_user",
+          "kind": "table",
+          "fields": [],
+          "startLine": 119,
+          "endLine": 124
+        },
+        {
+          "name": "msg_status",
+          "kind": "table",
+          "fields": [],
+          "startLine": 133,
+          "endLine": 138
+        },
+        {
+          "name": "rag_file",
+          "kind": "table",
+          "fields": [],
+          "startLine": 145,
+          "endLine": 150
+        },
+        {
+          "name": "users",
+          "kind": "table",
+          "fields": [],
+          "startLine": 160,
+          "endLine": 165
+        },
+        {
+          "name": "llm_config",
+          "kind": "table",
+          "fields": [],
+          "startLine": 178,
+          "endLine": 183
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "definitionCount": 12
+      }
+    },
+    {
+      "path": "README.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 282,
+      "nonEmptyLines": 225,
+      "sections": [
+        {
+          "heading": "FoxChat 🦊",
+          "level": 1,
+          "line": 1
+        },
+        {
+          "heading": "🌟 项目定位",
+          "level": 2,
+          "line": 7
+        },
+        {
+          "heading": "🧠 AI 记忆架构（Python 端核心）",
+          "level": 2,
+          "line": 32
+        },
+        {
+          "heading": "分层记忆设计",
+          "level": 3,
+          "line": 36
+        },
+        {
+          "heading": "记忆流水线",
+          "level": 3,
+          "line": 77
+        },
+        {
+          "heading": "核心服务组件",
+          "level": 3,
+          "line": 95
+        },
+        {
+          "heading": "性能验证",
+          "level": 3,
+          "line": 106
+        },
+        {
+          "heading": "🏗️ Java 核心架构",
+          "level": 2,
+          "line": 122
+        },
+        {
+          "heading": "模块划分",
+          "level": 3,
+          "line": 126
+        },
+        {
+          "heading": "通信协议",
+          "level": 3,
+          "line": 137
+        },
+        {
+          "heading": "🛠️ 技术栈",
+          "level": 2,
+          "line": 159
+        },
+        {
+          "heading": "中间件",
+          "level": 3,
+          "line": 167
+        },
+        {
+          "heading": "🚀 快速启动",
+          "level": 2,
+          "line": 176
+        },
+        {
+          "heading": "1. 启动中间件",
+          "level": 3,
+          "line": 178
+        },
+        {
+          "heading": "2. 启动后端 (FoxChat-java)",
+          "level": 3,
+          "line": 184
+        },
+        {
+          "heading": "3. 启动 RAG 服务 (FoxChatRAG-python)",
+          "level": 3,
+          "line": 191
+        },
+        {
+          "heading": "4. 启动前端 (FoxChat-vue)",
+          "level": 3,
+          "line": 199
+        },
+        {
+          "heading": "5. 打包 Electron 桌面端",
+          "level": 3,
+          "line": 207
+        },
+        {
+          "heading": "📂 项目结构",
+          "level": 2,
+          "line": 216
+        },
+        {
+          "heading": "🔐 敏感配置",
+          "level": 2,
+          "line": 259
+        },
+        {
+          "heading": "🔧 相关文档",
+          "level": 2,
+          "line": 278
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 21
+      }
+    },
+    {
+      "path": "docker-compose.prod.yml",
+      "language": "yaml",
+      "fileCategory": "infra",
+      "totalLines": 119,
+      "nonEmptyLines": 114,
+      "sections": [
+        {
+          "heading": "x-logging",
+          "level": 1,
+          "line": 9
+        },
+        {
+          "heading": "services",
+          "level": 1,
+          "line": 16
+        },
+        {
+          "heading": "networks",
+          "level": 1,
+          "line": 117
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 3
+      }
+    },
+    {
+      "path": "docker-compose.yml",
+      "language": "yaml",
+      "fileCategory": "infra",
+      "totalLines": 76,
+      "nonEmptyLines": 75,
+      "sections": [
+        {
+          "heading": "x-logging",
+          "level": 1,
+          "line": 2
+        },
+        {
+          "heading": "services",
+          "level": 1,
+          "line": 9
+        },
+        {
+          "heading": "networks",
+          "level": 1,
+          "line": 74
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 3
+      }
+    },
+    {
+      "path": "项目介绍.md",
+      "language": "markdown",
+      "fileCategory": "docs",
+      "totalLines": 16,
+      "nonEmptyLines": 9,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0,
+        "sectionCount": 0
+      }
+    }
+  ]
+}

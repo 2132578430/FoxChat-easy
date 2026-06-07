@@ -1,0 +1,1007 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 13,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "FoxChatRAG-python/app/api/__init__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 3,
+      "nonEmptyLines": 3,
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/api/chat.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 73,
+      "nonEmptyLines": 59,
+      "functions": [
+        {
+          "name": "chat_msg",
+          "startLine": 15,
+          "endLine": 65,
+          "params": [
+            "chat_msg_to",
+            "background_tasks",
+            "request"
+          ]
+        },
+        {
+          "name": "chat_delete",
+          "startLine": 69,
+          "endLine": 73,
+          "params": [
+            "user_id",
+            "llm_id"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "chat_msg",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "chat_delete",
+          "line": 68,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "chat_msg",
+          "callee": "logger.info",
+          "lineNumber": 24
+        },
+        {
+          "caller": "chat_msg",
+          "callee": "async_session_local",
+          "lineNumber": 33
+        },
+        {
+          "caller": "chat_msg",
+          "callee": "validate_config_count",
+          "lineNumber": 34
+        },
+        {
+          "caller": "chat_msg",
+          "callee": "get_missing_scenarios",
+          "lineNumber": 37
+        },
+        {
+          "caller": "chat_msg",
+          "callee": "logger.warning",
+          "lineNumber": 38
+        },
+        {
+          "caller": "chat_msg",
+          "callee": "acquire_session_lock",
+          "lineNumber": 55
+        },
+        {
+          "caller": "chat_msg",
+          "callee": "main_graph.ainvoke",
+          "lineNumber": 57
+        },
+        {
+          "caller": "chat_msg",
+          "callee": "result.get",
+          "lineNumber": 59
+        },
+        {
+          "caller": "chat_msg",
+          "callee": "result.get",
+          "lineNumber": 60
+        },
+        {
+          "caller": "chat_msg",
+          "callee": "logger.info",
+          "lineNumber": 62
+        },
+        {
+          "caller": "chat_msg",
+          "callee": "M.get_msg",
+          "lineNumber": 63
+        },
+        {
+          "caller": "chat_msg",
+          "callee": "release_session_lock",
+          "lineNumber": 65
+        },
+        {
+          "caller": "chat_delete",
+          "callee": "Query",
+          "lineNumber": 70
+        },
+        {
+          "caller": "chat_delete",
+          "callee": "Query",
+          "lineNumber": 71
+        },
+        {
+          "caller": "chat_delete",
+          "callee": "clear_chat_memory",
+          "lineNumber": 73
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/api/llm_config.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 143,
+      "nonEmptyLines": 108,
+      "functions": [
+        {
+          "name": "save_configs_batch",
+          "startLine": 29,
+          "endLine": 49,
+          "params": [
+            "llm_id",
+            "configs",
+            "db"
+          ]
+        },
+        {
+          "name": "get_configs",
+          "startLine": 53,
+          "endLine": 68,
+          "params": [
+            "llm_id",
+            "db"
+          ]
+        },
+        {
+          "name": "delete_config",
+          "startLine": 72,
+          "endLine": 95,
+          "params": [
+            "llm_id",
+            "scenario",
+            "db"
+          ]
+        },
+        {
+          "name": "validate_configs",
+          "startLine": 99,
+          "endLine": 118,
+          "params": [
+            "llm_id",
+            "db"
+          ]
+        },
+        {
+          "name": "test_connection",
+          "startLine": 122,
+          "endLine": 143,
+          "params": [
+            "config_data",
+            "db"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "save_configs_batch",
+          "line": 28,
+          "isDefault": false
+        },
+        {
+          "name": "get_configs",
+          "line": 52,
+          "isDefault": false
+        },
+        {
+          "name": "delete_config",
+          "line": 71,
+          "isDefault": false
+        },
+        {
+          "name": "validate_configs",
+          "line": 98,
+          "isDefault": false
+        },
+        {
+          "name": "test_connection",
+          "line": 121,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "save_configs_batch",
+          "callee": "Depends",
+          "lineNumber": 32
+        },
+        {
+          "caller": "save_configs_batch",
+          "callee": "logger.info",
+          "lineNumber": 45
+        },
+        {
+          "caller": "save_configs_batch",
+          "callee": "len",
+          "lineNumber": 45
+        },
+        {
+          "caller": "save_configs_batch",
+          "callee": "save_llm_configs_batch",
+          "lineNumber": 47
+        },
+        {
+          "caller": "save_configs_batch",
+          "callee": "M.get_msg",
+          "lineNumber": 49
+        },
+        {
+          "caller": "get_configs",
+          "callee": "Depends",
+          "lineNumber": 53
+        },
+        {
+          "caller": "get_configs",
+          "callee": "logger.info",
+          "lineNumber": 64
+        },
+        {
+          "caller": "get_configs",
+          "callee": "get_llm_configs_batch",
+          "lineNumber": 66
+        },
+        {
+          "caller": "get_configs",
+          "callee": "M.get_msg",
+          "lineNumber": 68
+        },
+        {
+          "caller": "delete_config",
+          "callee": "Depends",
+          "lineNumber": 75
+        },
+        {
+          "caller": "delete_config",
+          "callee": "logger.info",
+          "lineNumber": 88
+        },
+        {
+          "caller": "delete_config",
+          "callee": "delete_llm_config",
+          "lineNumber": 90
+        },
+        {
+          "caller": "delete_config",
+          "callee": "M.get_msg",
+          "lineNumber": 93
+        },
+        {
+          "caller": "delete_config",
+          "callee": "M.get_msg",
+          "lineNumber": 95
+        },
+        {
+          "caller": "validate_configs",
+          "callee": "Depends",
+          "lineNumber": 99
+        },
+        {
+          "caller": "validate_configs",
+          "callee": "logger.info",
+          "lineNumber": 110
+        },
+        {
+          "caller": "validate_configs",
+          "callee": "validate_config_count",
+          "lineNumber": 112
+        },
+        {
+          "caller": "validate_configs",
+          "callee": "get_missing_scenarios",
+          "lineNumber": 113
+        },
+        {
+          "caller": "validate_configs",
+          "callee": "M.get_msg",
+          "lineNumber": 115
+        },
+        {
+          "caller": "test_connection",
+          "callee": "Depends",
+          "lineNumber": 122
+        },
+        {
+          "caller": "test_connection",
+          "callee": "logger.info",
+          "lineNumber": 135
+        },
+        {
+          "caller": "test_connection",
+          "callee": "config_data.get",
+          "lineNumber": 135
+        },
+        {
+          "caller": "test_connection",
+          "callee": "test_llm_connection",
+          "lineNumber": 137
+        },
+        {
+          "caller": "test_connection",
+          "callee": "M.get_msg",
+          "lineNumber": 143
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 5,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/api/rag.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 17,
+      "nonEmptyLines": 12,
+      "functions": [
+        {
+          "name": "search_file",
+          "startLine": 12,
+          "endLine": 17,
+          "params": [
+            "msg"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "search_file",
+          "line": 11,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "search_file",
+          "callee": "logger.info",
+          "lineNumber": 13
+        },
+        {
+          "caller": "search_file",
+          "callee": "str",
+          "lineNumber": 13
+        },
+        {
+          "caller": "search_file",
+          "callee": "search_file",
+          "lineNumber": 15
+        },
+        {
+          "caller": "search_file",
+          "callee": "M.get_msg",
+          "lineNumber": 17
+        }
+      ],
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/retriever/__init__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 1,
+      "nonEmptyLines": 0,
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/retriever/project_retriever.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 55,
+      "nonEmptyLines": 43,
+      "functions": [
+        {
+          "name": "chinese_tokenizer",
+          "startLine": 7,
+          "endLine": 8,
+          "params": [
+            "text"
+          ]
+        },
+        {
+          "name": "get_bm25_retriever",
+          "startLine": 10,
+          "endLine": 22,
+          "params": [
+            "documents"
+          ]
+        },
+        {
+          "name": "get_vector_retriever",
+          "startLine": 24,
+          "endLine": 33,
+          "params": [
+            "chroma",
+            "metadata"
+          ]
+        },
+        {
+          "name": "search_vector_score",
+          "startLine": 35,
+          "endLine": 40,
+          "params": [
+            "chroma",
+            "msg",
+            "metadata"
+          ]
+        },
+        {
+          "name": "get_ensemble_retriever",
+          "startLine": 43,
+          "endLine": 55,
+          "params": [
+            "documents",
+            "chroma",
+            "metadata"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "chinese_tokenizer",
+          "line": 7,
+          "isDefault": false
+        },
+        {
+          "name": "get_bm25_retriever",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "get_vector_retriever",
+          "line": 24,
+          "isDefault": false
+        },
+        {
+          "name": "search_vector_score",
+          "line": 35,
+          "isDefault": false
+        },
+        {
+          "name": "get_ensemble_retriever",
+          "line": 43,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "chinese_tokenizer",
+          "callee": "list",
+          "lineNumber": 8
+        },
+        {
+          "caller": "chinese_tokenizer",
+          "callee": "jieba.cut",
+          "lineNumber": 8
+        },
+        {
+          "caller": "get_bm25_retriever",
+          "callee": "BM25Retriever.from_documents",
+          "lineNumber": 12
+        },
+        {
+          "caller": "get_vector_retriever",
+          "callee": "chroma.as_retriever",
+          "lineNumber": 25
+        },
+        {
+          "caller": "search_vector_score",
+          "callee": "chroma.similarity_search_with_score",
+          "lineNumber": 36
+        },
+        {
+          "caller": "search_vector_score",
+          "callee": "metadata.get",
+          "lineNumber": 39
+        },
+        {
+          "caller": "get_ensemble_retriever",
+          "callee": "get_bm25_retriever",
+          "lineNumber": 47
+        },
+        {
+          "caller": "get_ensemble_retriever",
+          "callee": "get_vector_retriever",
+          "lineNumber": 48
+        },
+        {
+          "caller": "get_ensemble_retriever",
+          "callee": "EnsembleRetriever",
+          "lineNumber": 50
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 5,
+        "functionCount": 5,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/schemas/M.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 31,
+      "nonEmptyLines": 25,
+      "classes": [
+        {
+          "name": "M",
+          "startLine": 9,
+          "endLine": 31,
+          "methods": [
+            "get_msg"
+          ],
+          "properties": [
+            "msgId",
+            "data"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "M",
+          "line": 9,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "get_msg",
+          "callee": "isinstance",
+          "lineNumber": 15
+        },
+        {
+          "caller": "get_msg",
+          "callee": "json.dumps",
+          "lineNumber": 16
+        },
+        {
+          "caller": "get_msg",
+          "callee": "isinstance",
+          "lineNumber": 17
+        },
+        {
+          "caller": "get_msg",
+          "callee": "all",
+          "lineNumber": 19
+        },
+        {
+          "caller": "get_msg",
+          "callee": "isinstance",
+          "lineNumber": 19
+        },
+        {
+          "caller": "get_msg",
+          "callee": "json.dumps",
+          "lineNumber": 20
+        },
+        {
+          "caller": "get_msg",
+          "callee": "item.model_dump",
+          "lineNumber": 20
+        },
+        {
+          "caller": "get_msg",
+          "callee": "json.dumps",
+          "lineNumber": 22
+        },
+        {
+          "caller": "get_msg",
+          "callee": "isinstance",
+          "lineNumber": 23
+        },
+        {
+          "caller": "get_msg",
+          "callee": "data.model_dump_json",
+          "lineNumber": 24
+        },
+        {
+          "caller": "get_msg",
+          "callee": "json.dumps",
+          "lineNumber": 26
+        },
+        {
+          "caller": "get_msg",
+          "callee": "hashlib.md5(data_json.encode(\"utf-8\")).hexdigest",
+          "lineNumber": 29
+        },
+        {
+          "caller": "get_msg",
+          "callee": "hashlib.md5",
+          "lineNumber": 29
+        },
+        {
+          "caller": "get_msg",
+          "callee": "data_json.encode",
+          "lineNumber": 29
+        },
+        {
+          "caller": "get_msg",
+          "callee": "cls",
+          "lineNumber": 31
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/schemas/__init__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 3,
+      "nonEmptyLines": 3,
+      "metrics": {
+        "importCount": 3,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/schemas/chat_msg_resp.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 10,
+      "nonEmptyLines": 7,
+      "classes": [
+        {
+          "name": "MessageBlock",
+          "startLine": 6,
+          "endLine": 10,
+          "methods": [],
+          "properties": [
+            "type",
+            "action",
+            "text"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "MessageBlock",
+          "line": 6,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/schemas/chat_msg_to.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 7,
+      "nonEmptyLines": 5,
+      "classes": [
+        {
+          "name": "ChatMsgTo",
+          "startLine": 4,
+          "endLine": 7,
+          "methods": [],
+          "properties": [
+            "userId",
+            "msgContent",
+            "llmId"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ChatMsgTo",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/schemas/rag_search_file_msg.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 8,
+      "nonEmptyLines": 4,
+      "classes": [
+        {
+          "name": "RagSearchFileMsg",
+          "startLine": 4,
+          "endLine": 6,
+          "methods": [],
+          "properties": [
+            "msg",
+            "userId"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "RagSearchFileMsg",
+          "line": 4,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 1,
+        "functionCount": 0,
+        "classCount": 1
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/chat/response_parser.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 58,
+      "nonEmptyLines": 43,
+      "functions": [
+        {
+          "name": "parse_action_tags",
+          "startLine": 15,
+          "endLine": 58,
+          "params": [
+            "content"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "parse_action_tags",
+          "line": 15,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "parse_action_tags",
+          "callee": "list",
+          "lineNumber": 29
+        },
+        {
+          "caller": "parse_action_tags",
+          "callee": "re.finditer",
+          "lineNumber": 29
+        },
+        {
+          "caller": "parse_action_tags",
+          "callee": "MessageBlock",
+          "lineNumber": 32
+        },
+        {
+          "caller": "parse_action_tags",
+          "callee": "content.strip",
+          "lineNumber": 32
+        },
+        {
+          "caller": "parse_action_tags",
+          "callee": "matches[0].start",
+          "lineNumber": 37
+        },
+        {
+          "caller": "parse_action_tags",
+          "callee": "content[:first_action_start].strip",
+          "lineNumber": 39
+        },
+        {
+          "caller": "parse_action_tags",
+          "callee": "blocks.append",
+          "lineNumber": 41
+        },
+        {
+          "caller": "parse_action_tags",
+          "callee": "MessageBlock",
+          "lineNumber": 41
+        },
+        {
+          "caller": "parse_action_tags",
+          "callee": "enumerate",
+          "lineNumber": 44
+        },
+        {
+          "caller": "parse_action_tags",
+          "callee": "match.group(1).strip",
+          "lineNumber": 45
+        },
+        {
+          "caller": "parse_action_tags",
+          "callee": "match.group",
+          "lineNumber": 45
+        },
+        {
+          "caller": "parse_action_tags",
+          "callee": "match.end",
+          "lineNumber": 46
+        },
+        {
+          "caller": "parse_action_tags",
+          "callee": "len",
+          "lineNumber": 48
+        },
+        {
+          "caller": "parse_action_tags",
+          "callee": "matches[i + 1].start",
+          "lineNumber": 49
+        },
+        {
+          "caller": "parse_action_tags",
+          "callee": "content[match_end:next_match_start].strip",
+          "lineNumber": 50
+        },
+        {
+          "caller": "parse_action_tags",
+          "callee": "content[match_end:].strip",
+          "lineNumber": 52
+        },
+        {
+          "caller": "parse_action_tags",
+          "callee": "blocks.append",
+          "lineNumber": 54
+        },
+        {
+          "caller": "parse_action_tags",
+          "callee": "MessageBlock",
+          "lineNumber": 54
+        },
+        {
+          "caller": "parse_action_tags",
+          "callee": "blocks.append",
+          "lineNumber": 56
+        },
+        {
+          "caller": "parse_action_tags",
+          "callee": "MessageBlock",
+          "lineNumber": 56
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/rag/rag_search_service.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 76,
+      "nonEmptyLines": 59,
+      "functions": [
+        {
+          "name": "search_file",
+          "startLine": 20,
+          "endLine": 40,
+          "params": [
+            "msg"
+          ]
+        },
+        {
+          "name": "file_group_path",
+          "startLine": 43,
+          "endLine": 76,
+          "params": [
+            "docs_with_scores"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "search_file",
+          "line": 20,
+          "isDefault": false
+        },
+        {
+          "name": "file_group_path",
+          "line": 43,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "search_file",
+          "callee": "project_retriever.search_vector_score",
+          "lineNumber": 31
+        },
+        {
+          "caller": "search_file",
+          "callee": "file_group_path",
+          "lineNumber": 38
+        },
+        {
+          "caller": "file_group_path",
+          "callee": "defaultdict",
+          "lineNumber": 49
+        },
+        {
+          "caller": "file_group_path",
+          "callee": "defaultdict",
+          "lineNumber": 50
+        },
+        {
+          "caller": "file_group_path",
+          "callee": "doc.metadata.get",
+          "lineNumber": 54
+        },
+        {
+          "caller": "file_group_path",
+          "callee": "doc.metadata.get",
+          "lineNumber": 55
+        },
+        {
+          "caller": "file_group_path",
+          "callee": "os.path.basename",
+          "lineNumber": 55
+        },
+        {
+          "caller": "file_group_path",
+          "callee": "file_group[file_path].append",
+          "lineNumber": 57
+        },
+        {
+          "caller": "file_group_path",
+          "callee": "file_group.items",
+          "lineNumber": 65
+        },
+        {
+          "caller": "file_group_path",
+          "callee": "file_group_arr.append",
+          "lineNumber": 66
+        },
+        {
+          "caller": "file_group_path",
+          "callee": "file_group_arr.sort",
+          "lineNumber": 74
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    }
+  ]
+}

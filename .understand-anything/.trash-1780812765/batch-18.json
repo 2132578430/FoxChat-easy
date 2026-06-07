@@ -1,0 +1,198 @@
+{
+  "nodes": [
+    {
+      "id": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/ChatGroupMapper.xml",
+      "type": "config",
+      "name": "ChatGroupMapper.xml",
+      "filePath": "FoxChat-java/foxChat-service/src/main/resources/mapper/ChatGroupMapper.xml",
+      "summary": "MyBatis Mapper 配置文件，定义 chat_group 表的 resultMap 和 searchGroupWithStatus 查询，支持按群组名称模糊搜索并返回用户是否已加入的状态。",
+      "tags": ["configuration", "database", "mybatis", "orm"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/ChatMsgMapper.xml",
+      "type": "config",
+      "name": "ChatMsgMapper.xml",
+      "filePath": "FoxChat-java/foxChat-service/src/main/resources/mapper/ChatMsgMapper.xml",
+      "summary": "MyBatis Mapper 配置文件，定义 chat_msg 表的映射，包含 msgPageByTime 分页查询历史消息（关联 msg_status 表）和 getUnreadCount 统计未读消息数量两个查询。",
+      "tags": ["configuration", "database", "mybatis", "orm", "query"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/FriendsMapper.xml",
+      "type": "config",
+      "name": "FriendsMapper.xml",
+      "filePath": "FoxChat-java/foxChat-service/src/main/resources/mapper/FriendsMapper.xml",
+      "summary": "MyBatis Mapper 配置文件，定义 friends 表的映射，包含 deleteFriend 双向删除好友和 listFriends 查询好友列表（关联 users 表）两个操作。",
+      "tags": ["configuration", "database", "mybatis", "orm"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/FriendsRequestMapper.xml",
+      "type": "config",
+      "name": "FriendsRequestMapper.xml",
+      "filePath": "FoxChat-java/foxChat-service/src/main/resources/mapper/FriendsRequestMapper.xml",
+      "summary": "MyBatis Mapper 配置文件，定义 friends_request 表的映射，包含 deleteRequest 删除好友请求和 requestFriendList 查询待处理的好友请求列表两个操作。",
+      "tags": ["configuration", "database", "mybatis", "orm"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/GroupMemberMapper.xml",
+      "type": "config",
+      "name": "GroupMemberMapper.xml",
+      "filePath": "FoxChat-java/foxChat-service/src/main/resources/mapper/GroupMemberMapper.xml",
+      "summary": "MyBatis Mapper 配置文件，定义 group_member 表的映射，包含 queryGroupByUserId 查询用户所属群组列表（关联 chat_group 表）的操作。",
+      "tags": ["configuration", "database", "mybatis", "orm"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/GroupMsgMapper.xml",
+      "type": "config",
+      "name": "GroupMsgMapper.xml",
+      "filePath": "FoxChat-java/foxChat-service/src/main/resources/mapper/GroupMsgMapper.xml",
+      "summary": "MyBatis Mapper 配置文件，定义 group_msg 表的映射，包含 historyMsg 分页查询群聊历史消息的操作。",
+      "tags": ["configuration", "database", "mybatis", "orm"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/LlmChatMsgMapper.xml",
+      "type": "config",
+      "name": "LlmChatMsgMapper.xml",
+      "filePath": "FoxChat-java/foxChat-service/src/main/resources/mapper/LlmChatMsgMapper.xml",
+      "summary": "MyBatis Mapper 配置文件，定义 llm_chat_msg 表的映射，包含 getMsgHistory 分页查询 AI 对话历史消息的操作，支持基于时间和 ID 的游标分页。",
+      "tags": ["configuration", "database", "mybatis", "orm", "ai"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/LlmConfigMapper.xml",
+      "type": "config",
+      "name": "LlmConfigMapper.xml",
+      "filePath": "FoxChat-java/foxChat-service/src/main/resources/mapper/LlmConfigMapper.xml",
+      "summary": "MyBatis Mapper 配置文件，定义 llm_config 表的完整 CRUD 操作，包含按 llmId 和 scenario 查询、批量插入、更新、删除和计数等 7 个 SQL 操作，是本批中最复杂的 Mapper。",
+      "tags": ["configuration", "database", "mybatis", "orm", "ai", "crud"],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/LlmUserMapper.xml",
+      "type": "config",
+      "name": "LlmUserMapper.xml",
+      "filePath": "FoxChat-java/foxChat-service/src/main/resources/mapper/LlmUserMapper.xml",
+      "summary": "MyBatis Mapper 配置文件，定义 llm_user 表的 resultMap 和 Base_Column_List，当前仅包含基础映射定义，无自定义 SQL 操作。",
+      "tags": ["configuration", "database", "mybatis", "orm", "ai"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/MsgStatusMapper.xml",
+      "type": "config",
+      "name": "MsgStatusMapper.xml",
+      "filePath": "FoxChat-java/foxChat-service/src/main/resources/mapper/MsgStatusMapper.xml",
+      "summary": "MyBatis Mapper 配置文件，定义 msg_status 表的 resultMap 和 Base_Column_List，用于跟踪消息的已读/未读状态，当前仅包含基础映射定义。",
+      "tags": ["configuration", "database", "mybatis", "orm"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/RagFileMapper.xml",
+      "type": "config",
+      "name": "RagFileMapper.xml",
+      "filePath": "FoxChat-java/foxChat-service/src/main/resources/mapper/RagFileMapper.xml",
+      "summary": "MyBatis Mapper 配置文件，定义 rag_file 表的映射，包含 selectZombieFile 查询超过 1 小时仍处于处理中状态的僵尸文件的操作。",
+      "tags": ["configuration", "database", "mybatis", "orm", "rag"],
+      "complexity": "simple"
+    },
+    {
+      "id": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/UsersMapper.xml",
+      "type": "config",
+      "name": "UsersMapper.xml",
+      "filePath": "FoxChat-java/foxChat-service/src/main/resources/mapper/UsersMapper.xml",
+      "summary": "MyBatis Mapper 配置文件，定义 users 表的 resultMap 和 Base_Column_List，包含用户基本信息字段的映射，当前仅包含基础定义。",
+      "tags": ["configuration", "database", "mybatis", "orm"],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/ChatGroupMapper.xml",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/ChatGroupMapper.java",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/ChatMsgMapper.xml",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/ChatMsgMapper.java",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/FriendsMapper.xml",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsMapper.java",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/FriendsRequestMapper.xml",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/FriendsRequestMapper.java",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/GroupMemberMapper.xml",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/GroupMemberMapper.java",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/GroupMsgMapper.xml",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/GroupMsgMapper.java",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/LlmChatMsgMapper.xml",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/LlmChatMsgMapper.java",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/LlmConfigMapper.xml",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/LlmConfigMapper.java",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/LlmUserMapper.xml",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/LlmUserMapper.java",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/MsgStatusMapper.xml",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/MsgStatusMapper.java",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/RagFileMapper.xml",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/RagFileMapper.java",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "config:FoxChat-java/foxChat-service/src/main/resources/mapper/UsersMapper.xml",
+      "target": "file:FoxChat-java/foxChat-service/src/main/java/com/bedfox/service/mapper/UsersMapper.java",
+      "type": "configures",
+      "direction": "forward",
+      "weight": 0.6
+    }
+  ]
+}

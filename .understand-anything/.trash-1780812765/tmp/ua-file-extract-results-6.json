@@ -1,0 +1,1547 @@
+{
+  "scriptCompleted": true,
+  "filesAnalyzed": 17,
+  "filesSkipped": [],
+  "results": [
+    {
+      "path": "FoxChatRAG-python/app/chroma/__init__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 3,
+      "nonEmptyLines": 3,
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/chroma/chroma.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 65,
+      "nonEmptyLines": 56,
+      "functions": [
+        {
+          "name": "ensure_collection_dimensions",
+          "startLine": 32,
+          "endLine": 65,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "ensure_collection_dimensions",
+          "line": 32,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "ensure_collection_dimensions",
+          "callee": "model.chroma_model.embed_query",
+          "lineNumber": 41
+        },
+        {
+          "caller": "ensure_collection_dimensions",
+          "callee": "len",
+          "lineNumber": 42
+        },
+        {
+          "caller": "ensure_collection_dimensions",
+          "callee": "chroma._collection.count",
+          "lineNumber": 46
+        },
+        {
+          "caller": "ensure_collection_dimensions",
+          "callee": "chroma._collection.get",
+          "lineNumber": 50
+        },
+        {
+          "caller": "ensure_collection_dimensions",
+          "callee": "sample.get",
+          "lineNumber": 51
+        },
+        {
+          "caller": "ensure_collection_dimensions",
+          "callee": "len",
+          "lineNumber": 52
+        },
+        {
+          "caller": "ensure_collection_dimensions",
+          "callee": "logger.warning",
+          "lineNumber": 54
+        },
+        {
+          "caller": "ensure_collection_dimensions",
+          "callee": "chroma.delete_collection",
+          "lineNumber": 57
+        },
+        {
+          "caller": "ensure_collection_dimensions",
+          "callee": "chroma_client.create_collection",
+          "lineNumber": 59
+        },
+        {
+          "caller": "ensure_collection_dimensions",
+          "callee": "logger.info",
+          "lineNumber": 63
+        },
+        {
+          "caller": "ensure_collection_dimensions",
+          "callee": "logger.warning",
+          "lineNumber": 65
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/chroma/splitter.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 20,
+      "nonEmptyLines": 17,
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/common/constant/intent_config.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 490,
+      "nonEmptyLines": 450,
+      "classes": [
+        {
+          "name": "IntentType",
+          "startLine": 428,
+          "endLine": 439,
+          "methods": [],
+          "properties": []
+        },
+        {
+          "name": "RetrievalScope",
+          "startLine": 442,
+          "endLine": 456,
+          "methods": [],
+          "properties": []
+        },
+        {
+          "name": "IntentResult",
+          "startLine": 484,
+          "endLine": 490,
+          "methods": [],
+          "properties": [
+            "intent",
+            "scope",
+            "top_k",
+            "skip",
+            "confidence"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "IntentType",
+          "line": 428,
+          "isDefault": false
+        },
+        {
+          "name": "RetrievalScope",
+          "line": 442,
+          "isDefault": false
+        },
+        {
+          "name": "IntentResult",
+          "line": 483,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 3,
+        "functionCount": 0,
+        "classCount": 3
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/llm_model/__init__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 1,
+      "nonEmptyLines": 1,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/llm_model/model.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 148,
+      "nonEmptyLines": 118,
+      "classes": [
+        {
+          "name": "DashScopeEmbeddings",
+          "startLine": 40,
+          "endLine": 89,
+          "methods": [
+            "__init__",
+            "_embed_single",
+            "embed_documents",
+            "embed_query"
+          ],
+          "properties": []
+        },
+        {
+          "name": "ChromaModel",
+          "startLine": 91,
+          "endLine": 132,
+          "methods": [
+            "__init__",
+            "embed",
+            "embed_query",
+            "embed_documents"
+          ],
+          "properties": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "DashScopeEmbeddings",
+          "line": 40,
+          "isDefault": false
+        },
+        {
+          "name": "ChromaModel",
+          "line": 91,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_embed_single",
+          "callee": "text.strip",
+          "lineNumber": 53
+        },
+        {
+          "caller": "_embed_single",
+          "callee": "TextEmbedding.call",
+          "lineNumber": 57
+        },
+        {
+          "caller": "_embed_single",
+          "callee": "res.output.get",
+          "lineNumber": 65
+        },
+        {
+          "caller": "_embed_single",
+          "callee": "embeddings[0].get",
+          "lineNumber": 69
+        },
+        {
+          "caller": "embed_documents",
+          "callee": "t.strip",
+          "lineNumber": 72
+        },
+        {
+          "caller": "embed_documents",
+          "callee": "isinstance",
+          "lineNumber": 72
+        },
+        {
+          "caller": "embed_documents",
+          "callee": "t.strip",
+          "lineNumber": 72
+        },
+        {
+          "caller": "embed_documents",
+          "callee": "TextEmbedding.call",
+          "lineNumber": 77
+        },
+        {
+          "caller": "embed_documents",
+          "callee": "res.output.get",
+          "lineNumber": 85
+        },
+        {
+          "caller": "embed_documents",
+          "callee": "item.get",
+          "lineNumber": 86
+        },
+        {
+          "caller": "embed_query",
+          "callee": "self._embed_single",
+          "lineNumber": 89
+        },
+        {
+          "caller": "__init__",
+          "callee": "OllamaEmbeddings",
+          "lineNumber": 103
+        },
+        {
+          "caller": "__init__",
+          "callee": "logger.info",
+          "lineNumber": 107
+        },
+        {
+          "caller": "__init__",
+          "callee": "DashScopeEmbeddings",
+          "lineNumber": 109
+        },
+        {
+          "caller": "__init__",
+          "callee": "logger.info",
+          "lineNumber": 110
+        },
+        {
+          "caller": "__init__",
+          "callee": "OllamaEmbeddings",
+          "lineNumber": 113
+        },
+        {
+          "caller": "__init__",
+          "callee": "logger.warning",
+          "lineNumber": 117
+        },
+        {
+          "caller": "embed",
+          "callee": "isinstance",
+          "lineNumber": 120
+        },
+        {
+          "caller": "embed",
+          "callee": "self.embed_model.embed_query",
+          "lineNumber": 121
+        },
+        {
+          "caller": "embed",
+          "callee": "isinstance",
+          "lineNumber": 122
+        },
+        {
+          "caller": "embed",
+          "callee": "self.embed_model.embed_documents",
+          "lineNumber": 123
+        },
+        {
+          "caller": "embed",
+          "callee": "print",
+          "lineNumber": 125
+        },
+        {
+          "caller": "embed_query",
+          "callee": "self.embed",
+          "lineNumber": 129
+        },
+        {
+          "caller": "embed_documents",
+          "callee": "self.embed",
+          "lineNumber": 132
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 0,
+        "classCount": 2
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/mq/__init__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 1,
+      "nonEmptyLines": 1,
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/mq/handler/__init__.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 2,
+      "nonEmptyLines": 2,
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 0,
+        "functionCount": 0,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/mq/handler/chat_upload_handler.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 44,
+      "nonEmptyLines": 37,
+      "functions": [
+        {
+          "name": "_get_retry_count",
+          "startLine": 9,
+          "endLine": 22,
+          "params": [
+            "message"
+          ]
+        },
+        {
+          "name": "chat_upload_handler",
+          "startLine": 25,
+          "endLine": 44,
+          "params": [
+            "message"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_get_retry_count",
+          "line": 9,
+          "isDefault": false
+        },
+        {
+          "name": "chat_upload_handler",
+          "line": 25,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_get_retry_count",
+          "callee": "headers.get",
+          "lineNumber": 15
+        },
+        {
+          "caller": "_get_retry_count",
+          "callee": "isinstance",
+          "lineNumber": 16
+        },
+        {
+          "caller": "_get_retry_count",
+          "callee": "isinstance",
+          "lineNumber": 20
+        },
+        {
+          "caller": "_get_retry_count",
+          "callee": "int",
+          "lineNumber": 21
+        },
+        {
+          "caller": "_get_retry_count",
+          "callee": "first_death.get",
+          "lineNumber": 21
+        },
+        {
+          "caller": "chat_upload_handler",
+          "callee": "logger.info",
+          "lineNumber": 33
+        },
+        {
+          "caller": "chat_upload_handler",
+          "callee": "chat_init",
+          "lineNumber": 34
+        },
+        {
+          "caller": "chat_upload_handler",
+          "callee": "message.ack",
+          "lineNumber": 35
+        },
+        {
+          "caller": "chat_upload_handler",
+          "callee": "_get_retry_count",
+          "lineNumber": 37
+        },
+        {
+          "caller": "chat_upload_handler",
+          "callee": "logger.error",
+          "lineNumber": 38
+        },
+        {
+          "caller": "chat_upload_handler",
+          "callee": "message.nack",
+          "lineNumber": 41
+        },
+        {
+          "caller": "chat_upload_handler",
+          "callee": "logger.error",
+          "lineNumber": 43
+        },
+        {
+          "caller": "chat_upload_handler",
+          "callee": "message.nack",
+          "lineNumber": 44
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/mq/handler/rag_file_handler.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 46,
+      "nonEmptyLines": 38,
+      "functions": [
+        {
+          "name": "_get_retry_count",
+          "startLine": 10,
+          "endLine": 23,
+          "params": [
+            "message"
+          ]
+        },
+        {
+          "name": "rag_file_handler",
+          "startLine": 26,
+          "endLine": 46,
+          "params": [
+            "message",
+            "db"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_get_retry_count",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "rag_file_handler",
+          "line": 26,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_get_retry_count",
+          "callee": "headers.get",
+          "lineNumber": 16
+        },
+        {
+          "caller": "_get_retry_count",
+          "callee": "isinstance",
+          "lineNumber": 17
+        },
+        {
+          "caller": "_get_retry_count",
+          "callee": "isinstance",
+          "lineNumber": 21
+        },
+        {
+          "caller": "_get_retry_count",
+          "callee": "int",
+          "lineNumber": 22
+        },
+        {
+          "caller": "_get_retry_count",
+          "callee": "first_death.get",
+          "lineNumber": 22
+        },
+        {
+          "caller": "rag_file_handler",
+          "callee": "upload_file",
+          "lineNumber": 36
+        },
+        {
+          "caller": "rag_file_handler",
+          "callee": "message.ack",
+          "lineNumber": 37
+        },
+        {
+          "caller": "rag_file_handler",
+          "callee": "_get_retry_count",
+          "lineNumber": 39
+        },
+        {
+          "caller": "rag_file_handler",
+          "callee": "logger.exception",
+          "lineNumber": 40
+        },
+        {
+          "caller": "rag_file_handler",
+          "callee": "message.nack",
+          "lineNumber": 43
+        },
+        {
+          "caller": "rag_file_handler",
+          "callee": "logger.error",
+          "lineNumber": 45
+        },
+        {
+          "caller": "rag_file_handler",
+          "callee": "message.nack",
+          "lineNumber": 46
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/mq/rabbitmq_connnect.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 17,
+      "nonEmptyLines": 12,
+      "functions": [
+        {
+          "name": "rabbitmq_connect",
+          "startLine": 7,
+          "endLine": 17,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "rabbitmq_connect",
+          "line": 7,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "rabbitmq_connect",
+          "callee": "aio_pika.connect_robust",
+          "lineNumber": 8
+        },
+        {
+          "caller": "rabbitmq_connect",
+          "callee": "logger.info",
+          "lineNumber": 15
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 1,
+        "functionCount": 1,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/mq/rabbitmq_setup_queue.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 21,
+      "nonEmptyLines": 17,
+      "functions": [
+        {
+          "name": "rag_setup_queue",
+          "startLine": 7,
+          "endLine": 13,
+          "params": [
+            "channel"
+          ]
+        },
+        {
+          "name": "chat_setup_queue",
+          "startLine": 15,
+          "endLine": 21,
+          "params": [
+            "channel"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "rag_setup_queue",
+          "line": 7,
+          "isDefault": false
+        },
+        {
+          "name": "chat_setup_queue",
+          "line": 15,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "rag_setup_queue",
+          "callee": "channel.declare_queue",
+          "lineNumber": 8
+        },
+        {
+          "caller": "rag_setup_queue",
+          "callee": "logger.info",
+          "lineNumber": 12
+        },
+        {
+          "caller": "chat_setup_queue",
+          "callee": "channel.declare_queue",
+          "lineNumber": 16
+        },
+        {
+          "caller": "chat_setup_queue",
+          "callee": "logger.info",
+          "lineNumber": 20
+        }
+      ],
+      "metrics": {
+        "importCount": 1,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/mq/rabbitmq_start_consumer.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 24,
+      "nonEmptyLines": 20,
+      "functions": [
+        {
+          "name": "rag",
+          "startLine": 7,
+          "endLine": 16,
+          "params": [
+            "queue"
+          ]
+        },
+        {
+          "name": "chat",
+          "startLine": 18,
+          "endLine": 24,
+          "params": [
+            "queue"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "rag",
+          "line": 7,
+          "isDefault": false
+        },
+        {
+          "name": "chat",
+          "line": 18,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "rag",
+          "callee": "queue.iterator",
+          "lineNumber": 13
+        },
+        {
+          "caller": "rag",
+          "callee": "async_session_local",
+          "lineNumber": 15
+        },
+        {
+          "caller": "rag",
+          "callee": "rag_file_handler",
+          "lineNumber": 16
+        },
+        {
+          "caller": "chat",
+          "callee": "queue.iterator",
+          "lineNumber": 22
+        },
+        {
+          "caller": "chat",
+          "callee": "chat_upload_handler",
+          "lineNumber": 24
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/mq/rabbitmq_starter.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 32,
+      "nonEmptyLines": 22,
+      "functions": [
+        {
+          "name": "init_rabbitmq",
+          "startLine": 10,
+          "endLine": 27,
+          "params": []
+        },
+        {
+          "name": "close_rabbitmq",
+          "startLine": 29,
+          "endLine": 32,
+          "params": [
+            "connection"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "init_rabbitmq",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "close_rabbitmq",
+          "line": 29,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "init_rabbitmq",
+          "callee": "retry_connect",
+          "lineNumber": 14
+        },
+        {
+          "caller": "init_rabbitmq",
+          "callee": "connection.channel",
+          "lineNumber": 15
+        },
+        {
+          "caller": "init_rabbitmq",
+          "callee": "connection.channel",
+          "lineNumber": 16
+        },
+        {
+          "caller": "init_rabbitmq",
+          "callee": "rag_setup_queue",
+          "lineNumber": 19
+        },
+        {
+          "caller": "init_rabbitmq",
+          "callee": "chat_setup_queue",
+          "lineNumber": 20
+        },
+        {
+          "caller": "init_rabbitmq",
+          "callee": "asyncio.create_task",
+          "lineNumber": 24
+        },
+        {
+          "caller": "init_rabbitmq",
+          "callee": "rabbitmq_start_consumer.rag",
+          "lineNumber": 24
+        },
+        {
+          "caller": "init_rabbitmq",
+          "callee": "asyncio.create_task",
+          "lineNumber": 25
+        },
+        {
+          "caller": "init_rabbitmq",
+          "callee": "rabbitmq_start_consumer.chat",
+          "lineNumber": 25
+        },
+        {
+          "caller": "close_rabbitmq",
+          "callee": "connection.close",
+          "lineNumber": 31
+        },
+        {
+          "caller": "close_rabbitmq",
+          "callee": "logger.info",
+          "lineNumber": 32
+        }
+      ],
+      "metrics": {
+        "importCount": 4,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/core/settings.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 100,
+      "nonEmptyLines": 72,
+      "classes": [
+        {
+          "name": "ServerConfig",
+          "startLine": 10,
+          "endLine": 11,
+          "methods": [],
+          "properties": [
+            "port"
+          ]
+        },
+        {
+          "name": "RabbitMqConfig",
+          "startLine": 14,
+          "endLine": 20,
+          "methods": [],
+          "properties": [
+            "host",
+            "port",
+            "user",
+            "password",
+            "rag_queue",
+            "chat_queue"
+          ]
+        },
+        {
+          "name": "MysqlConfig",
+          "startLine": 23,
+          "endLine": 32,
+          "methods": [
+            "url"
+          ],
+          "properties": [
+            "host",
+            "port",
+            "user",
+            "password",
+            "database"
+          ]
+        },
+        {
+          "name": "RedisConfig",
+          "startLine": 35,
+          "endLine": 40,
+          "methods": [],
+          "properties": [
+            "host",
+            "port",
+            "user",
+            "password",
+            "db"
+          ]
+        },
+        {
+          "name": "OllamaConfig",
+          "startLine": 43,
+          "endLine": 46,
+          "methods": [],
+          "properties": [
+            "base_url",
+            "embedding_model"
+          ]
+        },
+        {
+          "name": "ChromaConfig",
+          "startLine": 49,
+          "endLine": 51,
+          "methods": [],
+          "properties": [
+            "host",
+            "port"
+          ]
+        },
+        {
+          "name": "ModelApiKey",
+          "startLine": 54,
+          "endLine": 55,
+          "methods": [],
+          "properties": [
+            "qwen_model"
+          ]
+        },
+        {
+          "name": "ModelConfig",
+          "startLine": 58,
+          "endLine": 62,
+          "methods": [],
+          "properties": [
+            "default_llm",
+            "default_json_llm",
+            "default_embedding",
+            "emotion_llm"
+          ]
+        },
+        {
+          "name": "ModelByScenario",
+          "startLine": 65,
+          "endLine": 71,
+          "methods": [],
+          "properties": [
+            "chat_llm",
+            "chat_json_llm",
+            "memory_llm",
+            "memory_json_llm",
+            "summary_llm",
+            "extraction_llm"
+          ]
+        },
+        {
+          "name": "LangSmithConfig",
+          "startLine": 74,
+          "endLine": 77,
+          "methods": [],
+          "properties": [
+            "tracing_enabled",
+            "api_key",
+            "project"
+          ]
+        },
+        {
+          "name": "Settings",
+          "startLine": 80,
+          "endLine": 97,
+          "methods": [],
+          "properties": [
+            "rabbitmq",
+            "mysql",
+            "server",
+            "redis",
+            "chroma",
+            "ollama",
+            "key",
+            "model",
+            "model_by_scenario",
+            "langsmith"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "ServerConfig",
+          "line": 10,
+          "isDefault": false
+        },
+        {
+          "name": "RabbitMqConfig",
+          "line": 14,
+          "isDefault": false
+        },
+        {
+          "name": "MysqlConfig",
+          "line": 23,
+          "isDefault": false
+        },
+        {
+          "name": "RedisConfig",
+          "line": 35,
+          "isDefault": false
+        },
+        {
+          "name": "OllamaConfig",
+          "line": 43,
+          "isDefault": false
+        },
+        {
+          "name": "ChromaConfig",
+          "line": 49,
+          "isDefault": false
+        },
+        {
+          "name": "ModelApiKey",
+          "line": 54,
+          "isDefault": false
+        },
+        {
+          "name": "ModelConfig",
+          "line": 58,
+          "isDefault": false
+        },
+        {
+          "name": "ModelByScenario",
+          "line": 65,
+          "isDefault": false
+        },
+        {
+          "name": "LangSmithConfig",
+          "line": 74,
+          "isDefault": false
+        },
+        {
+          "name": "Settings",
+          "line": 80,
+          "isDefault": false
+        }
+      ],
+      "metrics": {
+        "importCount": 0,
+        "exportCount": 11,
+        "functionCount": 0,
+        "classCount": 11
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/app/service/chat/intent_classifier.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 282,
+      "nonEmptyLines": 224,
+      "functions": [
+        {
+          "name": "_init_intent_embeddings",
+          "startLine": 36,
+          "endLine": 54,
+          "params": []
+        },
+        {
+          "name": "_ensure_initialized",
+          "startLine": 59,
+          "endLine": 64,
+          "params": []
+        },
+        {
+          "name": "match_intent_by_rule",
+          "startLine": 71,
+          "endLine": 109,
+          "params": [
+            "query"
+          ]
+        },
+        {
+          "name": "match_intent_by_semantic",
+          "startLine": 116,
+          "endLine": 181,
+          "params": [
+            "query",
+            "query_embedding"
+          ]
+        },
+        {
+          "name": "classify_intent",
+          "startLine": 188,
+          "endLine": 229,
+          "params": [
+            "query",
+            "query_embedding"
+          ]
+        },
+        {
+          "name": "classify_event_type",
+          "startLine": 236,
+          "endLine": 261,
+          "params": [
+            "content",
+            "query_embedding"
+          ]
+        },
+        {
+          "name": "get_retrieval_params",
+          "startLine": 268,
+          "endLine": 282,
+          "params": [
+            "intent_result"
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "name": "_init_intent_embeddings",
+          "line": 36,
+          "isDefault": false
+        },
+        {
+          "name": "_ensure_initialized",
+          "line": 59,
+          "isDefault": false
+        },
+        {
+          "name": "match_intent_by_rule",
+          "line": 71,
+          "isDefault": false
+        },
+        {
+          "name": "match_intent_by_semantic",
+          "line": 116,
+          "isDefault": false
+        },
+        {
+          "name": "classify_intent",
+          "line": 188,
+          "isDefault": false
+        },
+        {
+          "name": "classify_event_type",
+          "line": 236,
+          "isDefault": false
+        },
+        {
+          "name": "get_retrieval_params",
+          "line": 268,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "_init_intent_embeddings",
+          "callee": "list",
+          "lineNumber": 44
+        },
+        {
+          "caller": "_init_intent_embeddings",
+          "callee": "INTENT_EXAMPLES.keys",
+          "lineNumber": 44
+        },
+        {
+          "caller": "_init_intent_embeddings",
+          "callee": "INTENT_EXAMPLES.items",
+          "lineNumber": 46
+        },
+        {
+          "caller": "_init_intent_embeddings",
+          "callee": "chroma_model.embed",
+          "lineNumber": 49
+        },
+        {
+          "caller": "_init_intent_embeddings",
+          "callee": "np.array",
+          "lineNumber": 50
+        },
+        {
+          "caller": "_init_intent_embeddings",
+          "callee": "logger.info",
+          "lineNumber": 51
+        },
+        {
+          "caller": "_init_intent_embeddings",
+          "callee": "len",
+          "lineNumber": 51
+        },
+        {
+          "caller": "_init_intent_embeddings",
+          "callee": "logger.warning",
+          "lineNumber": 53
+        },
+        {
+          "caller": "_init_intent_embeddings",
+          "callee": "np.array",
+          "lineNumber": 54
+        },
+        {
+          "caller": "_ensure_initialized",
+          "callee": "_init_intent_embeddings",
+          "lineNumber": 63
+        },
+        {
+          "caller": "match_intent_by_rule",
+          "callee": "re.match",
+          "lineNumber": 83
+        },
+        {
+          "caller": "match_intent_by_rule",
+          "callee": "RETRIEVAL_STRATEGY.get",
+          "lineNumber": 85
+        },
+        {
+          "caller": "match_intent_by_rule",
+          "callee": "IntentResult",
+          "lineNumber": 98
+        },
+        {
+          "caller": "match_intent_by_rule",
+          "callee": "strategy.get",
+          "lineNumber": 101
+        },
+        {
+          "caller": "match_intent_by_rule",
+          "callee": "logger.warning",
+          "lineNumber": 106
+        },
+        {
+          "caller": "match_intent_by_semantic",
+          "callee": "_ensure_initialized",
+          "lineNumber": 130
+        },
+        {
+          "caller": "match_intent_by_semantic",
+          "callee": "np.array",
+          "lineNumber": 135
+        },
+        {
+          "caller": "match_intent_by_semantic",
+          "callee": "chroma_model.embed",
+          "lineNumber": 135
+        },
+        {
+          "caller": "match_intent_by_semantic",
+          "callee": "logger.warning",
+          "lineNumber": 137
+        },
+        {
+          "caller": "match_intent_by_semantic",
+          "callee": "INTENT_EMBEDDINGS.items",
+          "lineNumber": 144
+        },
+        {
+          "caller": "match_intent_by_semantic",
+          "callee": "len",
+          "lineNumber": 145
+        },
+        {
+          "caller": "match_intent_by_semantic",
+          "callee": "np.linalg.norm",
+          "lineNumber": 153
+        },
+        {
+          "caller": "match_intent_by_semantic",
+          "callee": "np.linalg.norm",
+          "lineNumber": 154
+        },
+        {
+          "caller": "match_intent_by_semantic",
+          "callee": "np.dot",
+          "lineNumber": 157
+        },
+        {
+          "caller": "match_intent_by_semantic",
+          "callee": "np.max",
+          "lineNumber": 158
+        },
+        {
+          "caller": "match_intent_by_semantic",
+          "callee": "np.mean",
+          "lineNumber": 159
+        },
+        {
+          "caller": "match_intent_by_semantic",
+          "callee": "RETRIEVAL_STRATEGY.get",
+          "lineNumber": 173
+        },
+        {
+          "caller": "match_intent_by_semantic",
+          "callee": "IntentResult",
+          "lineNumber": 175
+        },
+        {
+          "caller": "match_intent_by_semantic",
+          "callee": "strategy.get",
+          "lineNumber": 177
+        },
+        {
+          "caller": "match_intent_by_semantic",
+          "callee": "strategy.get",
+          "lineNumber": 178
+        },
+        {
+          "caller": "match_intent_by_semantic",
+          "callee": "strategy.get",
+          "lineNumber": 179
+        },
+        {
+          "caller": "match_intent_by_semantic",
+          "callee": "float",
+          "lineNumber": 180
+        },
+        {
+          "caller": "classify_intent",
+          "callee": "match_intent_by_rule",
+          "lineNumber": 208
+        },
+        {
+          "caller": "classify_intent",
+          "callee": "logger.debug",
+          "lineNumber": 210
+        },
+        {
+          "caller": "classify_intent",
+          "callee": "match_intent_by_semantic",
+          "lineNumber": 214
+        },
+        {
+          "caller": "classify_intent",
+          "callee": "logger.debug",
+          "lineNumber": 216
+        },
+        {
+          "caller": "classify_intent",
+          "callee": "logger.debug",
+          "lineNumber": 221
+        },
+        {
+          "caller": "classify_intent",
+          "callee": "IntentResult",
+          "lineNumber": 223
+        },
+        {
+          "caller": "classify_intent",
+          "callee": "default_strategy.get",
+          "lineNumber": 225
+        },
+        {
+          "caller": "classify_intent",
+          "callee": "default_strategy.get",
+          "lineNumber": 226
+        },
+        {
+          "caller": "classify_intent",
+          "callee": "default_strategy.get",
+          "lineNumber": 227
+        },
+        {
+          "caller": "classify_event_type",
+          "callee": "classify_intent",
+          "lineNumber": 253
+        },
+        {
+          "caller": "classify_event_type",
+          "callee": "INTENT_TO_EVENT_TYPE.get",
+          "lineNumber": 254
+        },
+        {
+          "caller": "classify_event_type",
+          "callee": "logger.debug",
+          "lineNumber": 256
+        }
+      ],
+      "metrics": {
+        "importCount": 2,
+        "exportCount": 7,
+        "functionCount": 7,
+        "classCount": 0
+      }
+    },
+    {
+      "path": "FoxChatRAG-python/main.py",
+      "language": "python",
+      "fileCategory": "code",
+      "totalLines": 77,
+      "nonEmptyLines": 61,
+      "functions": [
+        {
+          "name": "lifespan",
+          "startLine": 18,
+          "endLine": 55,
+          "params": [
+            "app"
+          ]
+        },
+        {
+          "name": "health_check",
+          "startLine": 66,
+          "endLine": 67,
+          "params": []
+        }
+      ],
+      "exports": [
+        {
+          "name": "lifespan",
+          "line": 17,
+          "isDefault": false
+        },
+        {
+          "name": "health_check",
+          "line": 65,
+          "isDefault": false
+        }
+      ],
+      "callGraph": [
+        {
+          "caller": "lifespan",
+          "callee": "asyncio.gather",
+          "lineNumber": 25
+        },
+        {
+          "caller": "lifespan",
+          "callee": "retry_connect",
+          "lineNumber": 26
+        },
+        {
+          "caller": "lifespan",
+          "callee": "retry_connect",
+          "lineNumber": 27
+        },
+        {
+          "caller": "lifespan",
+          "callee": "init_rabbitmq",
+          "lineNumber": 28
+        },
+        {
+          "caller": "lifespan",
+          "callee": "asyncio.create_task",
+          "lineNumber": 33
+        },
+        {
+          "caller": "lifespan",
+          "callee": "timer_scheduler",
+          "lineNumber": 33
+        },
+        {
+          "caller": "lifespan",
+          "callee": "logger.info",
+          "lineNumber": 34
+        },
+        {
+          "caller": "lifespan",
+          "callee": "int",
+          "lineNumber": 37
+        },
+        {
+          "caller": "lifespan",
+          "callee": "os.getenv",
+          "lineNumber": 37
+        },
+        {
+          "caller": "lifespan",
+          "callee": "asyncio.create_task",
+          "lineNumber": 40
+        },
+        {
+          "caller": "lifespan",
+          "callee": "start_grpc_server",
+          "lineNumber": 40
+        },
+        {
+          "caller": "lifespan",
+          "callee": "logger.info",
+          "lineNumber": 41
+        },
+        {
+          "caller": "lifespan",
+          "callee": "logger.warning",
+          "lineNumber": 43
+        },
+        {
+          "caller": "lifespan",
+          "callee": "ensure_collection_dimensions",
+          "lineNumber": 48
+        },
+        {
+          "caller": "lifespan",
+          "callee": "logger.warning",
+          "lineNumber": 50
+        },
+        {
+          "caller": "lifespan",
+          "callee": "close_rabbitmq",
+          "lineNumber": 55
+        },
+        {
+          "caller": "health_check",
+          "callee": "datetime.now().isoformat",
+          "lineNumber": 67
+        },
+        {
+          "caller": "health_check",
+          "callee": "datetime.now",
+          "lineNumber": 67
+        }
+      ],
+      "metrics": {
+        "importCount": 5,
+        "exportCount": 2,
+        "functionCount": 2,
+        "classCount": 0
+      }
+    }
+  ]
+}
