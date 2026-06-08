@@ -28,11 +28,27 @@ from app.service.llm_config_service import get_llm_configs_batch
 from app.util import chroma_util
 from app.util.template_util import escape_template
 
+# ── 健谈程度 → 输出长度指导映射 ──────────────────────
+# (上限阈值, 指导文本)，按阈值升序排列，查找时取第一个命中
+_TALKATIVENESS_GUIDANCE: list[tuple[float, str]] = [
+    (0.25, "当前角色极度寡言，每次只回应最必要的词，几乎不展开。越短越好。"),
+    (0.55, "当前角色话量适中，像日常聊天一样自然回应，可以适当展开但不要过度。"),
+    (0.85, "当前角色健谈，欢迎多段展开，用动作与对话交替构建生动互动。多说话，不要简短回应，至少3-4轮对话内容的量。"),
+    (1.00, "当前角色话痨，尽情表达，连续说很多很多话。用丰富的动作和对话交替构建沉浸式互动体验。禁止简短回应，每次回复要像真正话痨的人一样长篇大论。"),
+]
+
+
+def _get_talkativeness_guidance(talkativeness: float) -> str:
+    """根据健谈程度分数返回对应的输出长度指导文本。"""
+    for threshold, guidance in _TALKATIVENESS_GUIDANCE:
+        if talkativeness <= threshold:
+            return guidance
+    return _TALKATIVENESS_GUIDANCE[-1][1]
+
 
 async def _build_chat_messages(
     parsed: "ParsedMemories",
     history_msg: List[BaseMessage],
-    init_memory: str,
     msg_content: str,
     user_id: str,
     llm_id: str,
@@ -82,28 +98,20 @@ async def _build_chat_messages(
         soul=soul or "",
         role_declaration=parsed.role_declaration,
         core_anchor=parsed.core_anchor_text,
-        character_card=init_memory,
+        character_card="",
         character_card_detail=parsed.character_card_detail,
         mes_example=parsed.character_card_examples,
     )
 
     # 构建行为指南注入文本
-    behavior_guide_text = ""
-    if parsed.behavior_guide_text and parsed.behavior_guide_text.strip():
-        behavior_guide_text = f"【行为指南】\n{parsed.behavior_guide_text.strip()}"
+    behavior_guide_text = (parsed.behavior_guide_text or "").strip()
 
-    # 根据健谈程度构建长度指导
+    # 根据健谈指数构建长度指导
     talkativeness = parsed.talkativeness
-    if talkativeness <= 0.25:
-        talkativeness_guidance = "【输出长度指导】当前角色极度寡言，每次只回应最必要的词，几乎不展开。越短越好。"
-    elif talkativeness <= 0.55:
-        talkativeness_guidance = "【输出长度指导】当前角色话量适中，像日常聊天一样自然回应，可以适当展开但不要过度。"
-    elif talkativeness <= 0.85:
-        talkativeness_guidance = "【输出长度指导】当前角色健谈，欢迎多段展开，用动作与对话交替构建生动互动。多说话，不要简短回应，至少3-4轮对话内容的量。"
-    else:
-        talkativeness_guidance = "【输出长度指导】当前角色话痨，尽情表达，连续说很多很多话。用丰富的动作和对话交替构建沉浸式互动体验。禁止简短回应，每次回复要像真正话痨的人一样长篇大论。"
-    logger.debug(f"【健谈程度】talkativeness={talkativeness}, guidance={talkativeness_guidance}")
+    talkativeness_guidance = _get_talkativeness_guidance(talkativeness)
+    logger.debug(f"【健谈指数】talkativeness={talkativeness}, guidance={talkativeness_guidance}")
 
+    # 构建注入提示词
     payload = build_prompt_payload(
         static_anchors=static_anchors,
         user_profile_summary=parsed.user_profile_summary,
@@ -128,8 +136,10 @@ async def _build_chat_messages(
         msg_type = msg.type if hasattr(msg, 'type') else "user"
         role = {"human": "user", "ai": "assistant"}.get(msg_type, msg_type)
         messages.append({"role": role, "content": msg.content})
+    # 用户信息
     messages.append({"role": "user", "content": msg_content})
 
+    # 构建提示词
     system_prompt = prompt_text.format(
         static_anchors=payload.static_anchors,
         user_profile_summary=payload.user_profile_summary,
@@ -147,11 +157,9 @@ async def _build_chat_messages(
 
     return messages, config_map, system_prompt
 
-
 async def invoke_llm_with_retrieval(
     parsed: "ParsedMemories",
     history_msg: List[BaseMessage],
-    init_memory: str,
     msg_content: str,
     user_id: str,
     llm_id: str,
@@ -165,7 +173,6 @@ async def invoke_llm_with_retrieval(
     Args:
         parsed: 解析后的记忆数据
         history_msg: 历史消息列表
-        init_memory: 初始化记忆
         msg_content: 用户消息内容
         user_id: 用户 ID
         llm_id: 模型 ID
@@ -179,7 +186,6 @@ async def invoke_llm_with_retrieval(
     messages, config_map, _ = await _build_chat_messages(
         parsed=parsed,
         history_msg=history_msg,
-        init_memory=init_memory,
         msg_content=msg_content,
         user_id=user_id,
         llm_id=llm_id,
@@ -195,7 +201,6 @@ async def invoke_llm_with_retrieval(
 async def stream_llm_with_retrieval(
     parsed: "ParsedMemories",
     history_msg: List[BaseMessage],
-    init_memory: str,
     msg_content: str,
     user_id: str,
     llm_id: str,
@@ -215,7 +220,6 @@ async def stream_llm_with_retrieval(
     messages, config_map, _ = await _build_chat_messages(
         parsed=parsed,
         history_msg=history_msg,
-        init_memory=init_memory,
         msg_content=msg_content,
         user_id=user_id,
         llm_id=llm_id,

@@ -8,11 +8,6 @@ Redis Key 构建工具
 from app.common.constant.LLMChatConstant import LLMChatConstant, build_memory_key
 
 
-def build_init_memory_key(user_id: str, llm_id: str) -> str:
-    """构建初始化记忆 key"""
-    return build_memory_key(LLMChatConstant.INIT_MEMORY, user_id, llm_id)
-
-
 def build_recent_msg_key(user_id: str, llm_id: str) -> str:
     """构建最近消息 key"""
     return build_memory_key(LLMChatConstant.RECENT_MSG, user_id, llm_id)

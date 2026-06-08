@@ -157,7 +157,6 @@ async def invoke_llm(state: ChatState, config: dict = None) -> dict:
         async for token in stream_llm_with_retrieval(
             parsed=state["parsed"],
             history_msg=state["history_msg"],
-            init_memory=state["memories"].init_memory,
             msg_content=state["msg_content"],
             user_id=state["user_id"],
             llm_id=state["llm_id"],
@@ -173,7 +172,6 @@ async def invoke_llm(state: ChatState, config: dict = None) -> dict:
         response = await invoke_llm_with_retrieval(
             parsed=state["parsed"],
             history_msg=state["history_msg"],
-            init_memory=state["memories"].init_memory,
             msg_content=state["msg_content"],
             user_id=state["user_id"],
             llm_id=state["llm_id"],

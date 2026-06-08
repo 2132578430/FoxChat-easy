@@ -13,7 +13,6 @@ class ChatMemories:
     """
     聊天所需的记忆数据容器
     """
-    init_memory: str
     recent_msg: List[str]
     character_card_json: str
     core_anchor_json: str

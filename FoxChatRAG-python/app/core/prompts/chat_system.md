@@ -10,6 +10,8 @@
 【当前状态】
 {current_state}
 
+【行为指南】
 {behavior_guide}
 
+【输出长度指导】
 {talkativeness_guidance}

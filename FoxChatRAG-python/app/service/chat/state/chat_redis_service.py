@@ -19,7 +19,7 @@ from app.common.constant.LLMChatConstant import LLMChatConstant, build_memory_ke
 from app.core.db.redis_client import redis_client
 from app.exception.BusinessException import BusinessException
 from app.common.constant.MsgStatusConstant import MsgStatusConstant
-from app.service.chat.common import build_init_memory_key, build_recent_msg_key, build_current_state_key
+from app.service.chat.common import build_recent_msg_key, build_current_state_key
 from app.service.chat.types import ChatMemories
 
 
@@ -63,12 +63,11 @@ async def fetch_all_memories(user_id: str, llm_id: str) -> "ChatMemories":
     Returns:
         ChatMemories 对象
     """
-    init_memory_key = build_init_memory_key(user_id, llm_id)
     recent_msg_key = build_recent_msg_key(user_id, llm_id)
     current_state_key = build_current_state_key(user_id, llm_id)
 
     pip = redis_client.pipeline()
-    pip.get(init_memory_key)
+    # 获取
     pip.lrange(recent_msg_key, 0, 29)
     pip.get(build_memory_key(LLMChatConstant.CHARACTER_CARD, user_id, llm_id))
     pip.get(build_memory_key(LLMChatConstant.CORE_ANCHOR, user_id, llm_id))
@@ -81,22 +80,21 @@ async def fetch_all_memories(user_id: str, llm_id: str) -> "ChatMemories":
 
     # 处理 current_state JSON
     current_state_json = ""
-    if result[6]:
-        if isinstance(result[6], dict):
-            current_state_json = json.dumps(result[6], ensure_ascii=False)
-        elif isinstance(result[6], str):
-            current_state_json = result[6]
+    if result[5]:
+        if isinstance(result[5], dict):
+            current_state_json = json.dumps(result[5], ensure_ascii=False)
+        elif isinstance(result[5], str):
+            current_state_json = result[5]
         else:
-            logger.warning(f"current_state Redis 数据格式异常: type={type(result[6])}")
+            logger.warning(f"current_state Redis 数据格式异常: type={type(result[5])}")
             current_state_json = ""
 
     return ChatMemories(
-        init_memory=result[0] or "",
-        recent_msg=result[1],
-        character_card_json=result[2] or "",
-        core_anchor_json=result[3] or "",
-        user_profile_json=result[4] or "",
-        memory_bank_json=result[5] or "",
+        recent_msg=result[0],
+        character_card_json=result[1] or "",
+        core_anchor_json=result[2] or "",
+        user_profile_json=result[3] or "",
+        memory_bank_json=result[4] or "",
         current_state_json=current_state_json,
     )
 

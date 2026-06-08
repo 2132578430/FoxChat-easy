@@ -19,7 +19,6 @@ async def clear_chat_memory(user_id: str, llm_id: str) -> None:
         build_memory_key(LLMChatConstant.USER_PROFILE, user_id, llm_id),
         build_memory_key(LLMChatConstant.CHARACTER_CARD, user_id, llm_id),
         build_memory_key(LLMChatConstant.MEMORY_BANK, user_id, llm_id),
-        build_memory_key(LLMChatConstant.INIT_MEMORY, user_id, llm_id),
         build_memory_key(LLMChatConstant.RECENT_MSG, user_id, llm_id),
         build_memory_key(LLMChatConstant.ROLE_EMOTION_STATE, user_id, llm_id),
         build_memory_key(LLMChatConstant.ROLE_EMOTION_LOG, user_id, llm_id),
