@@ -18,7 +18,7 @@ from typing import List, Optional, Dict
 
 from loguru import logger
 
-from app.common.constant.LLMChatConstant import LLMChatConstant, build_memory_key, EVENT_TYPE_LABELS
+from app.common.constant.LLMChatConstant import LLMChatConstant, build_chat_key, EVENT_TYPE_LABELS
 from app.core.db.redis_client import redis_client
 from app.schemas.memory_event import MemoryEvent, EventActor, EventDetailType, EventType
 from app.util.chroma_util import search_history_events
@@ -243,7 +243,7 @@ def _bm25_retrieve_from_memory_bank(
     import jieba
     import math
 
-    memory_bank_key = build_memory_key(LLMChatConstant.MEMORY_BANK, user_id, llm_id)
+    memory_bank_key = build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.MEMORY_BANK)
     existing = redis_client.get(memory_bank_key)
     if not existing:
         return []

@@ -1,28 +1,12 @@
 """
-当前状态容器业务逻辑（简化版 V2）
+当前状态容器业务逻辑
 
 职责：
 - 管理 Redis 中的 current_state 存储
 - 提供状态的读取、更新、覆盖、过期机制
 - 支持从 legacy emotion_state 迁移
 
-【V2 简化说明】2026-05-05
-移除以下字段的存储和更新逻辑：
-- relation_state: 关系态势（暂无明确用途）
-- current_focus: 话题焦点（置信度不可信）
-- interaction_mode: 互动方式（暂无明确用途）
 
-保留字段：
-- emotion: 当前情绪
-
-阶段2改造：
-- 使用 RedisJSON 实现字段级原子更新
-- 避免整体覆盖导致的并发竞态问题
-- 使用相对轮数过期机制：(当前轮数 - 更新轮数) >= 过期轮数
-
-注意事项：
-- RedisJSON 对中文 JSON 对象写入有问题，需显式序列化
-- 使用 execute_command 直接执行命令，避免 redis-py 内部处理问题
 """
 
 import json
@@ -31,7 +15,7 @@ from typing import Optional
 
 from loguru import logger
 
-from app.common.constant.LLMChatConstant import LLMChatConstant, build_memory_key
+from app.common.constant.LLMChatConstant import LLMChatConstant, build_chat_key
 from app.core.db.redis_client import redis_client
 from app.schemas.current_state import (
     CurrentState,
@@ -39,7 +23,7 @@ from app.schemas.current_state import (
     UpdateSource,
 )
 from app.util.redis_json_util import json_set_safe
-from app.service.chat.common import EMOTION_CN_MAP, safe_json_parse, build_round_counter_key
+from app.service.chat.common import EMOTION_CN_MAP, safe_json_parse
 
 
 # 默认过期轮数配置（V2 简化版）
@@ -71,7 +55,7 @@ def _json_set(key: str, path: str, value) -> None:
 
 def _build_state_key(user_id: str, llm_id: str) -> str:
     """构建状态存储 key"""
-    return build_memory_key(LLMChatConstant.ROLE_CURRENT_STATE, user_id, llm_id)
+    return build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.ROLE_CURRENT_STATE)
 
 
 def get_current_state(user_id: str, llm_id: str, current_round: int = 0) -> CurrentState:
@@ -153,7 +137,7 @@ def _migrate_from_emotion_state(user_id: str, llm_id: str) -> Optional[CurrentSt
     Returns:
         迁移后的 CurrentState，若旧数据不存在则返回 None
     """
-    legacy_key = build_memory_key(LLMChatConstant.ROLE_EMOTION_STATE, user_id, llm_id)
+    legacy_key = build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.ROLE_EMOTION_STATE)
     legacy_json = redis_client.get(legacy_key)
 
     if not legacy_json:
@@ -386,13 +370,6 @@ def check_and_expire_fields(user_id: str, llm_id: str, current_round: int) -> Cu
     return get_current_state(user_id, llm_id, current_round)
 
 
-# ==================== 轮次计数器 ====================
-
-def _round_counter_key(user_id: str, llm_id: str) -> str:
-    """构建轮次计数器 key（使用公共模块）"""
-    return build_round_counter_key(user_id, llm_id)
-
-
 def increment_round_counter(user_id: str, llm_id: str) -> int:
     """
     递增轮次计数器
@@ -400,7 +377,7 @@ def increment_round_counter(user_id: str, llm_id: str) -> int:
     Returns:
         递增后的轮次数
     """
-    key = _round_counter_key(user_id, llm_id)
+    key = build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.ROUND_COUNTER)
 
     count = redis_client.incr(key)
     return count
@@ -413,7 +390,7 @@ def get_current_round(user_id: str, llm_id: str) -> int:
     Returns:
         当前轮次数
     """
-    key = _round_counter_key(user_id, llm_id)
+    key = build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.ROUND_COUNTER)
 
     count = redis_client.get(key)
     return int(count or 0)

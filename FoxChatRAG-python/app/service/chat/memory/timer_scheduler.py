@@ -21,7 +21,7 @@ from typing import List, Tuple
 
 from loguru import logger
 
-from app.common.constant.LLMChatConstant import LLMChatConstant, build_memory_key
+from app.common.constant.LLMChatConstant import LLMChatConstant, build_chat_key
 from app.core.db.redis_client import redis_client
 
 # Constants for hybrid trigger mechanism
@@ -104,7 +104,7 @@ async def timer_summary_check_single(user_id: str, llm_id: str) -> None:
         user_id: User ID
         llm_id: LLM/character ID
     """
-    recent_msg_key = build_memory_key(LLMChatConstant.RECENT_MSG, user_id, llm_id)
+    recent_msg_key = build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.RECENT_MSG)
     recent_msg_size = redis_client.llen(recent_msg_key)
 
     # Empty call optimization: skip if insufficient messages

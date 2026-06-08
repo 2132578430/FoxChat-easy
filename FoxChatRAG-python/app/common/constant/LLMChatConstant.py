@@ -2,7 +2,7 @@ from enum import StrEnum
 
 
 class LLMChatConstant(StrEnum):
-    CHAT_MEMORY = "chat:memory:"
+    CHAT_MEMORY = "chat:memory"
     RECENT_MSG = "recent_msg"
 
     RAW_EXPERIENCE = "raw_experience"
@@ -17,8 +17,22 @@ class LLMChatConstant(StrEnum):
     # 阶段2新增：当前状态容器与时间节点
     ROLE_CURRENT_STATE = "role_current_state"
 
-def build_memory_key(suffix: str, user_id: str, llm_id: str) -> str:
-    return f"{LLMChatConstant.CHAT_MEMORY}{user_id}:{llm_id}:{suffix}"
+    # 计数器
+    ROUND_COUNTER = "round_counter"
+
+    # Summary 相关 key 前缀
+    SUMMARY_LOCK = "summary_lock"
+    SUMMARY_COUNTER = "summary_counter"
+
+def build_chat_key(prefix: str, user_id: str, llm_id: str, suffix: str = "") -> str:
+    """统一构建聊天相关 Redis key
+
+    Args:
+        prefix: key 前缀，如 LLMChatConstant.CHAT_MEMORY / SUMMARY_LOCK
+        suffix: key 后缀（仅 chat:memory 前缀的 key 需要）
+    """
+    base = f"{prefix}:{user_id}:{llm_id}"
+    return f"{base}:{suffix}" if suffix else base
 
 
 # 事件类型中文标签映射（用于结构注入）

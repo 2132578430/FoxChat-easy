@@ -40,7 +40,7 @@ from app.service.chat.parsing.response_parser import parse_action_tags
 from app.service.chat.profile.emotion_classifier import classify_and_update_emotion
 from app.service.chat.memory.memory_summary_service import trigger_summary_with_counter
 from app.service.chat.memory.timer_scheduler import SUMMARY_MAX_TRIGGER_THRESHOLD
-from app.service.chat.common import build_recent_msg_key
+from app.common.constant.LLMChatConstant import LLMChatConstant, build_chat_key
 from app.util import strip_all_tags, strip_think_only
 from app.service.chat.types import ParsedMemories
 
@@ -56,7 +56,7 @@ async def pre_flight(state: ChatState) -> dict:
     # 当前轮数
     current_round = increment_round_counter(user_id, llm_id) - 1
     # 最近消息的key
-    recent_msg_key = build_recent_msg_key(user_id, llm_id)
+    recent_msg_key = build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.RECENT_MSG)
 
     return {
         "current_round": current_round,
@@ -213,7 +213,7 @@ async def trigger_summary(state: ChatState) -> dict:
     """消息数 >= 阈值时触发后台摘要"""
     from app.core.db.redis_client import redis_client
 
-    key = build_recent_msg_key(state["user_id"], state["llm_id"])
+    key = build_chat_key(LLMChatConstant.CHAT_MEMORY, state["user_id"], state["llm_id"], LLMChatConstant.RECENT_MSG)
     try:
         msg_count = await redis_client.llen(key) or 0
     except Exception:

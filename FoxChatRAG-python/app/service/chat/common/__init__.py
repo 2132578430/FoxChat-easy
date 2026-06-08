@@ -7,13 +7,7 @@
 from app.service.chat.common.json_parser import safe_json_parse
 from app.service.chat.common.emotion_mapper import EMOTION_CN_MAP, map_emotion_to_cn
 from app.service.chat.common.similarity import calc_jaccard_similarity, calc_word_overlap_ratio
-from app.service.chat.common.redis_keys import (
-    build_recent_msg_key,
-    build_current_state_key,
-    build_round_counter_key,
-    build_summary_lock_key,
-    build_summary_counter_key,
-)
+from app.common.constant.LLMChatConstant import build_chat_key
 
 __all__ = [
     # JSON 解析
@@ -25,9 +19,5 @@ __all__ = [
     "calc_jaccard_similarity",
     "calc_word_overlap_ratio",
     # Redis key 构建
-    "build_recent_msg_key",
-    "build_current_state_key",
-    "build_round_counter_key",
-    "build_summary_lock_key",
-    "build_summary_counter_key",
+    "build_chat_key",
 ]

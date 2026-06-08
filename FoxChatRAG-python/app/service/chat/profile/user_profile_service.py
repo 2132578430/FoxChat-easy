@@ -18,7 +18,7 @@ from typing import Dict, List, Optional
 
 from loguru import logger
 
-from app.common.constant.LLMChatConstant import LLMChatConstant, build_memory_key
+from app.common.constant.LLMChatConstant import LLMChatConstant, build_chat_key
 from app.core.db.redis_client import redis_client
 from app.core.db.mysql_client import async_session_local
 from app.service.chat.strategy.base_strategy import MemoryJSONInvokeStrategy
@@ -34,7 +34,7 @@ PROFILE_REQUIRED_DIMENSIONS = ["核心身份", "核心性格", "语言风格", "
 
 async def _get_user_profile(user_id: str, llm_id: str) -> Optional[Dict]:
     """从 Redis 获取用户画像"""
-    profile_key = build_memory_key(LLMChatConstant.USER_PROFILE, user_id, llm_id)
+    profile_key = build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.USER_PROFILE)
     profile_json = redis_client.get(profile_key)
 
     if not profile_json:
@@ -53,7 +53,7 @@ async def _get_user_profile(user_id: str, llm_id: str) -> Optional[Dict]:
 async def _save_user_profile(profile: Dict, user_id: str, llm_id: str) -> bool:
     """将用户画像保存到 Redis"""
     try:
-        profile_key = build_memory_key(LLMChatConstant.USER_PROFILE, user_id, llm_id)
+        profile_key = build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.USER_PROFILE)
         redis_client.set(profile_key, json.dumps(profile, ensure_ascii=False))
         logger.info(f"user_profile 更新成功: user_id={user_id}, llm_id={llm_id}")
         return True

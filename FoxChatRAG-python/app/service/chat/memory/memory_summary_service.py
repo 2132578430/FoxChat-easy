@@ -21,9 +21,9 @@ from typing import List, Tuple, Optional
 from langchain_core.documents import Document
 from loguru import logger
 
+from app.common.constant.LLMChatConstant import LLMChatConstant, build_chat_key
 from app.common.constant.ChromaTypeConstant import ChromaTypeConstant
 from app.common.constant.FileTypeConstant import FileTypeConstant
-from app.common.constant.LLMChatConstant import LLMChatConstant, build_memory_key
 from app.core.db.redis_client import redis_client
 from app.core.db.mysql_client import async_session_local
 from app.core.prompts.prompt_manager import PromptManager
@@ -73,14 +73,14 @@ def _load_event_list(raw_text: str) -> List[dict]:
 
 def _get_memory_bank(user_id: str, llm_id: str) -> List[dict]:
     """获取 memory_bank"""
-    key = build_memory_key(LLMChatConstant.MEMORY_BANK, user_id, llm_id)
+    key = build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.MEMORY_BANK)
     existing = redis_client.get(key)
     return safe_json_parse(existing, default=[], log_warning=False)
 
 
 def _save_memory_bank(memory_bank: List[dict], user_id: str, llm_id: str) -> None:
     """保存 memory_bank"""
-    key = build_memory_key(LLMChatConstant.MEMORY_BANK, user_id, llm_id)
+    key = build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.MEMORY_BANK)
     redis_client.set(key, json.dumps(memory_bank, ensure_ascii=False))
 
 
@@ -546,12 +546,12 @@ async def trigger_summary_with_counter(
     trigger_source: str
 ) -> None:
     """触发器入口（带分布式锁）"""
-    lock_key = f"summary_lock:{user_id}:{llm_id}"
+    lock_key = build_chat_key(LLMChatConstant.SUMMARY_LOCK, user_id, llm_id)
 
     # 尝试获取锁（60s超时）
     if not redis_client.set(lock_key, "1", nx=True, ex=60):
         # 锁被占用 → 队列计数
-        counter_key = f"summary_counter:{user_id}:{llm_id}"
+        counter_key = build_chat_key(LLMChatConstant.SUMMARY_COUNTER, user_id, llm_id)
         redis_client.incr(counter_key)
         redis_client.expire(counter_key, 300)
         logger.info(f"[{trigger_source}] Lock held, queued")
@@ -570,7 +570,7 @@ async def execute_summary_loop(
     trigger_source: str
 ) -> None:
     """执行总结循环（处理队列任务）"""
-    counter_key = f"summary_counter:{user_id}:{llm_id}"
+    counter_key = build_chat_key(LLMChatConstant.SUMMARY_COUNTER, user_id, llm_id)
 
     while True:
         size = redis_client.llen(recent_msg_key)

@@ -24,7 +24,7 @@ class ChatState(TypedDict, total=False):
     # === 记忆层 ===
     memories: ChatMemories
     parsed: ParsedMemories
-    history_msg: List[Any]  # List[BaseMessage]
+    history_msg: List[Any]
 
     # === Intent & Retrieval ===
     intent_result: Dict[str, Any]

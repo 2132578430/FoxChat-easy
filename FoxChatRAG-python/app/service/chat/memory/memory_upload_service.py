@@ -19,7 +19,7 @@ import hashlib
 import json
 from loguru import logger
 
-from app.common.constant.LLMChatConstant import LLMChatConstant, build_memory_key
+from app.common.constant.LLMChatConstant import LLMChatConstant, build_chat_key
 from app.core import redis_client
 from app.core.db.mysql_client import async_session_local
 from app.service.chat.strategy.base_strategy import ExtractionInvokeStrategy, MemoryInvokeStrategy
@@ -149,7 +149,7 @@ async def _process_memory_task(
 
         # 写入 Redis（如果指定了 constant_key）
         if constant_key:
-            redis_key = build_memory_key(constant_key, user_id, llm_id)
+            redis_key = build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, constant_key)
             redis_client.set(redis_key, json.dumps(result, ensure_ascii=False) if serialize_json else result)
 
         # 写入 Chroma（用于初始记忆，批量上传优化）
@@ -186,7 +186,7 @@ async def chat_init(body: str):
         logger.error("接收初始记忆有误")
         raise ValueError("接收初始记忆有误")
 
-    core_anchor_key = build_memory_key(LLMChatConstant.CORE_ANCHOR, user_id, llm_id)
+    core_anchor_key = build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.CORE_ANCHOR)
     existing_core_anchor = redis_client.get(core_anchor_key)
     if existing_core_anchor:
         logger.info(f"用户 {user_id} 的角色核心锚点已存在（llmId={llm_id}），跳过重复初始化")
@@ -234,7 +234,7 @@ async def chat_init(body: str):
         return
     logger.info(f"【激活预校验通过】llmId={llm_id}")
 
-    raw_key = build_memory_key(LLMChatConstant.RAW_EXPERIENCE, user_id, llm_id)
+    raw_key = build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.RAW_EXPERIENCE)
     redis_client.set(raw_key, experience)
 
     await asyncio.gather(

@@ -9,17 +9,16 @@
 """
 
 import json
-from typing import List, Optional
+from typing import List
 
 from loguru import logger
 from langchain_core.messages import HumanMessage, AIMessage
 from langchain_core.language_models.chat_models import BaseMessage
 
-from app.common.constant.LLMChatConstant import LLMChatConstant, build_memory_key
+from app.common.constant.LLMChatConstant import LLMChatConstant, build_chat_key
 from app.core.db.redis_client import redis_client
 from app.exception.BusinessException import BusinessException
 from app.common.constant.MsgStatusConstant import MsgStatusConstant
-from app.service.chat.common import build_recent_msg_key, build_current_state_key
 from app.service.chat.types import ChatMemories
 
 
@@ -63,16 +62,16 @@ async def fetch_all_memories(user_id: str, llm_id: str) -> "ChatMemories":
     Returns:
         ChatMemories 对象
     """
-    recent_msg_key = build_recent_msg_key(user_id, llm_id)
-    current_state_key = build_current_state_key(user_id, llm_id)
+    recent_msg_key = build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.RECENT_MSG)
+    current_state_key = build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.ROLE_CURRENT_STATE)
 
     pip = redis_client.pipeline()
-    # 获取
+    # 获取最近消息
     pip.lrange(recent_msg_key, 0, 29)
-    pip.get(build_memory_key(LLMChatConstant.CHARACTER_CARD, user_id, llm_id))
-    pip.get(build_memory_key(LLMChatConstant.CORE_ANCHOR, user_id, llm_id))
-    pip.get(build_memory_key(LLMChatConstant.USER_PROFILE, user_id, llm_id))
-    pip.get(build_memory_key(LLMChatConstant.MEMORY_BANK, user_id, llm_id))
+    pip.get(build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.CHARACTER_CARD))
+    pip.get(build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.CORE_ANCHOR))
+    pip.get(build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.USER_PROFILE))
+    pip.get(build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.MEMORY_BANK))
     # 此处用的是RedisJSON来保障多个状态操作之间的原子性
     pip.execute_command('JSON.GET', current_state_key)
 
