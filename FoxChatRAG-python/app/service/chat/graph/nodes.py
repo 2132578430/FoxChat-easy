@@ -48,19 +48,15 @@ from app.service.chat.types import ParsedMemories
 # 前缀处理
 async def pre_flight(state: ChatState) -> dict:
     """
-    轮数初始化 + 构建最近消息key
+    轮数初始化
     """
     user_id = state["user_id"]
     llm_id = state["llm_id"]
 
-    # 当前轮数
     current_round = increment_round_counter(user_id, llm_id) - 1
-    # 最近消息的key
-    recent_msg_key = build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.RECENT_MSG)
 
     return {
         "current_round": current_round,
-        "recent_msg_key": recent_msg_key,
     }
 
 
@@ -183,8 +179,9 @@ async def invoke_llm(state: ChatState, config: dict = None) -> dict:
 # 后续处理(保存消息+格式化输出消息+分析模型回复情绪+判断是否需要总结)
 async def save_message(state: ChatState) -> dict:
     """保存 human + AI 消息到 Redis"""
+    recent_msg_key = build_chat_key(LLMChatConstant.CHAT_MEMORY, state["user_id"], state["llm_id"], LLMChatConstant.RECENT_MSG)
     await save_chat_to_redis(
-        state["recent_msg_key"], state["msg_content"], state["ai_response"]
+        recent_msg_key, state["msg_content"], state["ai_response"]
     )
     return {}
 

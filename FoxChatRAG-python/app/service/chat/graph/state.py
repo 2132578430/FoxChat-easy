@@ -19,7 +19,6 @@ class ChatState(TypedDict, total=False):
 
     # === Pre-flight ===
     current_round: int
-    recent_msg_key: str
 
     # === 记忆层 ===
     memories: ChatMemories
