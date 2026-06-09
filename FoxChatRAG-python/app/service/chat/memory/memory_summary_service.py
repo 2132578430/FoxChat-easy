@@ -16,9 +16,8 @@ import asyncio
 import hashlib
 import json
 from datetime import datetime
-from typing import List, Tuple, Optional
+from typing import List
 
-from langchain_core.documents import Document
 from loguru import logger
 
 from app.common.constant.LLMChatConstant import LLMChatConstant, build_chat_key
@@ -43,7 +42,6 @@ SUMMARY_TRIGGER_THRESHOLD = 18
 # 去重配置
 DEDUP_CHECK_WINDOW = 20  # 检查最近20条
 DEDUP_SIMILARITY_THRESHOLD = 0.6  # 内容相似度阈值
-PROGRESS_KEYWORDS = ["后来", "结果", "还是", "已经", "最后", "终于", "完成了", "解决了"]
 
 
 # ============================================================
@@ -67,7 +65,7 @@ def _load_event_list(raw_text: str) -> List[dict]:
         events = data
 
     if not isinstance(events, list):
-        raise json.JSONDecodeError("event payload is not a valid list", raw_text, 0)
+        raise json.JSONDecodeError("事件列表格式错误", raw_text, 0)
     return events
 
 
@@ -85,73 +83,61 @@ def _save_memory_bank(memory_bank: List[dict], user_id: str, llm_id: str) -> Non
 
 
 # ============================================================
-# LLM Chain 构建
+# 公共辅助函数
 # ============================================================
 
-async def _build_chain(prompt_name: str, variables: List[str], human_template: str, llm_id: str = None, db = None, scenario: str = "extraction"):
+_SCENARIO_STRATEGY = {
+    "extraction": ExtractionInvokeStrategy,
+    "memory": MemoryInvokeStrategy,
+    "summary": SummaryInvokeStrategy,
+}
+
+
+def _get_strategy(scenario: str):
+    """根据场景获取 strategy 实例（替掉 _build_chain 的策略映射）"""
+    cls = _SCENARIO_STRATEGY.get(scenario, ExtractionInvokeStrategy)
+    return cls()
+
+
+async def _get_llm_config(llm_id: str, db=None) -> dict:
+    """获取 LLM 配置（提取 3 处重复的 config_map 获取逻辑）"""
+    from app.service.llm_config_service import get_llm_configs_batch
+    if not llm_id:
+        return {}
+    if db:
+        return await get_llm_configs_batch(llm_id, db)
+    async with async_session_local() as session:
+        return await get_llm_configs_batch(llm_id, session)
+
+
+async def _invoke_with_prompt(
+    prompt_name: str,
+    variables: list[str],
+    user_content: str,
+    strategy,
+    config_map: dict,
+) -> str:
     """
-    通用 Chain 构建器（使用策略层）
+    统一的 prompt 获取 → escape → 拼 messages → invoke
 
     Args:
-        prompt_name: Prompt 名称
+        prompt_name: Prompt 文件名称
         variables: 需要转义的变量列表
-        human_template: Human 模板
-        llm_id: AI 朋友 ID（用于查询配置）
-        db: 数据库会话
-        scenario: 场景名称（默认 extraction）
+        user_content: Human 消息内容
+        strategy: LLMInvokeStrategy 实例
+        config_map: LLM 配置字典
 
     Returns:
-        Chain 对象（已废弃，现在返回 (template, strategy) 供直接调用）
+        LLM 响应文本
     """
-    from langchain_core.prompts import ChatPromptTemplate
+    prompt_text = await PromptManager.get_prompt(prompt_name)
+    prompt_text = escape_template(prompt_text, variables)
+    messages = [
+        {"role": "system", "content": prompt_text},
+        {"role": "user", "content": user_content},
+    ]
+    return await strategy.invoke(messages, config_map)
 
-    prompt_str = await PromptManager.get_prompt(prompt_name)
-    prompt_str = escape_template(prompt_str, variables)
-    template = ChatPromptTemplate([
-        ("system", prompt_str),
-        ("human", human_template)
-    ])
-
-    # 返回 template 和 strategy（不再使用 LangChain chain）
-    if scenario == "extraction":
-        strategy = ExtractionInvokeStrategy()
-    elif scenario == "memory":
-        strategy = MemoryInvokeStrategy()
-    elif scenario == "summary":
-        strategy = SummaryInvokeStrategy()
-    else:
-        strategy = ExtractionInvokeStrategy()
-
-    return template, strategy
-
-
-async def _build_summary_chain(llm_id: str = None, db = None):
-    """构建消息总结 Chain（使用策略层）"""
-    return await _build_chain(
-        "memory_summary",
-        ["recent_msg_list"],
-        "The chat history between the user and the role currently played by the AI is: {chat_history_msg}",
-        llm_id=llm_id,
-        db=db,
-        scenario="summary"
-    )
-
-
-async def _build_event_extractor_chain(llm_id: str = None, db = None):
-    """构建事件提取 Chain（使用策略层）"""
-    return await _build_chain(
-        "memory_event_extractor.md",
-        ["input_content"],
-        "Extract structured memory events from this conversation:\n{input_content}",
-        llm_id=llm_id,
-        db=db,
-        scenario="extraction"
-    )
-
-
-# ============================================================
-# 事件提取
-# ============================================================
 
 async def _extract_memory_events(recent_msg_list: List[str], llm_id: str = None, db = None) -> List[dict]:
     """
@@ -169,29 +155,15 @@ async def _extract_memory_events(recent_msg_list: List[str], llm_id: str = None,
         return []
 
     chat_history = "\n".join(recent_msg_list)
-    template, strategy = await _build_event_extractor_chain(llm_id, db)
-
-    # 构建 messages
-    prompt_text = await PromptManager.get_prompt("memory_event_extractor.md")
-    prompt_text = escape_template(prompt_text, ["input_content"])
-
-    messages = [
-        {"role": "system", "content": prompt_text},
-        {"role": "user", "content": f"Extract structured memory events from this conversation:\n{chat_history}"}
-    ]
-
-    # 获取配置（如果没有传入 db，则自动创建 session）
-    from app.service.llm_config_service import get_llm_configs_batch
-    if llm_id:
-        if db:
-            config_map = await get_llm_configs_batch(llm_id, db)
-        else:
-            async with async_session_local() as session:
-                config_map = await get_llm_configs_batch(llm_id, session)
-    else:
-        config_map = {}
-
-    result = await strategy.invoke(messages, config_map)
+    strategy = _get_strategy("extraction")
+    config_map = await _get_llm_config(llm_id, db)
+    result = await _invoke_with_prompt(
+        "memory_event_extractor.md",
+        ["input_content"],
+        f"Extract structured memory events from this conversation:\n{chat_history}",
+        strategy,
+        config_map,
+    )
 
     try:
         events = _load_event_list(result)
@@ -219,23 +191,18 @@ async def _extract_memory_events(recent_msg_list: List[str], llm_id: str = None,
 
 
 # ============================================================
-# 去重与续写判断
+# 去重判断
 # ============================================================
 
-def _calc_content_similarity(content1: str, content2: str) -> float:
-    """计算内容相似度（使用公共模块）"""
-    return calc_jaccard_similarity(content1, content2)
-
-
-def _check_duplicate_or_continuation(
+def _check_duplicate(
     new_event: dict,
     existing_events: List[dict]
-) -> Tuple[bool, bool, Optional[dict]]:
+) -> bool:
     """
-    检查去重或续写
+    检查新事件是否与已有事件重复（短窗口 Jaccard 相似度去重）
 
     Returns:
-        (is_duplicate, is_continuation, merge_target)
+        True 如果判定为重复应丢弃，False 否则
     """
     new_actor = new_event.get("actor", "UNKNOWN")
     new_event_type = new_event.get("event_type", "other")
@@ -249,70 +216,12 @@ def _check_duplicate_or_continuation(
             continue
 
         existing_content = existing.get("content", "")
-
-        # 短窗重复判断
-        similarity = _calc_content_similarity(new_content, existing_content)
+        similarity = calc_jaccard_similarity(new_content, existing_content)
         if similarity >= DEDUP_SIMILARITY_THRESHOLD:
             logger.debug(f"【事件去重】跳过（相似度 {similarity:.2f}): {new_content[:30]}...")
-            return True, False, None
+            return True
 
-        # 长窗续写判断
-        has_progress = any(kw in new_content for kw in PROGRESS_KEYWORDS)
-        if has_progress and existing_content:
-            overlap = len(set(new_content.split()) & set(existing_content.split()))
-            if overlap >= 1:
-                logger.debug(f"【事件续写】合并: {new_content[:30]}...")
-                return False, True, existing
-
-    return False, False, None
-
-
-def _merge_continuation_event(target: dict, new_event: dict) -> None:
-    """续写合并：更新目标事件"""
-    target["content"] = f"{target.get('content', '')} [续写] {new_event.get('content', '')}"
-    target["last_seen_at"] = new_event.get("time", "")
-    target["importance"] = max(target.get("importance", 0.5), new_event.get("importance", 0.5))
-    target["activity_score"] = max(target.get("activity_score", 1.0), new_event.get("activity_score", 1.0))
-
-
-# ============================================================
-# Chroma 同步
-# ============================================================
-
-async def _sync_event_to_chroma(event: dict, user_id: str, llm_id: str) -> bool:
-    """同步单个事件到 Chroma"""
-    try:
-        await chroma_util.upload_history_event(
-            event_content=event.get("content", ""),
-            event_id=event.get("event_id", ""),
-            user_id=user_id,
-            llm_id=llm_id,
-            actor=event.get("actor", "UNKNOWN"),
-            event_type=event.get("event_type", "other"),
-            importance=event.get("importance", 0.5),
-            source_round=event.get("source_round", 0),
-            occurred_at=event.get("occurred_at", ""),
-            last_seen_at=event.get("last_seen_at", ""),
-            type=event.get("type", "event"),
-            source_snippet=event.get("source_snippet", ""),
-            activity_score=event.get("activity_score", 1.0),
-            category=event.get("category", "event"),  # 新增 category
-        )
-        return True
-    except Exception as e:
-        logger.warning(f"【Chroma同步】失败: {event.get('event_id', '')[:30]}, error={e}")
-        return False
-
-
-async def _sync_merged_event_to_chroma(event_id: str, event: dict, user_id: str, llm_id: str) -> bool:
-    """同步续写合并事件到 Chroma（删除旧版本+重写）"""
-    try:
-        await chroma_util.delete(ChromaTypeConstant.CHAT, event_id=event_id)
-        await _sync_event_to_chroma(event, user_id, llm_id)
-        return True
-    except Exception as e:
-        logger.warning(f"【Chroma续写同步】失败: {event_id[:30]}, error={e}")
-        return False
+    return False
 
 
 # ============================================================
@@ -328,37 +237,21 @@ async def _deduplicate_and_append_events(
     memory_bank = _get_memory_bank(user_id, llm_id)
 
     deduplicated = []
-    merged_ids = []
-
     for new_event in new_events:
-        is_dup, is_cont, target = _check_duplicate_or_continuation(new_event, memory_bank)
-
-        if is_dup:
+        if _check_duplicate(new_event, memory_bank):
             continue
+        deduplicated.append(new_event)
 
-        if is_cont and target:
-            _merge_continuation_event(target, new_event)
-            if target.get("event_id"):
-                merged_ids.append(target["event_id"])
-        else:
-            deduplicated.append(new_event)
+    if not deduplicated:
+        return
 
     # 更新 Redis
-    if deduplicated:
-        memory_bank.extend(deduplicated)
-        _save_memory_bank(memory_bank, user_id, llm_id)
-        logger.info(f"【历史事件入库】新增 {len(deduplicated)} 条")
+    memory_bank.extend(deduplicated)
+    _save_memory_bank(memory_bank, user_id, llm_id)
+    logger.info(f"【历史事件入库】新增 {len(deduplicated)} 条")
 
-        # 同步新增事件到 Chroma（批量上传优化）
-        await chroma_util.upload_history_events_batch(deduplicated, user_id, llm_id)
-
-    # 同步续写合并事件
-    if merged_ids:
-        for event_id in merged_ids:
-            for event in memory_bank[-DEDUP_CHECK_WINDOW:]:
-                if event.get("event_id") == event_id:
-                    await _sync_merged_event_to_chroma(event_id, event, user_id, llm_id)
-                    break
+    # 同步新增事件到 Chroma（批量上传优化）
+    await chroma_util.upload_history_events_batch(deduplicated, user_id, llm_id)
 
 
 # ============================================================
@@ -405,19 +298,8 @@ async def _compress_memory_bank_if_needed(user_id: str, llm_id: str, db = None) 
     ]
 
     # 使用 Memory 策略
-    strategy = MemoryInvokeStrategy()
-
-    # 获取配置（如果没有传入 db，则自动创建 session）
-    from app.service.llm_config_service import get_llm_configs_batch
-    if llm_id:
-        if db:
-            config_map = await get_llm_configs_batch(llm_id, db)
-        else:
-            async with async_session_local() as session:
-                config_map = await get_llm_configs_batch(llm_id, session)
-    else:
-        config_map = {}
-
+    strategy = _get_strategy("memory")
+    config_map = await _get_llm_config(llm_id, db)
     result = await strategy.invoke(messages, config_map)
 
     try:
@@ -460,29 +342,16 @@ async def _summary_and_upload(recent_msg_list: List[str], user_id: str, llm_id: 
     Returns:
         摘要文本
     """
-    template, strategy = await _build_summary_chain(llm_id, db)
-
-    # 构建 messages
-    prompt_text = await PromptManager.get_prompt("memory_summary")
-    prompt_text = escape_template(prompt_text, ["recent_msg_list"])
-
-    messages = [
-        {"role": "system", "content": prompt_text},
-        {"role": "user", "content": f"The chat history between the user and the role currently played by the AI is:\n{'\n'.join(recent_msg_list)}"}
-    ]
-
-    # 获取配置（如果没有传入 db，则自动创建 session）
-    from app.service.llm_config_service import get_llm_configs_batch
-    if llm_id:
-        if db:
-            config_map = await get_llm_configs_batch(llm_id, db)
-        else:
-            async with async_session_local() as session:
-                config_map = await get_llm_configs_batch(llm_id, session)
-    else:
-        config_map = {}
-
-    summary = await strategy.invoke(messages, config_map)
+    chat_history = "\n".join(recent_msg_list)
+    strategy = _get_strategy("summary")
+    config_map = await _get_llm_config(llm_id, db)
+    summary = await _invoke_with_prompt(
+        "memory_summary",
+        ["recent_msg_list"],
+        f"The chat history between the user and the role currently played by the AI is:\n{chat_history}",
+        strategy,
+        config_map,
+    )
 
     # 纯文本直接上传
     docs = loader_util.load_file(summary, FileTypeConstant.STR)

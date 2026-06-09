@@ -95,11 +95,11 @@ def _dict_to_memory_event(event_dict: dict, content: str = None) -> MemoryEvent:
     Returns:
         MemoryEvent 对象
     """
-    # 处理旧字段别名
-    occurred_at = event_dict.get("occurred_at") or event_dict.get("time", "")
-    last_seen_at = event_dict.get("last_seen_at") or event_dict.get("time", "")
+    # 获取发生时间和最后可见时间
+    occurred_at = event_dict.get("occurred_at")
+    last_seen_at = event_dict.get("last_seen_at")
 
-    # 枚举安全转换
+    # 枚举安全转换，防止事件发生者记录时记录错误
     actor_val = event_dict.get("actor", "UNKNOWN")
     try:
         actor = EventActor(actor_val)
@@ -257,14 +257,13 @@ def _bm25_retrieve_from_memory_bank(
     if not query_terms:
         return []
 
-    # ── 检查进程内缓存 ──
+    # 检查进程内缓存是否缓存了分词结果
+    # 如果缓存了直接用缓存，未缓存就重新计算
     cached = _bm25_cache.get(cache_key)
     if cached and cached[0] == memory_bank_json:
-        # 命中：直接用缓存好的 BM25Okapi + doc_list
         bm25, doc_list = cached[1], cached[2]
         scores = bm25.get_scores(query_terms)
     else:
-        # 未命中（首次 or JSON 变了）：全库分词 + 构建 BM25Okapi + 写缓存
         memory_bank = safe_json_parse(memory_bank_json, default=[], log_warning=False)
         if not memory_bank:
             _bm25_cache.pop(cache_key, None)

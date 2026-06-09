@@ -111,7 +111,6 @@ class HistoryEventCandidate(BaseModel):
     why_routed: str = Field(default="", description="路由原因")
     source_round: int = Field(default=0, description="来源轮次")
     is_duplicate: bool = Field(default=False, description="是否为重复事件")
-    is_continuation: bool = Field(default=False, description="是否为续写事件")
     duplicate_of: Optional[str] = Field(default=None, description="重复的源事件ID")
 
 
