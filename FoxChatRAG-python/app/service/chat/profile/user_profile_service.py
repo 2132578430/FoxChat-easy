@@ -12,7 +12,6 @@
 - 需要传入 llm_id 和 db 参数以查询用户配置
 """
 
-import asyncio
 import json
 from typing import Dict, List, Optional
 
@@ -23,11 +22,8 @@ from app.core.db.redis_client import redis_client
 from app.core.db.mysql_client import async_session_local
 from app.service.chat.strategy.base_strategy import MemoryJSONInvokeStrategy
 from app.core.prompts.prompt_manager import PromptManager
-from app.exception.BusinessException import BusinessException
-from app.common.constant.MsgStatusConstant import MsgStatusConstant
 from app.util.template_util import escape_template
 
-CHAIN_CACHE: Dict[str, any] = {}
 
 PROFILE_REQUIRED_DIMENSIONS = ["核心身份", "核心性格", "语言风格", "互动模式", "价值观", "长期兴趣", "绝对边界"]
 
@@ -50,6 +46,46 @@ async def _get_user_profile(user_id: str, llm_id: str) -> Optional[Dict]:
         return None
 
 
+async def _get_llm_config(llm_id: str, db=None) -> dict:
+    """获取 LLM 配置（提取重复的 config_map 获取逻辑）"""
+    from app.service.llm_config_service import get_llm_configs_batch
+    if not llm_id:
+        return {}
+    if db:
+        return await get_llm_configs_batch(llm_id, db)
+    async with async_session_local() as session:
+        return await get_llm_configs_batch(llm_id, session)
+
+
+async def _invoke_with_prompt(
+    prompt_name: str,
+    variables: list[str],
+    user_content: str,
+    strategy,
+    config_map: dict,
+) -> str:
+    """
+    统一的 prompt 获取 → escape → 拼 messages → invoke
+
+    Args:
+        prompt_name: Prompt 文件名称
+        variables: 需要转义的变量列表
+        user_content: Human 消息内容
+        strategy: LLMInvokeStrategy 实例
+        config_map: LLM 配置字典
+
+    Returns:
+        LLM 响应文本
+    """
+    prompt_text = await PromptManager.get_prompt(prompt_name)
+    prompt_text = escape_template(prompt_text, variables)
+    messages = [
+        {"role": "system", "content": prompt_text},
+        {"role": "user", "content": user_content},
+    ]
+    return await strategy.invoke(messages, config_map)
+
+
 async def _save_user_profile(profile: Dict, user_id: str, llm_id: str) -> bool:
     """将用户画像保存到 Redis"""
     try:
@@ -60,33 +96,6 @@ async def _save_user_profile(profile: Dict, user_id: str, llm_id: str) -> bool:
     except Exception as e:
         logger.error(f"user_profile 保存失败: {e}, user_id={user_id}")
         return False
-
-
-async def _build_profile_updater_chain(llm_id: str = None, db = None):
-    """
-    构建用户画像更新 Chain（使用策略层）
-
-    Args:
-        llm_id: AI 朋友 ID
-        db: 数据库会话
-
-    Returns:
-        (template, strategy) 供直接调用
-    """
-    from langchain_core.prompts import ChatPromptTemplate
-
-    prompt_template = await PromptManager.get_prompt("user_profile_updater")
-    prompt_template = escape_template(prompt_template, ["current_profile", "chat_history"])
-
-    if not prompt_template:
-        raise BusinessException(MsgStatusConstant.RAG_MESSAGE_EXAM_ERROR)
-
-    template = ChatPromptTemplate([("system", prompt_template)])
-
-    # 使用 Memory JSON 策略
-    strategy = MemoryJSONInvokeStrategy()
-
-    return template, strategy
 
 
 def _validate_profile_structure(profile: Dict) -> bool:
@@ -116,29 +125,15 @@ async def _update_user_profile(current_profile: Dict, recent_msg_list: List[str]
         return current_profile
 
     try:
-        template, strategy = await _build_profile_updater_chain(llm_id, db)
-
-        # 构建 messages
-        prompt_text = await PromptManager.get_prompt("user_profile_updater")
-        prompt_text = escape_template(prompt_text, ["current_profile", "chat_history"])
-
-        messages = [
-            {"role": "system", "content": prompt_text},
-            {"role": "user", "content": f"Current profile: {json.dumps(current_profile, ensure_ascii=False)}\nChat history: {json.dumps(recent_msg_list, ensure_ascii=False)}"}
-        ]
-
-        # 获取配置（如果没有传入 db，则自动创建 session）
-        from app.service.llm_config_service import get_llm_configs_batch
-        if llm_id:
-            if db:
-                config_map = await get_llm_configs_batch(llm_id, db)
-            else:
-                async with async_session_local() as session:
-                    config_map = await get_llm_configs_batch(llm_id, session)
-        else:
-            config_map = {}
-
-        result = await strategy.invoke(messages, config_map)
+        strategy = MemoryJSONInvokeStrategy()
+        config_map = await _get_llm_config(llm_id, db)
+        result = await _invoke_with_prompt(
+            "user_profile_updater",
+            ["current_profile", "chat_history"],
+            f"Current profile: {json.dumps(current_profile, ensure_ascii=False)}\nChat history: {json.dumps(recent_msg_list, ensure_ascii=False)}",
+            strategy,
+            config_map,
+        )
 
         updated_profile = json.loads(result)
 
@@ -168,20 +163,16 @@ async def update_user_profile_in_summary(user_id: str, llm_id: str, recent_msg_l
         db: 数据库会话
 
     流程：
-    1. 并行获取当前画像
-    2. 调用 LLM 分析对话，更新画像
-    3. 验证结构完整性
-    4. 保存到 Redis
+    1. 获取当前画像
+    2. 调用 LLM 更新画像（内部已有结构校验）
+    3. 保存到 Redis
     """
     if not recent_msg_list:
         logger.debug(f"最近消息列表为空，跳过 user_profile 更新: user_id={user_id}")
         return
 
     try:
-        current_profile, _ = await asyncio.gather(
-            _get_user_profile(user_id, llm_id),
-            _build_profile_updater_chain(llm_id, db),
-        )
+        current_profile = await _get_user_profile(user_id, llm_id)
 
         if not current_profile:
             logger.info(f"当前 user_profile 不存在，无法更新: user_id={user_id}")
@@ -189,12 +180,8 @@ async def update_user_profile_in_summary(user_id: str, llm_id: str, recent_msg_l
 
         logger.debug(f"开始更新 user_profile: user_id={user_id}")
 
-        # 使用策略层更新
+        # 使用策略层更新（内部已做结构校验）
         updated_profile = await _update_user_profile(current_profile, recent_msg_list, llm_id, db)
-
-        if not _validate_profile_structure(updated_profile):
-            logger.warning("user_profile 更新后的结构不完整，保留原数据")
-            return
 
         success = await _save_user_profile(updated_profile, user_id, llm_id)
         if success:

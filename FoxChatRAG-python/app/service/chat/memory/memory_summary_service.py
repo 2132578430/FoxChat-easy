@@ -6,10 +6,6 @@
 - 从对话中提取关键事件（存入 Memory Bank）
 - Memory Bank 压缩（超过阈值时触发）
 - 用户画像更新（在总结流程中调用）
-
-重构说明：
-- 使用策略层替代硬编码的 get_extraction_model(), get_memory_model()
-- 所有函数需要传入 llm_id 和 db 参数以查询用户配置
 """
 
 import asyncio
@@ -42,11 +38,6 @@ SUMMARY_TRIGGER_THRESHOLD = 18
 # 去重配置
 DEDUP_CHECK_WINDOW = 20  # 检查最近20条
 DEDUP_SIMILARITY_THRESHOLD = 0.6  # 内容相似度阈值
-
-
-# ============================================================
-# 工具函数
-# ============================================================
 
 def _load_event_list(raw_text: str) -> List[dict]:
     """解析事件列表
@@ -81,11 +72,6 @@ def _save_memory_bank(memory_bank: List[dict], user_id: str, llm_id: str) -> Non
     key = build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.MEMORY_BANK)
     redis_client.set(key, json.dumps(memory_bank, ensure_ascii=False))
 
-
-# ============================================================
-# 公共辅助函数
-# ============================================================
-
 _SCENARIO_STRATEGY = {
     "extraction": ExtractionInvokeStrategy,
     "memory": MemoryInvokeStrategy,
@@ -94,13 +80,13 @@ _SCENARIO_STRATEGY = {
 
 
 def _get_strategy(scenario: str):
-    """根据场景获取 strategy 实例（替掉 _build_chain 的策略映射）"""
+    """根据场景获取 strategy 实例"""
     cls = _SCENARIO_STRATEGY.get(scenario, ExtractionInvokeStrategy)
     return cls()
 
 
 async def _get_llm_config(llm_id: str, db=None) -> dict:
-    """获取 LLM 配置（提取 3 处重复的 config_map 获取逻辑）"""
+    """获取 LLM 配置"""
     from app.service.llm_config_service import get_llm_configs_batch
     if not llm_id:
         return {}
@@ -189,11 +175,6 @@ async def _extract_memory_events(recent_msg_list: List[str], llm_id: str = None,
         logger.warning(f"事件提取 JSON 解析失败: {e}; 原始输出: {result}")
         return []
 
-
-# ============================================================
-# 去重判断
-# ============================================================
-
 def _check_duplicate(
     new_event: dict,
     existing_events: List[dict]
@@ -216,17 +197,14 @@ def _check_duplicate(
             continue
 
         existing_content = existing.get("content", "")
+
+        # 利用jaccard判断相似度
         similarity = calc_jaccard_similarity(new_content, existing_content)
         if similarity >= DEDUP_SIMILARITY_THRESHOLD:
             logger.debug(f"【事件去重】跳过（相似度 {similarity:.2f}): {new_content[:30]}...")
             return True
 
     return False
-
-
-# ============================================================
-# 去重追加主流程
-# ============================================================
 
 async def _deduplicate_and_append_events(
     new_events: List[dict],
@@ -238,6 +216,7 @@ async def _deduplicate_and_append_events(
 
     deduplicated = []
     for new_event in new_events:
+        # 如果重复直接跳过
         if _check_duplicate(new_event, memory_bank):
             continue
         deduplicated.append(new_event)
@@ -250,13 +229,8 @@ async def _deduplicate_and_append_events(
     _save_memory_bank(memory_bank, user_id, llm_id)
     logger.info(f"【历史事件入库】新增 {len(deduplicated)} 条")
 
-    # 同步新增事件到 Chroma（批量上传优化）
+    # 同步新增事件到 ChromaDB
     await chroma_util.upload_history_events_batch(deduplicated, user_id, llm_id)
-
-
-# ============================================================
-# Memory Bank 压缩
-# ============================================================
 
 async def _compress_memory_bank_if_needed(user_id: str, llm_id: str, db = None) -> None:
     """
@@ -309,11 +283,6 @@ async def _compress_memory_bank_if_needed(user_id: str, llm_id: str, db = None) 
     except json.JSONDecodeError:
         logger.warning("memory_bank 压缩 JSON 解析失败")
 
-
-# ============================================================
-# 事件处理全链
-# ============================================================
-
 async def _extract_compress_events(recent_msg_list: List[str], user_id: str, llm_id: str, db = None) -> None:
     """事件处理：提取 → 追加 → 压缩"""
     events = await _extract_memory_events(recent_msg_list, llm_id, db)
@@ -324,10 +293,6 @@ async def _extract_compress_events(recent_msg_list: List[str], user_id: str, llm
     await _deduplicate_and_append_events(events, user_id, llm_id)
     await _compress_memory_bank_if_needed(user_id, llm_id, db)
 
-
-# ============================================================
-# Summary 生成（纯文本上传，不再做结构化提取）
-# ============================================================
 
 async def _summary_and_upload(recent_msg_list: List[str], user_id: str, llm_id: str, db = None) -> str:
     """
@@ -365,11 +330,6 @@ async def _summary_and_upload(recent_msg_list: List[str], user_id: str, llm_id: 
     logger.info(f"【Summary】写入对话摘要")
     return summary
 
-
-# ============================================================
-# 并发总结主流程
-# ============================================================
-
 async def async_summary_msg_parallel(recent_msg_key: str, recent_msg_size: int, user_id: str, llm_id: str, db = None) -> None:
     """
     并发执行总结任务（使用策略层）
@@ -394,7 +354,7 @@ async def async_summary_msg_parallel(recent_msg_key: str, recent_msg_size: int, 
     msg_list.reverse()
     logger.debug(f"记忆总结: 处理 {len(msg_list)} 条, 保留 {RECENT_MSG_KEEP_SIZE} 条")
 
-    # 并发执行
+    # 并发执行：生成摘要、提取事件、更新用户配置
     await asyncio.gather(
         _summary_and_upload(msg_list, user_id, llm_id, db),
         _extract_compress_events(msg_list, user_id, llm_id, db),

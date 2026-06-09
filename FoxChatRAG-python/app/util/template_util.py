@@ -29,11 +29,6 @@ def escape_template(template: str, var_names: list[str]) -> str:
 
     return template
 
-
-# ============================================================
-# 内部工具函数
-# ============================================================
-
 def _strip_markdown_code_block(text: str) -> str:
     """去除 markdown 代码块包裹。"""
     text = re.sub(r"```(?:json)?", "", text)
@@ -46,11 +41,6 @@ def _strip_think_tags(content: str) -> str:
     content = re.sub(r'<think>.*?</think>', '', content, flags=re.DOTALL)
     content = re.sub(r'<!\[CDATA\[.*?\]\]>', '', content, flags=re.DOTALL)
     return content
-
-
-# ============================================================
-# 公开 API
-# ============================================================
 
 def strip_all_tags(content: str) -> str:
     """去除 LLM 返回的所有 XML 标签及其内容（如 think、<action> 等）
@@ -106,7 +96,7 @@ def extract_json_text(raw_text: str, json_type: str = "auto") -> str:
 
     text = _strip_markdown_code_block(raw_text)
 
-    # 自动判断类型
+    # 判断类型
     if json_type == "auto":
         if text.lstrip().startswith("{"):
             json_type = "object"
