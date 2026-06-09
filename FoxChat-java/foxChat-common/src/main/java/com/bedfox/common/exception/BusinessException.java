@@ -9,9 +9,14 @@ import lombok.Getter;
 @Getter
 public class BusinessException extends RuntimeException {
     private final ResultStatusConstant status;
+
     public BusinessException(ResultStatusConstant status) {
         super(status.getMsg());
         this.status = status;
     }
 
+    public BusinessException(ResultStatusConstant status, Throwable cause) {
+        super(status.getMsg(), cause);
+        this.status = status;
+    }
 }

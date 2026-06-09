@@ -88,7 +88,7 @@ public class LlmChatServiceImpl implements LlmChatService {
             llmChatMsgService.updateById(aiPlaceholder);
 
             // 7. 抛出异常让Controller返回错误给前端
-            throw new BusinessException(ResultStatusConstant.LLM_FAILED);
+            throw new BusinessException(ResultStatusConstant.LLM_FAILED, e);
         }
     }
 

@@ -127,7 +127,7 @@ public class RAGServiceImpl implements RAGService {
 
                 return ragFile;
             } catch (IOException e) {
-                throw new BusinessException(ResultStatusConstant.FILE_UPLOAD_ERROR_EXCEPTION);
+                throw new BusinessException(ResultStatusConstant.FILE_UPLOAD_ERROR_EXCEPTION, e);
             }
 
         }).toList();

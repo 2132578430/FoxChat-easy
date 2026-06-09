@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     public R<String> handleBusiness(BusinessException e) {
-        log.error("业务异常处理器捕获到异常：{}", e.getMessage());
+        log.error("业务异常处理器捕获到异常：{}", e.getMessage(), e);
         ResultStatusConstant status = e.getStatus();
         return R.error(status.getCode(), status.getMsg());
     }

@@ -118,12 +118,24 @@ async def retrieve(state: ChatState) -> dict:
     ChromaDB中用Scope过滤+语义检索
     两个结果查重粗排后用Rerank模型精排
     """
+    # 从 state 中重建 IntentResult，复用上游 classify_intent_node 的结果
+    from app.common.constant.intent_config import IntentResult
+    ir = state.get("intent_result", {})
+    intent_result = IntentResult(
+        intent=ir.get("intent", "default"),
+        scope=ir.get("scope", []),
+        top_k=ir.get("top_k", 4),
+        skip=ir.get("skip", False),
+        confidence=ir.get("confidence", 0.0),
+    )
+
     # logger.debug(f"[Graph] retrieve 节点开始: msg={state['msg_content'][:30]}")
     relevant_memories_text = await search_relevant_memories(
         msg_content=state["msg_content"],
         user_id=state["user_id"],
         llm_id=state["llm_id"],
         recent_messages=state["memories"].recent_msg,
+        intent_result=intent_result,
     )
     return {"relevant_memories_text": relevant_memories_text}
 
@@ -156,7 +168,6 @@ async def invoke_llm(state: ChatState, config: dict = None) -> dict:
             msg_content=state["msg_content"],
             user_id=state["user_id"],
             llm_id=state["llm_id"],
-            recent_messages=state["memories"].recent_msg,
             relevant_memories_text=state.get("relevant_memories_text", ""),
         ):
             response += token
@@ -171,7 +182,6 @@ async def invoke_llm(state: ChatState, config: dict = None) -> dict:
             msg_content=state["msg_content"],
             user_id=state["user_id"],
             llm_id=state["llm_id"],
-            recent_messages=state["memories"].recent_msg,
             relevant_memories_text=state.get("relevant_memories_text", ""),
         )
         return {"ai_response": response}

@@ -20,7 +20,7 @@ from app.core.db.mysql_client import async_session_local
 from app.core.prompts.prompt_manager import PromptManager
 from app.service.chat.llm.prompt_payload_builder import build_prompt_payload
 from app.service.chat.memory.history_event_retrieval_service import (
-    retrieve_history_events_v2,
+    retrieve_history_events,
     format_history_events,
 )
 from app.service.chat.strategy.base_strategy import ChatInvokeStrategy, format_model_name
@@ -52,7 +52,6 @@ async def _build_chat_messages(
     msg_content: str,
     user_id: str,
     llm_id: str,
-    recent_messages: List[str] = None,
     relevant_memories_text: str = "",
     db = None,
 ) -> tuple[list[dict], dict, str]:
@@ -69,7 +68,7 @@ async def _build_chat_messages(
     """
     from app.service.chat.memory.memory_parser import build_static_anchors
 
-    # 批量查询用户配置
+    # 批量查询用户配置和用户对应的模型配置
     logger.debug(f"[BuildMessages] 开始获取 LLM 配置: llm_id={llm_id}")
     if db:
         config_map = await get_llm_configs_batch(llm_id, db)
@@ -78,7 +77,6 @@ async def _build_chat_messages(
         async with async_session_local() as session:
             config_map = await get_llm_configs_batch(llm_id, session)
     logger.debug(f"[BuildMessages] LLM 配置获取完成: llm_id={llm_id}")
-
     # 获取提示词模版
     prompt_text = await PromptManager.get_prompt("chat_system")
     # 转义模板中的变量，防止 SQL 注入
@@ -86,13 +84,10 @@ async def _build_chat_messages(
         prompt_text,
         ["static_anchors", "user_profile_summary", "historical_context", "current_state", "behavior_guide", "talkativeness_guidance"],
     )
-
     # 获取角色全局提示词
     soul = await PromptManager.get_soul("soul")
-
     # 获取历史上下文
     historical_context = relevant_memories_text if relevant_memories_text else parsed.memory_bank_summary
-
     # 构建静态锚点
     static_anchors = build_static_anchors(
         soul=soul or "",
@@ -119,24 +114,17 @@ async def _build_chat_messages(
         current_state=parsed.current_state,
         behavior_guide=behavior_guide_text,
         talkativeness_guidance=talkativeness_guidance,
-        history_msg=history_msg,
-        user_message=msg_content,
-        recent_messages=recent_messages,
-        enable_dedup=True,
-        enable_conflict_priority=True,
     )
 
     logger.info(f"【Payload】注入: {payload.blocks_injected}, 空块省略: {payload.blocks_omitted}")
-    if payload.duplicates_removed:
-        logger.info(f"【Payload去重】移除: {payload.duplicates_removed}")
 
-    # 构建 messages 列表
+    # 构建最近消息上下文
     messages = []
     for msg in history_msg:
         msg_type = msg.type if hasattr(msg, 'type') else "user"
         role = {"human": "user", "ai": "assistant"}.get(msg_type, msg_type)
         messages.append({"role": role, "content": msg.content})
-    # 用户信息
+    # 用户信息追加
     messages.append({"role": "user", "content": msg_content})
 
     # 构建提示词
@@ -163,7 +151,6 @@ async def invoke_llm_with_retrieval(
     msg_content: str,
     user_id: str,
     llm_id: str,
-    recent_messages: List[str] = None,
     relevant_memories_text: str = "",
     db = None,
 ) -> str:
@@ -176,7 +163,6 @@ async def invoke_llm_with_retrieval(
         msg_content: 用户消息内容
         user_id: 用户 ID
         llm_id: 模型 ID
-        recent_messages: 最近消息列表
         relevant_memories_text: 预计算的检索结果文本
         db: 数据库会话（可选）
 
@@ -189,7 +175,6 @@ async def invoke_llm_with_retrieval(
         msg_content=msg_content,
         user_id=user_id,
         llm_id=llm_id,
-        recent_messages=recent_messages,
         relevant_memories_text=relevant_memories_text,
         db=db,
     )
@@ -204,7 +189,6 @@ async def stream_llm_with_retrieval(
     msg_content: str,
     user_id: str,
     llm_id: str,
-    recent_messages: List[str] = None,
     relevant_memories_text: str = "",
     db = None,
 ) -> AsyncGenerator[str, None]:
@@ -223,7 +207,6 @@ async def stream_llm_with_retrieval(
         msg_content=msg_content,
         user_id=user_id,
         llm_id=llm_id,
-        recent_messages=recent_messages,
         relevant_memories_text=relevant_memories_text,
         db=db,
     )
@@ -239,6 +222,8 @@ async def stream_llm_with_retrieval(
     max_retries = 3
     last_error = None
 
+    # 此处与base_strategy重复约20行代码
+    # 但是由于只有唯一一次调用，所以这里不再做辅助函数提取
     for attempt in range(max_retries):
         try:
             response = await litellm.acompletion(
@@ -255,8 +240,8 @@ async def stream_llm_with_retrieval(
             async for chunk in response:
                 if chunk.choices and chunk.choices[0].delta.content:
                     yield chunk.choices[0].delta.content
-
-            return  # 成功，退出
+            # 成功 退出
+            return
 
         except (litellm.exceptions.APIConnectionError, litellm.exceptions.APIError) as e:
             last_error = e
@@ -272,11 +257,16 @@ async def stream_llm_with_retrieval(
         raise last_error
 
 
+# 检索结果数量配置
+MAX_RETRIEVED_EVENTS = 4  # 最终返回给LLM的记忆事件数量
+
+
 async def search_relevant_memories(
     msg_content: str,
     user_id: str,
     llm_id: str,
     recent_messages: Optional[List[str]] = None,
+    intent_result: Optional["IntentResult"] = None,
 ) -> str:
     """
     检索相关记忆（主动检索：每轮都检索，不依赖触发词）
@@ -286,28 +276,33 @@ async def search_relevant_memories(
         user_id: 用户 ID
         llm_id: 模型 ID
         recent_messages: 最近窗口消息列表
+        intent_result: 上游已分类的意图结果（复用，避免重复分类）。为 None 时自动调用 classify_intent。
 
     Returns:
         格式化后的 relevant_memories 文本块
     """
     try:
         from app.service.chat.llm.intent_classifier import classify_intent
-        from app.common.constant.intent_config import IntentType
+        from app.common.constant.intent_config import IntentType, IntentResult
 
-        # 意图判断
-        intent_result = classify_intent(msg_content)
-        logger.info(f"【意图判断】intent={intent_result.intent}, scope={intent_result.scope}, top_k={intent_result.top_k}, skip={intent_result.skip}")
+        # 意图判断：优先复用上游结果，避免重复分类
+        if intent_result is not None and isinstance(intent_result, IntentResult):
+            # 上游已分类，直接复用
+            logger.info(f"【意图判断】(复用) intent={intent_result.intent}, scope={intent_result.scope}, top_k={intent_result.top_k}, skip={intent_result.skip}")
+        else:
+            intent_result = classify_intent(msg_content)
+            logger.info(f"【意图判断】intent={intent_result.intent}, scope={intent_result.scope}, top_k={intent_result.top_k}, skip={intent_result.skip}")
 
         if intent_result.skip:
             logger.info("【意图判断】casual_chat，跳过检索")
             return ""
 
         # 检索 membank
-        events = await retrieve_history_events_v2(
+        events = await retrieve_history_events(
             query=msg_content,
             user_id=user_id,
             llm_id=llm_id,
-            max_results=4,
+            max_results=MAX_RETRIEVED_EVENTS,
             recent_messages=recent_messages,
             enable_rerank=True,
             scope=intent_result.scope,
@@ -353,18 +348,5 @@ async def search_relevant_memories(
         return ""
 
 
-def _print_template(template_value):
-    """打印最终注入的完整提示词"""
-    if hasattr(template_value, 'to_string'):
-        logger.info(f"【最终提示词】\n{template_value.to_string()}")
-    elif hasattr(template_value, 'messages'):
-        full_text = "\n".join([
-            f"[{m.type if hasattr(m, 'type') else 'msg'}] {m.content}"
-            for m in template_value.messages
-        ])
-        logger.info(f"【最终提示词】\n{full_text}")
-    else:
-        logger.info(f"【最终提示词】\n{template_value}")
-    return template_value
 
 

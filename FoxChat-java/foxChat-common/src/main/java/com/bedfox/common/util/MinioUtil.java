@@ -78,7 +78,7 @@ public class MinioUtil {
             return publicEndpoint + "/" + bucketName + "/" + fileName;
         } catch (Exception e) {
             log.error("文件上传错误:{}", e.getMessage());
-            throw new BusinessException(ResultStatusConstant.FILE_UPLOAD_ERROR_EXCEPTION);
+            throw new BusinessException(ResultStatusConstant.FILE_UPLOAD_ERROR_EXCEPTION, e);
         }
     }
 

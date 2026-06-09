@@ -56,26 +56,18 @@ class LLMInvokeStrategy:
             "temperature": config.get("model_temperature", self.default_temperature),
         }
 
-        # max_tokens 处理
+        # 填入max_tokens
         max_tokens = kwargs.get("max_tokens", config.get("model_max_tokens", self.default_max_tokens))
         if max_tokens:
             params["max_tokens"] = max_tokens
 
-        # JSON 模式处理
+        # 强制输出JSON格式
         use_json_mode = self.force_json or config.get("model_response_format") == "json"
         if use_json_mode:
             params["response_format"] = {"type": "json_object"}
 
-        # 合并额外 kwargs (kwargs 优先级最高)
+        # 其他参数一块塞进去
         params.update(kwargs)
-
-        # [DIAG] 情绪场景：记录是否启用 JSON 模式（排查 MIMO 空响应问题）
-        if self.scenario == "emotion":
-            logger.info(
-                f"【情绪分类诊断】model={formatted_model}, "
-                f"response_format={'json_object' if use_json_mode else '未设置'}, "
-                f"model_response_format配置={config.get('model_response_format', '未配置')}"
-            )
 
         logger.debug(f"【策略参数】scenario={self.scenario}, params={params}")
         return params
@@ -106,12 +98,11 @@ class LLMInvokeStrategy:
         if not config:
             raise ValueError(f"配置缺失: scenario={self.scenario} 未配置")
 
-        # 生成调用参数
+        # 转化为LiteLlm调用参数
         params = self.get_model_params(config, **kwargs)
 
         try:
-            logger.info(f"【LiteLLM调用】scenario={self.scenario}, model={params['model']}")
-
+            # logger.info(f"【LiteLLM调用】scenario={self.scenario}, model={params['model']}")
             # 调用 LiteLLM（使用 acompletion 异步方法，带超时和重试）
             max_retries = 3
             for attempt in range(max_retries):

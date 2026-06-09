@@ -213,9 +213,10 @@ def format_history_events(events: List[MemoryEvent]) -> str:
     return "\n".join(lines)
 
 
-# ============================================================
-# 阶段5 V2升级：混合检索 + Rerank + activity_score排序
-# ============================================================
+# ── 进程内缓存：(raw_json, bm25_obj, doc_list)，key=f"{user_id}:{llm_id}" ──
+# JSON 内容变化时自动 miss → 重建，无需主动清理
+_bm25_cache: dict[str, tuple[str, "BM25Okapi", list[dict]]] = {}
+
 
 def _bm25_retrieve_from_memory_bank(
     query: str,
@@ -227,7 +228,7 @@ def _bm25_retrieve_from_memory_bank(
     """
     BM25关键词召回（从memory_bank构建临时索引）
 
-    使用标准 BM25 算法：IDF + 词频饱和 + 文档长度归一化
+    使用 rank_bm25 库的 BM25Okapi 标准实现
     参数：k1=1.5, b=0.75
 
     Args:
@@ -241,58 +242,52 @@ def _bm25_retrieve_from_memory_bank(
         MemoryEvent列表（按BM25分数排序，分数已归一化到 [0, 1]）
     """
     import jieba
-    import math
+    from rank_bm25 import BM25Okapi
+
+    cache_key = f"{user_id}:{llm_id}"
 
     memory_bank_key = build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.MEMORY_BANK)
-    existing = redis_client.get(memory_bank_key)
-    if not existing:
+    memory_bank_json = redis_client.get(memory_bank_key)
+    if not memory_bank_json:
+        _bm25_cache.pop(cache_key, None)  # 数据被清了，缓存也清掉
         return []
 
-    memory_bank = safe_json_parse(existing, default=[], log_warning=False)
-    if not memory_bank:
-        return []
-
-    # 查询分词
+    # query分词（每次必做，query 不同）
     query_terms = [t for t in jieba.cut(query) if len(t) > 1]
     if not query_terms:
         return []
 
-    # ── 预处理：全库分词 + IDF ──
-    N = len(memory_bank)
-    doc_info: list[tuple[dict, list[str]]] = []  # [(event_dict, [tokens])]
-    df: dict[str, int] = {}  # document frequency
+    # ── 检查进程内缓存 ──
+    cached = _bm25_cache.get(cache_key)
+    if cached and cached[0] == memory_bank_json:
+        # 命中：直接用缓存好的 BM25Okapi + doc_list
+        bm25, doc_list = cached[1], cached[2]
+        scores = bm25.get_scores(query_terms)
+    else:
+        # 未命中（首次 or JSON 变了）：全库分词 + 构建 BM25Okapi + 写缓存
+        memory_bank = safe_json_parse(memory_bank_json, default=[], log_warning=False)
+        if not memory_bank:
+            _bm25_cache.pop(cache_key, None)
+            return []
 
-    for event_dict in memory_bank:
-        content = event_dict.get("content", "")
-        if not content:
-            doc_info.append((event_dict, []))
-            continue
-        tokens = [t for t in jieba.cut(content) if len(t) > 1]
-        doc_info.append((event_dict, tokens))
-        for term in set(tokens):
-            df[term] = df.get(term, 0) + 1
+        tokenized_corpus: list[list[str]] = []
+        doc_list: list[dict] = []
+        for event_dict in memory_bank:
+            content = event_dict.get("content", "")
+            tokens = [t for t in jieba.cut(content) if len(t) > 1] if content else []
+            tokenized_corpus.append(tokens)
+            doc_list.append(event_dict)
 
-    # IDF: Robertson-Sparck Jones 平滑
-    idf: dict[str, float] = {}
-    for term, freq in df.items():
-        idf[term] = math.log((N - freq + 0.5) / (freq + 0.5) + 1)
-
-    # 未见词的 IDF（最大值）
-    default_idf = math.log((N + 0.5) / 0.5 + 1)
-
-    # 平均文档长度
-    doc_lengths = [len(tokens) for _, tokens in doc_info if tokens]
-    avgdl = sum(doc_lengths) / len(doc_lengths) if doc_lengths else 1.0
-
-    # BM25 超参
-    k1 = 1.5
-    b = 0.75
+        bm25 = BM25Okapi(tokenized_corpus, k1=1.5, b=0.75)
+        scores = bm25.get_scores(query_terms)
+        _bm25_cache[cache_key] = (memory_bank_json, bm25, doc_list)
 
     candidates: list[MemoryEvent] = []
 
-    for event_dict, tokens in doc_info:
-        if not tokens:
+    for i, score in enumerate(scores):
+        if score <= 0:
             continue
+        event_dict = doc_list[i]
 
         # scope 过滤：只检索指定 event_type
         if scope:
@@ -301,32 +296,13 @@ def _bm25_retrieve_from_memory_bank(
                 continue
 
         content = event_dict.get("content", "")
-        doc_len = len(tokens)
-
-        # 本文档词频
-        tf: dict[str, int] = {}
-        for t in tokens:
-            tf[t] = tf.get(t, 0) + 1
-
-        # 标准 BM25 累加
-        score = 0.0
-        for term in query_terms:
-            term_idf = idf.get(term, default_idf)
-            term_tf = tf.get(term, 0)
-            if term_tf == 0:
-                continue
-            numerator = term_tf * (k1 + 1)
-            denominator = term_tf + k1 * (1 - b + b * doc_len / avgdl)
-            score += term_idf * numerator / denominator
-
-        if score > 0:
-            try:
-                event = _dict_to_memory_event(event_dict, content)
-                event._bm25_score = score
-                candidates.append(event)
-            except Exception as e:
-                logger.debug(f"BM25事件转换失败: {e}")
-                continue
+        try:
+            event = _dict_to_memory_event(event_dict, content)
+            event._bm25_score = score
+            candidates.append(event)
+        except Exception as e:
+            logger.debug(f"BM25事件转换失败: {e}")
+            continue
 
     # 按分数排序，并归一化到 [0, 1]
     sorted_candidates = sorted(candidates, key=lambda e: e._bm25_score, reverse=True)
@@ -615,7 +591,7 @@ async def _rerank_candidates(
         return events[:top_k]
 
 
-async def retrieve_history_events_v2(
+async def retrieve_history_events(
     query: str,
     user_id: str,
     llm_id: str,
@@ -627,7 +603,7 @@ async def retrieve_history_events_v2(
     top_k: Optional[int] = None,
 ) -> List[MemoryEvent]:
     """
-    历史事件检索V2（阶段5）
+    历史事件检索    
 
     混合检索流程：
     1. BM25关键词召回（memory_bank）
@@ -635,20 +611,6 @@ async def retrieve_history_events_v2(
     3. 合并去重 + 综合排序（activity_score纳入）
     4. Rerank二次排序
     5. 与最近窗口去重
-    6. 预算控制
-
-    V3新增：支持 scope 过滤和动态 top_k
-
-    Args:
-        query: 用户查询文本
-        user_id: 用户ID
-        llm_id: 模型ID
-        filter_metadata: 过滤条件
-        max_results: 返回数量上限（默认）
-        recent_messages: 最近窗口消息（用于去重）
-        enable_rerank: 是否启用rerank
-        scope: 可选，event_type 过滤列表
-        top_k: 可选，动态 top_k（覆盖默认值）
 
     Returns:
         MemoryEvent列表（按综合相关性排序）
@@ -656,9 +618,9 @@ async def retrieve_history_events_v2(
     # 使用动态 top_k（如果提供）
     final_max_results = top_k if top_k is not None else max_results
 
-    logger.info(f"【V2检索】开始混合检索: query={query[:30]}..., scope={scope}, top_k={final_max_results}")
+    logger.info(f"【检索】开始混合检索: query={query[:30]}..., scope={scope}, top_k={final_max_results}")
 
-    # 1. BM25召回
+    # 1. 从redis的membank中用BM25召回
     bm25_events = _bm25_retrieve_from_memory_bank(
         query=query,
         user_id=user_id,
@@ -666,7 +628,7 @@ async def retrieve_history_events_v2(
         max_results=10,
         scope=scope,
     )
-    logger.debug(f"【V2检索】BM25召回: {len(bm25_events)} 条")
+    logger.debug(f"【检索】BM25召回: {len(bm25_events)} 条")
 
     # 2. 向量召回
     vector_events = await _vector_retrieve_from_chroma(
