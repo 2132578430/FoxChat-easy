@@ -143,7 +143,7 @@ flowchart TB
 
 ### 3. 分层认知记忆架构
 
-A/B/C/D 四层记忆体系，Jaccard 跨层去重 + 冲突优先级裁决，每 18 轮总结热更新。
+A/B/C/D 四层记忆体系，Jaccard 去重，每 18 轮总结热更新。
 
 ```mermaid
 %%{init: {'theme': 'dark'}}%%
@@ -402,7 +402,6 @@ npm run electron:build
 | [FoxChatRAG-python/README.md](./FoxChatRAG-python/README.md) | Python AI 记忆服务文档 |
 | [FoxChatRAG-python/阅读计划.md](./FoxChatRAG-python/阅读计划.md) | Python 端代码阅读指南（分 5 步走） |
 | [FoxChat-vue/README.md](./FoxChat-vue/README.md) | 前端 + Electron 文档 |
-| [模拟面试复盘.md](./模拟面试复盘.md) | 基于本项目的 26 题模拟面试 Q&A |
 
 ---
 
