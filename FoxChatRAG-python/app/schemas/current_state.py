@@ -1,22 +1,8 @@
 """
-当前状态容器 Schema 定义（简化版 V2）
+当前状态容器 Schema 定义
 
-阶段2核心数据模型，用于表达"当前是什么局面"。
-
-【V2 简化说明】2026-05-05
-移除以下字段（暂时无效，保留注释供后续参考）：
-- relation_state: 关系态势（暂无明确用途和提取逻辑）
-- current_focus: 话题焦点（置信度不可信，暂无行为规则）
-- interaction_mode: 互动方式（暂无明确用途和提取逻辑）
-
-保留字段：
-- emotion: 当前情绪（有效，有完整提取和注入逻辑）
-
---- 旧版字段说明（已移除，以下为历史记录）---
-- relation_state: 关系态势（疏离/中性/亲近/紧张/缓和中）
-- current_focus: 当前话题焦点（4-12字短语）
-- interaction_mode: 当前互动方式（闲聊/安慰/陪伴等）
---- 旧版字段说明结束 ---
+核心数据模型，用于表达"当前是什么局面"。
+当前仅保留 emotion 字段（有完整提取和注入逻辑）。
 """
 
 from enum import StrEnum
@@ -76,35 +62,11 @@ class CurrentState(BaseModel):
     last_update: str = Field(default="", description="最后更新时间（ISO datetime）")
     update_source: UpdateSource = Field(default=UpdateSource.RUNTIME, description="更新来源")
 
-    # === 旧版字段（已移除，保留注释供后续参考）===
-    # relation_state: StateField = Field(
-    #     default_factory=lambda: StateField(value="中性", confidence=0.5, expire_rounds=-1, update_round=0),
-    #     description="关系态势"
-    # )
-    # current_focus: StateField = Field(
-    #     default_factory=lambda: StateField(value="", confidence=0.0, expire_rounds=2, update_round=0),
-    #     description="当前话题焦点"
-    # )
-    # interaction_mode: StateField = Field(
-    #     default_factory=lambda: StateField(value="闲聊", confidence=0.5, expire_rounds=3, update_round=0),
-    #     description="互动方式"
-    # )
-    # === 旧版字段结束 ===
-
     def get_valid_fields_for_injection(self, current_round: int) -> dict:
         """获取适合注入 Prompt 的有效字段（V2 简化版）"""
         result = {}
 
         if self.emotion.is_valid_for_injection(current_round):
             result["情绪"] = self.emotion.value
-
-        # === 旧版字段注入（已移除）===
-        # if self.relation_state.is_valid_for_injection(current_round):
-        #     result["关系状态"] = self.relation_state.value
-        # if self.current_focus.is_valid_for_injection(current_round) and self.current_focus.value:
-        #     result["当前焦点"] = self.current_focus.value
-        # if self.interaction_mode.is_valid_for_injection(current_round):
-        #     result["互动方式"] = self.interaction_mode.value
-        # === 旧版字段注入结束 ===
 
         return result

@@ -11,10 +11,7 @@ class LLMChatConstant(StrEnum):
     CHARACTER_CARD = "character_card"
     MEMORY_BANK = "memory_bank"
 
-    ROLE_EMOTION_STATE = "role_emotion_state"
-    ROLE_EMOTION_LOG = "role_emotion_log"
-
-    # 阶段2新增：当前状态容器与时间节点
+    # 当前状态容器
     ROLE_CURRENT_STATE = "role_current_state"
 
     # 计数器

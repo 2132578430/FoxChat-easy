@@ -4,12 +4,8 @@
 职责：
 - 管理 Redis 中的 current_state 存储
 - 提供状态的读取、更新、覆盖、过期机制
-- 支持从 legacy emotion_state 迁移
-
-
 """
 
-import json
 from datetime import datetime
 from typing import Optional
 
@@ -23,7 +19,7 @@ from app.schemas.current_state import (
     UpdateSource,
 )
 from app.util.redis_json_util import json_set_safe
-from app.service.chat.common import EMOTION_CN_MAP, safe_json_parse
+
 
 
 # 默认过期轮数配置（V2 简化版）
@@ -68,7 +64,7 @@ def get_current_state(user_id: str, llm_id: str, current_round: int = 0) -> Curr
         current_round: 当前全局轮数（用于过期判断）
 
     Returns:
-        CurrentState 对象，若不存在则返回默认状态或迁移旧数据
+        CurrentState 对象，若不存在则返回默认状态
     """
     key = _build_state_key(user_id, llm_id)
     json_client = _get_json_client()
@@ -81,12 +77,6 @@ def get_current_state(user_id: str, llm_id: str, current_round: int = 0) -> Curr
     except Exception as e:
         # key 不存在或其他错误
         logger.debug(f"JSON.GET 失败或 key 不存在: {key}, error: {e}")
-
-    # 尝试从 legacy emotion_state 迁移
-    migrated_state = _migrate_from_emotion_state(user_id, llm_id)
-    if migrated_state:
-        logger.info(f"【状态迁移】从 emotion_state 迁移: {migrated_state.emotion.value}")
-        return migrated_state
 
     # 返回默认状态（不写入 Redis，等首次更新时写入）
     return _create_default_state()
@@ -126,54 +116,6 @@ def _ensure_state_exists(user_id: str, llm_id: str) -> None:
     logger.debug(f"【状态初始化】已创建默认状态: {key}")
 
 
-def _migrate_from_emotion_state(user_id: str, llm_id: str) -> Optional[CurrentState]:
-    """
-    从 legacy emotion_state 迁移
-
-    Args:
-        user_id: 用户 ID
-        llm_id: 模型 ID
-
-    Returns:
-        迁移后的 CurrentState，若旧数据不存在则返回 None
-    """
-    legacy_key = build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.ROLE_EMOTION_STATE)
-    legacy_json = redis_client.get(legacy_key)
-
-    if not legacy_json:
-        return None
-
-    try:
-        legacy_state = json.loads(legacy_json)
-        emotion_value = legacy_state.get("emotion", "neutral")
-
-        # 映射英文情绪到中文
-        emotion_cn = EMOTION_CN_MAP.get(emotion_value.lower(), emotion_value)
-
-        # 获取当前轮数作为更新轮数
-        current_round = get_current_round(user_id, llm_id)
-
-        # 创建默认状态并更新 emotion
-        state_dict = _create_default_state_dict()
-        state_dict["emotion"] = {
-            "value": emotion_cn,
-            "confidence": 0.9,
-            "expire_rounds": DEFAULT_EXPIRE_EMOTION,
-            "update_round": current_round,
-            "update_reason": "从 legacy emotion_state 迁移",
-        }
-        state_dict["last_update"] = legacy_state.get("last_update", datetime.now().isoformat())
-
-        # 使用安全写入方法
-        key = _build_state_key(user_id, llm_id)
-        _json_set(key, '$', state_dict)
-
-        return CurrentState.model_validate(state_dict)
-    except json.JSONDecodeError:
-        logger.warning(f"legacy emotion_state JSON 解析失败: {legacy_key}")
-        return None
-
-
 def update_current_state_field_atomic(
     user_id: str,
     llm_id: str,
@@ -186,7 +128,7 @@ def update_current_state_field_atomic(
     Args:
         user_id: 用户 ID
         llm_id: 模型 ID
-        field_name: 字段名（emotion, relation_state, current_focus, interaction_mode）
+        field_name: 字段名（当前支持 emotion）
         field_dict: 字段完整字典（包含 value, confidence, expire_rounds, update_round, update_reason）
     """
     key = _build_state_key(user_id, llm_id)
@@ -220,7 +162,7 @@ def update_current_state(
     Args:
         user_id: 用户 ID
         llm_id: 模型 ID
-        field_name: 字段名（emotion, relation_state, current_focus, interaction_mode）
+        field_name: 字段名（当前支持 emotion）
         new_value: 新值
         confidence: 置信度
         source: 更新来源
@@ -339,37 +281,6 @@ def _apply_state_overwrite_rules(
     return False
 
 
-def check_and_expire_fields(user_id: str, llm_id: str, current_round: int) -> CurrentState:
-    """
-    检查并处理过期字段（V2 简化版）
-
-    Args:
-        user_id: 用户 ID
-        llm_id: 模型 ID
-        current_round: 当前全局轮数
-
-    Returns:
-        更新后的 CurrentState
-    """
-    state = get_current_state(user_id, llm_id, current_round)
-    key = _build_state_key(user_id, llm_id)
-
-    expired_fields = []
-
-    # 检查 emotion 是否过期
-    if state.emotion.is_expired(current_round):
-        expired_fields.append("emotion")
-        # 原子更新：置信度置零（标记为失效，等待重新检测）
-        _json_set(key, '$.emotion.confidence', 0.0)
-
-    if expired_fields:
-        logger.info(f"【状态过期】字段已过期: {expired_fields}")
-        _json_set(key, '$.last_update', datetime.now().isoformat())
-
-    # 重新读取返回
-    return get_current_state(user_id, llm_id, current_round)
-
-
 def increment_round_counter(user_id: str, llm_id: str) -> int:
     """
     递增轮次计数器
@@ -381,16 +292,3 @@ def increment_round_counter(user_id: str, llm_id: str) -> int:
 
     count = redis_client.incr(key)
     return count
-
-
-def get_current_round(user_id: str, llm_id: str) -> int:
-    """
-    获取当前全局轮数
-
-    Returns:
-        当前轮次数
-    """
-    key = build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.ROUND_COUNTER)
-
-    count = redis_client.get(key)
-    return int(count or 0)

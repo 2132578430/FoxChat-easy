@@ -14,9 +14,7 @@ from app.service.chat.state.chat_msg_service import clear_chat_memory
 from app.service.chat.state.state_manager import (
     get_current_state,
     update_current_state,
-    check_and_expire_fields,
     increment_round_counter,
-    get_current_round,
 )
 from app.service.chat.memory.memory_summary_service import async_summary_msg_parallel
 from app.service.chat.profile.user_profile_service import update_user_profile_in_summary
@@ -36,9 +34,7 @@ __all__ = [
     # 状态管理
     "get_current_state",
     "update_current_state",
-    "check_and_expire_fields",
     "increment_round_counter",
-    "get_current_round",
     # 后台任务
     "async_summary_msg_parallel",
     "update_user_profile_in_summary",

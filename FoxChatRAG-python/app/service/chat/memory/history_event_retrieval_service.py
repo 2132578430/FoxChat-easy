@@ -138,7 +138,7 @@ def deduplicate_with_recent_window(
     recent_messages: List[str],
 ) -> List[MemoryEvent]:
     """
-    与最近窗口去重，避免 C 层和 D 层大段重复（任务 2.4）
+    与最近窗口去重，避免 C 层和 D 层大段重复
 
     Args:
         events: 检索结果
@@ -176,8 +176,6 @@ def deduplicate_with_recent_window(
 def format_history_events(events: List[MemoryEvent]) -> str:
     """
     格式化历史事件为 stable short text block
-
-    V2升级：注入 actor + 中文 event_type 标签，让模型理解结构
 
     Args:
         events: MemoryEvent 列表
