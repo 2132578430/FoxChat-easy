@@ -12,8 +12,9 @@
 检索逻辑在 chat_msg_service._search_relevant_memories 中实现。
 """
 
+import asyncio
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import List, Optional, Dict
 
 from loguru import logger
@@ -21,7 +22,7 @@ from loguru import logger
 from app.common.constant.LLMChatConstant import LLMChatConstant, build_chat_key, EVENT_TYPE_LABELS
 from app.core.db.redis_client import redis_client
 from app.schemas.memory_event import MemoryEvent, EventActor, EventDetailType, EventType
-from app.util.chroma_util import search_history_events
+from app.util.chroma_util import search_history_events, update_event_metadata
 from app.service.chat.common import calc_jaccard_similarity, safe_json_parse
 
 
@@ -29,8 +30,13 @@ from app.service.chat.common import calc_jaccard_similarity, safe_json_parse
 MAX_HISTORY_EVENTS = 6  # 最多返回 6 条
 MAX_AGE_DAYS = 30  # 最多考虑 30 天内的事件
 
-# 去重阈值：相似度 >= 0.95 则去重
+# 去重阈值：相似度 >= 0.8 则去重（jieba分词后Jaccard）
 DEDUP_SIMILARITY_THRESHOLD = 0.8
+
+# 活跃度动态递增配置
+ACTIVITY_BUMP_STEP = 0.03       # 每次检索命中递增步长
+ACTIVITY_MAX = 1.0              # 活跃度上限
+ACTIVITY_COOLDOWN_HOURS = 1     # 冷却时间（小时），避免同一话题快速涨满
 
 # 事件类型 → 重要性映射（替代 LLM 判断的 importance，确保确定性）
 IMPORTANCE_BY_TYPE: dict[str, float] = {
@@ -58,7 +64,7 @@ def should_deduplicate(event1: MemoryEvent, event2: MemoryEvent) -> bool:
 
     去重规则：
     - content 完全相同 → 去重
-    - content 相似度 >= 0.95 → 去重
+    - content 相似度 >= 0.8 → 去重（jieba分词后Jaccard）
     - event_id 相同 → 去重（续写合并场景）
 
     Args:
@@ -530,6 +536,97 @@ def _merge_and_rank_candidates(
     return sorted_candidates[:max_results]
 
 
+async def _bump_activity_scores(
+    events: List[MemoryEvent],
+    user_id: str,
+    llm_id: str,
+) -> None:
+    """
+    检索命中后递增活跃度
+
+    规则：
+    - 1 小时内已 bump 过的事件跳过（冷却机制）
+    - activity_score += ACTIVITY_BUMP_STEP，上限 ACTIVITY_MAX
+    - 同步更新 last_seen_at 作为冷却时间戳
+    - 写回 Redis memory_bank + 异步写回 ChromaDB
+
+    此函数为 fire-and-forget 调用，不影响检索主链路。
+    """
+    now = datetime.now(timezone.utc)
+    cooldown_seconds = ACTIVITY_COOLDOWN_HOURS * 3600
+
+    # 筛选需要 bump 的事件
+    to_bump: List[MemoryEvent] = []
+    for event in events:
+        # 冷却检查
+        if event.last_seen_at:
+            try:
+                last = datetime.fromisoformat(event.last_seen_at.replace("Z", "+00:00"))
+                if (now - last).total_seconds() < cooldown_seconds:
+                    logger.debug(f"【活跃度】冷却中，跳过: {event.event_id}")
+                    continue
+            except Exception:
+                pass
+
+        # 已达上限
+        if event.activity_score >= ACTIVITY_MAX:
+            continue
+
+        # Bump
+        new_score = round(event.activity_score + ACTIVITY_BUMP_STEP, 4)
+        if new_score > ACTIVITY_MAX:
+            new_score = ACTIVITY_MAX
+        event.activity_score = new_score
+        event.last_seen_at = now.isoformat()
+        to_bump.append(event)
+
+    if not to_bump:
+        return
+
+    logger.debug(f"【活跃度】bump {len(to_bump)} 条事件")
+
+    # 写回 Redis memory_bank
+    try:
+        memory_bank_key = build_chat_key(
+            LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.MEMORY_BANK
+        )
+        memory_bank_json = redis_client.get(memory_bank_key)
+        memory_bank = safe_json_parse(memory_bank_json, default=[], log_warning=False)
+
+        bump_map = {e.event_id: e for e in to_bump}
+        updated = False
+        for item in memory_bank:
+            eid = item.get("event_id", "")
+            if eid in bump_map:
+                item["activity_score"] = bump_map[eid].activity_score
+                item["last_seen_at"] = bump_map[eid].last_seen_at
+                updated = True
+
+        if updated:
+            redis_client.set(memory_bank_key, json.dumps(memory_bank, ensure_ascii=False))
+            logger.debug(f"【活跃度】Redis 已更新 {len(to_bump)} 条")
+    except Exception as e:
+        logger.warning(f"【活跃度】Redis 写回失败: {e}")
+
+    # 异步写回 ChromaDB（fire-and-forget）
+    async def _sync_to_chroma():
+        for event in to_bump:
+            try:
+                await update_event_metadata(
+                    event_id=event.event_id,
+                    user_id=user_id,
+                    llm_id=llm_id,
+                    updates={
+                        "activity_score": event.activity_score,
+                        "last_seen_at": event.last_seen_at,
+                    },
+                )
+            except Exception as e:
+                logger.debug(f"【活跃度】ChromaDB 单条失败 {event.event_id}: {e}")
+
+    asyncio.create_task(_sync_to_chroma())
+
+
 async def _rerank_candidates(
     query: str,
     events: List[MemoryEvent],
@@ -608,6 +705,8 @@ async def retrieve_history_events(
     3. 合并去重 + 综合排序（activity_score纳入）
     4. Rerank二次排序
     5. 与最近窗口去重
+    6. 预算控制
+    7. 活跃度递增（检索命中反馈，fire-and-forget）
 
     Returns:
         MemoryEvent列表（按综合相关性排序）
@@ -661,6 +760,9 @@ async def retrieve_history_events(
     # 6. 预算控制
     if len(merged_events) > final_max_results:
         merged_events = merged_events[:final_max_results]
+
+    # 7. 活跃度递增：检索命中反馈，fire-and-forget 不阻塞返回
+    asyncio.create_task(_bump_activity_scores(merged_events, user_id, llm_id))
 
     logger.info(f"【检索】最终返回: {len(merged_events)} 条")
     return merged_events

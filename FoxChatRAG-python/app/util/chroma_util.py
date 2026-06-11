@@ -32,6 +32,65 @@ async def delete(chroma_type: ChromaTypeConstant, **metadata):
         lambda: chroma.delete(where=_build_chroma_filter(metadata))
     )
 
+
+async def update_event_metadata(
+    event_id: str,
+    user_id: str,
+    llm_id: str,
+    updates: dict,
+) -> bool:
+    """
+    更新 ChromaDB 中单条历史事件的 metadata（不重新 embedding）
+
+    Args:
+        event_id: 事件唯一标识
+        user_id: 用户 ID
+        llm_id: 模型 ID
+        updates: 要更新的 metadata 字段（如 {"activity_score": 0.65, "last_seen_at": "..."}）
+
+    Returns:
+        True 更新成功，False 未找到或失败
+    """
+    import asyncio
+    from loguru import logger
+
+    try:
+        chroma: Chroma = CHROMA_MAP[ChromaTypeConstant.CHAT]
+
+        # 按 event_id + user_id + llm_id 联合查找
+        result = await asyncio.to_thread(
+            lambda: chroma._collection.get(
+                where={"event_id": event_id, "user_id": user_id, "llm_id": llm_id},
+                limit=1,
+            )
+        )
+
+        if not result or not result.get("ids"):
+            logger.debug(f"【活跃度】ChromaDB 未找到事件: {event_id}")
+            return False
+
+        internal_id = result["ids"][0]
+        existing_metadata = result.get("metadatas", [{}])[0] or {}
+
+        # 合并更新
+        updated_metadata = {**existing_metadata, **updates}
+        # 确保数值类型正确（ChromaDB 有时会把 float 存成 string）
+        if "activity_score" in updated_metadata:
+            updated_metadata["activity_score"] = float(updated_metadata["activity_score"])
+
+        await asyncio.to_thread(
+            lambda: chroma._collection.update(
+                ids=[internal_id],
+                metadatas=[updated_metadata],
+            )
+        )
+        logger.debug(f"【活跃度】ChromaDB 已更新: {event_id}, updates={updates}")
+        return True
+
+    except Exception as e:
+        logger.warning(f"【活跃度】ChromaDB 更新失败 {event_id}: {e}")
+        return False
+
 async def search(
     chroma_type: ChromaTypeConstant,
     msg_content: str,
