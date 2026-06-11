@@ -10,9 +10,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
+
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.TimeUnit;
 /**
  * @author bedFox
  */
@@ -65,7 +69,56 @@ public class LoginInterceptor implements HandlerInterceptor {
 
         LoginUserHolder.setCurrent(currentUser);
 
+        // ── Token 滑动刷新 ──
+        tryRefreshToken(token, userId, username, response);
+
         return true;
+    }
+
+    // ── Token 滑动刷新配置 ──
+    private static final long REFRESH_THRESHOLD_MS = 5 * 60 * 1000; // 剩余5分钟时刷新
+    private static final long REFRESH_LOCK_TTL_SEC = 5;             // 刷新锁TTL
+    private static final long REDIS_AUTH_TTL_HOURS = 24;            // 新token的Redis TTL
+
+    /**
+     * Token 滑动刷新：检测即将过期 → 防并发锁 → 签发新token → Redis原子替换 → 写Cookie
+     */
+    private void tryRefreshToken(String oldToken, String userId, String username,
+                                  HttpServletResponse response) {
+        if (!jwtUtil.isTokenAboutToExpire(oldToken, REFRESH_THRESHOLD_MS)) {
+            return;
+        }
+
+        // 防并发：同一用户5秒内只允许一次刷新
+        String lockKey = "auth:refresh_lock:" + userId;
+        Boolean locked = redisTemplate.opsForValue()
+                .setIfAbsent(lockKey, "1", REFRESH_LOCK_TTL_SEC, TimeUnit.SECONDS);
+        if (!Boolean.TRUE.equals(locked)) {
+            return;
+        }
+
+        try {
+            String newToken = jwtUtil.generateToken(userId);
+            String newAuthKey = AuthConstant.PRE_LOGIN_AUTH + newToken;
+            String oldAuthKey = AuthConstant.PRE_LOGIN_AUTH + oldToken;
+
+            // Redis pipeline 原子：写新 key + 删旧 key
+            redisTemplate.executePipelined((RedisCallback<Object>) connection -> {
+                byte[] nk = newAuthKey.getBytes(StandardCharsets.UTF_8);
+                byte[] ok = oldAuthKey.getBytes(StandardCharsets.UTF_8);
+                byte[] un = username.getBytes(StandardCharsets.UTF_8);
+                connection.stringCommands().setEx(nk, REDIS_AUTH_TTL_HOURS * 3600, un);
+                connection.keyCommands().del(ok);
+                return null;
+            });
+
+            CookieUtil.setTokenCookie(response, newToken);
+            log.info("Token 滑动刷新成功: userId={}", userId);
+        } catch (Exception e) {
+            log.warn("Token 滑动刷新失败: userId={}, error={}", userId, e.getMessage());
+        } finally {
+            redisTemplate.delete(lockKey);
+        }
     }
 
     /**

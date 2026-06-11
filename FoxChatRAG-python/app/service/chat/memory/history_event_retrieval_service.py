@@ -30,7 +30,7 @@ MAX_HISTORY_EVENTS = 6  # 最多返回 6 条
 MAX_AGE_DAYS = 30  # 最多考虑 30 天内的事件
 
 # 去重阈值：相似度 >= 0.95 则去重
-DEDUP_SIMILARITY_THRESHOLD = 0.95
+DEDUP_SIMILARITY_THRESHOLD = 0.8
 
 # 事件类型 → 重要性映射（替代 LLM 判断的 importance，确保确定性）
 IMPORTANCE_BY_TYPE: dict[str, float] = {
@@ -150,21 +150,23 @@ def deduplicate_with_recent_window(
     if not recent_messages:
         return events
 
-    # 提取最近窗口的关键词集合
+    import jieba
+
+    # 提取最近窗口的关键词集合（jieba分词）
     recent_keywords = set()
     for msg in recent_messages[-6:]:  # 最近 6 条消息
-        recent_keywords.update(msg.split())
+        recent_keywords.update(t for t in jieba.cut(msg) if len(t) > 1)
 
     deduplicated = []
     for event in events:
-        event_keywords = set(event.content.split())
+        event_keywords = set(t for t in jieba.cut(event.content) if len(t) > 1)
 
         # 计算与最近窗口的重叠度
         overlap = len(event_keywords & recent_keywords)
         overlap_ratio = overlap / max(len(event_keywords), 1)
 
         # 如果事件内容主要都在最近窗口中，则抑制
-        if overlap_ratio >= 0.7:  # 70% 以上重叠
+        if overlap_ratio >= 0.5:  # 50% 以上重叠
             logger.debug(f"【最近窗口去重】抑制高重叠事件: {event.content[:30]}...")
             continue
 
@@ -536,8 +538,6 @@ async def _rerank_candidates(
     """
     Rerank二次排序
 
-    V2新增：使用FlashrankRerank对合并结果做相关性重估
-
     Args:
         query: 用户查询文本
         events: 合并后的候选事件
@@ -635,7 +635,7 @@ async def retrieve_history_events(
         max_results=10,
         scope=scope,
     )
-    logger.debug(f"【V2检索】向量召回: {len(vector_events)} 条")
+    logger.debug(f"【检索】向量召回: {len(vector_events)} 条")
 
     # 3. 合并排序（activity_score纳入）
     merged_events = _merge_and_rank_candidates(
@@ -643,7 +643,7 @@ async def retrieve_history_events(
         vector_events=vector_events,
         max_results=final_max_results * 2,  # 给rerank留空间
     )
-    logger.debug(f"【V2检索】合并后: {len(merged_events)} 条")
+    logger.debug(f"【检索】合并后: {len(merged_events)} 条")
 
     # 4. Rerank
     if enable_rerank and len(merged_events) > final_max_results:
@@ -652,7 +652,7 @@ async def retrieve_history_events(
             events=merged_events,
             top_k=final_max_results,
         )
-        logger.debug(f"【V2检索】Rerank后: {len(merged_events)} 条")
+        logger.debug(f"【检索】Rerank后: {len(merged_events)} 条")
 
     # 5. 与最近窗口去重
     if recent_messages:
@@ -662,5 +662,5 @@ async def retrieve_history_events(
     if len(merged_events) > final_max_results:
         merged_events = merged_events[:final_max_results]
 
-    logger.info(f"【V2检索】最终返回: {len(merged_events)} 条")
+    logger.info(f"【检索】最终返回: {len(merged_events)} 条")
     return merged_events

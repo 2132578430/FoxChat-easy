@@ -88,20 +88,45 @@ public class JwtUtil {
     }
 
     /**
-     * 延长原token有效期
-     * @param token
-     * @return
+     * 判断 Token 是否即将过期（剩余有效期 < thresholdMs）
+     *
+     * @param token       JWT token
+     * @param thresholdMs 阈值（毫秒），剩余有效期小于此值视为即将过期
+     * @return true 如果即将过期或已过期/无法解析
+     */
+    public boolean isTokenAboutToExpire(String token, long thresholdMs) {
+        Claims claims = getClaimsFromToken(token);
+        if (claims == null) {
+            return true;
+        }
+        long remaining = claims.getExpiration().getTime() - System.currentTimeMillis();
+        return remaining < thresholdMs;
+    }
+
+    /**
+     * 刷新 Token：基于旧 token 中的用户信息签发新 token。
+     * 仅当旧 token 未过期，或过期未超过 MIN_TEMP（24分钟）才允许刷新。
+     *
+     * @param token 旧 token
+     * @return 新 token；如果过期太久或解析失败返回 null
      */
     public String refreshToken(String token) {
-        String userId = getUserIdFromToken(token);
-
-        // 判断两次间隔是否超过1分钟
-        long expiration = getClaimsFromToken(token).getExpiration().getTime();
-        long temp = System.currentTimeMillis() - expiration;
-
-        if (temp < MIN_TEMP) {
-            return token;
+        Claims claims = getClaimsFromToken(token);
+        if (claims == null) {
+            return null;
         }
+
+        String userId = (String) claims.get("userId");
+        if (StringUtils.isEmpty(userId)) {
+            return null;
+        }
+
+        // 过期超过宽限期则拒绝
+        long sinceExpired = System.currentTimeMillis() - claims.getExpiration().getTime();
+        if (sinceExpired > MIN_TEMP) {
+            return null;
+        }
+
         return generateToken(userId);
     }
 }

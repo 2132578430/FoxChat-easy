@@ -37,7 +37,7 @@ SUMMARY_TRIGGER_THRESHOLD = 18
 
 # 去重配置
 DEDUP_CHECK_WINDOW = 20  # 检查最近20条
-DEDUP_SIMILARITY_THRESHOLD = 0.6  # 内容相似度阈值
+DEDUP_SIMILARITY_THRESHOLD = 0.5  # 内容相似度阈值（jieba分词后Jaccard）
 
 def _load_event_list(raw_text: str) -> List[dict]:
     """解析事件列表

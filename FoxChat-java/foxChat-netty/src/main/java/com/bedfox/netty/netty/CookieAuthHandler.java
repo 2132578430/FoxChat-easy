@@ -48,6 +48,12 @@ public class CookieAuthHandler extends ChannelInboundHandlerAdapter {
                             String userId = jwtUtil.getUserIdFromToken(token);
                             ctx.channel().attr(ChatWebSocketHandler.USER_ID_KEY).set(userId);
                             log.info("WebSocket 握手 Cookie 验证成功: userId={}", userId);
+
+                            // 检测即将过期：只记日志，刷新交给下次 HTTP 请求
+                            if (jwtUtil.isTokenAboutToExpire(token, 5 * 60 * 1000)) {
+                                log.info("WebSocket 握手时 token 即将过期: userId={}，" +
+                                         "刷新将由下次 HTTP 请求的 LoginInterceptor 处理", userId);
+                            }
                         }
                     }
                 } catch (Exception e) {
