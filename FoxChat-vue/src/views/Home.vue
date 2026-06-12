@@ -299,6 +299,91 @@ const { sendStreamMessage } = useLlmStream();
 const userInfo = reactive(JSON.parse(localStorage.getItem('userInfo') || '{}'));
 const showAvatarCropper = ref(false);
 
+// LLM 流式响应状态（WebSocket 路径 1108）
+const llmStreamState = ref({
+  active: false,
+  llmId: null,
+  aiPlaceholderId: null,
+  blocks: [],
+  currentBlockType: null,
+  currentBlockContent: '',
+  emotion: null,
+  requestFriendId: null,
+});
+
+function flushLlmBlock() {
+  const s = llmStreamState.value;
+  if (s.currentBlockType && s.currentBlockContent) {
+    s.blocks.push({ type: s.currentBlockType, text: s.currentBlockContent });
+    s.currentBlockContent = '';
+  }
+}
+
+function handleLlmToken(data) {
+  try {
+    const token = JSON.parse(data.extend);
+    const s = llmStreamState.value;
+
+    // 错误包
+    if (token.error) {
+      console.warn('[LLM WS] 收到错误:', token.error);
+      s.active = false;
+      isLlmTyping.value = false;
+      llmPendingCount.value--;
+      fallbackLlmRest(s.llmId, s.msgContent, currentFriend, friendList, messageList, s.aiPlaceholderId);
+      return;
+    }
+
+    if (!s.active) return;
+
+    // 最终包
+    if (token.isFinal) {
+      flushLlmBlock();
+      s.emotion = token.emotion || 'neutral';
+      const finalBlocks = [...s.blocks];
+
+      const idx = messageList.value.findIndex(m => m.id === s.aiPlaceholderId);
+      if (idx >= 0) {
+        messageList.value[idx].blocks = finalBlocks;
+        messageList.value[idx].emotion = s.emotion;
+        messageList.value[idx].isStreaming = false;
+      }
+
+      if (currentFriend.value && (currentFriend.value.userId || currentFriend.value.id) === s.requestFriendId) {
+        currentFriend.value.emotion = s.emotion;
+        const friend = friendList.value.find(f => String(f.userId || f.id) === String(s.requestFriendId));
+        if (friend) friend.emotion = s.emotion;
+      }
+
+      s.active = false;
+      isLlmTyping.value = false;
+      llmPendingCount.value--;
+      return;
+    }
+
+    // 普通 token
+    if (token.blockType !== s.currentBlockType) {
+      flushLlmBlock();
+      s.currentBlockType = token.blockType;
+    }
+    if (token.content) {
+      s.currentBlockContent += token.content;
+    }
+
+    // 实时快照更新 UI
+    const snapshot = [...s.blocks];
+    if (s.currentBlockType && s.currentBlockContent) {
+      snapshot.push({ type: s.currentBlockType, text: s.currentBlockContent });
+    }
+    const idx = messageList.value.findIndex(m => m.id === s.aiPlaceholderId);
+    if (idx >= 0) {
+      messageList.value[idx].blocks = snapshot;
+    }
+  } catch (e) {
+    console.error('[LLM WS] 解析响应失败:', e, data);
+  }
+}
+
 const emotionEmojiMap = {
   '开心': '😊',
   '快乐': '😊',
@@ -1167,6 +1252,9 @@ const handleMessage = async (rawInput) => {
           }
         }
       }
+    } else if (data.type == '1108') {
+      // LLM 流式 Token（WebSocket 路径）
+      handleLlmToken(data);
     }
   } catch (error) {
     console.error('处理消息失败:', error);
@@ -1774,13 +1862,37 @@ const sendMessage = async () => {
       nextTick(() => scrollToBottom(true));
     };
 
-    // 2b. 流式调用
+    // 2b. 流式调用（WS 优先，SSE 降级）
     let replyBlocks = [{ type: 'text', text: '' }];
     let replyEmotion = null;
     let currentBlockType = 'text';
     let hasError = false;
 
-    await sendStreamMessage(llmId, msgContent, {
+    // WS 已连接 → 使用二进制协议 1108
+    if (ws.value && ws.value.readyState === WebSocket.OPEN) {
+      // WS 延迟极低，立即推 AI 占位气泡
+      pushBubble();
+
+      llmStreamState.value = {
+        active: true,
+        llmId,
+        msgContent,
+        aiPlaceholderId,
+        blocks: [],
+        currentBlockType: null,
+        currentBlockContent: '',
+        emotion: null,
+        requestFriendId: llmId,
+      };
+
+      const wsMsg = {
+        type: 1108,
+        extend: JSON.stringify({ llmId, msgContent }),
+      };
+      sendBinaryMessage(encodeProtocol(wsMsg));
+    } else {
+      // 降级：SSE 路径
+      await sendStreamMessage(llmId, msgContent, {
       onBlocks: (blocks) => {
         if (currentFriend.value && (currentFriend.value.userId || currentFriend.value.id) !== requestFriendId) return;
         pushBubble(); // 第一个 block 才推气泡
