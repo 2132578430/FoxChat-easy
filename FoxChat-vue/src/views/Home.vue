@@ -1796,6 +1796,7 @@ const getChatHistory = async (targetId, isFirstLoad = false) => {
 
 const sendMessage = async () => {
   console.log('[Send] sendMessage called');
+  const myId = String(userInfo.userId || '');
   if (!inputMessage.value.trim()) {
     console.warn('[Send] Message content is empty');
     return;
@@ -1813,7 +1814,6 @@ const sendMessage = async () => {
   if (currentFriend.value && (currentFriend.value.role === 1 || currentFriend.value.isOldFriend)) {
     const msgContent = inputMessage.value;
     const msgId = snowflake.nextId();
-    const myId = String(userInfo.userId || '');
     const llmId = currentFriend.value.userId || currentFriend.value.id;
     
     // 1. 立即渲染自己的消息
@@ -2048,7 +2048,6 @@ const sendMessage = async () => {
     }
   };
 
-  const myId = String(userInfo.userId || '');
   const msgContent = inputMessage.value;
   const msgId = snowflake.nextId();
   
