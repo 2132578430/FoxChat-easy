@@ -27,6 +27,10 @@ spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-
 
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
 
+# Micrometer & Monitoring
+spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
+micrometer-registry-prometheus = { module = "io.micrometer:micrometer-registry-prometheus" }
+
 # Spring Cloud
 spring-cloud-dependencies = { module = "org.springframework.cloud:spring-cloud-dependencies", version.ref = "spring-cloud" }
 spring-cloud-starter-openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign" }

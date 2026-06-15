@@ -1,0 +1,21 @@
+# ============================================
+# Prometheus 配置 — FoxChat 监控
+# ============================================
+global:
+  scrape_interval: 15s       # 每 15 秒抓一次指标
+  evaluation_interval: 15s   # 每 15 秒评估告警规则
+
+scrape_configs:
+  # === Spring Boot Actuator ===
+  - job_name: 'foxchat-java'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['host.docker.internal:12000']
+        labels:
+          application: 'FoxChat'
+          service: 'java-backend'
+
+  # === Prometheus 自身监控（可选）===
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']

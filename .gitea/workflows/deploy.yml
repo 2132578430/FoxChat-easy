@@ -51,10 +51,18 @@ jobs:
           (echo > /dev/tcp/127.0.0.1/16379 && echo "🟢 Redis 隧道: 可达") || echo "🔴 Redis 隧道: 不可达"
           (echo > /dev/tcp/127.0.0.1/15672 && echo "🟢 RabbitMQ 隧道: 可达") || echo "🔴 RabbitMQ 隧道: 不可达"
           echo ""
-          echo "===== 服务检查 ====="
+          echo "===== 服务健康检查 ====="
           sleep 15
+          # Java Actuator 健康检查（含子组件: DB/Redis/gRPC-Python）
+          JAVA_HEALTH=$(curl -s http://localhost:12000/actuator/health 2>/dev/null)
+          if [ $? -eq 0 ] && echo "$JAVA_HEALTH" | grep -q '"status":"UP"'; then
+            echo "🟢 Java API: $JAVA_HEALTH"
+          else
+            echo "🔴 Java API: 异常（或 Actuator 不可达）"
+          fi
+          # Python FastAPI
           curl -sf http://localhost:8000/docs > /dev/null && echo "🟢 Python RAG: 正常" || echo "🔴 Python RAG: 异常"
-          curl -sf http://localhost:12000 > /dev/null && echo "🟢 Java API: 正常" || echo "🔴 Java API: 异常"
+          # Vue 前端
           curl -sf http://localhost:80 > /dev/null && echo "🟢 Vue 前端: 正常" || echo "🔴 Vue 前端: 异常"
           echo ""
           echo "===== 内存用量 ====="

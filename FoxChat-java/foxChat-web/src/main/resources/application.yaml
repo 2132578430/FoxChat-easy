@@ -77,3 +77,18 @@ mybatis-plus:
 logging:
   level:
     com.bedfox.bedfoxchat: debug
+
+# ========================================
+# Actuator & Monitoring
+# ========================================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: FoxChat

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import com.bedfox.pojo.proto.ai.AiChatProto;
 import io.grpc.ConnectivityState;
 import io.grpc.StatusRuntimeException;
+import io.micrometer.core.instrument.Counter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.function.Consumer;
@@ -19,17 +20,20 @@ public class ChatStreamObserver implements StreamObserver<AiChatProto.ChatRespon
     private final Runnable onComplete;
     private final Consumer<Throwable> onError;
     private final ManagedChannel channel;
+    private final Counter errorCounter;
 
     public ChatStreamObserver(
             Consumer<AiChatProto.ChatResponse> onToken,
             Runnable onComplete,
             Consumer<Throwable> onError,
-            ManagedChannel channel
+            ManagedChannel channel,
+            Counter errorCounter
     ) {
         this.onToken = onToken;
         this.onComplete = onComplete;
         this.onError = onError;
         this.channel = channel;
+        this.errorCounter = errorCounter;
     }
 
     @Override
@@ -49,6 +53,9 @@ public class ChatStreamObserver implements StreamObserver<AiChatProto.ChatRespon
 
     @Override
     public void onError(Throwable t) {
+        // Metrics: 记录错误
+        errorCounter.increment();
+
         // [DIAG] 追加 gRPC 状态码和 channel 状态
         String statusCode = "UNKNOWN";
         if (t instanceof StatusRuntimeException sre) {

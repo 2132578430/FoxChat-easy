@@ -12,6 +12,10 @@ dependencies {
     implementation libs.spring.boot.starter.security
     implementation libs.spring.boot.starter.data.redis
 
+    // Actuator & Monitoring
+    implementation libs.spring.boot.starter.actuator
+    implementation libs.micrometer.registry.prometheus
+
     implementation libs.spring.cloud.starter.openfeign
 
     implementation libs.mybatis.plus.boot.starter

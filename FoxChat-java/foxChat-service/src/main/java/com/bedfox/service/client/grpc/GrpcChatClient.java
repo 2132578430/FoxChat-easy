@@ -8,6 +8,8 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.Metrics;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +42,17 @@ public class GrpcChatClient {
 
     private ManagedChannel channel;
     private AIChatServiceGrpc.AIChatServiceStub asyncStub;
+
+    // ===== Micrometer Metrics =====
+    private final Counter grpcRequestCounter = Counter.builder("grpc.chat.requests")
+        .description("gRPC Chat 请求总数")
+        .tag("target", "python-ai")
+        .register(Metrics.globalRegistry);
+
+    private final Counter grpcErrorCounter = Counter.builder("grpc.chat.errors")
+        .description("gRPC Chat 错误总数")
+        .tag("target", "python-ai")
+        .register(Metrics.globalRegistry);
 
     @PostConstruct
     public void init() {
@@ -80,6 +93,9 @@ public class GrpcChatClient {
             .setMsgContent(message)
             .build();
 
+        // Metrics: 记录请求
+        grpcRequestCounter.increment();
+
         // 记录 channel 状态
         ConnectivityState state = channel.getState(true);
         log.info("[gRPC Chat] 发起流式请求: user={}, llm={}, msg={}, channelState={}, thread={}",
@@ -87,7 +103,7 @@ public class GrpcChatClient {
 
         // 调用聊天方法
         asyncStub.withDeadlineAfter(120, TimeUnit.SECONDS)  // 总超时 120s（含 LLM 推理时间）
-            .chat(request, new ChatStreamObserver(onToken, onComplete, onError, channel));
+            .chat(request, new ChatStreamObserver(onToken, onComplete, onError, channel, grpcErrorCounter));
 
         log.info("[gRPC Chat] asyncStub.chat() 已派发, thread={}", Thread.currentThread().getName());
     }
@@ -98,5 +114,12 @@ public class GrpcChatClient {
             log.info("[gRPC Client] 关闭连接");
             channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
         }
+    }
+
+    /**
+     * 暴露 channel 供 HealthIndicator 检查连接状态
+     */
+    public ManagedChannel getChannel() {
+        return channel;
     }
 }
