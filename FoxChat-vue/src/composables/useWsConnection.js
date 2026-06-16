@@ -7,7 +7,7 @@ import { useFriends } from '@/composables/useFriends';
 import { CHAT_SERVICE_URL } from '@/utils/config';
 import { encodeProtocol, decodeProtocol } from '@/utils/protocol';
 import { resolveAvatarUrl } from '@/utils/avatar';
-import { ElMessage } from 'element-plus';
+import { FoxToast } from '@/components/FoxUI';
 import { useRouter } from 'vue-router';
 
 export function useWsConnection() {
@@ -22,7 +22,7 @@ export function useWsConnection() {
   const initWebSocket = async () => {
     try {
       if (!userInfo?.userId) {
-        ElMessage.error('未登录，无法连接服务器');
+        FoxToast.error('未登录，无法连接服务器');
         router.push('/login');
         return;
       }
@@ -59,7 +59,7 @@ export function useWsConnection() {
 
       ws.value.onerror = (error) => {
         console.error('[WS] WebSocket error:', error);
-        ElMessage.error('服务器连接发生错误');
+        FoxToast.error('服务器连接发生错误');
       };
 
       ws.value.onmessage = async (event) => {
@@ -76,7 +76,7 @@ export function useWsConnection() {
       };
     } catch (error) {
       console.error('WebSocket connection failed:', error);
-      ElMessage.error('连接服务器失败');
+      FoxToast.error('连接服务器失败');
     }
   };
 
@@ -111,7 +111,7 @@ export function useWsConnection() {
       if (data.type == '1105') {
         const isForMe = String(data.chatMsg?.acceptUserId) === String(userInfo.userId);
         if (isForMe) {
-          ElMessage({ message: '收到好友申请', type: 'info', duration: 5000 });
+          FoxToast.info('收到好友申请', 5000);
           getFriendRequests();
         }
       } else if (data.type == '1101') {

@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 import request from '@/utils/request';
-import { ElMessage } from 'element-plus';
+import { FoxToast } from '@/components/FoxUI';
 
 const ragFiles = ref([]);
 const isSearchingRag = ref(false);
@@ -58,10 +58,10 @@ const searchRagFiles = async (content) => {
       ragFiles.value = res.data;
     }
     hasRagSearchResults.value = true;
-    ElMessage.success('搜索完成啦！看看匹配的结果吧~ ✨');
+    FoxToast.success('搜索完成啦！看看匹配的结果吧~ ✨');
   } catch (error) {
     console.error('RAG 搜索失败:', error);
-    ElMessage.error('搜索出错了呢，请稍后再试吧~');
+    FoxToast.error('搜索出错了呢，请稍后再试吧~');
   } finally {
     isSearchingRag.value = false;
   }
@@ -73,7 +73,7 @@ const searchRagFiles = async (content) => {
 const handleBeforeUpload = (file) => {
   const maxSize = 100 * 1024 * 1024;
   if (file.size > maxSize) {
-    ElMessage.warning(`文件 ${file.name} 太重啦，狐狸抱不动... (不能超过 100MB 哦~)`);
+    FoxToast.warning(`文件 ${file.name} 太重啦，狐狸抱不动... (不能超过 100MB 哦~)`);
     return false;
   }
   return true;
@@ -91,7 +91,7 @@ const handleUploadRequest = (options) => {
  */
 const submitBatchUpload = async () => {
   if (pendingFiles.value.length === 0) {
-    ElMessage.warning('还没有选择任何文件呢~');
+    FoxToast.warning('还没有选择任何文件呢~');
     return;
   }
   isUploading.value = true;
@@ -107,12 +107,12 @@ const submitBatchUpload = async () => {
     await request.post('/rag/uploadVector', formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
-    ElMessage.success('文件上传成功啦！狐狸正在努力学习中... ✨');
+    FoxToast.success('文件上传成功啦！狐狸正在努力学习中... ✨');
     pendingFiles.value = [];
     fetchRagFiles();
   } catch (error) {
     console.error('批量上传失败:', error);
-    ElMessage.error('上传出错了呢，请稍后再试吧~');
+    FoxToast.error('上传出错了呢，请稍后再试吧~');
   } finally {
     isUploading.value = false;
   }

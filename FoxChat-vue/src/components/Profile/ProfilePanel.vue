@@ -6,24 +6,24 @@
       </div>
       <div class="profile-content">
         <div class="profile-avatar-section">
-          <el-avatar :size="100" :src="resolveAvatarUrl(profileInfo.faceImage) || defaultUserAvatar"></el-avatar>
-          <el-button type="primary" size="small" class="edit-avatar-btn" @click="handleEditAvatar">修改头像</el-button>
+          <FoxAvatar :src="resolveAvatarUrl(profileInfo.faceImage) || defaultUserAvatar" :size="100" />
+          <FoxButton size="small" type="ghost" @click="handleEditAvatar">修改头像</FoxButton>
         </div>
-        
+
         <div class="info-list">
-          <div class="info-item-input">
+          <div class="info-item">
             <label>昵称</label>
-            <el-input v-model="profileInfo.nickname" placeholder="请输入昵称" size="small"></el-input>
+            <FoxInput v-model="profileInfo.nickname" placeholder="请输入昵称" />
           </div>
-          <div class="info-item-input">
+          <div class="info-item">
             <label>邮箱</label>
-            <el-input v-model="profileInfo.email" placeholder="请输入邮箱" size="small"></el-input>
+            <FoxInput v-model="profileInfo.email" placeholder="请输入邮箱" />
           </div>
         </div>
 
-        <div class="profile-actions-vertical">
-          <el-button type="primary" @click="handleUpdateProfile">修改信息</el-button>
-          <el-button type="info" plain @click="handleEditPassword">修改密码</el-button>
+        <div class="profile-actions">
+          <FoxButton type="primary" block @click="handleUpdateProfile">修改信息</FoxButton>
+          <FoxButton type="ghost" block @click="handleEditPassword">修改密码</FoxButton>
         </div>
       </div>
     </div>
@@ -31,6 +31,7 @@
 </template>
 
 <script setup>
+import { FoxAvatar, FoxButton, FoxInput } from '@/components/FoxUI';
 import { useUserStore } from '@/stores/userStore';
 import { useUiStore } from '@/stores/uiStore';
 import { useProfile } from '@/composables/useProfile';
@@ -51,56 +52,12 @@ const { handleEditAvatar } = useProfile();
   display: flex;
   flex-direction: column;
 }
-
-.profile-header {
-  padding: 16px;
-  border-bottom: 1px solid var(--sidebar-border);
-}
-
-.profile-header h3 {
-  margin: 0;
-  font-size: 16px;
-  color: var(--text-primary);
-}
-
-.profile-content {
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.profile-avatar-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.edit-avatar-btn {
-  font-size: 12px;
-}
-
-.info-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.info-item-input {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.info-item-input label {
-  font-size: 12px;
-  color: var(--text-secondary);
-}
-
-.profile-actions-vertical {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
+.profile-header { padding: 16px; border-bottom: 1px solid var(--sidebar-border); }
+.profile-header h3 { margin: 0; font-size: 16px; color: var(--text-primary); }
+.profile-content { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+.profile-avatar-section { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.info-list { display: flex; flex-direction: column; gap: 12px; }
+.info-item { display: flex; flex-direction: column; gap: 4px; }
+.info-item label { font-size: 12px; color: var(--text-secondary); }
+.profile-actions { display: flex; flex-direction: column; gap: 8px; }
 </style>

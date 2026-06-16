@@ -2,7 +2,7 @@
   <div class="llm-config-panel">
     <!-- Header -->
     <div class="panel-header">
-      <el-button :icon="Back" @click="handleClose" circle size="small" class="back-btn" />
+      <FoxButton type="ghost" size="small" round @click="handleClose" class="back-btn">← 返回</FoxButton>
       <span class="header-title">模型配置</span>
     </div>
 
@@ -19,7 +19,7 @@
             :class="{ active: String(friend.userId || friend.id || friend.llmId) === String(selectedFriendId) }"
             @click="handleSelectFriendById(String(friend.userId || friend.id || friend.llmId))"
           >
-            <el-avatar :size="36" :src="resolveAvatarUrl(friend.faceImage || friend.face_image) || defaultAvatar" />
+            <FoxAvatar :src="resolveAvatarUrl(friend.faceImage || friend.face_image) || defaultAvatar" :size="36" />
             <span class="friend-name">{{ friend.nickname || friend.username }}</span>
           </div>
           <div v-if="friendList.length === 0" class="friend-empty">暂无创造物</div>
@@ -32,15 +32,15 @@
           <el-tab-pane label="外观" name="appearance">
             <div class="appearance-form">
               <div class="avatar-upload" @click="handleOpenAvatarCropper">
-                <el-avatar :size="80" :src="resolveAvatarUrl(appearanceForm.faceImage) || defaultAvatar" />
-                <div class="avatar-overlay"><el-icon :size="20"><UploadFilled /></el-icon></div>
+                <FoxAvatar :src="resolveAvatarUrl(appearanceForm.faceImage) || defaultAvatar" :size="80" />
+                <div class="avatar-overlay">📷</div>
               </div>
               <el-form label-position="top" class="nickname-form">
                 <el-form-item label="昵称">
-                  <el-input v-model="appearanceForm.nickname" placeholder="模型昵称" maxlength="30" show-word-limit />
+                  <FoxInput v-model="appearanceForm.nickname" placeholder="模型昵称" />
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" :loading="isSavingAppearance" @click="handleSaveAppearance">保存外观</el-button>
+                  <FoxButton type="primary" :loading="isSavingAppearance" @click="handleSaveAppearance">保存外观</FoxButton>
                 </el-form-item>
               </el-form>
             </div>
@@ -64,10 +64,10 @@
         </el-tabs>
 
         <div class="form-footer">
-          <el-button :icon="CopyDocument" @click="handleOneClickConfig">一键配置</el-button>
-          <el-button type="primary" :icon="Finished" :loading="isSavingAll" @click="handleSaveAll">
+          <FoxButton type="ghost" @click="handleOneClickConfig">一键配置</FoxButton>
+          <FoxButton type="primary" :loading="isSavingAll" @click="handleSaveAll">
             {{ isSavingAll ? '保存中...' : '保存所有配置' }}
-          </el-button>
+          </FoxButton>
         </div>
       </div>
     </div>
@@ -76,8 +76,7 @@
 
 <script setup>
 import { ref, reactive, computed, watch, onMounted } from 'vue';
-import { ElMessage } from 'element-plus';
-import { Back, Finished, CopyDocument, UploadFilled } from '@element-plus/icons-vue';
+import { FoxToast, FoxButton, FoxAvatar, FoxInput } from '@/components/FoxUI';
 import ScenarioConfigForm from './ScenarioConfigForm.vue';
 import { saveConfigsBatch, getConfigs } from '@/api/llmConfig';
 import { updateLlmFriend } from '@/api/friend';
@@ -211,7 +210,7 @@ const autoSaveCurrentConfig = async () => {
   if (allConfigs.length > 0) {
     try {
       await saveConfigsBatch(oldLlmId, allConfigs);
-      ElMessage.success('配置已自动保存');
+      FoxToast.success('配置已自动保存');
     } catch (error) {
       console.error('自动保存失败:', error);
     }
@@ -255,7 +254,7 @@ const loadConfigs = async (llmId) => {
     }
   } catch (error) {
     console.error('加载配置失败:', error);
-    ElMessage.error('加载配置失败');
+    FoxToast.error('加载配置失败');
   } finally {
     isLoadingConfig.value = false;
   }
@@ -291,9 +290,9 @@ const handleTestResult = ({ scenario, success, error }) => {
   testResults[scenario] = success;
 
   if (success) {
-    ElMessage.success(`${scenarioNames[scenario]} 测试连接成功`);
+    FoxToast.success(`${scenarioNames[scenario]} 测试连接成功`);
   } else {
-    ElMessage.error(`${scenarioNames[scenario]} 测试连接失败: ${error || '未知错误'}`);
+    FoxToast.error(`${scenarioNames[scenario]} 测试连接失败: ${error || '未知错误'}`);
   }
 };
 
@@ -309,7 +308,7 @@ const handleOneClickConfig = () => {
   const currentConfig = currentFormRef?.getConfig?.();
   
   if (!currentConfig || !currentConfig.modelName) {
-    ElMessage.warning('请先在当前场景填写配置');
+    FoxToast.warning('请先在当前场景填写配置');
     return;
   }
   
@@ -351,7 +350,7 @@ const handleOneClickConfig = () => {
     };
   });
   
-  ElMessage.success('已将当前配置复制到所有场景');
+  FoxToast.success('已将当前配置复制到所有场景');
 };
 
 const handleSaveAll = async () => {
@@ -380,14 +379,14 @@ const handleSaveAll = async () => {
     });
 
     if (allConfigs.length === 0) {
-      ElMessage.warning('没有可保存的配置');
+      FoxToast.warning('没有可保存的配置');
       return;
     }
 
     const response = await saveConfigsBatch(currentLlmId.value, allConfigs);
 
     if (response.code === 1000) {
-      ElMessage.success('配置保存成功');
+      FoxToast.success('配置保存成功');
 
       scenarios.forEach(scenario => {
         if (pendingConfigs[scenario]) {
@@ -396,11 +395,11 @@ const handleSaveAll = async () => {
         }
       });
     } else {
-      ElMessage.error(response.msg || '保存失败');
+      FoxToast.error(response.msg || '保存失败');
     }
   } catch (error) {
     console.error('批量保存失败:', error);
-    ElMessage.error('保存配置失败: ' + (error.message || '网络错误'));
+    FoxToast.error('保存配置失败: ' + (error.message || '网络错误'));
   } finally {
     isSavingAll.value = false;
   }
@@ -473,10 +472,10 @@ const handleSaveAppearance = async () => {
       nickname: appearanceForm.nickname,
       faceImage: appearanceForm.faceImage
     });
-    ElMessage.success('外观已保存');
+    FoxToast.success('外观已保存');
   } catch (error) {
     console.error('保存外观失败:', error);
-    ElMessage.error('保存外观失败');
+    FoxToast.error('保存外观失败');
   } finally {
     isSavingAppearance.value = false;
   }
@@ -517,7 +516,7 @@ const handleSaveAppearance = async () => {
 
 /* Left sidebar */
 .friend-sidebar {
-  width: 200px;
+  width: 220px;
   flex-shrink: 0;
   background: var(--bg-sidebar, #fafbfc);
   border-right: 1px solid var(--border-light, #eee);
@@ -535,6 +534,9 @@ const handleSaveAppearance = async () => {
   flex: 1;
   overflow-y: auto;
   padding: 4px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 .friend-item {
   display: flex;

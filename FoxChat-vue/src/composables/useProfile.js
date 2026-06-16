@@ -2,7 +2,7 @@ import { ref } from 'vue';
 import { useUserStore } from '@/stores/userStore';
 import { useUiStore } from '@/stores/uiStore';
 import * as friendApi from '@/api/friend';
-import { ElMessage } from 'element-plus';
+import { FoxToast } from '@/components/FoxUI';
 
 const uploadingAvatar = ref(false);
 
@@ -51,17 +51,17 @@ export function useProfile() {
       uploadingAvatar.value = false;
       if (res && typeof res === 'string' && res.startsWith('http')) {
         pendingLlmAvatarUrl.value = res;
-        ElMessage.success('模型头像上传成功啦 ✨');
+        FoxToast.success('模型头像上传成功啦 ✨');
       } else if (res && res.data) {
         pendingLlmAvatarUrl.value = res.data;
-        ElMessage.success('模型头像上传成功啦 ✨');
+        FoxToast.success('模型头像上传成功啦 ✨');
       } else {
-        ElMessage.error('上传失败');
+        FoxToast.error('上传失败');
       }
     } catch (error) {
       uploadingAvatar.value = false;
       console.error('上传模型头像失败:', error);
-      ElMessage.error('上传失败，请稍后再试');
+      FoxToast.error('上传失败，请稍后再试');
     }
   };
 

@@ -6,7 +6,7 @@ import { useChat } from '@/composables/useChat';
 import { useFriends } from '@/composables/useFriends';
 import * as groupApi from '@/api/group';
 import request from '@/utils/request';
-import { ElMessage } from 'element-plus';
+import { FoxToast } from '@/components/FoxUI';
 
 export function useGroups() {
   const { groupList, isGroupLoading, createGroupForm, addLlmFriendForm } = useGroupStore();
@@ -98,7 +98,7 @@ export function useGroups() {
       }
     } else {
       console.error('无法从群组对象中获取 ID:', group);
-      ElMessage.error('获取群组信息失败');
+      FoxToast.error('获取群组信息失败');
     }
   };
 
@@ -110,13 +110,13 @@ export function useGroups() {
         try {
           const groupDto = { groupName: createGroupForm.groupName };
           await groupApi.createGroup(groupDto);
-          ElMessage.success('狐狸窝创建成功！');
+          FoxToast.success('狐狸窝创建成功！');
           showCreateGroupDialog.value = false;
           createGroupForm.groupName = '';
           getGroupList();
         } catch (error) {
           console.error('创建狐狸窝失败:', error);
-          ElMessage.error(error.message || '网络错误，创建失败');
+          FoxToast.error(error.message || '网络错误，创建失败');
         } finally {
           isCreatingGroup.value = false;
         }
@@ -137,7 +137,7 @@ export function useGroups() {
             experience: addLlmFriendForm.experience
           };
           await request.post('/llm/add', dto);
-          ElMessage.success('陪伴者创建成功！请配置模型参数');
+          FoxToast.success('陪伴者创建成功！请配置模型参数');
           showAddLlmFriendDialog.value = false;
           addLlmFriendForm.nickname = '';
           addLlmFriendForm.myName = '';
@@ -147,7 +147,7 @@ export function useGroups() {
           getFriendList();
         } catch (error) {
           console.error('创建陪伴者失败:', error);
-          ElMessage.error(error.message || '创建失败');
+          FoxToast.error(error.message || '创建失败');
         } finally {
           isAddingLlmFriend.value = false;
         }
@@ -157,16 +157,16 @@ export function useGroups() {
 
   const handleJoinGroup = async (group) => {
     if (!group || !group.id) {
-      ElMessage.error('群组信息无效');
+      FoxToast.error('群组信息无效');
       return;
     }
     try {
       await groupApi.joinGroup(group.id);
-      ElMessage.success('加入群组成功');
+      FoxToast.success('加入群组成功');
       getGroupList();
     } catch (error) {
       console.error('加入群组失败:', error);
-      ElMessage.error('加入群组失败');
+      FoxToast.error('加入群组失败');
     }
   };
 

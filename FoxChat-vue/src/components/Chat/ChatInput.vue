@@ -1,186 +1,103 @@
 <template>
   <div class="chat-input">
-    <el-input
+    <textarea
+      ref="textareaRef"
       v-model="localMessage"
-      type="textarea"
-      :rows="2"
-      placeholder="请输入消息..."
-      resize="none"
-      @keydown.enter="handleInputEnter"
-      ref="chatInputRef"
       class="chat-textarea"
-    ></el-input>
+      :rows="2"
+      placeholder="输入消息... (Enter 发送，Shift+Enter 换行)"
+      @keydown.enter="handleInputEnter"
+      @input="autoResize"
+    ></textarea>
     <div class="input-actions">
-      <el-button
+      <FoxButton
         v-if="showRag"
-        type="primary"
-        class="fox-btn upload-btn"
-        :icon="Upload"
+        type="ghost"
+        size="small"
         @click="emit('open-upload')"
-      >
-        上传
-      </el-button>
-      <el-button
+      >上传</FoxButton>
+      <FoxButton
         type="primary"
-        class="fox-btn send-btn"
-        @click="handleSend"
+        class="send-btn"
         :disabled="!localMessage.trim() || (showRag && isSearchingRag)"
-      >
-        <template v-if="showRag && isSearchingRag">
-          <el-icon class="loading-icon"><Loading /></el-icon>
-        </template>
-        <template v-else>
-          发送
-        </template>
-      </el-button>
+        :loading="showRag && isSearchingRag"
+        @click="handleSend"
+      >➤</FoxButton>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref, watch, nextTick } from 'vue';
-import { Upload, Loading } from '@element-plus/icons-vue';
+import { FoxButton } from '@/components/FoxUI';
 
 const props = defineProps({
-  modelValue: {
-    type: String,
-    default: ''
-  },
-  showRag: {
-    type: Boolean,
-    default: false
-  },
-  isSearchingRag: {
-    type: Boolean,
-    default: false
-  }
+  modelValue: { type: String, default: '' },
+  showRag: { type: Boolean, default: false },
+  isSearchingRag: { type: Boolean, default: false }
 });
 
 const emit = defineEmits(['update:modelValue', 'send', 'open-upload']);
 
-const chatInputRef = ref(null);
-
-// 本地代理，保持与 v-model 双向绑定
+const textareaRef = ref(null);
 const localMessage = ref(props.modelValue);
 
-watch(
-  () => props.modelValue,
-  (val) => {
-    if (val !== localMessage.value) {
-      localMessage.value = val;
-    }
-  }
-);
+watch(() => props.modelValue, (val) => { if (val !== localMessage.value) localMessage.value = val; });
+watch(localMessage, (val) => emit('update:modelValue', val));
 
-watch(localMessage, (val) => {
-  emit('update:modelValue', val);
-  nextTick(() => autoResizeTextarea());
-});
+const autoResize = () => {
+  nextTick(() => {
+    const el = textareaRef.value;
+    if (!el) return;
+    el.style.height = 'auto';
+    const maxH = 160;
+    el.style.height = Math.min(el.scrollHeight, maxH) + 'px';
+  });
+};
 
-// 处理回车键：Shift+Enter 换行，Enter 发送
 const handleInputEnter = (e) => {
-  if (e.shiftKey) {
-    nextTick(() => autoResizeTextarea());
-    return;
-  }
+  if (e.shiftKey) return;
   e.preventDefault();
   handleSend();
 };
 
-// 触发发送事件
 const handleSend = () => {
+  if (!localMessage.value.trim()) return;
   emit('send');
-};
-
-// 自动调整 textarea 高度
-const autoResizeTextarea = () => {
-  let textarea = chatInputRef.value?.$el?.querySelector('textarea');
-  if (!textarea) {
-    textarea = chatInputRef.value?.$refs?.textarea;
-  }
-  if (!textarea) {
-    textarea = chatInputRef.value?.textareas?.[0];
-  }
-
-  if (textarea) {
-    const content = localMessage.value || '';
-    const lineHeight = 22;
-    const baseHeight = 36;
-
-    const lines = (content.match(/\n/g) || []).length + 1;
-    let newHeight = baseHeight + (lines - 1) * lineHeight;
-    newHeight = Math.min(newHeight, 200);
-
-    textarea.style.height = newHeight + 'px';
-  }
 };
 </script>
 
 <style scoped>
 .chat-input {
-  flex-shrink: 0;
-  width: 100%;
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
   max-width: 700px;
-  margin: 0 auto 16px;
-  padding: 12px 16px;
-  background-color: rgba(255, 255, 255, 0.9);
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.65);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.05);
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  z-index: 100;
+  border: 1px solid rgba(255,255,255,0.6);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  display: flex; align-items: flex-end; gap: 10px; z-index: 10;
 }
 
-.chat-input :deep(.el-textarea) {
-  flex: 1;
-  overflow: visible !important;
+.chat-textarea {
+  flex: 1; border: none; outline: none; background: transparent;
+  font-family: inherit; font-size: 15px; line-height: 1.6;
+  color: #333; resize: none; padding: 10px 4px;
+  min-height: 52px; max-height: 160px;
 }
 
-.chat-input :deep(.el-textarea__inner) {
-  background-color: transparent;
-  border-radius: 12px;
-  border: none;
-  padding: 8px 12px 14px;
-  resize: none;
-  box-shadow: none !important;
-  transition: height 0.2s ease;
-  line-height: 22px;
-  color: var(--text-primary);
-  overflow-y: hidden !important;
-}
+.chat-textarea::placeholder { color: #bbb; }
 
-.chat-input .chat-textarea :deep(textarea) {
-  height: 36px;
-  min-height: 36px;
-  max-height: 200px;
-}
+.input-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; padding-bottom: 2px; }
 
-.chat-input :deep(.el-textarea__inner:focus) {
-  background-color: rgba(255, 255, 255, 0.95);
-  border-color: transparent;
-  box-shadow: 0 0 0 2px var(--accent-color) !important;
-}
-
-.input-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-}
-
-/* Button styles matching input visual style */
-.input-actions .fox-btn,
-.input-actions .upload-btn,
-.input-actions .send-btn {
-  height: 44px;
-  min-width: 90px;
-  padding: 10px 24px;
-  border-radius: 12px;
-  font-size: 15px;
-  letter-spacing: 1px;
+.send-btn {
+  width: 38px; height: 38px; padding: 0; border-radius: 50% !important;
+  font-size: 18px; display: flex; align-items: center; justify-content: center;
 }
 </style>

@@ -96,9 +96,7 @@
             <!-- 结构化消息块（AI回复） -->
             <template v-else v-for="(block, blockIndex) in msg.blocks" :key="blockIndex">
               <!-- 动作标签 -->
-              <div v-if="block.type === 'action'" class="action-tag">
-                ○ {{ block.action || block.content }}
-              </div>
+              <div v-if="block.type === 'action'" class="action-tag">{{ block.action || block.content }}</div>
               <!-- 文字内容 -->
               <div v-if="block.type === 'text' && (block.text || block.content)" class="msg-bubble">
                 <div class="bubble-content">{{ block.text || block.content }}</div>
@@ -112,7 +110,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue';
 import { Files, Document, Reading } from '@element-plus/icons-vue';
 import { OSS_BASE_URL } from '@/utils/config';
 
@@ -134,6 +132,73 @@ const emit = defineEmits(['select-message', 'load-more', 'scroll-bottom', 'open-
 const messageContainerRef = ref(null);
 const defaultUserAvatar = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png';
 const isUserScrolling = ref(false);
+
+// 切换会话标记：切换好友/群组时置 true，确保下一次滚动强制到底
+let pendingForceScroll = false;
+// 程序滚动标记：区分「代码设 scrollTop」与「用户手动滚」，避免程序滚动误触发 load-more / 误置 isUserScrolling
+let isProgrammaticScroll = false;
+// 切换会话保护窗口：切换好友后短暂时间内屏蔽 load-more，避免清空→填充瞬间误触发拉取更老历史
+let suppressLoadMore = false;
+
+// 滚动到底部核心逻辑
+// force=true 时无视用户滚动状态，并在下一帧兜底重滚一次，
+// 避免切换好友/首次加载时 DOM 刚更新、浏览器布局尚未完成，导致读取到未稳定的 scrollHeight 而停在顶部
+const scrollContainerToBottom = (force = false) => {
+  const el = messageContainerRef.value;
+  if (!el) return;
+  if (!force && isUserScrolling.value) return;
+  const doScroll = () => {
+    isProgrammaticScroll = true;
+    el.scrollTop = el.scrollHeight;
+    // 标志在下一帧清除，确保本次滚动触发的 scroll 事件被识别为「程序滚动」
+    requestAnimationFrame(() => {
+      el.scrollTop = el.scrollHeight;
+      requestAnimationFrame(() => { isProgrammaticScroll = false; });
+    });
+  };
+  // 先等 DOM 更新完成，再连续用 nextTick + rAF 两次确保布局稳定后滚动
+  nextTick(() => {
+    doScroll();
+  });
+};
+
+// 监听当前会话对象切换 → 强制滚到底 + 开启 load-more 屏蔽窗口
+// selectFriend 会先清空 messageList 再异步拉取，这里用 flush:'post' 确保切换后 DOM 已更新
+watch(
+  () => [props.currentFriend?.userId || props.currentFriend?.id, props.currentGroup?.id || props.currentGroup?.groupId],
+  () => {
+    pendingForceScroll = true;
+    suppressLoadMore = true;
+    // 兜底：若新会话无消息（length 一直为 0），消息 watch 不会关闭屏蔽窗口，这里定时兜底关闭
+    setTimeout(() => { suppressLoadMore = false; }, 600);
+  }
+);
+
+// 监听消息列表变化 → 主动滚动
+// 切换好友后 messageList 先变空、再被新数据整体替换，长度从 N→0→M，
+// 用 { flush: 'post' } 保证在 Vue 完成 DOM patch 之后再读 scrollHeight
+watch(
+  () => props.messages?.length,
+  (newLen) => {
+    // 列表为空时不消费 force 标记，把它留给真正填充了数据的下一次触发
+    if (newLen === 0) return;
+    const force = pendingForceScroll;
+    pendingForceScroll = false;
+    scrollContainerToBottom(force);
+    // 列表填充完成后，延迟关闭 load-more 屏蔽窗口，给滚动稳定留出时间
+    if (force) {
+      setTimeout(() => { suppressLoadMore = false; }, 300);
+    }
+  },
+  { flush: 'post' }
+);
+
+// 监听全局滚动事件（兼容旧调用链）
+const handleScrollToBottom = (e) => {
+  scrollContainerToBottom(e?.detail?.force || false);
+};
+onMounted(() => window.addEventListener('chat-scroll-to-bottom', handleScrollToBottom));
+onUnmounted(() => window.removeEventListener('chat-scroll-to-bottom', handleScrollToBottom));
 
 const emotionEmojiMap = {
   '开心': '😊',
@@ -180,15 +245,21 @@ const resolveAvatarUrl = (url) => {
 
 const handleScroll = (e) => {
   const container = e.target;
-  
+
+  // 程序代码设 scrollTop 触发的滚动：既不算用户滚动，也不触发 load-more
+  if (isProgrammaticScroll) return;
+
+  // 切换会话保护窗口内，屏蔽 load-more，避免清空→填充瞬间误拉取更老历史把页面顶回顶部
+  if (suppressLoadMore) return;
+
   // 清除之前的超时
   if (scrollTimeout) {
     clearTimeout(scrollTimeout);
   }
-  
+
   // 用户在滚动，设置标志
   isUserScrolling.value = true;
-  
+
   // 滚动停止后 500ms 清除标志（给用户足够时间停止滚动）
   scrollTimeout = setTimeout(() => {
     isUserScrolling.value = false;
@@ -287,13 +358,7 @@ const getScoreLabel = (score) => {
 // 暴露方法给父组件
 defineExpose({
   scrollToBottom: (force = false) => {
-    if (messageContainerRef.value) {
-      // 如果用户正在滚动且不是强制滚动，则不自动滚动
-      if (isUserScrolling.value && !force) {
-        return;
-      }
-      messageContainerRef.value.scrollTop = messageContainerRef.value.scrollHeight;
-    }
+    scrollContainerToBottom(force);
   },
   isUserScrolling: isUserScrolling
 });
@@ -303,7 +368,7 @@ defineExpose({
 .chat-messages {
   flex: 1;
   min-height: 0;
-  padding: 15px;
+  padding: 15px 15px 130px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -421,42 +486,60 @@ defineExpose({
 
 /* 新的气泡样式 */
 .msg-bubble {
-  background-color: rgba(60, 60, 60, 0.9);
-  padding: 8px 14px;
-  border-radius: 18px;
+  background-color: #fff;
+  padding: 10px 14px;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   gap: 0;
   position: relative;
   min-width: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.04);
+  color: #1f2937;
 }
 
 .message-item.mine .msg-bubble {
-  background-color: rgba(100, 100, 100, 0.9);
-  border-top-right-radius: 4px;
+  background-color: #4a90d9;
+  color: #fff;
+  border-top-right-radius: 2px;
 }
 
 .message-item:not(.mine) .msg-bubble {
-  border-top-left-radius: 4px;
+  border-top-left-radius: 2px;
 }
 
 .action-tag {
-  font-size: 12px;
-  color: #999;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--action-text, #8a8f99);
+  margin: 6px 0 2px;
   font-style: italic;
-  margin-bottom: 4px;
-  padding: 0 4px;
+  letter-spacing: 0.3px;
+  animation: actionIn 0.35s ease-out;
+}
+.action-tag::before,
+.action-tag::after {
+  content: "——";
+  margin: 0 10px;
+  color: var(--action-dash, #d8dce3);
+  font-style: normal;
+  vertical-align: 1px;
+}
+
+@keyframes actionIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .bubble-content {
+  font-family: 'Noto Sans SC', 'Source Han Sans SC', '思源黑体', -apple-system, sans-serif;
   font-size: 14px;
-  color: #ffffff;
+  color: inherit;
   line-height: 1.6;
-  word-break: break-all;
+  word-break: break-word;
   text-align: left;
+  font-weight: 500;
 }
 
 /* RAG Styles */

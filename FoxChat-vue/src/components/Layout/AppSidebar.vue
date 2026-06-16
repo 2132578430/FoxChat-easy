@@ -2,7 +2,7 @@
   <div class="sidebar">
     <div class="avatar-container" @click="toggleProfile">
       <div class="avatar-wrapper">
-        <el-avatar :size="50" :src="resolveAvatarUrl(userInfo.faceImage || userInfo.face_image) || defaultUserAvatar"></el-avatar>
+        <el-avatar :size="56" :src="resolveAvatarUrl(userInfo.faceImage || userInfo.face_image) || defaultUserAvatar"></el-avatar>
       </div>
       <div class="username">{{ userInfo.nickname || '未设置昵称' }}</div>
     </div>
@@ -60,9 +60,11 @@ const closeAllPanels = () => {
   showProfile.value = false;
   showRag.value = false;
   showMemoryPanel.value = false;
+  showLlmConfigPanel.value = false;
 };
 
 const togglePanel = (panel) => {
+  showLlmConfigPanel.value = false;
   if (panel === 'friendList') {
     showFriendList.value = !showFriendList.value;
     showGroupList.value = false;
@@ -77,6 +79,7 @@ const togglePanel = (panel) => {
 };
 
 const toggleRag = () => {
+  showLlmConfigPanel.value = false;
   showRag.value = !showRag.value;
   if (showRag.value) {
     showLlmConfigPanel.value = false;
@@ -100,6 +103,7 @@ const toggleLlmConfigPanel = () => {
 };
 
 const toggleMemoryPanel = () => {
+  showLlmConfigPanel.value = false;
   showMemoryPanel.value = !showMemoryPanel.value;
   if (showMemoryPanel.value) {
     showLlmConfigPanel.value = false;
@@ -122,13 +126,13 @@ const handleLogout = () => {
 
 <style scoped>
 .sidebar {
-  width: 60px;
+  width: 72px;
   background: var(--sidebar-bg);
   border-right: 1px solid var(--sidebar-border);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 10px 0;
+  padding: 16px 0 10px;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 }
@@ -137,19 +141,20 @@ const handleLogout = () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   cursor: pointer;
+  padding-top: 4px;
 }
 
 .avatar-wrapper {
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .username {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--text-secondary);
   text-align: center;
-  max-width: 56px;
+  max-width: 64px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -159,13 +164,13 @@ const handleLogout = () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   flex-grow: 1;
 }
 
 .menu-item {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -173,6 +178,7 @@ const handleLogout = () => {
   cursor: pointer;
   color: var(--text-secondary);
   transition: all 0.2s ease;
+  font-size: 22px;
 }
 
 .menu-item:hover {

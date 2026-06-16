@@ -1,5 +1,5 @@
 <template>
-  <el-dialog v-model="showUploadDialog" title="狐狸知识库上传" width="500px" center destroy-on-close>
+  <FoxModal v-model="showUploadDialog" title="狐狸知识库上传" width="500px">
     <div class="upload-dialog-content">
       <el-upload
         class="fox-uploader"
@@ -22,24 +22,22 @@
       </el-upload>
     </div>
     <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="showUploadDialog = false">关闭</el-button>
-        <el-button type="primary" :loading="isUploading" @click="submitBatchUpload">开始上传</el-button>
-      </div>
+      <FoxButton type="ghost" @click="showUploadDialog = false">关闭</FoxButton>
+      <FoxButton type="primary" :loading="isUploading" @click="submitBatchUpload">开始上传</FoxButton>
     </template>
-  </el-dialog>
+  </FoxModal>
 </template>
 
 <script setup>
 import { watch } from 'vue';
 import { UploadFilled } from '@element-plus/icons-vue';
+import { FoxModal, FoxButton } from '@/components/FoxUI';
 import { useUiStore } from '@/stores/uiStore';
 import { useRag } from '@/composables/useRag';
 
 const { showUploadDialog } = useUiStore();
 const { isUploading, pendingFiles, handleBeforeUpload, handleUploadRequest, submitBatchUpload } = useRag();
 
-// 监听对话框关闭，清空文件队列
 watch(showUploadDialog, (val) => {
   if (!val) {
     pendingFiles.value = [];
@@ -52,14 +50,7 @@ watch(showUploadDialog, (val) => {
   display: flex;
   justify-content: center;
 }
-
 .fox-uploader {
   width: 100%;
-}
-
-.dialog-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
 }
 </style>

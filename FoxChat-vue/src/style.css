@@ -1,6 +1,7 @@
 /* 引入内置字体 */
 @import 'harmonyos-sans/index.css';
 @import 'jetbrains-mono/fonts.css';
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&display=swap');
 
 :root {
   font-family: 'JetBrains Mono', 'HarmonyOS Sans', 'Microsoft YaHei', sans-serif;
@@ -80,4 +81,31 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+/* ============================================
+   轻量顶部加载进度条（替代全屏 ElLoading）
+   ============================================ */
+.fox-loading-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.fox-loading-bar__inner {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #4a90d9, #7ec8e3, #4a90d9);
+  background-size: 200% 100%;
+  animation: fox-bar-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes fox-bar-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }

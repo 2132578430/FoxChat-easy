@@ -13,7 +13,7 @@ import request from '@/utils/request';
 import { encodeProtocol } from '@/utils/protocol';
 import snowflake from '@/utils/snowflake';
 import { resolveAvatarUrl } from '@/utils/avatar';
-import { ElMessage } from 'element-plus';
+import { FoxToast } from '@/components/FoxUI';
 
 export function useChat() {
   const chatStore = useChatStore();
@@ -352,7 +352,7 @@ export function useChat() {
     }
 
     if (!ws.value || ws.value.readyState !== WebSocket.OPEN) {
-      ElMessage.error('服务器连接已断开，请刷新页面');
+      FoxToast.error('服务器连接已断开，请刷新页面');
       return;
     }
 
@@ -361,7 +361,7 @@ export function useChat() {
         const targetFriend = chatStore.currentFriend.value;
         const targetId = targetFriend.userId || targetFriend.id;
         if (!targetId) {
-          ElMessage.warning('请先选择好友');
+          FoxToast.warning('请先选择好友');
           return;
         }
         const chatData = {
@@ -393,7 +393,7 @@ export function useChat() {
         const targetGroup = chatStore.currentGroup.value;
         const groupId = targetGroup.groupId || targetGroup.id;
         if (!groupId) {
-          ElMessage.warning('请先选择群组');
+          FoxToast.warning('请先选择群组');
           return;
         }
         const groupData = {
@@ -430,7 +430,7 @@ export function useChat() {
       }
     } catch (error) {
       console.error('发送消息失败:', error);
-      ElMessage.error('发送失败');
+      FoxToast.error('发送失败');
     }
   };
 
@@ -525,7 +525,7 @@ export function useChat() {
     if (chatStore.selectedMessageIds.value.length === 0) return;
     try {
       await messageApi.withdrawMessages(chatStore.selectedMessageIds.value.map(String));
-      ElMessage.success('消息撤回成功');
+      FoxToast.success('消息撤回成功');
       chatStore.selectedMessageIds.value.forEach(id => {
         const msg = chatStore.messageList.value.find(m => m.id === id);
         if (msg) {
@@ -543,7 +543,7 @@ export function useChat() {
     if (chatStore.selectedMessageIds.value.length === 0) return;
     try {
       await messageApi.deleteMessages(chatStore.selectedMessageIds.value.map(String));
-      ElMessage.success('消息删除成功');
+      FoxToast.success('消息删除成功');
       chatStore.messageList.value = chatStore.messageList.value.filter(msg => !chatStore.selectedMessageIds.value.includes(msg.id));
       cancelSelectionMode();
     } catch (error) {

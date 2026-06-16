@@ -8,7 +8,7 @@ import * as messageApi from '@/api/message';
 import request from '@/utils/request';
 import { encodeProtocol } from '@/utils/protocol';
 import { resolveAvatarUrl } from '@/utils/avatar';
-import { ElMessage } from 'element-plus';
+import { FoxToast } from '@/components/FoxUI';
 import { nextTick } from 'vue';
 
 export function useFriends() {
@@ -118,7 +118,7 @@ export function useFriends() {
 
   const handleAddFriend = async (friend) => {
     if (!ws.value || ws.value.readyState !== WebSocket.OPEN) {
-      ElMessage.error('服务器连接已断开');
+      FoxToast.error('服务器连接已断开');
       return;
     }
     const addFriendMsg = {
@@ -131,31 +131,31 @@ export function useFriends() {
     };
     try {
       await sendBinaryMessage(encodeProtocol(addFriendMsg));
-      ElMessage.success('好友申请已发送');
+      FoxToast.success('好友申请已发送');
     } catch (error) {
       console.error(error);
-      ElMessage.error('发送失败');
+      FoxToast.error('发送失败');
     }
   };
 
   const handleAcceptFriend = async (friend) => {
     const targetId = friend.userId || friend.sendUserId || friend.id;
     if (!targetId) {
-      ElMessage.error('无法获取用户ID');
+      FoxToast.error('无法获取用户ID');
       return;
     }
     try {
       const res = await friendApi.acceptFriend(targetId);
       if (res.code === 1000 || res.code === 200) {
-        ElMessage.success('已添加好友');
+        FoxToast.success('已添加好友');
         getFriendList();
         getFriendRequests();
       } else {
-        ElMessage.error(res.msg || '操作失败');
+        FoxToast.error(res.msg || '操作失败');
       }
     } catch (error) {
       console.error(error);
-      ElMessage.error('操作失败');
+      FoxToast.error('操作失败');
     }
   };
 
@@ -165,7 +165,7 @@ export function useFriends() {
     const role = friend.role || 0;
     try {
       await friendApi.deleteFriend(friendId, role);
-      ElMessage.success('好友已删除');
+      FoxToast.success('好友已删除');
       getFriendList();
       const currentId = chatStore.currentFriend.value?.userId || chatStore.currentFriend.value?.id;
       if (currentId && String(currentId) === String(friendId)) {
@@ -174,7 +174,7 @@ export function useFriends() {
       }
     } catch (error) {
       console.error('删除好友失败:', error);
-      ElMessage.error('删除好友失败');
+      FoxToast.error('删除好友失败');
     }
   };
 
@@ -256,6 +256,8 @@ export function useFriends() {
           nextTick(() => {
             const { scrollToBottom } = useChat();
             scrollToBottom(true);
+            // 下一帧再补一次：确保浏览器布局完成后再滚动到底，避免停在顶部
+            requestAnimationFrame(() => scrollToBottom(true));
           });
         } catch (error) {
           console.error('获取 LLM 历史记录失败:', error);
@@ -267,7 +269,7 @@ export function useFriends() {
       }
     } else {
       console.error('无法从好友对象中获取 ID:', friend);
-      ElMessage.error('获取好友信息失败');
+      FoxToast.error('获取好友信息失败');
     }
   };
 

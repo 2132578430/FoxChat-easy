@@ -1,6 +1,6 @@
 import { reactive, ref } from 'vue';
 import * as userApi from '@/api/user';
-import { ElMessage } from 'element-plus';
+import { FoxToast } from '@/components/FoxUI';
 
 // 用户信息（从 localStorage 恢复，reactive 保证多组件共享同一引用）
 const userInfo = reactive(JSON.parse(localStorage.getItem('userInfo') || '{}'));
@@ -34,7 +34,7 @@ const getUserInfo = async () => {
  */
 const handleUpdateProfile = async () => {
   if (!profileInfo.value.nickname.trim()) {
-    ElMessage.warning('昵称不能为空哦');
+    FoxToast.warning('昵称不能为空哦');
     return;
   }
   try {
@@ -42,7 +42,7 @@ const handleUpdateProfile = async () => {
       nickname: profileInfo.value.nickname,
       email: profileInfo.value.email
     });
-    ElMessage.success('个人信息更新成功啦 ✨');
+    FoxToast.success('个人信息更新成功啦 ✨');
     userInfo.nickname = profileInfo.value.nickname;
     localStorage.setItem('userInfo', JSON.stringify(userInfo));
   } catch (error) {
@@ -54,7 +54,7 @@ const handleUpdateProfile = async () => {
  * 修改密码（占位）
  */
 const handleEditPassword = () => {
-  ElMessage.info('修改密码功能开发中...');
+  FoxToast.info('修改密码功能开发中...');
 };
 
 export function useUserStore() {

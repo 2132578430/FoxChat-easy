@@ -1,62 +1,54 @@
 <template>
   <div class="register-container">
-    <el-card class="register-card">
-      <template #header>
-        <div class="card-header">
-          <span>FoxChat 注册</span>
-        </div>
-      </template>
-      <el-form :model="registerForm" ref="registerFormRef" label-width="0px">
-        <el-form-item prop="nickname">
-          <el-input v-model="registerForm.nickname" placeholder="昵称" prefix-icon="UserFilled"></el-input>
-        </el-form-item>
-        <el-form-item prop="username">
-          <el-input v-model="registerForm.username" placeholder="用户名" prefix-icon="User"></el-input>
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input v-model="registerForm.password" type="password" placeholder="密码" prefix-icon="Lock" show-password></el-input>
-        </el-form-item>
-        <el-form-item prop="confirmPassword">
-          <el-input v-model="registerForm.confirmPassword" type="password" placeholder="确认密码" prefix-icon="Lock" show-password></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" style="width: 100%" @click="handleRegister" :loading="loading">注册</el-button>
-        </el-form-item>
+    <div class="register-card">
+      <div class="card-header">
+        <span class="card-title">🦊 FoxChat</span>
+        <span class="card-subtitle">注册</span>
+      </div>
+      <div class="card-body">
+        <FoxInput v-model="registerForm.nickname" placeholder="昵称" />
+        <FoxInput v-model="registerForm.username" placeholder="用户名" />
+        <FoxInput v-model="registerForm.password" type="password" placeholder="密码" />
+        <FoxInput v-model="registerForm.confirmPassword" type="password" placeholder="确认密码" />
+        <FoxButton type="primary" block :loading="loading" @click="handleRegister">注册</FoxButton>
         <div class="form-footer">
           <router-link to="/login">已有账号？去登录</router-link>
         </div>
-      </el-form>
-    </el-card>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
-import { User, Lock, UserFilled } from '@element-plus/icons-vue';
+import { FoxInput, FoxButton, FoxToast } from '@/components/FoxUI';
 import { register } from '../api/auth';
-import { ElMessage } from 'element-plus';
 
 const router = useRouter();
-const registerFormRef = ref(null);
 const loading = ref(false);
 
 const registerForm = reactive({
-  nickname: '',
-  username: '',
-  password: '',
-  confirmPassword: ''
+  nickname: '', username: '', password: '', confirmPassword: ''
 });
 
 const handleRegister = async () => {
+  if (!registerForm.nickname.trim() || !registerForm.username.trim()) {
+    FoxToast.warning('请填写昵称和用户名');
+    return;
+  }
+  if (registerForm.password !== registerForm.confirmPassword) {
+    FoxToast.warning('两次密码不一致');
+    return;
+  }
   loading.value = true;
   try {
     await register({
-        nickname: registerForm.nickname,
-        username: registerForm.username,
-        password: registerForm.password
+      nickname: registerForm.nickname,
+      username: registerForm.username,
+      password: registerForm.password
     });
-    ElMessage.success('注册成功，请登录');
+    FoxToast.success('注册成功，请登录');
     router.push('/login');
   } catch (error) {
     console.error(error);
@@ -68,25 +60,18 @@ const handleRegister = async () => {
 
 <style scoped>
 .register-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f0f2f5;
+  display: flex; justify-content: center; align-items: center;
+  height: 100vh; background: #e8f0fe;
 }
-
 .register-card {
-  width: 400px;
+  width: 380px; background: rgba(255,255,255,0.85);
+  border-radius: 16px; box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+  backdrop-filter: blur(10px); overflow: hidden;
 }
-
-.card-header {
-  text-align: center;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.form-footer {
-  text-align: center;
-  font-size: 14px;
-}
+.card-header { padding: 28px 32px 0; text-align: center; }
+.card-title { font-size: 28px; font-weight: 700; color: #4a90d9; display: block; }
+.card-subtitle { font-size: 18px; color: #666; margin-top: 4px; display: block; }
+.card-body { padding: 24px 32px 32px; display: flex; flex-direction: column; gap: 14px; }
+.form-footer { text-align: center; font-size: 13px; margin-top: 4px; }
+.form-footer a { color: #4a90d9; text-decoration: none; }
 </style>

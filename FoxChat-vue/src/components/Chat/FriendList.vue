@@ -98,7 +98,7 @@
 <script setup>
 import { ref, reactive, onMounted, onUnmounted } from 'vue';
 import { Plus, Edit, Delete } from '@element-plus/icons-vue';
-import { ElMessage } from 'element-plus';
+import { FoxToast } from '@/components/FoxUI';
 
 const props = defineProps({
   modelValue: Boolean,
@@ -260,13 +260,7 @@ defineExpose({
   background-color: rgba(255, 255, 255, 0.4);
   display: flex;
   flex-direction: column;
-  border-left: 1px solid rgba(255, 255, 255, 0.3);
-  position: absolute;
-  top: 0;
-  right: 0;
   height: 100%;
-  z-index: 9;
-  box-shadow: -4px 0 15px rgba(0,0,0,0.05);
 }
 
 .search-box {
@@ -459,16 +453,15 @@ defineExpose({
 
 /* Transition styles */
 .slide-fade-enter-active {
-  transition: all 0.3s ease-out;
+  transition: opacity 0.25s ease-out;
 }
 
 .slide-fade-leave-active {
-  transition: all 0.3s ease-in;
+  transition: opacity 0.2s ease-in;
 }
 
 .slide-fade-enter-from,
 .slide-fade-leave-to {
-  transform: translateX(100%);
   opacity: 0;
 }
 </style>

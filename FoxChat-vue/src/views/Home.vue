@@ -4,7 +4,7 @@
     <AppSidebar />
 
     <!-- Chat Area -->
-    <div class="chat-area" :class="{ 'shrink-right': showFriendList || showGroupList || showProfile || showMemoryPanel }">
+    <div class="chat-area">
       <!-- LLM Config Panel -->
       <LlmConfigPanel
         v-if="showLlmConfigPanel"
@@ -33,20 +33,18 @@
           <div class="chat-actions" v-if="!showRag && currentChatType === 'private' && (currentFriend.userId || currentFriend.id)">
             <transition name="fade-scale" mode="out-in">
               <div v-if="!isSelectionMode" key="normal">
-                <el-tooltip content="多选消息" placement="bottom">
-                  <el-button circle class="action-btn" @click="toggleSelectionMode">
-                    <el-icon><Select /></el-icon>
-                  </el-button>
-                </el-tooltip>
+                <FoxButton size="small" type="ghost" round @click="toggleSelectionMode">
+                  ☑ 多选
+                </FoxButton>
               </div>
               <div class="selection-actions" v-else key="selection">
-                <el-button round size="small" @click="cancelSelectionMode">取消</el-button>
-                <el-button type="danger" round size="small" @click="handleDeleteMessages" :disabled="selectedMessageIds.length === 0" class="withdraw-btn delete-btn">
+                <FoxButton size="small" type="ghost" round @click="cancelSelectionMode">取消</FoxButton>
+                <FoxButton size="small" type="danger" round :disabled="selectedMessageIds.length === 0" @click="handleDeleteMessages">
                   删除 ({{ selectedMessageIds.length }})
-                </el-button>
-                <el-button type="warning" round size="small" @click="handleWithdrawMessages" :disabled="selectedMessageIds.length === 0" class="withdraw-btn">
+                </FoxButton>
+                <FoxButton size="small" type="ghost" round :disabled="selectedMessageIds.length === 0" @click="handleWithdrawMessages">
                   撤回 ({{ selectedMessageIds.length }})
-                </el-button>
+                </FoxButton>
               </div>
             </transition>
           </div>
@@ -84,51 +82,54 @@
       </template>
     </div>
 
-    <!-- Profile Panel -->
-    <ProfilePanel />
+    <!-- Profile Panel (push from right) -->
+    <div class="push-panel" :class="{ visible: showProfile }">
+      <ProfilePanel />
+    </div>
 
-    <!-- Group List -->
-    <GroupList
-      ref="groupListRef"
-      v-model="showGroupList"
-      :groups="groupList"
-      :current-group-id="currentGroup.id"
-      :user-info="userInfo"
-      :is-group-loading="isGroupLoading"
-      @select-group="handleGroupClick"
-      @join-group="handleJoinGroup"
-      @create-group="showCreateGroupDialog = true"
-      @search="(text) => handleGroupSearch(text, groupListRef)"
-    />
+    <!-- Group List (push from right) -->
+    <div class="push-panel" :class="{ visible: showGroupList }">
+      <GroupList
+        ref="groupListRef"
+        v-model="showGroupList"
+        :groups="groupList"
+        :current-group-id="currentGroup.id"
+        :user-info="userInfo"
+        :is-group-loading="isGroupLoading"
+        @select-group="handleGroupClick"
+        @join-group="handleJoinGroup"
+        @create-group="showCreateGroupDialog = true"
+        @search="(text) => handleGroupSearch(text, groupListRef)"
+      />
+    </div>
 
-    <!-- Friend List -->
-    <FriendList
-      ref="friendListRef"
-      v-model="showFriendList"
-      v-model:search-text="searchText"
-      :friends="friendList"
-      :friend-requests="friendRequestList"
-      :user-info="userInfo"
-      :current-friend-id="currentFriend.userId || currentFriend.id"
-      @select-friend="selectFriend"
-      @accept-request="handleAcceptFriend"
-      @add-friend="handleAddFriend"
-      @add-llm-friend="showAddLlmFriendDialog = true"
-      @delete-friend="handleDeleteFriend"
-      @edit-llm-friend="handleEditLlmFriend"
-      @search="(text) => handleFriendSearch(text, friendListRef)"
-    />
+    <!-- Friend List (push from right) -->
+    <div class="push-panel" :class="{ visible: showFriendList }">
+      <FriendList
+        ref="friendListRef"
+        v-model="showFriendList"
+        v-model:search-text="searchText"
+        :friends="friendList"
+        :friend-requests="friendRequestList"
+        :user-info="userInfo"
+        :current-friend-id="currentFriend.userId || currentFriend.id"
+        @select-friend="selectFriend"
+        @accept-request="handleAcceptFriend"
+        @add-friend="handleAddFriend"
+        @add-llm-friend="showAddLlmFriendDialog = true"
+        @delete-friend="handleDeleteFriend"
+        @edit-llm-friend="handleEditLlmFriend"
+        @search="(text) => handleFriendSearch(text, friendListRef)"
+      />
+    </div>
 
-    <!-- Dialogs -->
-    <CreateGroupDialog />
-    <AddLlmFriendDialog />
-    <UploadDialog />
-
-    <!-- Model Memory Panel -->
-    <ModelMemoryPanel
-      v-model="showMemoryPanel"
-      :llm-id="currentFriend.role === 1 ? currentFriend.userId || currentFriend.id : null"
-    />
+    <!-- Memory Panel (push from right) -->
+    <div class="push-panel push-panel--wide" :class="{ visible: showMemoryPanel }">
+      <ModelMemoryPanel
+        v-model="showMemoryPanel"
+        :llm-id="currentFriend.role === 1 ? currentFriend.userId || currentFriend.id : null"
+      />
+    </div>
 
     <!-- Avatar Cropper -->
     <AvatarCropper
@@ -144,7 +145,7 @@
 import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { Select } from '@element-plus/icons-vue';
-import { ElMessage } from 'element-plus';
+import { FoxToast, FoxButton } from '@/components/FoxUI';
 
 // Stores
 import { useUserStore } from '@/stores/userStore';
@@ -248,13 +249,13 @@ onUnmounted(() => {
 }
 
 .home-container.theme-qq {
-  --chat-bg: rgba(255, 255, 255, 0.6);
+  --chat-bg: rgba(255, 255, 255, 0.2);
   --chat-header-bg: rgba(255, 255, 255, 0.3);
   --chat-header-border: rgba(255, 255, 255, 0.3);
-  --message-bg-mine: #0084ff;
+  --message-bg-mine: #4a90d9;
   --message-text-mine: #fff;
-  --message-bg-other: rgba(255, 255, 255, 0.8);
-  --message-text-other: #333;
+  --message-bg-other: #fff;
+  --message-text-other: #1f2937;
   --panel-bg: rgba(255, 255, 255, 0.4);
   --input-bg: rgba(255, 255, 255, 0.3);
   --input-border: rgba(255, 255, 255, 0.3);
@@ -262,6 +263,8 @@ onUnmounted(() => {
   --badge-bg: #ff4d4f;
   --menu-icon-color: #666;
   --menu-icon-active: #0084ff;
+  --action-text: #8a8f99;
+  --action-dash: #d8dce3;
 
   display: flex;
   height: 100vh;
@@ -280,16 +283,47 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   background-color: var(--chat-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   position: relative;
   min-width: 0;
+  transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.chat-area.shrink-right {
-  flex: 1;
+/* ============================================
+   Push Panels (从右侧推入，挤压聊天区域)
+   ============================================ */
+.push-panel {
+  width: 0;
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-left: 1px solid transparent;
+}
+
+.push-panel.visible {
+  width: 300px;
+  border-left-color: var(--sidebar-border);
+}
+
+.push-panel--wide.visible {
+  width: 340px;
+}
+
+/* 面板内部内容保持宽度，不被 wrapper 截断 */
+.push-panel > * {
+  width: 300px;
+  min-width: 300px;
+  height: 100%;
+}
+
+.push-panel--wide > * {
+  width: 340px;
+  min-width: 340px;
 }
 
 .chat-header {
-  padding: 12px 16px;
+  padding: 14px 20px;
   border-bottom: 1px solid var(--chat-header-border);
   background: var(--chat-header-bg);
   display: flex;
@@ -299,7 +333,7 @@ onUnmounted(() => {
 }
 
 .chat-title {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
   color: var(--text-primary);
 }

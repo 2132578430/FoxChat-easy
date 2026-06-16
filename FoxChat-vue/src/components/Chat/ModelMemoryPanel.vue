@@ -190,15 +190,9 @@ watch(() => props.modelValue, (show) => {
 .memory-panel {
   width: 340px;
   background: var(--bg-panel, #fff);
-  border-left: 1px solid var(--border-light, rgba(0,0,0,0.08));
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  z-index: 10;
   display: flex;
   flex-direction: column;
-  box-shadow: -4px 0 20px rgba(0,0,0,0.06);
+  height: 100%;
 }
 
 .panel-header {
@@ -348,16 +342,15 @@ watch(() => props.modelValue, (show) => {
 
 /* Slide animation — reuse project's slide-fade */
 .slide-fade-enter-active {
-  transition: all 0.25s ease-out;
+  transition: opacity 0.25s ease-out;
 }
 
 .slide-fade-leave-active {
-  transition: all 0.2s ease-in;
+  transition: opacity 0.2s ease-in;
 }
 
 .slide-fade-enter-from,
 .slide-fade-leave-to {
-  transform: translateX(100%);
   opacity: 0;
 }
 </style>
