@@ -305,6 +305,7 @@ export function useChat() {
           extend: JSON.stringify({ llmId, msgContent }),
         };
         sendBinaryMessage(encodeProtocol(wsMsg));
+        return;
       } else {
         await sendStreamMessage(llmId, msgContent, {
           onBlocks: (blocks) => {
