@@ -12,6 +12,7 @@ import io.micrometer.core.instrument.Counter;
 import io.micrometer.core.instrument.Metrics;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -40,6 +41,11 @@ public class GrpcChatClient {
     @Value("${grpc.python-port:50051}")
     private int port;
 
+    /**
+     * -- GETTER --
+     *  暴露 channel 供 HealthIndicator 检查连接状态
+     */
+    @Getter
     private ManagedChannel channel;
     private AIChatServiceGrpc.AIChatServiceStub asyncStub;
 
@@ -114,12 +120,5 @@ public class GrpcChatClient {
             log.info("[gRPC Client] 关闭连接");
             channel.shutdown().awaitTermination(5, TimeUnit.SECONDS);
         }
-    }
-
-    /**
-     * 暴露 channel 供 HealthIndicator 检查连接状态
-     */
-    public ManagedChannel getChannel() {
-        return channel;
     }
 }
