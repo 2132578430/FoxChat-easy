@@ -67,6 +67,16 @@ jobs:
             http://localhost:80 > /dev/null \
             && echo "🟢 Vue 前端: 正常" \
             || echo "🔴 Vue 前端: 异常"
+          # Prometheus（监控指标采集）
+          curl -sf --retry 2 --retry-delay 3 --max-time 5 \
+            http://localhost:9090/-/healthy > /dev/null \
+            && echo "🟢 Prometheus: 正常" \
+            || echo "🔴 Prometheus: 异常"
+          # Grafana（监控可视化，外部端口 3030）
+          curl -sf --retry 2 --retry-delay 3 --max-time 5 \
+            http://localhost:3030/api/health > /dev/null \
+            && echo "🟢 Grafana: 正常" \
+            || echo "🔴 Grafana: 异常"
           echo ""
           echo "===== 内存用量 ====="
           free -h

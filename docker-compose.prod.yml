@@ -114,6 +114,59 @@ services:
         limits:
           memory: 32M
 
+  # ============================================
+  # Monitoring Services
+  # ============================================
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    container_name: fox-prometheus
+    restart: unless-stopped
+    logging: *default-logging
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./FoxChat-java/monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=30d'
+      - '--web.enable-lifecycle'
+    networks:
+      - chat
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
+  grafana:
+    image: grafana/grafana:11.0.0
+    container_name: fox-grafana
+    restart: unless-stopped
+    logging: *default-logging
+    ports:
+      - "3030:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel
+    volumes:
+      - ./FoxChat-java/monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+      - ./FoxChat-java/monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    networks:
+      - chat
+    depends_on:
+      - prometheus
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+
 networks:
   chat:
     driver: bridge
+
+volumes:
+  prometheus_data:
+  grafana_data:
