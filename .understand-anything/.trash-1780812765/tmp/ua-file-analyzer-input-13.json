@@ -1,7 +1,0 @@
-{
-  "projectRoot": "E:/WorkSpace/ProjectCode",
-  "batchFiles": [
-    {"path": "FoxChat-java/Dockerfile", "language": "dockerfile", "sizeLines": 36, "fileCategory": "infra"}
-  ],
-  "batchImportData": {"FoxChat-java/Dockerfile": []}
-}
