@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bedfox.service.mapper.FriendsRequestMapper">
+
+    <resultMap id="BaseResultMap" type="com.bedfox.pojo.domain.FriendsRequest">
+            <id property="id" column="id" />
+            <result property="sendUserId" column="send_user_id" />
+            <result property="acceptUserId" column="accept_user_id" />
+            <result property="requestDataTime" column="request_data_time" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,send_user_id,accept_user_id,request_data_time
+    </sql>
+    <delete id="deleteRequest">
+        DELETE FROM friends_request AS fr
+        WHERE (send_user_id = #{userId} AND accept_user_id = #{friendUserId})
+           OR (accept_user_id = #{userId} AND send_user_id = #{friendUserId})
+    </delete>
+    <select id="requestFriendList" resultType="com.bedfox.pojo.vo.FriendVo">
+        SELECT u.id AS userId, u.username, u.nickname, u.face_image AS faceImage
+        FROM friends_request AS fr
+        INNER JOIN users AS u
+        ON fr.send_user_id = u.id
+        WHERE fr.accept_user_id = #{acceptUserId}
+    </select>
+</mapper>

@@ -1,0 +1,94 @@
+spring:
+  application:
+    name: FoxChat
+  mvc:
+    async:
+      request-timeout: 120000  # SSE 异步请求超时 120s（MIMO 首 token 需 ~20s）
+  datasource:
+    username: root
+    password: ${SPRING_DATASOURCE_PASSWORD:}
+    url: jdbc:mysql://localhost:3306/FoxChat?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 3000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      leak-detection-threshold: 10000
+  data:
+    redis:
+      password: ${SPRING_DATA_REDIS_PASSWORD:}
+      host: localhost
+      port: 6379
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 5MB
+      max-request-size: 10MB
+  rabbitmq:
+    host: ${SPRING_RABBITMQ_HOST:localhost}
+    port: ${SPRING_RABBITMQ_PORT:5672}
+    username: ${SPRING_RABBITMQ_USERNAME:admin}
+    password: ${SPRING_RABBITMQ_PASSWORD:admin}
+    listener:
+      simple:
+        acknowledge-mode: manual # 手动ack
+  cloud:
+    openfeign:
+      client:
+        config:
+          chat-service:
+            connectTimeout: 10000
+            readTimeout: 120000
+FoxNetty:
+  config:
+    port: 13000
+FoxJwt:
+  Secret: ${FOX_JWT_SECRET:}
+  Expiration: 86400000
+server:
+  port: 12000
+
+minio:
+  endpoint: ${MINIO_ENDPOINT:http://localhost:9000}  # API 地址（容器内通信）
+  public-endpoint: ${MINIO_PUBLIC_ENDPOINT:http://localhost:9000} # 公网访问地址（返回给前端）
+  username: ${MINIO_ACCESS_KEY:minioadmin}           # 账号
+  password: ${MINIO_SECRET_KEY:minioadmin}           # 密码
+  bucket-name: bedfox-chat         # 桶名字
+
+remote:
+  python-url: ${RAG_SERVICE_URL:http://localhost:8000}
+
+# gRPC 流式通信
+grpc:
+  python-host: ${GRPC_PYTHON_HOST:localhost}
+  python-port: ${GRPC_PYTHON_PORT:50051}
+
+Executor:
+  corePoolSize: 10
+  maxPoolSize: 100
+  queueCapacity: 1000
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    com.bedfox.bedfoxchat: debug
+
+# ========================================
+# Actuator & Monitoring
+# ========================================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    tags:
+      application: FoxChat
