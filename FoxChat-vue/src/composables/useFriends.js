@@ -6,6 +6,7 @@ import { useUiStore } from '@/stores/uiStore';
 import * as friendApi from '@/api/friend';
 import * as messageApi from '@/api/message';
 import { activateLlm } from '@/api/llmConfig';
+import { useChat } from '@/composables/useChat';
 import request from '@/utils/request';
 import { encodeProtocol } from '@/utils/protocol';
 import { resolveAvatarUrl } from '@/utils/avatar';
@@ -18,6 +19,7 @@ export function useFriends() {
   const { userInfo } = useUserStore();
   const { ws, sendBinaryMessage } = useWsStore();
   const { showRag } = useUiStore();
+  const { scrollToBottom, getChatHistory } = useChat();
 
   const getUnreadCounts = async () => {
     try {
@@ -299,7 +301,6 @@ export function useFriends() {
               ? Number(timeValue) : new Date(timeValue).getTime();
           }
           nextTick(() => {
-            const { scrollToBottom } = useChat();
             scrollToBottom(true);
             // 下一帧再补一次：确保浏览器布局完成后再滚动到底，避免停在顶部
             requestAnimationFrame(() => scrollToBottom(true));
@@ -308,7 +309,6 @@ export function useFriends() {
           console.error('获取 LLM 历史记录失败:', error);
         }
       } else {
-        const { getChatHistory } = useChat();
         await getChatHistory(targetId, true);
         await signUnreadMessages(targetId);
       }

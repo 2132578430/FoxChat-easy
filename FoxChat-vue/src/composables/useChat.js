@@ -15,6 +15,19 @@ import snowflake from '@/utils/snowflake';
 import { resolveAvatarUrl } from '@/utils/avatar';
 import { FoxToast } from '@/components/FoxUI';
 
+// 模块级共享：Home 的 sendMessage 与 useWsConnection 的 handleLlmToken 使用的是不同 useChat()
+// 实例，流式状态必须共享，否则 WS token 会被另一个实例的 active=false 直接丢弃
+const llmStreamState = ref({
+  active: false,
+  llmId: null,
+  aiPlaceholderId: null,
+  blocks: [],
+  currentBlockType: null,
+  currentBlockContent: '',
+  emotion: null,
+  requestFriendId: null,
+});
+
 export function useChat() {
   const chatStore = useChatStore();
   const { ws, sendBinaryMessage } = useWsStore();
@@ -23,22 +36,10 @@ export function useChat() {
   const { showRag } = useUiStore();
   const { sendStreamMessage } = useLlmStream();
 
-  // LLM 流式响应状态
-  const llmStreamState = ref({
-    active: false,
-    llmId: null,
-    aiPlaceholderId: null,
-    blocks: [],
-    currentBlockType: null,
-    currentBlockContent: '',
-    emotion: null,
-    requestFriendId: null,
-  });
-
   function flushLlmBlock() {
     const s = llmStreamState.value;
     if (s.currentBlockType && s.currentBlockContent) {
-      s.blocks.push({ type: s.currentBlockType, text: s.currentBlockContent });
+      s.blocks.push({ type: s.currentBlockType, content: s.currentBlockContent });
       s.currentBlockContent = '';
     }
   }
@@ -85,7 +86,7 @@ export function useChat() {
       }
       const snapshot = [...s.blocks];
       if (s.currentBlockType && s.currentBlockContent) {
-        snapshot.push({ type: s.currentBlockType, text: s.currentBlockContent });
+        snapshot.push({ type: s.currentBlockType, content: s.currentBlockContent });
       }
       const idx = chatStore.messageList.value.findIndex(m => m.id === s.aiPlaceholderId);
       if (idx >= 0) {

@@ -7,6 +7,7 @@ import com.bedfox.pojo.domain.ChatProtocol;
 import com.bedfox.pojo.dto.MsgDto;
 import com.bedfox.pojo.proto.ai.AiChatProto;
 import com.bedfox.service.client.grpc.GrpcChatClient;
+import com.bedfox.service.service.LlmChatMsgService;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.Attribute;
@@ -42,6 +43,7 @@ import static org.mockito.Mockito.*;
 class LlmStreamHandlerTest {
 
     @Mock GrpcChatClient grpcClient;
+    @Mock LlmChatMsgService llmChatMsgService;
     @Mock ChannelHandlerContext ctx;
     @Mock Channel channel;
     @Mock Attribute<String> userIdAttr;
