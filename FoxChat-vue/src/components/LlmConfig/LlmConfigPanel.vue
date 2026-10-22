@@ -97,7 +97,7 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['close', 'open-avatar-cropper']);
+const emit = defineEmits(['close', 'open-avatar-cropper', 'saved']);
 
 const defaultAvatar = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png';
 
@@ -211,6 +211,7 @@ const autoSaveCurrentConfig = async () => {
     try {
       await saveConfigsBatch(oldLlmId, allConfigs);
       FoxToast.success('配置已自动保存');
+      emit('saved', oldLlmId);
     } catch (error) {
       console.error('自动保存失败:', error);
     }
@@ -387,6 +388,7 @@ const handleSaveAll = async () => {
 
     if (response.code === 1000) {
       FoxToast.success('配置保存成功');
+      emit('saved', currentLlmId.value);
 
       scenarios.forEach(scenario => {
         if (pendingConfigs[scenario]) {

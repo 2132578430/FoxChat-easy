@@ -229,8 +229,10 @@ async def _deduplicate_and_append_events(
     _save_memory_bank(memory_bank, user_id, llm_id)
     logger.info(f"【历史事件入库】新增 {len(deduplicated)} 条")
 
-    # 同步新增事件到 ChromaDB
-    await chroma_util.upload_history_events_batch(deduplicated, user_id, llm_id)
+    # 同步新增事件到 ChromaDB（标记为对话事件，避免被初始记忆重建误删）
+    await chroma_util.upload_history_events_batch(
+        deduplicated, user_id, llm_id, memory_source="chat"
+    )
 
 async def _compress_memory_bank_if_needed(user_id: str, llm_id: str, db = None) -> None:
     """

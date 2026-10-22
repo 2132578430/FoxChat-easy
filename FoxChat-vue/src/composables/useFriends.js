@@ -5,6 +5,7 @@ import { useWsStore } from '@/stores/wsStore';
 import { useUiStore } from '@/stores/uiStore';
 import * as friendApi from '@/api/friend';
 import * as messageApi from '@/api/message';
+import { activateLlm } from '@/api/llmConfig';
 import request from '@/utils/request';
 import { encodeProtocol } from '@/utils/protocol';
 import { resolveAvatarUrl } from '@/utils/avatar';
@@ -35,7 +36,8 @@ export function useFriends() {
     }
   };
 
-  const getFriendList = async () => {
+  const getFriendList = async (options = {}) => {
+    const { skipUnread = false } = options;
     try {
       const response = await friendApi.getFriendList();
       let list = [];
@@ -48,12 +50,17 @@ export function useFriends() {
       } else if (response && (response.userId || response.id)) {
         list = [response];
       }
+      const previousUnread = new Map(
+        friendList.value.map(f => [String(f.userId || f.id), f.unreadCount])
+      );
       friendList.value = list.map(f => ({
         ...f,
         online: f.online !== undefined ? f.online : false,
-        unreadCount: 0
+        unreadCount: previousUnread.get(String(f.userId || f.id)) || 0
       }));
-      getUnreadCounts();
+      if (!skipUnread) {
+        getUnreadCounts();
+      }
     } catch (error) {
       console.error('获取好友列表出错:', error);
     }
@@ -190,8 +197,46 @@ export function useFriends() {
     showLlmConfigPanel.value = true;
   };
 
+  const isLlmInitPending = (friend) => {
+    if (friend.role !== 1) return false;
+    return (
+      friend.isApply === 0 || friend.isApply === '0' ||
+      friend.isApply === 1 || friend.isApply === '1'
+    );
+  };
+
+  const isLlmInitFailed = (friend) => {
+    return friend.role === 1 && (friend.isApply === 3 || friend.isApply === '3');
+  };
+
+  const retryLlmInit = async (friend) => {
+    const llmId = friend?.userId || friend?.id || friend?.llmId;
+    if (!llmId) {
+      FoxToast.error('无法获取模型ID');
+      return false;
+    }
+    try {
+      await activateLlm(llmId);
+      FoxToast.success('初始化任务已提交');
+      await getFriendList();
+      return true;
+    } catch (error) {
+      // 错误提示由 request 拦截器统一处理
+      console.error('模型初始化请求失败:', error);
+      return false;
+    }
+  };
+
   const selectFriend = async (friend) => {
     if (friend.isRequest) return;
+    if (isLlmInitPending(friend)) {
+      FoxToast.warning('模型初始化中，暂时无法聊天');
+      return;
+    }
+    if (isLlmInitFailed(friend)) {
+      FoxToast.warning('模型初始化失败，请右键重试');
+      return;
+    }
     showRag.value = false;
     chatStore.currentChatType.value = 'private';
     chatStore.currentGroup.value = {};
@@ -309,6 +354,7 @@ export function useFriends() {
     handleEditLlmFriend,
     selectFriend,
     signUnreadMessages,
-    getUnreadCounts
+    getUnreadCounts,
+    retryLlmInit
   };
 }

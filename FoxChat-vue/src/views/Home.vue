@@ -13,6 +13,7 @@
         :pending-llm-avatar-url="pendingLlmAvatarUrl"
         @close="showLlmConfigPanel = false"
         @open-avatar-cropper="handleOpenLlmAvatarCropper"
+        @saved="handleLlmConfigSaved"
       />
 
       <!-- Normal Chat Interface -->
@@ -119,6 +120,7 @@
         @add-llm-friend="showAddLlmFriendDialog = true"
         @delete-friend="handleDeleteFriend"
         @edit-llm-friend="handleEditLlmFriend"
+        @retry-llm-init="handleRetryLlmInit"
         @search="(text) => handleFriendSearch(text, friendListRef)"
       />
     </div>
@@ -203,7 +205,7 @@ const { showFriendList, showGroupList, showProfile, showRag, showLlmConfigPanel,
 
 // Composables
 const { initWebSocket } = useWsConnection();
-const { getFriendList, getFriendRequests, handleFriendSearch, handleAddFriend, handleAcceptFriend, handleDeleteFriend, handleEditLlmFriend, selectFriend } = useFriends();
+const { getFriendList, getFriendRequests, handleFriendSearch, handleAddFriend, handleAcceptFriend, handleDeleteFriend, handleEditLlmFriend, selectFriend, retryLlmInit } = useFriends();
 const { isGroupLoading: _igl, getGroupList, handleGroupSearch, handleCreateGroup, handleAddLlmFriend, handleJoinGroup, handleGroupClick } = useGroups();
 const { sendMessage, retryLlmMessage, loadMoreHistory, scrollToBottom, handleWithdrawMessages, handleDeleteMessages, toggleSelectionMode, cancelSelectionMode } = useChat();
 const { ragFiles, hasRagSearchResults, isSearchingRag, resetRagResults, handleFileClick } = useRag();
@@ -213,6 +215,68 @@ const { handleOpenLlmAvatarCropper, handleAvatarSuccess, handleAvatarBlob } = us
 const messageListRef = ref(null);
 const friendListRef = ref(null);
 const groupListRef = ref(null);
+
+// 模型初始化状态轮询：状态 0/1 期间持续轮询，配置保存/手动重试后强制轮询 60 秒
+const LLM_STATUS_POLL_INTERVAL = 5000;
+const LLM_STATUS_FORCE_WINDOW = 60000;
+let statusPollTimer = null;
+let isStatusPolling = false;
+let forceStatusPollUntil = 0;
+
+const isLlmStatusInitializing = (status) => {
+  return status === 0 || status === '0' || status === 1 || status === '1';
+};
+
+const hasPendingLlm = () => {
+  return friendList.value.some(friend => friend.role === 1 && isLlmStatusInitializing(friend.isApply));
+};
+
+const stopLlmStatusPolling = () => {
+  if (statusPollTimer) {
+    clearInterval(statusPollTimer);
+    statusPollTimer = null;
+  }
+};
+
+const syncLlmStatusPolling = () => {
+  const shouldPoll = hasPendingLlm() || Date.now() < forceStatusPollUntil;
+  if (!shouldPoll) {
+    stopLlmStatusPolling();
+    return;
+  }
+  if (statusPollTimer) return;
+
+  statusPollTimer = setInterval(async () => {
+    if (isStatusPolling) return;
+    isStatusPolling = true;
+    try {
+      await getFriendList({ skipUnread: true });
+    } finally {
+      isStatusPolling = false;
+      if (!hasPendingLlm() && Date.now() >= forceStatusPollUntil) {
+        stopLlmStatusPolling();
+      }
+    }
+  }, LLM_STATUS_POLL_INTERVAL);
+};
+
+const startLlmStatusForceWindow = () => {
+  forceStatusPollUntil = Date.now() + LLM_STATUS_FORCE_WINDOW;
+  syncLlmStatusPolling();
+};
+
+const handleLlmConfigSaved = () => {
+  startLlmStatusForceWindow();
+};
+
+const handleRetryLlmInit = async (friend) => {
+  const success = await retryLlmInit(friend);
+  if (success) {
+    startLlmStatusForceWindow();
+  }
+};
+
+watch(friendList, syncLlmStatusPolling, { deep: true });
 
 // Lifecycle
 onMounted(() => {
@@ -226,6 +290,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
+  stopLlmStatusPolling();
   if (ws.value) {
     try { ws.value.close(); } catch (e) { console.error('Error closing WebSocket on unmount:', e); }
   }

@@ -198,10 +198,45 @@ async def upload(chroma_type: ChromaTypeConstant, documents: list, source_id: st
 # 阶段4新增：历史事件向量库操作
 
 
+async def count_history_events(
+    user_id: str,
+    llm_id: str,
+    memory_source: str | None = None,
+) -> int:
+    """
+    统计历史事件数量
+
+    Args:
+        user_id: 用户 ID
+        llm_id: 模型 ID
+        memory_source: 事件来源（initial/chat），None 表示不区分来源
+    """
+    import asyncio
+    chroma: Chroma = CHROMA_MAP[ChromaTypeConstant.CHAT]
+
+    metadata = {
+        "user_id": user_id,
+        "llm_id": llm_id,
+        "is_event": True,
+    }
+    if memory_source is not None:
+        metadata["memory_source"] = memory_source
+
+    def _count() -> int:
+        result = chroma._collection.get(
+            where=_build_chroma_filter(metadata),
+            include=[],
+        )
+        return len(result.get("ids") or [])
+
+    return await asyncio.to_thread(_count)
+
+
 async def upload_history_events_batch(
     events: List[dict],
     user_id: str,
     llm_id: str,
+    memory_source: str = "chat",
 ) -> int:
     """
     批量上传历史事件（性能优化：单次 embedding + 单次 HTTP）
@@ -210,6 +245,7 @@ async def upload_history_events_batch(
         events: 事件列表，每个事件包含完整的 metadata 字段
         user_id: 用户 ID
         llm_id: 模型 ID
+        memory_source: 事件来源（initial/chat），初始记忆用 initial 以便独立清理
 
     Returns:
         上传成功的事件数量
@@ -246,6 +282,7 @@ async def upload_history_events_batch(
                 "activity_score": event.get("activity_score", 1.0),
                 "is_event": True,
                 "category": category,
+                "memory_source": memory_source,
             }
         )
         documents.append(doc)

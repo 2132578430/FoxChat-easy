@@ -51,8 +51,11 @@
 
           <!-- AI Icon -->
           <div v-if="friend.role === 1" class="ai-features">
-            <el-tooltip v-if="friend.isApply === 0 || friend.isApply === 1" content="模型初始化中，暂时无法使用" placement="top">
+            <el-tooltip v-if="isLlmInitPending(friend)" content="模型初始化中，暂时无法使用" placement="top">
               <span class="ai-status-badge creating">创造中</span>
+            </el-tooltip>
+            <el-tooltip v-else-if="isLlmInitFailed(friend)" content="初始化失败，右键可重试" placement="top">
+              <span class="ai-status-badge failed">初始化失败</span>
             </el-tooltip>
             <span class="ai-tag-icon">🦊</span>
           </div>
@@ -85,6 +88,14 @@
          class="friend-context-menu"
          @mousedown.stop
          :style="{ top: friendContextMenu.y + 'px', left: friendContextMenu.x + 'px' }">
+      <div
+        v-if="friendContextMenu.friend?.role === 1 && canInitLlm(friendContextMenu.friend)"
+        class="context-menu-item"
+        @click="handleRetryLlmInit"
+      >
+        <el-icon><Refresh /></el-icon>
+        <span>{{ isLlmInitFailed(friendContextMenu.friend) ? '重试初始化' : '开始初始化' }}</span>
+      </div>
       <div v-if="friendContextMenu.friend?.role === 1" class="context-menu-item" @click="handleEditLlmFriend">
         <el-icon><Edit /></el-icon>
         <span>修改模型</span>
@@ -99,7 +110,7 @@
 
 <script setup>
 import { ref, reactive, onMounted, onUnmounted } from 'vue';
-import { Plus, Edit, Delete } from '@element-plus/icons-vue';
+import { Plus, Edit, Delete, Refresh } from '@element-plus/icons-vue';
 import { FoxToast } from '@/components/FoxUI';
 
 const props = defineProps({
@@ -136,7 +147,8 @@ const emit = defineEmits([
   'search',
   'context-menu',
   'delete-friend',
-  'edit-llm-friend'
+  'edit-llm-friend',
+  'retry-llm-init'
 ]);
 
 const defaultUserAvatar = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png';
@@ -196,6 +208,26 @@ const isFriendOnline = (friend) => {
   return friend.online === true || friend.online === 'true' || friend.online === 1 || friend.online === '1';
 };
 
+const isLlmInitPending = (friend) => {
+  if (!friend || friend.role !== 1) return false;
+  return (
+    friend.isApply === 0 || friend.isApply === '0' ||
+    friend.isApply === 1 || friend.isApply === '1'
+  );
+};
+
+const isLlmInitFailed = (friend) => {
+  return !!friend && friend.role === 1 && (friend.isApply === 3 || friend.isApply === '3');
+};
+
+const canInitLlm = (friend) => {
+  if (!friend || friend.role !== 1) return false;
+  return (
+    friend.isApply === 0 || friend.isApply === '0' ||
+    friend.isApply === 3 || friend.isApply === '3'
+  );
+};
+
 const handleSearchInput = (value) => {
   emit('update:searchText', value);
   emit('search', value);
@@ -219,6 +251,13 @@ const showFriendContextMenu = (event, friend) => {
 const handleEditLlmFriend = () => {
   friendContextMenu.show = false;
   emit('edit-llm-friend', friendContextMenu.friend);
+};
+
+const handleRetryLlmInit = () => {
+  if (!friendContextMenu.friend) return;
+  const friend = friendContextMenu.friend;
+  friendContextMenu.show = false;
+  emit('retry-llm-init', friend);
 };
 
 const handleDeleteFriend = () => {
@@ -405,6 +444,12 @@ defineExpose({
   background: #fdf6ec;
   color: #e6a23c;
   border: 1px solid #faecd8;
+}
+
+.ai-status-badge.failed {
+  background: #fef0f0;
+  color: #f56c6c;
+  border: 1px solid #fde2e2;
 }
 
 /* 好友右键菜单样式 */

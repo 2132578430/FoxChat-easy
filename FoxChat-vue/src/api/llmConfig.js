@@ -42,3 +42,8 @@ export function validateConfig(llmId) {
 export function getModelMemory(llmId) {
   return request.get(`/llm/${llmId}/memory`);
 }
+
+// 触发/重试模型初始记忆生成
+export function activateLlm(llmId) {
+  return request.post(`/llm/activate/${llmId}`);
+}

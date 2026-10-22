@@ -182,7 +182,8 @@ public class LlmUserServiceImpl extends ServiceImpl<LlmUserMapper, LlmUser>
         }
 
         Integer currentStatus = llmUser.getIsApply();
-        if (currentStatus != null && currentStatus != 0) {
+        boolean canActivate = currentStatus == null || currentStatus == 0 || currentStatus == 3;
+        if (!canActivate) {
             log.warn("【激活创造物】llmId={}, 当前状态isApply={}, 已激活或正在处理", llmId, currentStatus);
             result.put("success", false);
             result.put("error", ResultStatusConstant.LLM_ALREADY_ACTIVATED_EXCEPTION);
@@ -203,12 +204,18 @@ public class LlmUserServiceImpl extends ServiceImpl<LlmUserMapper, LlmUser>
         chatMqMsgTo.setUserId(userId);
         chatMqMsgTo.setExperience(llmUser.getMemoryContent());
         chatMqMsgTo.setLlmId(llmId);
-        mqUtil.sendChatMsg(chatMqMsgTo);
 
-        llmUser.setIsApply(1);
-        updateById(llmUser);
+        try {
+            mqUtil.sendChatMsg(chatMqMsgTo);
+        } catch (Exception e) {
+            log.error("【激活创造物】llmId={}, userId={}, 初始化任务发送失败", llmId, userId, e);
+            result.put("success", false);
+            result.put("error", ResultStatusConstant.LLM_ACTIVATE_MQ_ERROR_EXCEPTION);
+            return result;
+        }
 
-        log.info("【激活创造物】llmId={}, userId={}, MQ已发送, isApply=1", llmId, userId);
+        // 状态由 Python 消费端写入（1 初始化中 / 2 就绪 / 3 失败），Java 只负责投递任务
+        log.info("【激活创造物】llmId={}, userId={}, MQ已发送, 等待Python更新isApply", llmId, userId);
         result.put("success", true);
         return result;
     }

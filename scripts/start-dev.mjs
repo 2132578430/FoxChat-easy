@@ -10,6 +10,8 @@
  *   node scripts/start-dev.mjs --stop           # 停止本脚本启动的服务（含残留）
  *   node scripts/start-dev.mjs --check --web    # 只检查路径、端口和 pid 记录
  *
+ * 启动时若端口被占用（例如 VS Code 关闭后残留的服务），会自动终止占用进程后继续。
+ *
  * 可用环境变量覆盖：FOXCHAT_PYTHON、FOXCHAT_JAVA_HOME
  */
 import { spawn, spawnSync } from 'node:child_process';
@@ -195,7 +197,7 @@ function getPortOwners(port) {
 function listProcesses() {
   if (process.platform !== 'win32') return [];
   // 最后一个字段标记 Gradle daemon：它是常驻构建进程，不属于某个服务的运行实例
-  const command = `Get-CimInstance Win32_Process | ForEach-Object { '{0}|{1}|{2}|{3}' -f $_.ProcessId, $_.ParentProcessId, $_.CreationDate.ToString('o'), [int]($_.CommandLine -like '*GradleDaemon*') }`;
+  const command = `Get-CimInstance Win32_Process | ForEach-Object { '{0}|{1}|{2}|{3}|{4}' -f $_.ProcessId, $_.ParentProcessId, $_.CreationDate.ToString('o'), [int]($_.CommandLine -like '*GradleDaemon*'), $_.Name }`;
   const res = spawnSync('powershell.exe', ['-NoProfile', '-NonInteractive', '-Command', command], {
     encoding: 'utf8',
     windowsHide: true,
@@ -207,8 +209,8 @@ function listProcesses() {
     .map((line) => line.trim())
     .filter(Boolean)
     .map((line) => {
-      const [pid, ppid, startedAt, daemon] = line.split('|');
-      return { pid: Number(pid), ppid: Number(ppid), startedAt, isGradleDaemon: daemon === '1' };
+      const [pid, ppid, startedAt, daemon, name] = line.split('|');
+      return { pid: Number(pid), ppid: Number(ppid), startedAt, isGradleDaemon: daemon === '1', name };
     })
     .filter((proc) => Number.isInteger(proc.pid) && proc.pid > 0);
 }
@@ -545,6 +547,48 @@ async function findPortConflict(svc) {
   return null;
 }
 
+// 启动前释放所选服务的端口：VS Code 直接关闭时 child 进程可能残留，pid 记录也可能已丢失
+async function reclaimServicePorts(svc) {
+  const processes = getProcessMap();
+  const targets = new Map();
+  for (const port of svc.ports) {
+    if (!(await checkPort(port))) continue;
+    const owners = getPortOwners(port);
+    if (owners.length === 0) {
+      log('WARN', `${svc.tag} 端口 ${port} 被占用，但无法定位占用进程。`, COLORS.error);
+      continue;
+    }
+    for (const owner of owners) {
+      const pid = Number(owner);
+      if (!Number.isInteger(pid) || pid <= 0 || pid === process.pid) continue;
+      const target = targets.get(pid);
+      if (target) {
+        target.ports.push(port);
+      } else {
+        targets.set(pid, { pid, name: processes.get(pid)?.name ?? '未知进程', ports: [port] });
+      }
+    }
+  }
+
+  if (targets.size === 0) return !(await findPortConflict(svc));
+
+  for (const target of targets.values()) {
+    log('STOP', `${svc.tag} 端口 ${target.ports.join('/')} 被 ${target.name} (pid ${target.pid}) 占用，自动终止`);
+    killPid(target.pid);
+  }
+
+  const deadline = Date.now() + 10_000;
+  while (Date.now() < deadline) {
+    if (!(await findPortConflict(svc))) {
+      log('STOP', `${svc.tag} 端口已释放，继续启动。`);
+      return true;
+    }
+    await sleep(250);
+  }
+  log('ERR', `${svc.tag} 端口 ${svc.ports.join(', ')} 仍未释放，请手动检查占用进程。`, COLORS.error);
+  return false;
+}
+
 async function printCheck() {
   const current = getProcessMap();
   for (const svc of SELECTED) {
@@ -679,21 +723,20 @@ async function main() {
     const existing = findRunningRecord(svc);
     if (existing) {
       const pidText = (existing.livePids ?? [existing.childPid]).join(', ');
-      const healthy = await isServiceReady(svc);
-      if (!healthy) {
-        log('ERR', `${svc.tag} 已有进程 (pid ${pidText})，但端口/健康检查未通过；请先运行“停止全部（含残留）”。`, COLORS.error);
-        shutdown(1);
-        return;
+      const managed = isProcessAlive(existing.launcherPid);
+      if (managed && (await isServiceReady(svc))) {
+        log('SKIP', `${svc.tag} 已在运行 (pid ${pidText})，跳过启动。`);
+        if (ONLY) return;
+        continue;
       }
-      log('SKIP', `${svc.tag} 已在运行 (pid ${pidText})，跳过启动。`);
-      if (ONLY) return;
-      continue;
+      log('STOP', `${svc.tag} 发现残留服务 (pid ${pidText})，清理后重新启动。`);
+      const killed = terminateRecorded(svc);
+      if (killed > 0) log('STOP', `${svc.tag} 已终止 ${killed} 个残留进程。`);
+      removePidRecord(svc);
     }
 
-    const conflict = await findPortConflict(svc);
-    if (conflict) {
-      const owners = conflict.owners.join(', ') || '未知';
-      log('ERR', `${svc.tag} 端口 ${conflict.port} 已被占用 (PID: ${owners})，为避免双开已中止。请先运行“停止全部（含残留）”。`, COLORS.error);
+    const freed = await reclaimServicePorts(svc);
+    if (!freed) {
       shutdown(1);
       return;
     }

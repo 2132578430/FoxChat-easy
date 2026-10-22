@@ -79,6 +79,9 @@ public enum ResultStatusConstant {
     /** 无权限操作该创造物 */
     LLM_NOT_OWNER_EXCEPTION(15009, "无权限操作该创造物"),
 
+    /** 初始化任务发送失败 */
+    LLM_ACTIVATE_MQ_ERROR_EXCEPTION(15010, "初始化任务发送失败，请稍后重试"),
+
     /** 思考中 */
     LLM_PROCESSING(20001, "思考中..."),
 

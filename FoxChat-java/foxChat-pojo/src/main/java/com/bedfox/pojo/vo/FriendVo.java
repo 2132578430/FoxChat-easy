@@ -15,7 +15,7 @@ public class FriendVo {
     Integer role;
 
     /**
-     * 是否启用（0禁止/1转化记忆中/2启用）
+     * 初始化状态（0未初始化/1初始化中/2就绪/3初始化失败）
      */
     Integer isApply;
 }
