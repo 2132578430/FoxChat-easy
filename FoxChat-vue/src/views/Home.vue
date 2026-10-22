@@ -138,6 +138,11 @@
       @success="handleAvatarSuccess"
       @blob="handleAvatarBlob"
     />
+
+    <!-- Dialogs -->
+    <CreateGroupDialog />
+    <AddLlmFriendDialog />
+    <UploadDialog />
   </div>
 </template>
 

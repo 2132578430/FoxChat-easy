@@ -3,7 +3,7 @@
 # Building this layer takes ~15min but cache hit rate >99%
 # ============================================
 pydantic
-sqlalchemy
+sqlalchemy[asyncio]
 aiomysql
 langchain
 langchain-community
@@ -13,6 +13,7 @@ langchain-openai
 langchain-chroma
 langchain-text-splitters
 langgraph
+langgraph-checkpoint-sqlite
 flashrank
 unstructured[docx]
 litellm

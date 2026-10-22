@@ -6,6 +6,9 @@
 # Chroma 本地存储（已迁移到远程）
 store/
 
+# 本地模型缓存
+models/
+
 # Python
 __pycache__/
 *.py[cod]

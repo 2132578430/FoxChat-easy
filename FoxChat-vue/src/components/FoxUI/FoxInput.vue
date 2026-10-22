@@ -58,6 +58,8 @@ const onInput = (e) => {
 <style scoped>
 .fox-input-wrapper {
   position: relative;
+  width: 100%;
+  box-sizing: border-box;
   border-radius: 10px;
   background: rgba(255,255,255,0.5);
   border: 1.5px solid rgba(0,0,0,0.08);
