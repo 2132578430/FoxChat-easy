@@ -144,7 +144,7 @@ FoxChatRAG-python/
 
 ### 2. 依赖安装
 ```bash
-pip install -r requirements.txt
+pip install -r requirements-core.txt -r requirements.txt
 ```
 
 ### 3. 服务启动

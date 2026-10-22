@@ -12,6 +12,8 @@ LLM 模型配置模块
 - 参考：app/service/chat/llm_invoke_service.py
 """
 
+import os
+from pathlib import Path
 from typing import List
 
 import dashscope
@@ -23,7 +25,12 @@ from langchain_openai import ChatOpenAI
 from loguru import logger
 from pydantic import SecretStr
 
-from app.core.settings import global_settings
+from app.core.settings import BASE_DIR, global_settings
+
+FLASHRANK_CACHE_DIR = Path(
+    os.getenv("FLASHRANK_CACHE_DIR", str(BASE_DIR / "models" / "flashrank"))
+)
+FLASHRANK_CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
 # ============================================================
 # Embed 单例（服务端控制）
@@ -140,7 +147,7 @@ nomic_embed = OllamaEmbeddings(
 rerank_model = FlashrankRerank(model="ms-marco-MiniLM-L-12-v2",
                                top_n=20,
                                client=Ranker(model_name="ms-marco-MiniLM-L-12-v2",
-                                             cache_dir="/app/models/flashrank"))
+                                             cache_dir=str(FLASHRANK_CACHE_DIR)))
 
 # ============================================================
 # 注意：聊天场景已迁移到策略层 app/service/chat/strategy/

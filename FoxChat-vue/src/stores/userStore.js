@@ -13,6 +13,14 @@ const profileInfo = ref({
 });
 
 /**
+ * 更新登录用户信息（同时同步内存状态和 localStorage）
+ */
+const setUserInfo = (info) => {
+  Object.assign(userInfo, info);
+  localStorage.setItem('userInfo', JSON.stringify(userInfo));
+};
+
+/**
  * 获取用户信息
  */
 const getUserInfo = async () => {
@@ -61,6 +69,7 @@ export function useUserStore() {
   return {
     userInfo,
     profileInfo,
+    setUserInfo,
     getUserInfo,
     handleUpdateProfile,
     handleEditPassword

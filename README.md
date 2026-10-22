@@ -314,7 +314,7 @@ FoxChat/
 
 ### 前置依赖
 
-- **JDK 17+** / **Python 3.12+** / **Node.js 18+**
+- **JDK 17+** / **Python 3.12+** / **Node.js 20.19+ 或 22.12+**
 - **Docker** (运行中间件)
 
 ### 1. 启动中间件
@@ -336,7 +336,7 @@ cp .env.example .env   # 编辑填写密钥和密码
 # Python 端
 cd FoxChatRAG-python
 cp .env.example .env   # 编辑填写 LLM API Key 等
-pip install -r requirements.txt
+pip install -r requirements-core.txt -r requirements.txt
 
 # 生成 gRPC stub
 python -m grpc_tools.protoc -Iproto --python_out=app/grpc --grpc_python_out=app/grpc proto/ai_chat.proto

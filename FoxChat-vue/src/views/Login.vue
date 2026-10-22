@@ -21,9 +21,11 @@
 import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { FoxInput, FoxButton, FoxToast } from '@/components/FoxUI';
+import { useUserStore } from '@/stores/userStore';
 import { login } from '../api/auth';
 
 const router = useRouter();
+const { setUserInfo } = useUserStore();
 const loading = ref(false);
 
 const loginForm = reactive({ username: '', password: '' });
@@ -43,7 +45,7 @@ const handleLogin = async () => {
       userId: data.userId,
       face_image: data.face_image || 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
     };
-    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+    setUserInfo(userInfo);
     router.push('/');
   } catch (error) {
     console.error(error);

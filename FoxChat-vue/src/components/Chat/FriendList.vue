@@ -80,19 +80,21 @@
   </transition>
 
   <!-- Friend Context Menu -->
-  <div v-if="friendContextMenu.show"
-       class="friend-context-menu"
-       @mousedown.stop
-       :style="{ top: friendContextMenu.y + 'px', left: friendContextMenu.x + 'px' }">
-    <div v-if="friendContextMenu.friend?.role === 1" class="context-menu-item" @click="handleEditLlmFriend">
-      <el-icon><Edit /></el-icon>
-      <span>修改模型</span>
+  <Teleport to="body">
+    <div v-if="friendContextMenu.show"
+         class="friend-context-menu"
+         @mousedown.stop
+         :style="{ top: friendContextMenu.y + 'px', left: friendContextMenu.x + 'px' }">
+      <div v-if="friendContextMenu.friend?.role === 1" class="context-menu-item" @click="handleEditLlmFriend">
+        <el-icon><Edit /></el-icon>
+        <span>修改模型</span>
+      </div>
+      <div class="context-menu-item delete" @click="handleDeleteFriend">
+        <el-icon><Delete /></el-icon>
+        <span>删除好友</span>
+      </div>
     </div>
-    <div class="context-menu-item delete" @click="handleDeleteFriend">
-      <el-icon><Delete /></el-icon>
-      <span>删除好友</span>
-    </div>
-  </div>
+  </Teleport>
 </template>
 
 <script setup>
@@ -413,6 +415,7 @@ defineExpose({
   border-radius: 4px;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
   padding: 0;
+  width: max-content;
   min-width: 90px;
   display: flex;
   flex-direction: column;
