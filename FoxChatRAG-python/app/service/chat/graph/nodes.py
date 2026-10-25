@@ -200,6 +200,13 @@ async def format_output(state: ChatState) -> dict:
     """解析 LLM 输出为 MessageBlock 列表"""
     clean_response = strip_think_only(state["ai_response"])
     blocks = parse_action_tags(clean_response)
+    text_count = sum(1 for block in blocks if block.type == "text")
+    action_count = len(blocks) - text_count
+    opening = blocks[0].type if blocks else "none"
+    logger.info(
+        f"【形态】round={state['current_round']} text={text_count} "
+        f"action={action_count} opening={opening}"
+    )
     blocks_data = [block.model_dump() for block in blocks]
     return {"blocks": blocks_data}
 

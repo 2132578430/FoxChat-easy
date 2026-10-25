@@ -17,7 +17,12 @@ from langchain_core.language_models.chat_models import BaseMessage
 from app.common.constant.ChromaTypeConstant import ChromaTypeConstant
 from app.core.db.mysql_client import async_session_local
 from app.core.prompts.prompt_manager import PromptManager
+from app.core.settings import global_settings
 from app.service.chat.llm.prompt_payload_builder import build_prompt_payload
+from app.service.chat.parsing.history_renderer import (
+    HISTORY_VIEW_NOTE,
+    render_history_content,
+)
 from app.service.chat.memory.history_event_retrieval_service import (
     retrieve_history_events,
     format_history_events,
@@ -32,9 +37,9 @@ from app.util.template_util import escape_template
 # (上限阈值, 指导文本)，按阈值升序排列，查找时取第一个命中
 _TALKATIVENESS_GUIDANCE: list[tuple[float, str]] = [
     (0.25, "当前角色极度寡言：通常 1 个短气泡，偶尔 2 个；能一句说完就一句。"),
-    (0.55, "当前角色话量适中：1-3 个短气泡，按内容决定；简单回应 1-2 个即可，不要每轮固定 2-3 个。"),
-    (0.85, "当前角色健谈：2-4 个短气泡，信息多时 3-4 个，简单回应 1-2 个；不要每轮都用满。"),
-    (1.00, "当前角色话痨：2-4 个短气泡，允许偶尔 4 个，但不要每次都 4 个；每个气泡仍然简短。"),
+    (0.55, "当前角色话量适中：用词自然，按意思点决定气泡数；通常 1-3 个，简单回应 1-2 个即可。"),
+    (0.85, "当前角色健谈：用词更丰富、更愿意接话题、更主动追问；气泡数仍由意思点决定，通常 2-3 个，简单回应 1-2 个。"),
+    (1.00, "当前角色话痨：话多体现在话题延展和用词，不体现在气泡数；通常 2-3 个气泡，信息确实多时 3-4 个，不要每轮用满。"),
 ]
 
 
@@ -142,11 +147,15 @@ async def _build_chat_messages(
     logger.info(f"【Payload】注入: {payload.blocks_injected}, 空块省略: {payload.blocks_omitted}")
 
     # 构建最近消息上下文
+    render_mode = global_settings.chat.history_render_mode
     messages = []
     for msg in history_msg:
         msg_type = msg.type if hasattr(msg, 'type') else "user"
         role = {"human": "user", "ai": "assistant"}.get(msg_type, msg_type)
-        messages.append({"role": role, "content": msg.content})
+        content = msg.content
+        if render_mode == "narrate" and role == "assistant":
+            content = render_history_content(content)
+        messages.append({"role": role, "content": content})
     # 用户信息追加
     messages.append({"role": "user", "content": msg_content})
 
@@ -159,6 +168,9 @@ async def _build_chat_messages(
         behavior_guide=payload.behavior_guide,
         talkativeness_guidance=payload.talkativeness_guidance,
     )
+    if render_mode == "narrate":
+        system_prompt = f"{system_prompt}\n\n{HISTORY_VIEW_NOTE}"
+        logger.debug("【历史转写】history_render_mode=narrate")
     messages.insert(0, {"role": "system", "content": system_prompt})
 
     logger.debug(f"【完整Messages】共 {len(messages)} 条消息")

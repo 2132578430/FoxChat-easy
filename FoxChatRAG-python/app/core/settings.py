@@ -13,6 +13,11 @@ class ServerConfig(BaseModel):
     port: int = 8000
 
 
+class ChatConfig(BaseModel):
+    """对话行为开关"""
+    history_render_mode: str = "raw"  # raw | narrate
+
+
 class RabbitMqConfig(BaseModel):
     host: str = "localhost"
     port: int = 5672
@@ -78,6 +83,7 @@ class Settings(BaseSettings):
     key: ModelApiKey = ModelApiKey()
     model: ModelConfig = ModelConfig()
     mood: MoodConfig = MoodConfig()
+    chat: ChatConfig = ChatConfig()
 
 
 global_settings = Settings()
