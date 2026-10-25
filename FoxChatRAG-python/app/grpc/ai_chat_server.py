@@ -84,7 +84,7 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
             async for response in self._do_fallback(user_id, llm_id, msg_content, parser, seq):
                 yield response
         except Exception as e:
-            logger.error(f"[gRPC Chat] 流式失败，降级到非流式: {e}")
+            logger.exception(f"[gRPC Chat] 流式失败，降级到非流式: {e}")
             async for response in self._do_fallback(user_id, llm_id, msg_content, parser, seq):
                 yield response
         finally:
@@ -136,7 +136,7 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
                     if graph_task.done():
                         exc = graph_task.exception()
                         if exc:
-                            logger.error(f"[gRPC Chat] Graph 执行失败: {exc}")
+                            logger.opt(exception=exc).error(f"[gRPC Chat] Graph 执行失败: {exc}")
                             raise exc
                         else:
                             raise RuntimeError("Graph未产生Token输出")
@@ -195,7 +195,7 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
                 seq += 1
                 yield response
         except Exception as e:
-            logger.error(f"[gRPC Chat] 降级也失败: {e}")
+            logger.exception(f"[gRPC Chat] 降级也失败: {e}")
             yield ai_chat_pb2.ChatResponse(
                 content="",
                 is_final=True,

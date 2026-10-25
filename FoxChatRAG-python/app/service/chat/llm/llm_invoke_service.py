@@ -51,6 +51,19 @@ def _get_talkativeness_guidance(talkativeness: float) -> str:
     return _TALKATIVENESS_GUIDANCE[-1][1]
 
 
+def _describe_llm_error(exc: Exception) -> str:
+    """提取上游模型异常的完整信息，便于定位 429/5xx/参数错误。"""
+    status = getattr(exc, "status_code", None)
+    try:
+        body = getattr(getattr(exc, "response", None), "text", None)
+    except Exception:
+        body = None
+    detail = f"type={type(exc).__name__}, status={status}, error={exc}"
+    if body:
+        detail += f", body={str(body)[:500]}"
+    return detail
+
+
 def _get_latest_summary(user_id: str, llm_id: str) -> str:
     """读取最近一次对话摘要（时间维度保底；写入见 memory_summary_service._summary_and_upload）"""
     from app.common.constant.LLMChatConstant import LLMChatConstant, build_chat_key
@@ -282,24 +295,30 @@ async def stream_llm_with_retrieval(
         except (litellm.exceptions.APIConnectionError, litellm.exceptions.APIError) as e:
             last_error = e
             status_code = getattr(e, 'status_code', None)
+            error_detail = _describe_llm_error(e)
             if status_code and status_code < 500:
-                logger.error(
-                    f"[StreamLLM] 请求失败: status={status_code}, "
-                    f"base_url={masked_base_url}, error={e}"
+                logger.exception(
+                    f"[StreamLLM] 请求失败(不重试): {error_detail}, "
+                    f"base_url={masked_base_url}"
                 )
                 raise
             if attempt == max_retries - 1:
-                logger.error(
-                    f"[StreamLLM] 重试耗尽: status={status_code}, "
-                    f"base_url={masked_base_url}, error={e}"
+                logger.exception(
+                    f"[StreamLLM] 重试耗尽({max_retries}次): {error_detail}, "
+                    f"base_url={masked_base_url}"
                 )
                 raise
             logger.warning(
                 f"[StreamLLM] 第 {attempt+1}/{max_retries} 次尝试失败: "
-                f"status={status_code}, base_url={masked_base_url}, error={e}，"
-                f"{2**attempt}s 后重试..."
+                f"{error_detail}, base_url={masked_base_url}，{2**attempt}s 后重试..."
             )
             await asyncio.sleep(2 ** attempt)
+        except Exception as e:
+            logger.exception(
+                f"[StreamLLM] 未预期异常(不重试): {_describe_llm_error(e)}, "
+                f"base_url={masked_base_url}"
+            )
+            raise
 
     if last_error:
         raise last_error
