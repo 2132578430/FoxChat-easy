@@ -14,9 +14,8 @@ scope 不再多处维护（历史教训：同一映射曾在规则/策略/写入
 风险不对称：漏检代价 >> 多检代价，兜底 = 全库。
 """
 
-import re
 from dataclasses import dataclass
-from typing import List, Tuple, Dict, Optional
+from typing import List, Tuple, Dict
 
 from app.schemas.memory_event import EventDetailType
 

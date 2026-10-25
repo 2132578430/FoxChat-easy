@@ -32,7 +32,7 @@
             @click="handleGroupClick(group)"
           >
             <div class="friend-avatar-wrapper">
-              <el-avatar :size="40" :src="resolveAvatarUrl(group.faceImage || group.avatar) || defaultGroupAvatar"></el-avatar>
+              <el-avatar :size="40" :src="resolveAvatarUrl(group.faceImage || group.avatar) || defaultUserAvatar"></el-avatar>
             </div>
             <div class="friend-info">
               <div class="friend-name">{{ group.groupName }}</div>
@@ -60,7 +60,7 @@
             @click="handleGroupClick(group)"
           >
             <div class="friend-avatar-wrapper">
-              <el-avatar :size="40" :src="resolveAvatarUrl(group.faceImage || group.avatar) || defaultGroupAvatar"></el-avatar>
+              <el-avatar :size="40" :src="resolveAvatarUrl(group.faceImage || group.avatar) || defaultUserAvatar"></el-avatar>
               <div v-if="group.unreadCount > 0" class="unread-badge">{{ group.unreadCount > 99 ? '99+' : group.unreadCount }}</div>
             </div>
             <div class="friend-info">
@@ -79,6 +79,7 @@
 <script setup>
 import { ref } from 'vue';
 import { Plus } from '@element-plus/icons-vue';
+import { defaultUserAvatar, resolveAvatarUrl } from '@/utils/avatar';
 
 const props = defineProps({
   modelValue: Boolean,
@@ -108,23 +109,9 @@ const emit = defineEmits([
   'search'
 ]);
 
-const defaultGroupAvatar = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png';
-
 const searchText = ref('');
 const searchResultList = ref([]);
 const isSearching = ref(false);
-
-const OSS_BASE_URL = import.meta.env.VITE_OSS_BASE_URL || '';
-
-const resolveAvatarUrl = (url) => {
-  if (!url) return '';
-  if (url.startsWith('http')) return url;
-  const cleanUrl = url.startsWith('/') ? url.substring(1) : url;
-  if (cleanUrl.startsWith('oss/')) {
-    return `${OSS_BASE_URL.replace('/oss', '')}/${cleanUrl}`;
-  }
-  return `${OSS_BASE_URL}/${cleanUrl}`;
-};
 
 const handleSearchInput = (value) => {
   searchText.value = value;

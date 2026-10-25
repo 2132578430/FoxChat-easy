@@ -80,32 +80,22 @@ FoxChatRAG-python/
 │   ├── service/chat/           # 业务层：核心对话服务
 │   │   ├── chat_msg_service.py         # 对话主流程入口
 │   │   ├── memory_summary_service.py   # 记忆总结与候选分流
-│   │   ├── candidate_router_service.py # 阶段3候选路由
-│   │   ├── a2_candidate_service.py     # A2边界提取
-│   │   ├── state_manager.py            # 当前状态容器管理
-│   │   ├── time_node_service.py        # 时间节点运行时
-│   │   ├── runtime_state_extractor.py  # runtime状态提取
-│   │   ├── emotion_classifier.py       # 情绪分类
-│   │   ├── user_profile_service.py     # 用户画像更新
+│   │   ├── state/state_manager.py      # 当前状态容器管理
+│   │   ├── profile/user_profile_service.py # 用户画像更新
 │   │   ├── history_event_retrieval_service.py # 历史事件检索（阶段4）
 │   │   └── prompt_payload_builder.py   # Prompt构建器（阶段6）
 │   ├── core/
 │   │   ├── prompts/            # Prompt 模板
 │   │   │   ├── soul.md                 # 角色灵魂定义
-│   │   │   ├── memory_event_extractor.md # 历史事件提取
 │   │   │   ├── chat_system.md            # 对话主系统 Prompt
 │   │   │   ├── memory_summary.md         # 对话总结 Prompt
 │   │   │   ├── memory_event_extractor.md # 历史事件提取 Prompt
-│   │   │   ├── memory_bank_compress.md   # Memory Bank 压缩 Prompt
-│   │   │   ├── emotion_classifier.md     # 情绪分类 Prompt
-│   │   │   ├── focus_extractor.md        # 焦点提取 Prompt
-│   │   │   └── soul.md                   # 角色灵魂定义
+│   │   │   └── emotion_classifier.md     # 情绪分类 Prompt
 │   │   ├── llm_model/          # LLM 模型管理
 │   │   ├── mq/                 # RabbitMQ 消息队列
 │   │   └── db/                 # 数据库连接（Redis、MySQL）
 │   ├── schemas/                # 数据模型：Pydantic 模型定义
 │   │   ├── current_state.py    # 当前状态容器 Schema
-│   │   ├── time_node.py        # 时间节点 Schema
 │   │   ├── memory_event.py     # 历史事件 Schema
 │   │   └── summary_candidate.py # 候选数据结构
 │   ├── common/constant/        # 公共模块：常量定义

@@ -1,7 +1,6 @@
 import asyncio
 import redis
 import redis_lock
-from typing import Optional
 
 from app.core.db.redis_client import redis_client
 from loguru import logger

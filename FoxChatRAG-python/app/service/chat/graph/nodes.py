@@ -6,7 +6,6 @@ Chat Graph 节点函数
 """
 
 import contextvars
-from typing import List
 
 from loguru import logger
 
@@ -132,7 +131,6 @@ async def retrieve(state: ChatState) -> dict:
         confidence=ir.get("confidence", 0.0),
     )
 
-    # logger.debug(f"[Graph] retrieve 节点开始: msg={state['msg_content'][:30]}")
     relevant_memories_text = await search_relevant_memories(
         msg_content=state["msg_content"],
         user_id=state["user_id"],
@@ -147,7 +145,6 @@ async def skip_retrieval(state: ChatState) -> dict:
     """
     当意图判断为闲聊的时候直接跳过主动检索节点
     """
-    # logger.debug(f"[Graph] skip_retrieval 节点开始")
     return {"relevant_memories_text": ""}
 
 
@@ -245,7 +242,7 @@ async def classify_emotion(state: ChatState) -> dict:
         f"trend={trend_phrase(new_mood)} inject=\"{inject_text}\" "
         f"pending={pending_text} latency_ms={result.latency_ms}"
     )
-    return {"mood": new_mood, "emotion": new_mood.label.value}
+    return {"mood": new_mood}
 
 
 async def trigger_summary(state: ChatState) -> dict:

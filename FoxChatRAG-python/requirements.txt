@@ -6,10 +6,8 @@ fastapi
 uvicorn
 loguru
 aio-pika
-pika
 python-dotenv
 requests
-pypdf
 pymupdf
 python-multipart
 python-redis-lock

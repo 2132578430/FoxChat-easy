@@ -55,9 +55,10 @@ async def chat_msg(chat_msg_to: ChatMsgTo, background_tasks: BackgroundTasks, re
     lock = await acquire_session_lock(user_id, llm_id)
     try:
         result = await main_graph.ainvoke(initial_state, config)
+        mood_state = result.get("mood")
         response = {
             "blocks": result.get("blocks", []),
-            "emotion": result.get("emotion", "neutral"),
+            "emotion": mood_state.label.value if mood_state else "neutral",
         }
         logger.info(f"收到回复：{response}")
         return M.get_msg(response)

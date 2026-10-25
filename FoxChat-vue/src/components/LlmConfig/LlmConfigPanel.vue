@@ -19,7 +19,7 @@
             :class="{ active: String(friend.userId || friend.id || friend.llmId) === String(selectedFriendId) }"
             @click="handleSelectFriendById(String(friend.userId || friend.id || friend.llmId))"
           >
-            <FoxAvatar :src="resolveAvatarUrl(friend.faceImage || friend.face_image) || defaultAvatar" :size="36" />
+            <FoxAvatar :src="resolveAvatarUrl(friend.faceImage || friend.face_image) || defaultUserAvatar" :size="36" />
             <span class="friend-name">{{ friend.nickname || friend.username }}</span>
           </div>
           <div v-if="friendList.length === 0" class="friend-empty">暂无创造物</div>
@@ -32,7 +32,7 @@
           <el-tab-pane label="外观" name="appearance">
             <div class="appearance-form">
               <div class="avatar-upload" @click="handleOpenAvatarCropper">
-                <FoxAvatar :src="resolveAvatarUrl(appearanceForm.faceImage) || defaultAvatar" :size="80" />
+                <FoxAvatar :src="resolveAvatarUrl(appearanceForm.faceImage) || defaultUserAvatar" :size="80" />
                 <div class="avatar-overlay">📷</div>
               </div>
               <el-form label-position="top" class="nickname-form">
@@ -80,6 +80,7 @@ import { FoxToast, FoxButton, FoxAvatar, FoxInput } from '@/components/FoxUI';
 import ScenarioConfigForm from './ScenarioConfigForm.vue';
 import { saveConfigsBatch, getConfigs } from '@/api/llmConfig';
 import { updateLlmFriend } from '@/api/friend';
+import { defaultUserAvatar } from '@/utils/avatar';
 
 const props = defineProps({
   friendList: {
@@ -98,8 +99,6 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['close', 'open-avatar-cropper', 'saved']);
-
-const defaultAvatar = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png';
 
 const resolveAvatarUrl = (url) => {
   if (!url) return null;
@@ -168,11 +167,6 @@ const scenarioNames = {
   extraction: '信息提取',
   emotion: '情绪识别'
 };
-
-const canOneClickConfig = computed(() => {
-  // Can use one-click config if we have chat config tested and passed
-  return testResults.chat === true;
-});
 
 // Helper functions
 const hasPendingConfigs = () => {

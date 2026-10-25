@@ -21,11 +21,9 @@ const stopHeartbeat = () => {
  * 发送二进制消息
  */
 const sendBinaryMessage = (protocolData) => {
-  console.log('[WS Send] Preparing to send binary data:', protocolData);
   if (ws.value && ws.value.readyState === WebSocket.OPEN) {
     try {
       ws.value.send(protocolData);
-      console.log('[WS Send] Data sent successfully');
     } catch (error) {
       console.error('[WS Send] Error sending message:', error);
     }

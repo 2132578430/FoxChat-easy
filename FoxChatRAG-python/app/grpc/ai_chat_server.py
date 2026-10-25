@@ -155,7 +155,6 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
                 # 开始解析token
                 for st in parser.feed(token):
                     seq += 1
-                    # logger.debug(f"[gRPC Chat] yield gRPC seq={seq} type={st.block_type}")
                     yield self._to_response(st, seq, is_final=False)
 
             # 刷新 parser 缓冲区（action 标签闭合）
@@ -165,7 +164,8 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
 
             # 等待 graph 完成（后处理 4 路并行）
             result = await graph_task
-            emotion = result.get("emotion", "normal")
+            mood_state = result.get("mood")
+            emotion = mood_state.label.value if mood_state else "normal"
 
             # 最终包
             yield ai_chat_pb2.ChatResponse(
@@ -228,7 +228,8 @@ class AIChatServiceImpl(ai_chat_pb2_grpc.AIChatServiceServicer if ai_chat_pb2_gr
         result = await main_graph.ainvoke(initial_state, config)
 
         blocks = result.get("blocks", [])
-        emotion = result.get("emotion", "neutral")
+        mood_state = result.get("mood")
+        emotion = mood_state.label.value if mood_state else "neutral"
 
         seq = 0
 

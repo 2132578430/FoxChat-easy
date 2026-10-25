@@ -34,7 +34,6 @@ def ensure_collection_dimensions():
     启动时校验 ChromaDB 集合维度是否与当前 embedding 模型匹配。
     不匹配则删除重建（切换 embedding 模型时自动迁移）。
     """
-    import numpy as np
     from loguru import logger
 
     # 用一条短文本测出当前模型输出维度

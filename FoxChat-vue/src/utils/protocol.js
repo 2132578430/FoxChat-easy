@@ -42,12 +42,6 @@ export function encodeProtocol(messageObj) {
   // 4. 写入 Protobuf 数据体
   uint8View.set(protobufBytes, 16); // 从第 16 字节开始写入
 
-  // Debug: 打印协议头 hex
-  const headerHex = Array.from(new Uint8Array(buffer, 0, 16))
-    .map(b => b.toString(16).padStart(2, '0').toUpperCase())
-    .join(' ');
-  console.log(`[Protocol Encode] Length: ${dataLength}, Header: ${headerHex}`);
-
   return buffer;
 }
 

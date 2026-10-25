@@ -28,7 +28,6 @@ export function useWsConnection() {
       }
 
       const url = CHAT_SERVICE_URL;
-      console.log(`Connecting to WebSocket: ${url}`);
 
       if (ws.value) {
         ws.value.close();
@@ -38,7 +37,6 @@ export function useWsConnection() {
       ws.value.binaryType = 'arraybuffer';
 
       ws.value.onopen = async () => {
-        console.log('WebSocket connected successfully!');
         const legacyToken = localStorage.getItem('token');
         if (legacyToken) {
           const authMsg = {
@@ -47,7 +45,6 @@ export function useWsConnection() {
             extend: legacyToken
           };
           try {
-            console.log('[WS] Sending legacy auth message for compatibility');
             const binaryData = encodeProtocol(authMsg);
             sendBinaryMessage(binaryData);
           } catch (e) {
@@ -71,7 +68,6 @@ export function useWsConnection() {
       };
 
       ws.value.onclose = (event) => {
-        console.log('WebSocket closed:', event);
         stopHeartbeat();
       };
     } catch (error) {
@@ -105,8 +101,6 @@ export function useWsConnection() {
 
       const data = decodeProtocol(buffer);
       if (!data) return;
-
-      console.log('收到解码后的消息:', data);
 
       if (data.type == '1105') {
         const isForMe = String(data.chatMsg?.acceptUserId) === String(userInfo.userId);

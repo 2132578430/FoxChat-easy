@@ -18,10 +18,3 @@ export function uploadAvatar(formData) {
     }
   });
 }
-
-// Get avatar url by userId
-export function getAvatarUrl(userId) {
-  return request.get('/user/avatar', {
-    params: { userId }
-  });
-}

@@ -1,12 +1,7 @@
 import hashlib
 from typing import List
 
-import jieba
-from flashrank import Ranker
 from langchain_chroma import Chroma
-from langchain_classic.retrievers import ContextualCompressionRetriever
-from langchain_community.document_compressors import FlashrankRerank
-from langchain_community.retrievers import BM25Retriever
 from langchain_core.documents import Document
 
 from app.chroma import CHROMA_MAP, easy_txt_splitter

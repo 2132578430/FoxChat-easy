@@ -58,25 +58,7 @@ class ModelApiKey(BaseModel):
 
 
 class ModelConfig(BaseModel):
-    default_llm: str = "astron_model"
-    default_json_llm: str = "astron_json_model"
     default_embedding: str = "dashscope"
-    emotion_llm: str = "astron_json_model"
-
-
-class ModelByScenario(BaseModel):
-    chat_llm: str = "default"
-    chat_json_llm: str = "default_json"
-    memory_llm: str = "default"
-    memory_json_llm: str = "astron_json_model"
-    summary_llm: str = "default"
-    extraction_llm: str = "astron_json_model"
-
-
-class LangSmithConfig(BaseModel):
-    tracing_enabled: bool = False
-    api_key: str = ""
-    project: str = "fox-chat-rag"
 
 
 class Settings(BaseSettings):
@@ -95,8 +77,6 @@ class Settings(BaseSettings):
     ollama: OllamaConfig = OllamaConfig()
     key: ModelApiKey = ModelApiKey()
     model: ModelConfig = ModelConfig()
-    model_by_scenario: ModelByScenario = ModelByScenario()
-    langsmith: LangSmithConfig = LangSmithConfig()
     mood: MoodConfig = MoodConfig()
 
 

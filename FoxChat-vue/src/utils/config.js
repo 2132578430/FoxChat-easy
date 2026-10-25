@@ -36,12 +36,3 @@ export const CHAT_SERVICE_URL = `${WS_BASE_URL}/chat`;
 // 开发环境配置为 http://localhost:9000 (直接访问 MinIO)
 export const OSS_BASE_URL = import.meta.env.VITE_OSS_BASE_URL || (import.meta.env.PROD ? '/oss' : 'http://localhost:9000');
 
-// WebTransport 配置 (暂时保留，以备后续切换回 QUIC)
-/*
-export const QUIC_BASE_URL = 'https://172.17.248.127:13000';
-export const SERVER_CERT_FINGERPRINTS = [
-  "mZkOKtTm8s9LHnen312sFcvguwymoNxqqvnMobo=" 
-];
-export const getWebTransportOptions = () => { ... }
-*/
-

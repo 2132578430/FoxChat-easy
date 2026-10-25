@@ -112,6 +112,7 @@
 import { ref, reactive, onMounted, onUnmounted } from 'vue';
 import { Plus, Edit, Delete, Refresh } from '@element-plus/icons-vue';
 import { FoxToast } from '@/components/FoxUI';
+import { defaultUserAvatar, emotionToEmoji, resolveAvatarUrl } from '@/utils/avatar';
 
 const props = defineProps({
   modelValue: Boolean,
@@ -151,34 +152,6 @@ const emit = defineEmits([
   'retry-llm-init'
 ]);
 
-const defaultUserAvatar = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png';
-
-// 情绪到emoji的映射
-const emotionEmojiMap = {
-  '开心': '😊',
-  '快乐': '😊',
-  'happy': '😊',
-  '悲伤': '😢',
-  '难过': '😢',
-  'sad': '😢',
-  '愤怒': '😠',
-  '生气': '😠',
-  'angry': '😠',
-  '惊讶': '😲',
-  'surprise': '😲',
-  '恐惧': '😨',
-  '害怕': '😨',
-  'fear': '😨',
-  '厌恶': '🤢',
-  'disgust': '🤢',
-  'neutral': '😐',
-  '平静': '😐',
-};
-
-const emotionToEmoji = (emotion) => {
-  return emotionEmojiMap[emotion] || emotionEmojiMap[emotion?.toLowerCase()] || '😊';
-};
-
 const searchResultList = ref([]);
 const isSearching = ref(false);
 
@@ -189,20 +162,6 @@ const friendContextMenu = reactive({
   y: 0,
   friend: null
 });
-
-const OSS_BASE_URL = import.meta.env.VITE_OSS_BASE_URL || '';
-
-const resolveAvatarUrl = (url) => {
-  if (!url) return '';
-  if (url.startsWith('http')) return url;
-  const cleanUrl = url.startsWith('/') ? url.substring(1) : url;
-
-  if (cleanUrl.startsWith('oss/')) {
-    return `${OSS_BASE_URL.replace('/oss', '')}/${cleanUrl}`;
-  }
-
-  return `${OSS_BASE_URL}/${cleanUrl}`;
-};
 
 const isFriendOnline = (friend) => {
   return friend.online === true || friend.online === 'true' || friend.online === 1 || friend.online === '1';

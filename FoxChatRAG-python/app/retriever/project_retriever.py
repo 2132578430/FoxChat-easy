@@ -1,6 +1,6 @@
 import jieba
 from langchain_chroma import Chroma
-from langchain_classic.retrievers import EnsembleRetriever, ContextualCompressionRetriever
+from langchain_classic.retrievers import EnsembleRetriever
 from langchain_community.retrievers import BM25Retriever
 from langchain_core.documents import Document
 

@@ -20,10 +20,8 @@ import dashscope
 from dashscope import TextEmbedding
 from flashrank import Ranker
 from langchain_community.document_compressors import FlashrankRerank
-from langchain_ollama import OllamaEmbeddings, ChatOllama
-from langchain_openai import ChatOpenAI
+from langchain_ollama import OllamaEmbeddings
 from loguru import logger
-from pydantic import SecretStr
 
 from app.core.settings import BASE_DIR, global_settings
 

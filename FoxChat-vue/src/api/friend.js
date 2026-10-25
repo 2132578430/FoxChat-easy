@@ -15,7 +15,7 @@ export function acceptFriend(friendUserId) {
   return request.post('/friend/accept', { friendUserId });
 }
 
-// 获取好友申请列表 (暂时可能禁用，视后端情况而定)
+// 获取好友申请列表
 export function getFriendRequests() {
   return request.get('/friend/request');
 }

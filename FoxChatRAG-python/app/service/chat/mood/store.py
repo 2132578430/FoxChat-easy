@@ -53,7 +53,6 @@ def save_mood_state(user_id: str, llm_id: str, mood: MoodState) -> None:
     pipe.execute_command("JSON.SET", key, "$.mood", mood_json)
     pipe.execute_command("JSON.SET", key, "$.last_update", now_json)
     pipe.execute_command("JSON.SET", key, "$.update_source", source_json)
-    pipe.execute_command("JSON.DEL", key, "$.emotion")
     pipe.execute()
 
     logger.debug(

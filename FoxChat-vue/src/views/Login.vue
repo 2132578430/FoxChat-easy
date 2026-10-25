@@ -23,6 +23,7 @@ import { useRouter } from 'vue-router';
 import { FoxInput, FoxButton, FoxToast } from '@/components/FoxUI';
 import { useUserStore } from '@/stores/userStore';
 import { login } from '../api/auth';
+import { defaultUserAvatar } from '@/utils/avatar';
 
 const router = useRouter();
 const { setUserInfo } = useUserStore();
@@ -43,7 +44,7 @@ const handleLogin = async () => {
     const userInfo = {
       username: data.username,
       userId: data.userId,
-      face_image: data.face_image || 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
+      face_image: data.face_image || defaultUserAvatar
     };
     setUserInfo(userInfo);
     router.push('/');

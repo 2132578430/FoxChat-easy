@@ -145,7 +145,6 @@ class LLMInvokeStrategy:
         params = self.get_model_params(config, **kwargs)
 
         try:
-            # logger.info(f"【LiteLLM调用】scenario={self.scenario}, model={params['model']}")
             for attempt in range(self.max_retries):
                 try:
                     response = await self._call(messages, params)

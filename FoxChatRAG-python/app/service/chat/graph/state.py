@@ -35,5 +35,4 @@ class ChatState(TypedDict, total=False):
 
     # === Output ===
     blocks: List[dict]
-    emotion: str
     mood: MoodState

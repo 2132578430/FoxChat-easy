@@ -112,7 +112,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue';
 import { Files, Document, Reading } from '@element-plus/icons-vue';
-import { OSS_BASE_URL } from '@/utils/config';
+import { defaultUserAvatar, emotionToEmoji, resolveAvatarUrl } from '@/utils/avatar';
 
 const props = defineProps({
   messages: Array,
@@ -130,7 +130,6 @@ const props = defineProps({
 const emit = defineEmits(['select-message', 'load-more', 'scroll-bottom', 'open-upload', 'reset-rag', 'file-click', 'retry']);
 
 const messageContainerRef = ref(null);
-const defaultUserAvatar = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png';
 const isUserScrolling = ref(false);
 
 // 切换会话标记：切换好友/群组时置 true，确保下一次滚动强制到底
@@ -199,49 +198,7 @@ const handleScrollToBottom = (e) => {
 };
 onMounted(() => window.addEventListener('chat-scroll-to-bottom', handleScrollToBottom));
 onUnmounted(() => window.removeEventListener('chat-scroll-to-bottom', handleScrollToBottom));
-
-const emotionEmojiMap = {
-  '开心': '😊',
-  '快乐': '😊',
-  'happy': '😊',
-  '悲伤': '😢',
-  '难过': '😢',
-  'sad': '😢',
-  '愤怒': '😠',
-  '生气': '😠',
-  'anger': '😠',
-  'angry': '😠',
-  '惊讶': '😲',
-  'surprise': '😲',
-  'surprised': '😲',
-  '恐惧': '😨',
-  '害怕': '😨',
-  'fear': '😨',
-  'fearful': '😨',
-  '厌恶': '🤢',
-  'disgust': '🤢',
-  'disgusted': '🤢',
-  'neutral': '😐',
-  '平静': '😐'
-};
-
-const emotionToEmoji = (emotion) => {
-  return emotionEmojiMap[emotion] || emotionEmojiMap[emotion?.toLowerCase()] || '😊';
-};
 let scrollTimeout = null;
-
-// 辅助函数：处理头像URL
-const resolveAvatarUrl = (url) => {
-  if (!url) return '';
-  if (url.startsWith('http')) return url;
-  const cleanUrl = url.startsWith('/') ? url.substring(1) : url;
-
-  if (cleanUrl.startsWith('oss/')) {
-     return `${OSS_BASE_URL.replace('/oss', '')}/${cleanUrl}`;
-  }
-
-  return `${OSS_BASE_URL}/${cleanUrl}`;
-};
 
 const handleScroll = (e) => {
   const container = e.target;

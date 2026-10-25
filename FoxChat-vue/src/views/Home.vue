@@ -151,8 +151,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { Select } from '@element-plus/icons-vue';
-import { FoxToast, FoxButton } from '@/components/FoxUI';
+import { FoxButton } from '@/components/FoxUI';
 
 // Stores
 import { useUserStore } from '@/stores/userStore';
@@ -206,7 +205,7 @@ const { showFriendList, showGroupList, showProfile, showRag, showLlmConfigPanel,
 // Composables
 const { initWebSocket } = useWsConnection();
 const { getFriendList, getFriendRequests, handleFriendSearch, handleAddFriend, handleAcceptFriend, handleDeleteFriend, handleEditLlmFriend, selectFriend, retryLlmInit } = useFriends();
-const { isGroupLoading: _igl, getGroupList, handleGroupSearch, handleCreateGroup, handleAddLlmFriend, handleJoinGroup, handleGroupClick } = useGroups();
+const { handleGroupSearch, handleJoinGroup, handleGroupClick } = useGroups();
 const { sendMessage, retryLlmMessage, loadMoreHistory, scrollToBottom, handleWithdrawMessages, handleDeleteMessages, toggleSelectionMode, cancelSelectionMode } = useChat();
 const { ragFiles, hasRagSearchResults, isSearchingRag, resetRagResults, handleFileClick } = useRag();
 const { handleOpenLlmAvatarCropper, handleAvatarSuccess, handleAvatarBlob } = useProfile();

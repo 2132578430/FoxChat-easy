@@ -5,7 +5,7 @@ JSON 安全解析工具
 """
 
 import json
-from typing import Any, Optional, TypeVar, Callable
+from typing import Optional, TypeVar, Callable
 from loguru import logger
 
 T = TypeVar('T')

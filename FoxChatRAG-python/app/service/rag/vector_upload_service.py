@@ -24,8 +24,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.common import FileTypeConstant
 from app.common.constant.ChromaTypeConstant import ChromaTypeConstant
-from app.common.constant.LLMChatConstant import LLMChatConstant
-from app.core.db.redis_client import redis_client
 from app.core.net import download_file
 from app.models.rag_file import RagFile
 from app.util import loader_util, chroma_util

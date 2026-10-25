@@ -12,7 +12,7 @@
 
 import re
 import numpy as np
-from typing import Optional, List, Tuple
+from typing import Optional, List
 from loguru import logger
 
 from app.common.constant.intent_config import (

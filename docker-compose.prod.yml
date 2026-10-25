@@ -84,8 +84,6 @@ services:
       - SERVER__PORT=8000
       - TZ=Asia/Shanghai
       - KEY__QWEN_MODEL=${KEY__QWEN_MODEL:-}
-      - MODEL__DEFAULT_LLM=${MODEL__DEFAULT_LLM:-astron_model}
-      - MODEL__DEFAULT_JSON_LLM=${MODEL__DEFAULT_JSON_LLM:-astron_json_model}
       - MODEL__DEFAULT_EMBEDDING=dashscope
     volumes:
       - /root/home/docker-manager/foxchat/model:/root/.cache/chroma/onnx_models/all-MiniLM-L6-v2/onnx

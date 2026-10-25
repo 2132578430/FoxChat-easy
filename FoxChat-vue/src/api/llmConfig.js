@@ -18,11 +18,6 @@ export function getConfigs(llmId) {
   return request.get(`/llm/config/${llmId}`);
 }
 
-// 删除配置
-export function deleteConfig(llmId, scenario) {
-  return request.delete(`/llm/config/${llmId}/${scenario}`);
-}
-
 // 测试连接
 export function testConnection(config) {
   return request.post('/llm/config/testConnection', {
@@ -31,11 +26,6 @@ export function testConnection(config) {
     baseUrl: config.baseUrl,
     scenario: config.scenario
   });
-}
-
-// 验证配置完整性
-export function validateConfig(llmId) {
-  return request.get(`/llm/config/validate/${llmId}`);
 }
 
 // 获取模型记忆面板数据
