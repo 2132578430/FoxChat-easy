@@ -4,8 +4,10 @@
 定义聊天相关的数据结构，避免循环导入。
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List
+
+from app.schemas.mood import MoodState
 
 
 @dataclass
@@ -35,3 +37,4 @@ class ParsedMemories:
     user_profile_summary: str
     memory_bank_summary: str
     current_state: str
+    mood: MoodState = field(default_factory=MoodState)

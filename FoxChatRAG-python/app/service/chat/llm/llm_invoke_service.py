@@ -26,15 +26,16 @@ from app.service.chat.memory.history_event_retrieval_service import (
 from app.service.chat.strategy.base_strategy import ChatInvokeStrategy, format_model_name
 from app.service.llm_config_service import get_llm_configs_batch
 from app.util import chroma_util
+from app.util.log_mask import mask_base_url
 from app.util.template_util import escape_template
 
 # ── 健谈程度 → 输出长度指导映射 ──────────────────────
 # (上限阈值, 指导文本)，按阈值升序排列，查找时取第一个命中
 _TALKATIVENESS_GUIDANCE: list[tuple[float, str]] = [
-    (0.25, "当前角色极度寡言，每次只回应最必要的词，几乎不展开。越短越好。"),
-    (0.55, "当前角色话量适中，像日常聊天一样自然回应，可以适当展开但不要过度。"),
-    (0.85, "当前角色健谈，欢迎多段展开，用动作与对话交替构建生动互动。多说话，不要简短回应，至少3-4轮对话内容的量。"),
-    (1.00, "当前角色话痨，尽情表达，连续说很多很多话。用丰富的动作和对话交替构建沉浸式互动体验。禁止简短回应，每次回复要像真正话痨的人一样长篇大论。"),
+    (0.25, "当前角色极度寡言：通常 1 个短气泡，偶尔 2 个；能一句说完就一句。"),
+    (0.55, "当前角色话量适中：1-3 个短气泡，按内容决定；简单回应 1-2 个即可，不要每轮固定 2-3 个。"),
+    (0.85, "当前角色健谈：2-4 个短气泡，信息多时 3-4 个，简单回应 1-2 个；不要每轮都用满。"),
+    (1.00, "当前角色话痨：2-4 个短气泡，允许偶尔 4 个，但不要每次都 4 个；每个气泡仍然简短。"),
 ]
 
 
@@ -239,6 +240,7 @@ async def stream_llm_with_retrieval(
         raise ValueError("chat 场景未配置模型")
 
     model = format_model_name(config["model_name"])
+    masked_base_url = mask_base_url(config.get("model_base_url"))
 
     logger.info(f"[StreamLLM] model={model}, messages={len(messages)}条")
 
@@ -270,10 +272,22 @@ async def stream_llm_with_retrieval(
             last_error = e
             status_code = getattr(e, 'status_code', None)
             if status_code and status_code < 500:
+                logger.error(
+                    f"[StreamLLM] 请求失败: status={status_code}, "
+                    f"base_url={masked_base_url}, error={e}"
+                )
                 raise
             if attempt == max_retries - 1:
+                logger.error(
+                    f"[StreamLLM] 重试耗尽: status={status_code}, "
+                    f"base_url={masked_base_url}, error={e}"
+                )
                 raise
-            logger.warning(f"[StreamLLM] 第 {attempt+1}/{max_retries} 次尝试失败: {e}，{2**attempt}s 后重试...")
+            logger.warning(
+                f"[StreamLLM] 第 {attempt+1}/{max_retries} 次尝试失败: "
+                f"status={status_code}, base_url={masked_base_url}, error={e}，"
+                f"{2**attempt}s 后重试..."
+            )
             await asyncio.sleep(2 ** attempt)
 
     if last_error:

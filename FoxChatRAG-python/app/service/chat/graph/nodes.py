@@ -14,10 +14,7 @@ from loguru import logger
 # ai_chat_server._stream_chat 写入，invoke_llm 节点读取
 _stream_queue_ctx: contextvars.ContextVar = contextvars.ContextVar("stream_queue", default=None)
 from app.service.chat.graph.state import ChatState
-from app.service.chat.state.state_manager import (
-    increment_round_counter,
-    get_current_state,
-)
+from app.service.chat.state.state_manager import increment_round_counter
 from app.service.chat.state.chat_redis_service import (
     fetch_all_memories,
     save_chat_to_redis,
@@ -28,7 +25,8 @@ from app.service.chat.memory.memory_parser import (
     parse_core_anchor,
     parse_user_profile,
     parse_memory_bank,
-    parse_current_state,
+    parse_current_state_model,
+    render_current_state,
 )
 from app.service.chat.llm.intent_classifier import classify_intent
 from app.service.chat.llm.llm_invoke_service import (
@@ -37,10 +35,13 @@ from app.service.chat.llm.llm_invoke_service import (
     stream_llm_with_retrieval,
 )
 from app.service.chat.parsing.response_parser import parse_action_tags
-from app.service.chat.profile.emotion_classifier import classify_and_update_emotion
+from app.service.chat.mood.sensor import build_sensor_context, sense_mood
+from app.service.chat.mood.state_machine import render_mood_text, transition, trend_phrase
+from app.service.chat.mood.store import save_mood_state
 from app.service.chat.memory.memory_summary_service import trigger_summary_with_counter
 from app.service.chat.memory.timer_scheduler import SUMMARY_MAX_TRIGGER_THRESHOLD
 from app.common.constant.LLMChatConstant import LLMChatConstant, build_chat_key
+from app.core.settings import global_settings
 from app.util import strip_all_tags, strip_think_only
 from app.service.chat.types import ParsedMemories
 
@@ -77,7 +78,8 @@ async def parse_memory(state: ChatState) -> dict:
     role_declaration, core_anchor_text = parse_core_anchor(memories.core_anchor_json)
     user_profile_summary = parse_user_profile(memories.user_profile_json)
     memory_bank_summary = parse_memory_bank(memories.memory_bank_json)
-    current_state_text = parse_current_state(memories.current_state_json, state["current_round"])
+    current_state = parse_current_state_model(memories.current_state_json)
+    current_state_text = render_current_state(current_state)
 
     parsed = ParsedMemories(
         character_card_examples=character_card_examples,
@@ -89,6 +91,7 @@ async def parse_memory(state: ChatState) -> dict:
         user_profile_summary=user_profile_summary,
         memory_bank_summary=memory_bank_summary,
         current_state=current_state_text,
+        mood=current_state.mood,
     )
 
     history_msg = build_history_message(memories.recent_msg)
@@ -205,15 +208,44 @@ async def format_output(state: ChatState) -> dict:
 
 
 async def classify_emotion(state: ChatState) -> dict:
-    """分类 AI 回复的情绪并更新 current_state"""
+    """观察本轮情绪并更新 mood 状态。"""
     pure_text = strip_all_tags(state["ai_response"])
-    current_round = increment_round_counter(state["user_id"], state["llm_id"])
-    await classify_and_update_emotion(
-        state["user_id"], state["llm_id"], pure_text, current_round
+    current_round = state["current_round"]
+    cfg = global_settings.mood
+    prev_mood = state["parsed"].mood
+
+    context = build_sensor_context(
+        parsed=state["parsed"],
+        history_msg=state["history_msg"],
+        msg_content=state["msg_content"],
+        ai_response=pure_text,
+        prev_mood=prev_mood,
+        cfg=cfg,
     )
-    current_state = get_current_state(state["user_id"], state["llm_id"], current_round)
-    emotion = current_state.emotion.value if current_state.emotion else "neutral"
-    return {"emotion": emotion}
+    result = await sense_mood(context, state["llm_id"])
+    observation = result.observation
+    new_mood = transition(prev_mood, observation, current_round, cfg)
+    save_mood_state(state["user_id"], state["llm_id"], new_mood)
+
+    inject_text = render_mood_text(new_mood) if cfg.injection_enabled else ""
+    obs_text = (
+        "none"
+        if observation is None
+        else f"({observation.label.value},{observation.level.value},{observation.certainty})"
+    )
+    pending_text = (
+        f"({new_mood.pending_label.value},{new_mood.pending_count})"
+        if new_mood.pending_label
+        else None
+    )
+    logger.info(
+        f"【情绪轨迹】round={current_round} obs={obs_text} "
+        f"prev=({prev_mood.label.value},{prev_mood.intensity}) "
+        f"smooth=({new_mood.label.value},{new_mood.intensity}) "
+        f"trend={trend_phrase(new_mood)} inject=\"{inject_text}\" "
+        f"pending={pending_text} latency_ms={result.latency_ms}"
+    )
+    return {"mood": new_mood, "emotion": new_mood.label.value}
 
 
 async def trigger_summary(state: ChatState) -> dict:

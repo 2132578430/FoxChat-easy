@@ -3,6 +3,8 @@ from pathlib import Path
 from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from app.schemas.mood import MoodConfig
+
 BASE_DIR = Path(__file__).resolve().parents[2]
 ENV_FILE = BASE_DIR / ".env"
 
@@ -95,6 +97,7 @@ class Settings(BaseSettings):
     model: ModelConfig = ModelConfig()
     model_by_scenario: ModelByScenario = ModelByScenario()
     langsmith: LangSmithConfig = LangSmithConfig()
+    mood: MoodConfig = MoodConfig()
 
 
 global_settings = Settings()

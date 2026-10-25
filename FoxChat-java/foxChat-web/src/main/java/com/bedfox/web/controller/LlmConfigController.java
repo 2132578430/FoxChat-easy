@@ -4,6 +4,7 @@ import com.bedfox.pojo.domain.LlmConfig;
 import com.bedfox.pojo.dto.LlmConfigDto;
 import com.bedfox.pojo.dto.TestConnectionDto;
 import com.bedfox.service.service.LlmConfigService;
+import com.bedfox.service.util.LlmConfigValidator;
 import com.bedfox.common.util.R;
 import com.bedfox.common.constant.ResultStatusConstant;
 import jakarta.annotation.Resource;
@@ -35,6 +36,12 @@ public class LlmConfigController {
      */
     @PostMapping("/batch")
     public R<Map<String, String>> saveConfigsBatch(@RequestBody LlmConfigDto dto) {
+        List<String> errors = LlmConfigValidator.validateBatch(dto);
+        if (!errors.isEmpty()) {
+            log.warn("【批量保存配置】参数不合法: {}", errors);
+            return R.error(ResultStatusConstant.LLM_CONFIG_INVALID_PARAM_EXCEPTION.getCode(),
+                    String.join("；", errors));
+        }
         try {
             Map<String, String> configIds = llmConfigService.saveConfigsBatch(dto);
             log.info("【批量保存配置】成功，llmId={}, 保存数量={}", dto.getLlmId(), configIds.size());

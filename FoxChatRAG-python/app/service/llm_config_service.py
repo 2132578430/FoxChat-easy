@@ -49,13 +49,28 @@ async def test_llm_connection(
             actual_model = model_name
 
         # 发送最小化测试请求 (1 token prompt)
-        response = await litellm.acompletion(
-            model=actual_model,
-            messages=[{"role": "user", "content": "test"}],
-            api_key=api_key,
-            base_url=base_url,
-            max_tokens=1,
-        )
+        try:
+            await litellm.acompletion(
+                model=actual_model,
+                messages=[{"role": "user", "content": "test"}],
+                api_key=api_key,
+                base_url=base_url,
+                max_tokens=1,
+                reasoning_effort="none",
+                timeout=15,
+            )
+        except Exception as e:
+            if getattr(e, "status_code", None) != 400:
+                raise
+            logger.warning("【测试连接】provider 不支持 reasoning_effort，回退重试")
+            await litellm.acompletion(
+                model=actual_model,
+                messages=[{"role": "user", "content": "test"}],
+                api_key=api_key,
+                base_url=base_url,
+                max_tokens=1,
+                timeout=15,
+            )
 
         logger.info(f"【测试连接】成功: model={model_name}")
         return {"success": True, "message": "连接成功"}

@@ -8,11 +8,16 @@ LLM 调用策略基类
 - 异常处理与错误码转换
 """
 
-from typing import List, Dict
+from typing import Any, List, Dict
 from loguru import logger
 
 import asyncio
 import litellm
+
+from app.util.log_mask import mask_base_url
+
+
+_NO_THINKING_UNSUPPORTED: set[tuple[str | None, str | None]] = set()
 
 
 def format_model_name(model_name: str) -> str:
@@ -34,6 +39,9 @@ class LLMInvokeStrategy:
     default_temperature: float = 0.7  # 默认温度
     default_max_tokens: int | None = None  # 默认最大输出长度
     force_json: bool = False  # 是否强制 JSON 输出
+    disable_thinking: bool = False  # 中间场景关闭思考
+    timeout_seconds: float = 120.0
+    max_retries: int = 3
 
     def get_model_params(self, config: dict, **kwargs) -> dict:
         """
@@ -69,8 +77,43 @@ class LLMInvokeStrategy:
         # 其他参数一块塞进去
         params.update(kwargs)
 
-        logger.debug(f"【策略参数】scenario={self.scenario}, params={params}")
+        if (
+            self.disable_thinking
+            and "reasoning_effort" not in params
+            and (params.get("base_url"), params.get("model")) not in _NO_THINKING_UNSUPPORTED
+        ):
+            params["reasoning_effort"] = "none"
+
+        masked_params = {
+            **params,
+            "api_key": "***",
+            "base_url": mask_base_url(params.get("base_url")),
+        }
+        logger.debug(f"【策略参数】scenario={self.scenario}, params={masked_params}")
         return params
+
+    async def _call(self, messages: List[dict], params: Dict[str, Any]):
+        return await litellm.acompletion(
+            messages=messages,
+            timeout=self.timeout_seconds,
+            **params,
+        )
+
+    def _should_fallback_no_thinking(self, exc: Exception, params: Dict[str, Any]) -> bool:
+        return (
+            self.disable_thinking
+            and "reasoning_effort" in params
+            and getattr(exc, "status_code", None) == 400
+        )
+
+    @staticmethod
+    def _get_reasoning_tokens(response: Any) -> int | None:
+        usage = getattr(response, "usage", None)
+        if usage is None:
+            return None
+        details = getattr(usage, "completion_tokens_details", None)
+        value = getattr(details, "reasoning_tokens", None) if details else None
+        return value or getattr(usage, "reasoning_tokens", None)
 
     async def invoke(
         self,
@@ -103,33 +146,41 @@ class LLMInvokeStrategy:
 
         try:
             # logger.info(f"【LiteLLM调用】scenario={self.scenario}, model={params['model']}")
-            # 调用 LiteLLM（使用 acompletion 异步方法，带超时和重试）
-            max_retries = 3
-            for attempt in range(max_retries):
+            for attempt in range(self.max_retries):
                 try:
-                    response = await litellm.acompletion(
-                        model=params["model"],
-                        messages=messages,
-                        api_key=params["api_key"],
-                        base_url=params["base_url"],
-                        temperature=params.get("temperature", self.default_temperature),
-                        max_tokens=params.get("max_tokens"),
-                        response_format=params.get("response_format"),
-                        timeout=120,
-                    )
-                    break  # 成功，退出重试循环
+                    response = await self._call(messages, params)
+                    break
                 except (litellm.exceptions.APIConnectionError, litellm.exceptions.APIError) as e:
+                    if self._should_fallback_no_thinking(e, params):
+                        _NO_THINKING_UNSUPPORTED.add(
+                            (params.get("base_url"), params.get("model"))
+                        )
+                        params.pop("reasoning_effort", None)
+                        logger.warning(
+                            f"【思考控制】provider 不支持 reasoning_effort，回退: "
+                            f"model={params.get('model')}"
+                        )
+                        response = await self._call(messages, params)
+                        break
+
                     # 仅重试瞬态网络错误（连接错误或 5xx）
                     status_code = getattr(e, 'status_code', None)
                     if status_code and status_code < 500:
                         raise  # 4xx 错误不是瞬态的，直接抛出
-                    if attempt == max_retries - 1:
+                    if attempt == self.max_retries - 1:
                         raise  # 重试已用尽
                     logger.warning(
-                        f"LLM 调用第 {attempt+1}/{max_retries} 次尝试失败: {e}，"
+                        f"LLM 调用第 {attempt+1}/{self.max_retries} 次尝试失败: {e}，"
                         f"{2**attempt}s 后重试..."
                     )
                     await asyncio.sleep(2 ** attempt)
+
+            reasoning_tokens = self._get_reasoning_tokens(response)
+            if reasoning_tokens:
+                logger.info(
+                    f"【LiteLLM思考】scenario={self.scenario}, "
+                    f"reasoning_tokens={reasoning_tokens}"
+                )
 
             # 提取响应文本
             content = response.choices[0].message.content
@@ -175,6 +226,7 @@ class MemoryInvokeStrategy(LLMInvokeStrategy):
     scenario = "memory"
     default_temperature = 0.3  # 低温度，稳定处理
     default_max_tokens = None  # 不限制
+    disable_thinking = True
 
 
 class SummaryInvokeStrategy(LLMInvokeStrategy):
@@ -183,6 +235,7 @@ class SummaryInvokeStrategy(LLMInvokeStrategy):
     scenario = "summary"
     default_temperature = 0.5  # 中温度，平衡总结
     default_max_tokens = 2048  # 简洁总结
+    disable_thinking = True
 
 
 class ExtractionInvokeStrategy(LLMInvokeStrategy):
@@ -191,14 +244,18 @@ class ExtractionInvokeStrategy(LLMInvokeStrategy):
     scenario = "extraction"
     default_temperature = 0.0  # 零温度，精确抽取
     force_json = True  # 强制 JSON 输出
+    disable_thinking = True
 
 
 class EmotionInvokeStrategy(LLMInvokeStrategy):
     """情绪分类场景策略"""
 
     scenario = "emotion"
-    default_temperature = 0.0  # 零温度，确定性分类
-    default_max_tokens = 50  # 短分类结果（如遇 MIMO 空响应，调大数据库 model_max_tokens）
+    default_temperature = 0.2  # 低温度，稳定分类
+    default_max_tokens = 120  # 标签+等级+确定性
+    disable_thinking = True
+    timeout_seconds = 8.0  # 约束串行队列的单轮占用
+    max_retries = 1  # 失败直接 fail-open
 
 
 # JSON 模式策略 (共享基础配置)

@@ -82,6 +82,9 @@ public enum ResultStatusConstant {
     /** 初始化任务发送失败 */
     LLM_ACTIVATE_MQ_ERROR_EXCEPTION(15010, "初始化任务发送失败，请稍后重试"),
 
+    /** 配置参数不合法 */
+    LLM_CONFIG_INVALID_PARAM_EXCEPTION(15011, "配置参数不合法"),
+
     /** 思考中 */
     LLM_PROCESSING(20001, "思考中..."),
 

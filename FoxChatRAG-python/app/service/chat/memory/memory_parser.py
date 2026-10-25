@@ -14,7 +14,10 @@ from typing import List, Optional, Tuple
 
 from loguru import logger
 
-from app.service.chat.common import safe_json_parse, map_emotion_to_cn
+from app.core.settings import global_settings
+from app.schemas.current_state import CurrentState
+from app.service.chat.common import safe_json_parse
+from app.service.chat.mood.state_machine import render_mood_text
 from app.common.constant.LLMChatConstant import EVENT_TYPE_LABELS
 
 
@@ -231,52 +234,33 @@ def parse_memory_bank(json_str: str) -> str:
     return "\n".join(lines)
 
 
-def parse_current_state(json_str: str, current_round: int = 0) -> str:
-    """
-    解析当前状态容器，生成摘要注入 Prompt
-
-    Args:
-        json_str: current_state JSON 字符串
-        current_round: 当前全局轮数（用于过期判断）
-
-    Returns:
-        结构化摘要文本，控制在 80~150 tokens
-    """
+def parse_current_state_model(json_str: str) -> CurrentState:
+    """解析 current_state JSON；空值或解析失败时返回默认状态。"""
     if not json_str:
-        return build_default_state_summary()
+        return CurrentState()
 
     try:
-        from app.schemas.current_state import CurrentState
-
         state_dict = safe_json_parse(json_str, default={})
         if not isinstance(state_dict, dict):
-            logger.warning(f"current_state JSON 不是 dict")
-            return build_default_state_summary()
-
-        state = CurrentState.model_validate(state_dict)
-
-        # 获取有效字段
-        valid_fields = state.get_valid_fields_for_injection(current_round)
-
-        if not valid_fields:
-            return ""
-
-        # 构建摘要
-        lines = []
-
-        # 当前时间
-        current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        lines.append(f"- 当前时间：{current_time}")
-
-        # 情绪
-        if "情绪" in valid_fields:
-            lines.append(f"- 情绪：{map_emotion_to_cn(valid_fields['情绪'])}")
-
-        return "\n".join(lines)
-
+            logger.warning("current_state JSON 不是 dict")
+            return CurrentState()
+        return CurrentState.model_validate(state_dict)
     except Exception as e:
         logger.warning(f"current_state JSON 解析失败: {e}")
-        return build_default_state_summary()
+        return CurrentState()
+
+
+def render_current_state(state: CurrentState) -> str:
+    """生成注入 Prompt 的状态摘要。"""
+    lines = [f"- 当前时间：{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"]
+    if global_settings.mood.injection_enabled:
+        lines.append(render_mood_text(state.mood))
+    return "\n".join(lines)
+
+
+def parse_current_state(json_str: str) -> str:
+    """解析当前状态容器，生成摘要注入 Prompt。"""
+    return render_current_state(parse_current_state_model(json_str))
 
 
 def build_default_state_summary() -> str:

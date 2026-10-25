@@ -26,7 +26,12 @@
     <!-- Base URL -->
     <div class="form-item">
       <label class="form-label">Base URL</label>
-      <FoxInput v-model="config.baseUrl" placeholder="例如: https://api.openai.com/v1" />
+      <FoxInput
+        v-model="config.baseUrl"
+        placeholder="例如: https://api.openai.com/v1"
+        @focusout="handleBaseUrlBlur"
+      />
+      <div v-if="baseUrlError" class="field-error">{{ baseUrlError }}</div>
     </div>
 
     <!-- Temperature -->
@@ -89,6 +94,7 @@
 import { ref, reactive, watch, computed } from 'vue';
 import { FoxToast, FoxInput, FoxButton, FoxSelect } from '@/components/FoxUI';
 import { testConnection } from '@/api/llmConfig';
+import { validateBaseUrl, normalizeBaseUrl } from '@/utils/llmConfigValidator';
 
 const props = defineProps({
   scenario: { type: String, required: true },
@@ -129,7 +135,31 @@ const config = reactive({
 const selectedProvider = ref('');
 const isTesting = ref(false);
 const testResult = reactive({ show: false, success: false, message: '' });
+const baseUrlError = ref('');
+const testedSignature = ref('');
 const showResponseFormat = computed(() => props.scenario === 'extraction');
+
+const configSignature = () => JSON.stringify({
+  ...config,
+  baseUrl: normalizeBaseUrl(config.baseUrl)
+});
+
+const handleBaseUrlBlur = () => {
+  baseUrlError.value = validateBaseUrl(config.baseUrl);
+};
+
+const invalidateTest = (message) => {
+  if (!testedSignature.value) return;
+  testedSignature.value = '';
+  testResult.success = false;
+  testResult.show = false;
+  emit('test', { scenario: props.scenario, success: false, error: message, silent: true });
+};
+
+const buildSubmitConfig = () => ({
+  ...config,
+  baseUrl: normalizeBaseUrl(config.baseUrl)
+});
 
 const providerOptions = [
   { label: 'OpenAI', value: 'openai' },
@@ -155,26 +185,68 @@ const handleTestConnection = async () => {
     FoxToast.warning('请填写模型名称、API Key 和 Base URL');
     return;
   }
+  baseUrlError.value = validateBaseUrl(config.baseUrl);
+  if (baseUrlError.value) {
+    testResult.show = false;
+    testResult.success = false;
+    testedSignature.value = '';
+    return;
+  }
+
+  const submitConfig = buildSubmitConfig();
+  const signatureAtRequest = configSignature();
   isTesting.value = true; testResult.show = false;
   try {
-    const response = await testConnection({ modelName: config.modelName, apiKey: config.apiKey, baseUrl: config.baseUrl, scenario: props.scenario });
+    const response = await testConnection({
+      modelName: submitConfig.modelName,
+      apiKey: submitConfig.apiKey,
+      baseUrl: submitConfig.baseUrl,
+      scenario: props.scenario
+    });
     if (response.code === 1000 && response.data?.success) {
-      testResult.success = true; testResult.message = '连接成功';
-      emit('test', { scenario: props.scenario, success: true });
+      testResult.message = '连接成功';
+      testedSignature.value = signatureAtRequest;
+      if (configSignature() !== signatureAtRequest) {
+        testResult.success = false;
+        testResult.message = '配置已修改，请重新测试连接';
+        testedSignature.value = '';
+        emit('test', { scenario: props.scenario, success: false, error: testResult.message, silent: true });
+      } else {
+        testResult.success = true;
+        emit('test', { scenario: props.scenario, success: true });
+      }
     } else {
       testResult.success = false; testResult.message = response.data?.message || response.msg || '连接失败';
+      testedSignature.value = '';
       emit('test', { scenario: props.scenario, success: false, error: testResult.message });
     }
   } catch (error) {
     testResult.success = false; testResult.message = '连接失败: ' + (error.message || '网络错误');
+    testedSignature.value = '';
     emit('test', { scenario: props.scenario, success: false, error: error.message });
   } finally { isTesting.value = false; testResult.show = true; }
 };
 
 const handleSave = () => {
-  if (!testResult.success) { FoxToast.warning('请先测试连接通过后再保存'); return; }
-  emit('save', { scenario: props.scenario, config: { ...config } });
+  if (!config.modelName || !config.apiKey || !config.baseUrl) {
+    FoxToast.warning('请填写模型名称、API Key 和 Base URL');
+    return;
+  }
+  baseUrlError.value = validateBaseUrl(config.baseUrl);
+  if (baseUrlError.value) return;
+  if (!testResult.success || !testedSignature.value || configSignature() !== testedSignature.value) {
+    FoxToast.warning('请先测试连接通过后再保存');
+    return;
+  }
+  emit('save', { scenario: props.scenario, config: buildSubmitConfig() });
 };
+
+watch(config, () => {
+  if (!testedSignature.value) return;
+  if (configSignature() !== testedSignature.value) {
+    invalidateTest('配置已修改，请重新测试连接');
+  }
+}, { deep: true });
 
 watch(() => props.initialConfig, (newConfig) => {
   if (!newConfig) return;
@@ -185,11 +257,13 @@ watch(() => props.initialConfig, (newConfig) => {
   config.maxTokens = newConfig.maxTokens || scenarioDefaults[props.scenario]?.maxTokens || 2048;
   config.responseFormat = newConfig.responseFormat || scenarioDefaults[props.scenario]?.responseFormat || 'text';
   testResult.show = false; testResult.success = false;
+  testedSignature.value = ''; baseUrlError.value = '';
 }, { deep: true });
 
 const setConfig = (newConfig) => {
   config.modelName = newConfig.modelName || ''; config.apiKey = newConfig.apiKey || ''; config.baseUrl = newConfig.baseUrl || '';
   testResult.show = false; testResult.success = false;
+  testedSignature.value = ''; baseUrlError.value = '';
 };
 const getConfig = () => ({ ...config });
 defineExpose({ setConfig, getConfig });
@@ -232,6 +306,7 @@ defineExpose({ setConfig, getConfig });
 /* Hints */
 .param-hint { font-size: 13px; color: #888; margin-top: 6px; }
 .save-hint { font-size: 13px; color: #888; margin-left: 10px; }
+.field-error { font-size: 13px; color: #f56c6c; margin-top: 6px; }
 
 /* Test Result */
 .test-result { display: inline-flex; align-items: center; gap: 6px; margin-left: 10px; padding: 5px 12px; border-radius: 6px; font-size: 13px; }

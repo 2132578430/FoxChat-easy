@@ -6,6 +6,7 @@ ChatState — LangGraph 主对话流程的状态定义
 
 from typing import TypedDict, List, Any, Dict
 
+from app.schemas.mood import MoodState
 from app.service.chat.types import ChatMemories, ParsedMemories
 
 
@@ -35,3 +36,4 @@ class ChatState(TypedDict, total=False):
     # === Output ===
     blocks: List[dict]
     emotion: str
+    mood: MoodState

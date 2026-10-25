@@ -169,10 +169,6 @@ const scenarioNames = {
   emotion: '情绪识别'
 };
 
-const canSaveAll = computed(() => {
-  return Object.values(testResults).every(result => result === true);
-});
-
 const canOneClickConfig = computed(() => {
   // Can use one-click config if we have chat config tested and passed
   return testResults.chat === true;
@@ -183,10 +179,26 @@ const hasPendingConfigs = () => {
   return Object.values(pendingConfigs).some(config => config !== null);
 };
 
+const untestedPendingScenarios = () => {
+  return Object.keys(pendingConfigs).filter(
+    scenario => pendingConfigs[scenario] !== null && testResults[scenario] !== true
+  );
+};
+
+const scenarioLabelList = (scenarios) => {
+  return scenarios.map(scenario => scenarioNames[scenario] || scenario).join('、');
+};
+
 const autoSaveCurrentConfig = async () => {
   const oldLlmId = currentLlmId.value;
-  if (!oldLlmId) return;
-  
+  if (!oldLlmId) return true;
+
+  const untested = untestedPendingScenarios();
+  if (untested.length > 0) {
+    FoxToast.warning(`请先测试通过：${scenarioLabelList(untested)}`);
+    return false;
+  }
+
   const allConfigs = [];
   Object.keys(pendingConfigs).forEach(scenario => {
     if (pendingConfigs[scenario]) {
@@ -216,6 +228,8 @@ const autoSaveCurrentConfig = async () => {
       console.error('自动保存失败:', error);
     }
   }
+
+  return true;
 };
 
 // Load configs for current LLM
@@ -272,7 +286,8 @@ const handleSelectFriendById = async (friendId) => {
   
   // Auto-save current config before switching
   if (selectedFriendId.value && hasPendingConfigs()) {
-    await autoSaveCurrentConfig();
+    const canSwitch = await autoSaveCurrentConfig();
+    if (!canSwitch) return;
   }
   
   // Reset test results and pending configs
@@ -287,8 +302,9 @@ const handleSaveConfig = ({ scenario, config }) => {
   pendingConfigs[scenario] = config;
 };
 
-const handleTestResult = ({ scenario, success, error }) => {
+const handleTestResult = ({ scenario, success, error, silent }) => {
   testResults[scenario] = success;
+  if (silent) return;
 
   if (success) {
     FoxToast.success(`${scenarioNames[scenario]} 测试连接成功`);
@@ -355,6 +371,12 @@ const handleOneClickConfig = () => {
 };
 
 const handleSaveAll = async () => {
+  const untested = untestedPendingScenarios();
+  if (untested.length > 0) {
+    FoxToast.warning(`请先测试通过：${scenarioLabelList(untested)}`);
+    return;
+  }
+
   isSavingAll.value = true;
 
   try {

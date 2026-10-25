@@ -8,6 +8,7 @@ import com.bedfox.service.mapper.LlmConfigMapper;
 import com.bedfox.service.service.LlmConfigService;
 import com.bedfox.service.service.LlmUserService;
 import com.bedfox.service.remote.ChatClient;
+import com.bedfox.service.util.LlmConfigValidator;
 import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,15 +49,18 @@ public class LlmConfigServiceImpl extends ServiceImpl<LlmConfigMapper, LlmConfig
 
         for (LlmConfigDto.LlmConfigItem item : configs) {
             String scenario = item.getScenario();
+            String modelName = trim(item.getModelName());
+            String modelApiKey = trim(item.getModelApiKey());
+            String modelBaseUrl = LlmConfigValidator.normalizeBaseUrl(item.getModelBaseUrl());
 
             // 检查是否已存在配置
             LlmConfig existing = llmConfigMapper.selectByLlmIdAndScenario(llmId, scenario);
 
             if (existing != null) {
                 // 更新现有配置
-                existing.setModelName(item.getModelName());
-                existing.setModelApiKey(item.getModelApiKey());
-                existing.setModelBaseUrl(item.getModelBaseUrl());
+                existing.setModelName(modelName);
+                existing.setModelApiKey(modelApiKey);
+                existing.setModelBaseUrl(modelBaseUrl);
                 existing.setModelTemperature(item.getModelTemperature());
                 existing.setModelMaxTokens(item.getModelMaxTokens());
                 existing.setModelResponseFormat(item.getModelResponseFormat());
@@ -71,9 +75,9 @@ public class LlmConfigServiceImpl extends ServiceImpl<LlmConfigMapper, LlmConfig
                 newConfig.setId(UUID.randomUUID().toString());
                 newConfig.setLlmId(llmId);
                 newConfig.setScenario(scenario);
-                newConfig.setModelName(item.getModelName());
-                newConfig.setModelApiKey(item.getModelApiKey());
-                newConfig.setModelBaseUrl(item.getModelBaseUrl());
+                newConfig.setModelName(modelName);
+                newConfig.setModelApiKey(modelApiKey);
+                newConfig.setModelBaseUrl(modelBaseUrl);
                 newConfig.setModelTemperature(item.getModelTemperature());
                 newConfig.setModelMaxTokens(item.getModelMaxTokens());
                 newConfig.setModelResponseFormat(item.getModelResponseFormat());
@@ -121,13 +125,23 @@ public class LlmConfigServiceImpl extends ServiceImpl<LlmConfigMapper, LlmConfig
 
 @Override
     public Map<String, Object> testConnection(TestConnectionDto dto) {
+        String urlError = LlmConfigValidator.validateBaseUrl(dto.getBaseUrl());
+        if (urlError != null) {
+            log.warn("【测试连接】Base URL 不合法: {}", urlError);
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("message", urlError);
+            return response;
+        }
+
         try {
-            log.info("【测试连接】modelName={}, baseUrl={}", dto.getModelName(), dto.getBaseUrl());
+            String baseUrl = LlmConfigValidator.normalizeBaseUrl(dto.getBaseUrl());
+            log.info("【测试连接】modelName={}, baseUrl={}", dto.getModelName(), baseUrl);
 
             Map<String, String> request = new HashMap<>();
             request.put("model_name", dto.getModelName());
             request.put("api_key", dto.getApiKey());
-            request.put("base_url", dto.getBaseUrl());
+            request.put("base_url", baseUrl);
 
             Map<String, Object> result = chatClient.testConnection(request);
             log.info("【测试连接】Python 返回: {}", result);
@@ -147,6 +161,10 @@ public class LlmConfigServiceImpl extends ServiceImpl<LlmConfigMapper, LlmConfig
             response.put("message", "测试连接失败: " + e.getMessage());
             return response;
         }
+    }
+
+    private static String trim(String value) {
+        return value == null ? null : value.trim();
     }
 
 
