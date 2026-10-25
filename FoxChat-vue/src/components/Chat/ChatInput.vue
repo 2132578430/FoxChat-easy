@@ -1,5 +1,5 @@
 <template>
-  <div class="chat-input">
+  <div class="chat-input" :style="{ '--keyboard-offset': `${keyboardOffset}px` }">
     <textarea
       ref="textareaRef"
       v-model="localMessage"
@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-import { ref, watch, nextTick } from 'vue';
+import { ref, watch, nextTick, onMounted, onUnmounted } from 'vue';
 import { FoxButton } from '@/components/FoxUI';
 
 const props = defineProps({
@@ -41,6 +41,28 @@ const emit = defineEmits(['update:modelValue', 'send', 'open-upload']);
 
 const textareaRef = ref(null);
 const localMessage = ref(props.modelValue);
+const keyboardOffset = ref(0);
+
+// 部分安卓浏览器不响应 interactive-widget=resizes-content，用 visualViewport 兜底
+const updateKeyboardOffset = () => {
+  const viewport = window.visualViewport;
+  if (!viewport) return;
+  const offset = window.innerHeight - viewport.height - viewport.offsetTop;
+  keyboardOffset.value = Math.max(0, Math.round(offset));
+};
+
+onMounted(() => {
+  if (!window.visualViewport) return;
+  window.visualViewport.addEventListener('resize', updateKeyboardOffset);
+  window.visualViewport.addEventListener('scroll', updateKeyboardOffset);
+  updateKeyboardOffset();
+});
+
+onUnmounted(() => {
+  if (!window.visualViewport) return;
+  window.visualViewport.removeEventListener('resize', updateKeyboardOffset);
+  window.visualViewport.removeEventListener('scroll', updateKeyboardOffset);
+});
 
 watch(() => props.modelValue, (val) => { if (val !== localMessage.value) localMessage.value = val; });
 watch(localMessage, (val) => emit('update:modelValue', val));
@@ -99,5 +121,26 @@ const handleSend = () => {
 .send-btn {
   width: 38px; height: 38px; padding: 0; border-radius: 50% !important;
   font-size: 18px; display: flex; align-items: center; justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .chat-input {
+    bottom: calc(10px + var(--keyboard-offset, 0px) + env(safe-area-inset-bottom, 0px));
+    width: calc(100% - 16px);
+    padding: 8px 10px;
+    border-radius: 14px;
+  }
+
+  .chat-textarea {
+    min-height: 44px;
+    max-height: 120px;
+    padding: 8px 4px;
+    font-size: 16px;
+  }
+
+  .send-btn {
+    width: 40px;
+    height: 40px;
+  }
 }
 </style>

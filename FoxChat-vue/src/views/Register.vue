@@ -61,7 +61,11 @@ const handleRegister = async () => {
 <style scoped>
 .register-container {
   display: flex; justify-content: center; align-items: center;
-  height: 100vh; background: #e8f0fe;
+  height: 100vh;
+  height: 100dvh;
+  padding: 16px;
+  box-sizing: border-box;
+  background: #e8f0fe;
 }
 .register-card {
   width: 380px; background: rgba(255,255,255,0.85);
@@ -74,4 +78,10 @@ const handleRegister = async () => {
 .card-body { padding: 24px 32px 32px; display: flex; flex-direction: column; gap: 14px; }
 .form-footer { text-align: center; font-size: 13px; margin-top: 4px; }
 .form-footer a { color: #4a90d9; text-decoration: none; }
+
+@media (max-width: 480px) {
+  .register-card { width: 100%; max-width: 380px; }
+  .card-header { padding: 22px 20px 0; }
+  .card-body { padding: 20px 20px 24px; }
+}
 </style>

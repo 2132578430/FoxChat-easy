@@ -133,6 +133,8 @@
       />
     </div>
 
+    <div v-if="hasOpenPushPanel" class="panel-backdrop" @click="closePushPanels"></div>
+
     <!-- Avatar Cropper -->
     <AvatarCropper
       v-model:visible="showAvatarCropper"
@@ -149,7 +151,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch } from 'vue';
+import { computed, ref, onMounted, onUnmounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { FoxButton } from '@/components/FoxUI';
 
@@ -158,11 +160,10 @@ import { useUserStore } from '@/stores/userStore';
 import { useChatStore } from '@/stores/chatStore';
 import { useFriendStore } from '@/stores/friendStore';
 import { useGroupStore } from '@/stores/groupStore';
-import { useWsStore } from '@/stores/wsStore';
 import { useUiStore } from '@/stores/uiStore';
 
 // Composables
-import { useWsConnection } from '@/composables/useWsConnection';
+import { useWsConnection, disconnectWebSocket } from '@/composables/useWsConnection';
 import { useFriends } from '@/composables/useFriends';
 import { useGroups } from '@/composables/useGroups';
 import { useChat } from '@/composables/useChat';
@@ -193,7 +194,6 @@ const { userInfo } = useUserStore();
 const chatStore = useChatStore();
 const friendStore = useFriendStore();
 const groupStore = useGroupStore();
-const { ws, stopHeartbeat } = useWsStore();
 const uiStore = useUiStore();
 
 // Destructure for template auto-unwrap
@@ -201,6 +201,14 @@ const { currentFriend, currentGroup, currentChatType, messageList, inputMessage,
 const { friendList, friendRequestList, llmFriendList } = friendStore;
 const { groupList, isGroupLoading } = groupStore;
 const { showFriendList, showGroupList, showProfile, showRag, showLlmConfigPanel, showMemoryPanel, showCreateGroupDialog, showAddLlmFriendDialog, showUploadDialog, showAvatarCropper, preselectedLlmFriendId, pendingLlmAvatarUrl, isAvatarCropperForLlm, searchText } = uiStore;
+
+const hasOpenPushPanel = computed(() => !!(showFriendList.value || showGroupList.value || showProfile.value || showMemoryPanel.value));
+const closePushPanels = () => {
+  showFriendList.value = false;
+  showGroupList.value = false;
+  showProfile.value = false;
+  showMemoryPanel.value = false;
+};
 
 // Composables
 const { initWebSocket } = useWsConnection();
@@ -290,10 +298,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   stopLlmStatusPolling();
-  if (ws.value) {
-    try { ws.value.close(); } catch (e) { console.error('Error closing WebSocket on unmount:', e); }
-  }
-  stopHeartbeat();
+  disconnectWebSocket();
 });
 </script>
 
@@ -337,7 +342,8 @@ onUnmounted(() => {
 
   display: flex;
   height: 100vh;
-  width: 100vw;
+  height: 100dvh;
+  width: 100%;
   background: var(--bg-gradient);
   overflow: hidden;
   transition: background 0.5s ease;
@@ -522,5 +528,71 @@ onUnmounted(() => {
 .fade-scale-leave-to {
   opacity: 0;
   transform: scale(0.9);
+}
+
+/* ============================================
+   Mobile Layout
+   ============================================ */
+.panel-backdrop {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .chat-header {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .chat-title {
+    min-width: 0;
+    font-size: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .chat-actions,
+  .selection-actions {
+    flex-shrink: 0;
+    gap: 4px;
+  }
+
+  .panel-backdrop {
+    display: block;
+    position: absolute;
+    inset: 0 0 0 72px;
+    z-index: 20;
+    background: rgba(17, 24, 39, 0.28);
+  }
+
+  .push-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 21;
+    width: min(86vw, 340px);
+    height: 100%;
+    border-left: none;
+    transform: translateX(100%);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: -8px 0 24px rgba(0, 0, 0, 0.12);
+  }
+
+  .push-panel.visible {
+    width: min(86vw, 340px);
+    border-left: none;
+    transform: translateX(0);
+  }
+
+  .push-panel--wide.visible {
+    width: min(92vw, 380px);
+  }
+
+  .push-panel > *,
+  .push-panel--wide > * {
+    width: 100%;
+    min-width: 0;
+  }
 }
 </style>

@@ -670,4 +670,61 @@ const handleSaveAppearance = async () => {
   background-color: var(--accent-hover, #0066cc);
   border-color: var(--accent-hover, #0066cc);
 }
+
+@media (max-width: 768px) {
+  .panel-header {
+    padding: 10px 12px;
+  }
+
+  .panel-body {
+    flex-direction: column;
+  }
+
+  .friend-sidebar {
+    width: 100%;
+    max-height: 96px;
+    border-right: none;
+    border-bottom: 1px solid var(--border-light, #eee);
+  }
+
+  .sidebar-label {
+    padding: 8px 12px 4px;
+  }
+
+  .friend-list {
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 12px 8px;
+  }
+
+  .friend-item {
+    flex-shrink: 0;
+    padding: 6px 8px;
+  }
+
+  .friend-name {
+    max-width: 72px;
+  }
+
+  .config-tabs :deep(.el-tabs__header) {
+    margin: 0 12px;
+  }
+
+  .config-tabs :deep(.el-tabs__item) {
+    padding: 8px 10px;
+  }
+
+  .config-tabs :deep(.el-tabs__content) {
+    padding: 0 12px;
+  }
+
+  .form-footer {
+    padding: 10px 12px;
+  }
+
+  .nickname-form {
+    max-width: 100%;
+  }
+}
 </style>

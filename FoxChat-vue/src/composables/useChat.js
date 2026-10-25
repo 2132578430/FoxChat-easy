@@ -105,93 +105,115 @@ export function useChat() {
     });
   };
 
+  const isLlmConversation = () => {
+    const friend = chatStore.currentFriend.value;
+    return !!(friend && (friend.role === 1 || friend.isOldFriend));
+  };
+
+  const toMillis = (value) => {
+    if (value === null || value === undefined || value === '') return NaN;
+    if (typeof value === 'number') return value;
+    const numeric = Number(value);
+    if (!Number.isNaN(numeric) && String(value).trim() !== '') return numeric;
+    return new Date(value).getTime();
+  };
+
+  const fetchHistoryPage = async (targetId, lastTimestamp, lastId = null) => {
+    let data;
+    if (isLlmConversation()) {
+      const res = await request.post('/llm/history', {
+        llmId: targetId,
+        lastTime: lastTimestamp,
+        lastId
+      });
+      data = (res && res.code === 1000 && res.data) ? res.data : (res && res.data) ? res.data : (Array.isArray(res) ? res : []);
+    } else if (chatStore.currentChatType.value === 'group') {
+      const res = await groupApi.getGroupChatHistory({
+        groupId: targetId,
+        lastTimestamp
+      });
+      data = (res && res.code === 1000) ? res.data : res;
+    } else {
+      const res = await messageApi.getChatHistory({
+        friendId: targetId,
+        lastTimestamp
+      });
+      data = (res && res.code === 1000) ? res.data : res;
+    }
+    return Array.isArray(data) ? data : (data?.list || []);
+  };
+
+  const formatHistoryItems = (rawList) => {
+    const myId = String(userInfo.userId || '');
+    return rawList.map(item => {
+      const hasHumanFlag = item.isHuman !== undefined && item.isHuman !== null;
+      const senderId = hasHumanFlag && !item.isHuman
+        ? String(item.llmId || chatStore.currentFriend.value.userId || chatStore.currentFriend.value.id || '')
+        : String(item.sendUserId || item.sender?.userId || '');
+      const msgId = item.msgId || item.id;
+      const msgContent = item.msgContent || item.msg || item.content || item.groupMsg?.msg || '';
+      const msgType = item.msgType || '1';
+      const isMine = hasHumanFlag ? item.isHuman === true : senderId === myId;
+
+      let matchedNickname = '';
+      let matchedAvatar = '';
+      if (chatStore.currentChatType.value !== 'group' && !isMine) {
+        const friend = friendList.value.find(f => String(f.userId || f.id) === senderId);
+        if (friend) {
+          matchedNickname = friend.nickname || friend.username;
+          matchedAvatar = friend.faceImage || friend.face_image;
+        }
+      } else if (isMine) {
+        matchedNickname = userInfo.nickname || userInfo.username;
+        matchedAvatar = userInfo.faceImage || userInfo.face_image;
+      }
+
+      let blocks = null;
+      let emotion = null;
+      let content = msgContent;
+      if (msgContent) {
+        try {
+          const parsed = typeof msgContent === 'string' ? JSON.parse(msgContent) : msgContent;
+          if (Array.isArray(parsed)) {
+            blocks = parsed;
+            content = null;
+          } else if (parsed?.blocks && Array.isArray(parsed.blocks)) {
+            blocks = parsed.blocks;
+            emotion = parsed.emotion || null;
+            content = null;
+          }
+        } catch (e) {}
+      }
+
+      return {
+        id: msgId,
+        content: content,
+        blocks: blocks,
+        emotion: emotion,
+        createTime: item.createTime,
+        isMine: isMine,
+        type: String(msgType) === '2' ? 'image' : (String(msgType) === '3' ? 'video' : 'text'),
+        isVisible: item.status !== false && item.status !== 'false',
+        senderId: senderId,
+        senderName: item.nickname || item.username || item.sender?.nickname || item.sender?.username || matchedNickname || senderId,
+        senderAvatar: item.faceImage || item.sender?.faceImage || matchedAvatar,
+        raw: item
+      };
+    }).filter(msg => msg.isVisible).reverse();
+  };
+
   const getChatHistory = async (targetId, isFirstLoad = false) => {
     if (chatStore.isLoadingHistory.value || (!chatStore.hasMoreHistory.value && !isFirstLoad)) {
       return;
     }
     try {
       chatStore.isLoadingHistory.value = true;
-      let data;
-      if (chatStore.currentFriend.value && (chatStore.currentFriend.value.role === 1 || chatStore.currentFriend.value.isOldFriend)) {
-        const res = await request.post('/llm/history', {
-          llmId: targetId,
-          lastTime: chatStore.lastTimestamp.value,
-          lastId: chatStore.lastMsgId.value
-        });
-        data = (res && res.code === 1000 && res.data) ? res.data : (res && res.data) ? res.data : (Array.isArray(res) ? res : []);
-      } else if (chatStore.currentChatType.value === 'group') {
-        const res = await groupApi.getGroupChatHistory({
-          groupId: targetId,
-          lastTimestamp: chatStore.lastTimestamp.value
-        });
-        data = (res && res.code === 1000) ? res.data : res;
-      } else {
-        const res = await messageApi.getChatHistory({
-          friendId: targetId,
-          lastTimestamp: chatStore.lastTimestamp.value
-        });
-        data = (res && res.code === 1000) ? res.data : res;
-      }
-
-      const rawList = Array.isArray(data) ? data : (data?.list || []);
+      const rawList = await fetchHistoryPage(targetId, chatStore.lastTimestamp.value, chatStore.lastMsgId.value);
       if (rawList.length < 20) {
         chatStore.hasMoreHistory.value = false;
       }
 
-      const formattedMsgs = rawList.map(item => {
-        const myId = String(userInfo.userId || '');
-        const senderId = String(item.sendUserId || item.sender?.userId || '');
-        const msgId = item.msgId || item.id;
-        const msgContent = item.msgContent || item.msg || item.content || item.groupMsg?.msg || '';
-        const msgType = item.msgType || '1';
-        const isMine = item.isHuman !== undefined && item.isHuman !== null
-          ? item.isHuman === true : senderId === myId;
-
-        let matchedNickname = '';
-        let matchedAvatar = '';
-        if (chatStore.currentChatType.value !== 'group' && !isMine) {
-          const friend = friendList.value.find(f => String(f.userId || f.id) === senderId);
-          if (friend) {
-            matchedNickname = friend.nickname || friend.username;
-            matchedAvatar = friend.faceImage || friend.face_image;
-          }
-        } else if (isMine) {
-          matchedNickname = userInfo.nickname || userInfo.username;
-          matchedAvatar = userInfo.faceImage || userInfo.face_image;
-        }
-
-        let blocks = null;
-        let emotion = null;
-        let content = msgContent;
-        if (msgContent) {
-          try {
-            const parsed = typeof msgContent === 'string' ? JSON.parse(msgContent) : msgContent;
-            if (Array.isArray(parsed)) {
-              blocks = parsed;
-              content = null;
-            } else if (parsed?.blocks && Array.isArray(parsed.blocks)) {
-              blocks = parsed.blocks;
-              emotion = parsed.emotion || null;
-              content = null;
-            }
-          } catch (e) {}
-        }
-
-        return {
-          id: msgId,
-          content: content,
-          blocks: blocks,
-          emotion: emotion,
-          createTime: item.createTime,
-          isMine: isMine,
-          type: String(msgType) === '2' ? 'image' : (String(msgType) === '3' ? 'video' : 'text'),
-          isVisible: item.status !== false && item.status !== 'false',
-          senderId: senderId,
-          senderName: item.nickname || item.username || item.sender?.nickname || item.sender?.username || matchedNickname || senderId,
-          senderAvatar: item.faceImage || item.sender?.faceImage || matchedAvatar,
-          raw: item
-        };
-      }).filter(msg => msg.isVisible).reverse();
+      const formattedMsgs = formatHistoryItems(rawList);
 
       if (isFirstLoad) {
         chatStore.messageList.value = formattedMsgs;
@@ -202,14 +224,8 @@ export function useChat() {
 
       if (formattedMsgs.length > 0) {
         const oldestMsg = formattedMsgs[0];
-        const timeValue = oldestMsg.createTime;
-        let timestamp;
-        if (!isNaN(timeValue) && typeof timeValue !== 'boolean') {
-          timestamp = Number(timeValue);
-        } else {
-          timestamp = new Date(timeValue).getTime();
-        }
-        if (!isNaN(timestamp)) {
+        const timestamp = toMillis(oldestMsg.createTime);
+        if (!Number.isNaN(timestamp)) {
           chatStore.lastTimestamp.value = timestamp;
           chatStore.lastMsgId.value = oldestMsg.id;
         }
@@ -217,6 +233,125 @@ export function useChat() {
     } catch (error) {
       console.error('加载历史记录失败:', error);
     } finally {
+      chatStore.isLoadingHistory.value = false;
+    }
+  };
+
+  const messageSignature = (msg) => {
+    if (msg.content) return String(msg.content).trim();
+    if (!Array.isArray(msg.blocks)) return '';
+    return msg.blocks
+      .map(block => block.type === 'action' ? `[${block.action || block.content || ''}]` : (block.text || block.content || ''))
+      .filter(Boolean)
+      .join('\n')
+      .trim();
+  };
+
+  const isKnownMessage = (msg, knownMessages, knownIds) => {
+    if (knownIds.has(String(msg.id))) return true;
+    const signature = messageSignature(msg);
+    if (!signature) return false;
+    const msgTime = toMillis(msg.createTime);
+    return knownMessages.some(existing => {
+      if (existing.isMine !== msg.isMine) return false;
+      if (messageSignature(existing) !== signature) return false;
+      const existingTime = toMillis(existing.createTime);
+      if (Number.isNaN(msgTime) || Number.isNaN(existingTime)) return true;
+      return Math.abs(msgTime - existingTime) < 300000;
+    });
+  };
+
+  const finalizeInterruptedStream = (newMessages = []) => {
+    const stream = llmStreamState.value;
+    if (!stream.active) return;
+    const list = chatStore.messageList.value;
+    const idx = list.findIndex(m => m.id === stream.aiPlaceholderId);
+    if (idx >= 0) {
+      const placeholder = list[idx];
+      const placeholderTime = toMillis(placeholder.createTime);
+      const hasPersistedReply = newMessages.some(msg =>
+        !msg.isMine &&
+        String(msg.senderId || '') === String(stream.llmId || '') &&
+        !Number.isNaN(placeholderTime) &&
+        toMillis(msg.createTime) >= placeholderTime
+      );
+      if (hasPersistedReply) {
+        list.splice(idx, 1);
+      } else {
+        placeholder.isStreaming = false;
+        placeholder.status = 'failed';
+        placeholder.msgContent = stream.msgContent;
+        placeholder.llmId = stream.llmId;
+      }
+    }
+    stream.active = false;
+    chatStore.isLlmTyping.value = false;
+    chatStore.llmPendingCount.value = Math.max(0, chatStore.llmPendingCount.value - 1);
+  };
+
+  const syncLatestMessages = async () => {
+    const targetId = chatStore.currentChatType.value === 'group'
+      ? (chatStore.currentGroup.value.id || chatStore.currentGroup.value.groupId)
+      : (chatStore.currentFriend.value.userId || chatStore.currentFriend.value.id);
+
+    if (!targetId) {
+      finalizeInterruptedStream();
+      return;
+    }
+    if (chatStore.isLoadingHistory.value) {
+      finalizeInterruptedStream();
+      return;
+    }
+
+    const collected = [];
+    const collectedIds = new Set();
+    const existingMessages = chatStore.messageList.value;
+    const existingIds = new Set(existingMessages.map(m => String(m.id)));
+    let cursorTime = Date.now();
+    let cursorId = null;
+
+    try {
+      chatStore.isLoadingHistory.value = true;
+      for (let page = 0; page < 5; page++) {
+        const rawList = await fetchHistoryPage(targetId, cursorTime, cursorId);
+        if (!rawList.length) break;
+
+        const formatted = formatHistoryItems(rawList);
+        let reachedKnown = false;
+        for (const msg of formatted) {
+          if (isKnownMessage(msg, existingMessages, existingIds) || collectedIds.has(String(msg.id))) {
+            reachedKnown = true;
+            continue;
+          }
+          collectedIds.add(String(msg.id));
+          collected.push(msg);
+        }
+
+        if (reachedKnown || rawList.length < 20) break;
+        const oldest = rawList[rawList.length - 1];
+        const oldestTime = toMillis(oldest.createTime || oldest.tempTime);
+        if (Number.isNaN(oldestTime)) break;
+        cursorTime = oldestTime;
+        cursorId = oldest.msgId || oldest.id;
+      }
+
+      if (collected.length) {
+        const merged = [
+          ...existingMessages.map((msg, index) => ({ msg, order: index, time: toMillis(msg.createTime) })),
+          ...collected.map((msg, index) => ({ msg, order: existingMessages.length + index, time: toMillis(msg.createTime) }))
+        ];
+        merged.sort((a, b) => {
+          const timeA = Number.isNaN(a.time) ? Infinity : a.time;
+          const timeB = Number.isNaN(b.time) ? Infinity : b.time;
+          return timeA === timeB ? a.order - b.order : timeA - timeB;
+        });
+        chatStore.messageList.value = merged.map(item => item.msg);
+        nextTick(() => scrollToBottom(true));
+      }
+    } catch (error) {
+      console.error('[WS] 重连后补齐消息失败:', error);
+    } finally {
+      finalizeInterruptedStream(collected);
       chatStore.isLoadingHistory.value = false;
     }
   };
@@ -354,7 +489,7 @@ export function useChat() {
     }
 
     if (!ws.value || ws.value.readyState !== WebSocket.OPEN) {
-      FoxToast.error('服务器连接已断开，请刷新页面');
+      FoxToast.error('连接已断开，正在重连，请稍后重试');
       return;
     }
 
@@ -572,6 +707,7 @@ export function useChat() {
     handleLlmToken,
     scrollToBottom,
     getChatHistory,
+    syncLatestMessages,
     loadMoreHistory,
     sendMessage,
     retryLlmMessage,

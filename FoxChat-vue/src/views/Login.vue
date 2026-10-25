@@ -59,7 +59,11 @@ const handleLogin = async () => {
 <style scoped>
 .login-container {
   display: flex; justify-content: center; align-items: center;
-  height: 100vh; background: #e8f0fe;
+  height: 100vh;
+  height: 100dvh;
+  padding: 16px;
+  box-sizing: border-box;
+  background: #e8f0fe;
 }
 .login-card {
   width: 380px; background: rgba(255,255,255,0.85);
@@ -76,4 +80,10 @@ const handleLogin = async () => {
 }
 .form-footer { text-align: center; font-size: 13px; }
 .form-footer a { color: #4a90d9; text-decoration: none; }
+
+@media (max-width: 480px) {
+  .login-card { width: 100%; max-width: 380px; }
+  .card-header { padding: 24px 20px 0; }
+  .card-body { padding: 20px 20px 24px; }
+}
 </style>

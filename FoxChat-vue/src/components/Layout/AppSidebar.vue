@@ -39,13 +39,12 @@ import { useUiStore } from '@/stores/uiStore';
 import { useProfile } from '@/composables/useProfile';
 import { useRag } from '@/composables/useRag';
 import { useChatStore } from '@/stores/chatStore';
-import { useWsStore } from '@/stores/wsStore';
+import { disconnectWebSocket } from '@/composables/useWsConnection';
 import { useRouter } from 'vue-router';
 import { resolveAvatarUrl, defaultUserAvatar } from '@/utils/avatar';
 
 const router = useRouter();
 const { userInfo } = useUserStore();
-const { ws, stopHeartbeat } = useWsStore();
 const {
   showFriendList, showGroupList, showProfile, showRag,
   showLlmConfigPanel, showMemoryPanel, preselectedLlmFriendId
@@ -114,10 +113,7 @@ const toggleMemoryPanel = () => {
 };
 
 const handleLogout = () => {
-  if (ws.value) {
-    try { ws.value.close(); } catch (e) { console.error('Error closing WebSocket:', e); }
-  }
-  stopHeartbeat();
+  disconnectWebSocket();
   localStorage.removeItem('token');
   localStorage.removeItem('userInfo');
   router.push('/login');

@@ -327,6 +327,8 @@ defineExpose({
   min-height: 0;
   padding: 15px 15px 130px;
   overflow-y: auto;
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -714,6 +716,21 @@ defineExpose({
 
 .retry-link:hover {
   color: #0066cc;
+}
+
+@media (max-width: 768px) {
+  .chat-messages {
+    padding: 12px 10px calc(96px + env(safe-area-inset-bottom, 0px));
+    gap: 10px;
+  }
+
+  .message-item {
+    max-width: 82%;
+  }
+
+  .message-item-container {
+    gap: 6px;
+  }
 }
 
 /* Custom Scrollbar */
