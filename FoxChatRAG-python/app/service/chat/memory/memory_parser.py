@@ -15,6 +15,7 @@ from typing import List, Optional, Tuple
 from loguru import logger
 
 from app.service.chat.common import safe_json_parse, map_emotion_to_cn
+from app.common.constant.LLMChatConstant import EVENT_TYPE_LABELS
 
 
 def parse_character_card(json_str: str) -> Tuple[str, str, str, float]:
@@ -221,9 +222,11 @@ def parse_memory_bank(json_str: str) -> str:
 
     lines = []
     for item in recent_items:
-        time_val = item.get("time", "某时")
+        # 事件存储 schema 为 occurred_at/event_type（旧键 time/type 仅作兼容回退）
+        time_val = item.get("occurred_at") or item.get("time") or "某时"
         content_val = item.get("content", "")
-        type_val = item.get("type", "event")
+        type_raw = item.get("event_type") or item.get("type") or "other"
+        type_val = EVENT_TYPE_LABELS.get(type_raw, type_raw)
         lines.append(f"- [{time_val}]（{type_val}）{content_val}")
     return "\n".join(lines)
 

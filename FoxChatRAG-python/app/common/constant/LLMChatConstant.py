@@ -21,6 +21,9 @@ class LLMChatConstant(StrEnum):
     SUMMARY_LOCK = "summary_lock"
     SUMMARY_COUNTER = "summary_counter"
 
+    # 最近一次对话摘要（时间维度保底注入，写入见 memory_summary_service）
+    LATEST_SUMMARY = "latest_summary"
+
 def build_chat_key(prefix: str, user_id: str, llm_id: str, suffix: str = "") -> str:
     """统一构建聊天相关 Redis key
 

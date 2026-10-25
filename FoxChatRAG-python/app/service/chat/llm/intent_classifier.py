@@ -19,7 +19,9 @@ from app.common.constant.intent_config import (
     INTENT_RULES,
     INTENT_EXAMPLES,
     RETRIEVAL_STRATEGY,
-    INTENT_TO_EVENT_TYPE,
+    CONTENT_TYPE_RULES,
+    VALID_EVENT_TYPES,
+    get_scope,
     IntentResult,
     IntentType,
 )
@@ -78,28 +80,17 @@ def match_intent_by_rule(query: str) -> Optional[IntentResult]:
     Returns:
         IntentResult 如果匹配成功，否则 None
     """
-    for pattern, intent, scope_str, description in INTENT_RULES:
+    for pattern, intent, description in INTENT_RULES:
         try:
             if re.match(pattern, query, re.IGNORECASE):
-                # 获取检索策略
+                # 获取检索策略（scope 统一由 SSOT 派生）
                 strategy = RETRIEVAL_STRATEGY.get(intent, RETRIEVAL_STRATEGY["default"])
-
-                # 处理 scope
-                if scope_str == "skip":
-                    scope = []
-                    skip = True
-                elif scope_str == "all":
-                    scope = []
-                    skip = False
-                else:
-                    scope = [scope_str]
-                    skip = False
 
                 return IntentResult(
                     intent=intent,
-                    scope=scope,
+                    scope=get_scope(intent),
                     top_k=strategy.get("top_k", 4),
-                    skip=skip,
+                    skip=strategy.get("skip", False),
                     confidence=1.0,  # 规则匹配置信度=1.0
                 )
         except re.error as e:
@@ -169,12 +160,12 @@ def match_intent_by_semantic(
     if best_score < 0.5 or best_intent is None:
         return None
 
-    # 获取检索策略
+    # 获取检索策略（scope 统一由 SSOT 派生）
     strategy = RETRIEVAL_STRATEGY.get(best_intent, RETRIEVAL_STRATEGY["default"])
 
     return IntentResult(
         intent=best_intent,
-        scope=strategy.get("scope", []),
+        scope=get_scope(best_intent),
         top_k=strategy.get("top_k", 4),
         skip=strategy.get("skip", False),
         confidence=float(best_score),
@@ -216,13 +207,13 @@ def classify_intent(
         logger.debug(f"【意图判断】语义匹配: {result.intent} (conf={result.confidence:.2f})")
         return result
 
-    # 未匹配：返回默认策略
+    # 未匹配：返回默认策略（scope=[] → 全库兜底）
     default_strategy = RETRIEVAL_STRATEGY["default"]
     logger.debug(f"【意图判断】未匹配，使用默认策略")
 
     return IntentResult(
         intent=IntentType.DEFAULT,
-        scope=default_strategy.get("scope", []),
+        scope=get_scope(IntentType.DEFAULT),
         top_k=default_strategy.get("top_k", 4),
         skip=default_strategy.get("skip", False),
         confidence=0.0,
@@ -230,35 +221,46 @@ def classify_intent(
 
 
 # ============================================================
-# classify_event_type：提取侧统一分类（V4新增）
+# classify_event_type：提取侧统一分类（写入 memory_bank 的 event_type）
 # ============================================================
 
 def classify_event_type(
     content: str,
-    query_embedding: Optional[np.ndarray] = None,
+    llm_event_type: Optional[str] = None,
 ) -> str:
     """
     对提取后的记忆 content 做 event_type 分类
 
-    复用现有两层意图分类器（规则+语义），
-    使提取和检索共用同一套类型空间。
+    分层：高置信度内容规则 → LLM 的 event_type → "other"。
+    不再复用查询侧意图分类器（旧 V4 的做法）：读侧喂问句、写侧喂陈述句，
+    共用同一分类器必然错位，且 INTENT_TO_EVENT_TYPE 无 commitment 映射，
+    导致承诺约定永远存不出来。
 
     Args:
-        content: 记忆内容（如 "用户的名字是悲狐"）
-        query_embedding: 可选，预计算的 embedding
+        content: 记忆内容（陈述句，如 "用户承诺下周帮忙搬家"）
+        llm_event_type: memory_event_extractor 输出的 event_type（兜底参考）
 
     Returns:
-        event_type 字符串（如 "identity", "preference" 等）
+        event_type 字符串（如 "identity", "commitment" 等）
     """
-    intent_result = classify_intent(content, query_embedding)
-    event_type = INTENT_TO_EVENT_TYPE.get(intent_result.intent, "other")
+    # 第一层：内容规则（确定性、可单测）
+    for pattern, target in CONTENT_TYPE_RULES:
+        if re.search(pattern, content):
+            logger.debug(
+                f"【事件分类】source=rule: {content[:30]}... → {target}"
+            )
+            return target
 
-    logger.debug(
-        f"【事件分类】content={content[:30]}..., "
-        f"intent={intent_result.intent}, event_type={event_type}, "
-        f"confidence={intent_result.confidence:.2f}"
-    )
-    return event_type
+    # 第二层：LLM 的 event_type 兜底（合法才采纳）
+    if llm_event_type in VALID_EVENT_TYPES:
+        logger.debug(
+            f"【事件分类】source=llm: {content[:30]}... → {llm_event_type}"
+        )
+        return llm_event_type
+
+    # 第三层：other
+    logger.debug(f"【事件分类】source=fallback: {content[:30]}... → other")
+    return "other"
 
 
 # ============================================================

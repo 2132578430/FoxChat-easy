@@ -7,7 +7,7 @@
 【历史上下文】
 {historical_context}
 
-【当前状态】
+【当前状态（必须遵守）】
 {current_state}
 
 【行为指南】

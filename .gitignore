@@ -57,7 +57,7 @@ deploy/
 **/logs/
 
 # 开发启动器运行时状态
-scripts/.run/
+scripts/
 
 # SQLite / ChromaDB 本地数据库
 *.db

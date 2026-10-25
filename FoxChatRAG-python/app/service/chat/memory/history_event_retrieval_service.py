@@ -39,15 +39,19 @@ ACTIVITY_MAX = 1.0              # 活跃度上限
 ACTIVITY_COOLDOWN_HOURS = 1     # 冷却时间（小时），避免同一话题快速涨满
 
 # 事件类型 → 重要性映射（替代 LLM 判断的 importance，确保确定性）
+# 注意：此表读写两用——检索排序（本文件 _calculate_event_importance）与
+# 事件入库/降级钉住（memory_summary_service）共用，改一处即同时生效。
+# relation_change/express_emotion 取 0.65 而非 0.70：0.70 会踩中降级钉住阈值，
+# 使该类型全部事件免疫降级。
 IMPORTANCE_BY_TYPE: dict[str, float] = {
     "boundary":          0.90,  # 用户画的红线，绝不能忘
     "commitment":        0.80,  # 承诺约定，忘了会失信
     "identity":          0.70,  # 身份信息，长期稳定
     "preference":        0.55,  # 偏好，需要记住但不紧急
     "follow_up":         0.50,  # 跟进事项，有时效性
+    "relation_change":   0.65,  # 关系变化（沉浸命脉：关系推进忘了会穿帮）
     "share_experience":  0.40,  # 经历分享
-    "relation_change":   0.35,  # 关系变化
-    "express_emotion":   0.30,  # 情绪表达
+    "express_emotion":   0.65,  # 情绪表达（陪伴型 AI 的核心记忆，不再垫底）
     "interaction":       0.25,  # 互动测试
     "other":             0.30,
 }
@@ -714,55 +718,67 @@ async def retrieve_history_events(
     # 使用动态 top_k（如果提供）
     final_max_results = top_k if top_k is not None else max_results
 
-    logger.info(f"【检索】开始混合检索: query={query[:30]}..., scope={scope}, top_k={final_max_results}")
+    async def _run(active_scope: Optional[List[str]]) -> List[MemoryEvent]:
+        """单次混合检索（scope=None 即全库）"""
+        logger.info(f"【检索】开始混合检索: query={query[:30]}..., scope={active_scope}, top_k={final_max_results}")
 
-    # 1. 从redis的membank中用BM25召回
-    bm25_events = _bm25_retrieve_from_memory_bank(
-        query=query,
-        user_id=user_id,
-        llm_id=llm_id,
-        max_results=10,
-        scope=scope,
-    )
-    logger.debug(f"【检索】BM25召回: {len(bm25_events)} 条")
-
-    # 2. 向量召回
-    vector_events = await _vector_retrieve_from_chroma(
-        query=query,
-        user_id=user_id,
-        llm_id=llm_id,
-        max_results=10,
-        scope=scope,
-    )
-    logger.debug(f"【检索】向量召回: {len(vector_events)} 条")
-
-    # 3. 合并排序（activity_score纳入）
-    merged_events = _merge_and_rank_candidates(
-        bm25_events=bm25_events,
-        vector_events=vector_events,
-        max_results=final_max_results * 2,  # 给rerank留空间
-    )
-    logger.debug(f"【检索】合并后: {len(merged_events)} 条")
-
-    # 4. Rerank
-    if enable_rerank and len(merged_events) > final_max_results:
-        merged_events = await _rerank_candidates(
+        # 1. 从redis的membank中用BM25召回
+        bm25_events = _bm25_retrieve_from_memory_bank(
             query=query,
-            events=merged_events,
-            top_k=final_max_results,
+            user_id=user_id,
+            llm_id=llm_id,
+            max_results=10,
+            scope=active_scope,
         )
-        logger.debug(f"【检索】Rerank后: {len(merged_events)} 条")
+        logger.debug(f"【检索】BM25召回: {len(bm25_events)} 条")
 
-    # 5. 与最近窗口去重
-    if recent_messages:
-        merged_events = deduplicate_with_recent_window(merged_events, recent_messages)
+        # 2. 向量召回
+        vector_events = await _vector_retrieve_from_chroma(
+            query=query,
+            user_id=user_id,
+            llm_id=llm_id,
+            max_results=10,
+            scope=active_scope,
+        )
+        logger.debug(f"【检索】向量召回: {len(vector_events)} 条")
 
-    # 6. 预算控制
-    if len(merged_events) > final_max_results:
-        merged_events = merged_events[:final_max_results]
+        # 3. 合并排序（activity_score纳入）
+        merged_events = _merge_and_rank_candidates(
+            bm25_events=bm25_events,
+            vector_events=vector_events,
+            max_results=final_max_results * 2,  # 给rerank留空间
+        )
+        logger.debug(f"【检索】合并后: {len(merged_events)} 条")
 
-    # 7. 活跃度递增：检索命中反馈，fire-and-forget 不阻塞返回
-    asyncio.create_task(_bump_activity_scores(merged_events, user_id, llm_id))
+        # 4. Rerank
+        if enable_rerank and len(merged_events) > final_max_results:
+            merged_events = await _rerank_candidates(
+                query=query,
+                events=merged_events,
+                top_k=final_max_results,
+            )
+            logger.debug(f"【检索】Rerank后: {len(merged_events)} 条")
 
-    logger.info(f"【检索】最终返回: {len(merged_events)} 条")
-    return merged_events
+        # 5. 与最近窗口去重
+        if recent_messages:
+            merged_events = deduplicate_with_recent_window(merged_events, recent_messages)
+
+        # 6. 预算控制
+        if len(merged_events) > final_max_results:
+            merged_events = merged_events[:final_max_results]
+
+        return merged_events
+
+    results = await _run(scope)
+
+    # 全库兜底：scope 收窄后无结果 → 放开 scope 再检索一次。
+    # 规则只做高置信度收窄，收错了不能让用户白白丢召回（漏检代价 >> 多检代价）。
+    if not results and scope:
+        logger.info(f"【检索】scope={scope} 无结果，回退全库检索")
+        results = await _run(None)
+
+    # 活跃度递增：检索命中反馈，fire-and-forget 不阻塞返回
+    asyncio.create_task(_bump_activity_scores(results, user_id, llm_id))
+
+    logger.info(f"【检索】最终返回: {len(results)} 条")
+    return results

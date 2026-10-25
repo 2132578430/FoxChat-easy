@@ -222,7 +222,9 @@ async def trigger_summary(state: ChatState) -> dict:
 
     key = build_chat_key(LLMChatConstant.CHAT_MEMORY, state["user_id"], state["llm_id"], LLMChatConstant.RECENT_MSG)
     try:
-        msg_count = await redis_client.llen(key) or 0
+        # redis_client 是同步客户端，不能 await（此前 await 同步返回值必抛
+        # TypeError 被 except 吞掉，msg_count 恒为 0，快聊总结触发从未生效）
+        msg_count = redis_client.llen(key) or 0
     except Exception:
         msg_count = 0
 

@@ -22,7 +22,7 @@ from app.common.constant.FileTypeConstant import FileTypeConstant
 from app.core.db.redis_client import redis_client
 from app.core.db.mysql_client import async_session_local
 from app.core.prompts.prompt_manager import PromptManager
-from app.service.chat.strategy.base_strategy import ExtractionInvokeStrategy, MemoryInvokeStrategy, SummaryInvokeStrategy
+from app.service.chat.strategy.base_strategy import ExtractionInvokeStrategy, SummaryInvokeStrategy
 from app.util import loader_util, chroma_util
 from app.util.template_util import escape_template, try_parse_json
 from app.service.chat.profile.user_profile_service import update_user_profile_in_summary
@@ -30,8 +30,8 @@ from app.service.chat.common import safe_json_parse, calc_jaccard_similarity
 from app.service.chat.memory.history_event_retrieval_service import IMPORTANCE_BY_TYPE
 
 # 配置常量
-MEMORY_BANK_MAX_SIZE = 50
-MEMORY_BANK_COMPRESS_TARGET = 30
+MEMORY_BANK_MAX_SIZE = 300   # 降级触发阈值（原 50：bank 只有最近5条进 prompt，早压省不到 token，纯亏）
+MEMORY_BANK_KEEP_SIZE = 150  # 降级后保留条数
 RECENT_MSG_KEEP_SIZE = 10
 SUMMARY_TRIGGER_THRESHOLD = 18
 
@@ -39,11 +39,61 @@ SUMMARY_TRIGGER_THRESHOLD = 18
 DEDUP_CHECK_WINDOW = 20  # 检查最近20条
 DEDUP_SIMILARITY_THRESHOLD = 0.5  # 内容相似度阈值（jieba分词后Jaccard）
 
+def _salvage_event_objects(raw_text: str) -> List[dict]:
+    """
+    截断兜底：模型输出超长被截断时，用栈式括号配平从残缺 JSON 中捞回完整的事件对象。
+
+    宁可少拿几条，不要整批丢弃（旧行为：最后一个字符解析失败 → 整段对话的事件全丢）。
+    收集所有层级配平成功的对象，再按区间包含关系只保留极大对象（即事件本身，
+    而非事件内部的字段子对象）；若唯一极大对象是 {"events":[...]} 包装则解包。
+    """
+    candidates = []  # (start, end, obj)
+    stack = []
+    in_str = False
+    esc = False
+    for i, ch in enumerate(raw_text):
+        if in_str:
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == '"':
+                in_str = False
+            continue
+        if ch == '"':
+            in_str = True
+        elif ch == "{":
+            stack.append(i)
+        elif ch == "}" and stack:
+            s = stack.pop()
+            try:
+                obj = json.loads(raw_text[s:i + 1])
+                if isinstance(obj, dict):
+                    candidates.append((s, i, obj))
+            except json.JSONDecodeError:
+                pass
+
+    # 区间长的在前；丢弃被其他对象区间完全包含的（嵌套字段）
+    candidates.sort(key=lambda t: t[0] - t[1])
+    kept = []
+    for s, e, obj in candidates:
+        if any(s >= ks and e <= ke for ks, ke, _ in kept):
+            continue
+        kept.append((s, e, obj))
+    kept.sort(key=lambda t: t[0])
+
+    objects = [obj for _, _, obj in kept]
+    if len(objects) == 1 and isinstance(objects[0].get("events"), list):
+        return [e for e in objects[0]["events"] if isinstance(e, dict)]
+    return objects
+
+
 def _load_event_list(raw_text: str) -> List[dict]:
     """解析事件列表
 
     期望格式 {"events": [...]}，与 response_format=json_object 约束对齐。
     也兼容 LLM 将内层数组序列化为字符串的情况 {"events": "[...]"}。
+    解析整体失败时（典型：输出超长被截断）尝试打捞完整的事件对象。
     """
     data = try_parse_json(raw_text)
 
@@ -56,6 +106,12 @@ def _load_event_list(raw_text: str) -> List[dict]:
         events = data
 
     if not isinstance(events, list):
+        salvaged = _salvage_event_objects(raw_text)
+        if salvaged:
+            logger.warning(
+                f"事件列表整体解析失败，打捞回 {len(salvaged)} 个完整事件对象（输出疑似被截断）"
+            )
+            return salvaged
         raise json.JSONDecodeError("事件列表格式错误", raw_text, 0)
     return events
 
@@ -74,7 +130,6 @@ def _save_memory_bank(memory_bank: List[dict], user_id: str, llm_id: str) -> Non
 
 _SCENARIO_STRATEGY = {
     "extraction": ExtractionInvokeStrategy,
-    "memory": MemoryInvokeStrategy,
     "summary": SummaryInvokeStrategy,
 }
 
@@ -162,11 +217,13 @@ async def _extract_memory_events(recent_msg_list: List[str], llm_id: str = None,
                 del event["time"]
             if "actor" not in event or not event["actor"]:
                 event["actor"] = "UNKNOWN"
-            # 统一分类器覆盖 event_type：消除 LLM 判断与检索 scope 的不一致
+            # 事件分类分层：高置信度内容规则 → LLM 的 event_type → other
+            # （不再复用查询侧意图分类器：读侧喂问句、写侧喂陈述句，共用必然错位）
             content = event.get("content", "")
+            llm_event_type = event.get("event_type")
             if content:
                 from app.service.chat.llm.intent_classifier import classify_event_type
-                event["event_type"] = classify_event_type(content)
+                event["event_type"] = classify_event_type(content, llm_event_type=llm_event_type)
             # 覆盖 LLM 生成的 event_id，防止跨轮次 ID 碰撞导致 ChromaDB upsert 覆盖
             content_hash = hashlib.md5(event.get("content", "").encode()).hexdigest()[:12]
             event["event_id"] = f"evt_{ts}_{i}_{content_hash}"
@@ -234,66 +291,61 @@ async def _deduplicate_and_append_events(
         deduplicated, user_id, llm_id, memory_source="chat"
     )
 
-async def _compress_memory_bank_if_needed(user_id: str, llm_id: str, db = None) -> None:
+def _demote_memory_bank_if_needed(user_id: str, llm_id: str) -> None:
     """
-    检查并压缩 Memory Bank（使用策略层）
+    降级而非删除：bank 超阈值时，把低价值老事件移出 Redis。
 
-    Args:
-        user_id: 用户 ID
-        llm_id: AI 朋友 ID
-        db: 数据库会话
+    - importance >= 0.70 的事件（红线/承诺/身份）永不降级
+    - 其余按（最近出现日期, 活跃度）排序，保留最新 MEMORY_BANK_KEEP_SIZE 条
+    - 被降级的事件只失去 BM25 召回一路；Chroma 镜像仍在，向量召回不丢数据
+    - 不再用 LLM 重写：有损、有幻觉，且会丢 event_id/occurred_at 等
+      排序与 Chroma 匹配依赖的字段（旧压缩 prompt 与 extractor schema 已脱节）
     """
     memory_bank = _get_memory_bank(user_id, llm_id)
     if len(memory_bank) < MEMORY_BANK_MAX_SIZE:
         return
 
-    logger.info(f"memory_bank 压缩触发: {len(memory_bank)} 条")
+    logger.info(f"memory_bank 降级触发: {len(memory_bank)} 条")
 
-    # 补全 importance 字段：如果事件没有 importance，根据 event_type 映射
+    # 补全 importance 字段：按 event_type 映射（与检索侧共用同一张表）
     for event in memory_bank:
-        if "importance" not in event or event["importance"] is None:
+        if event.get("importance") is None:
             event_type = event.get("event_type", "other")
             event["importance"] = IMPORTANCE_BY_TYPE.get(event_type, 0.30)
 
-    # 提取高重要性事件（importance >= 0.7），必须在压缩结果中原样保留
-    pinned_events = [e for e in memory_bank if e.get("importance", 0) >= 0.70]
-    pinned_json = json.dumps(pinned_events, ensure_ascii=False, indent=2) if pinned_events else "（无高重要性事件）"
-    if pinned_events:
-        logger.info(f"memory_bank 压缩: 锚定 {len(pinned_events)} 条高重要性事件 (importance>=0.7)")
+    def _rank_key(idx: int) -> tuple:
+        e = memory_bank[idx]
+        return (
+            e.get("last_seen_at") or e.get("occurred_at") or "",
+            e.get("activity_score") or 0.0,
+        )
 
-    prompt_str = await PromptManager.get_prompt("memory_bank_compress")
-    prompt_str = escape_template(prompt_str, ["target_size", "memory_bank_json", "pinned_events_json"])
+    pinned = {i for i, e in enumerate(memory_bank) if e.get("importance", 0) >= 0.70}
+    ranked_idx = sorted(
+        (i for i in range(len(memory_bank)) if i not in pinned),
+        key=_rank_key,
+        reverse=True,
+    )
+    keep = pinned | set(ranked_idx[:MEMORY_BANK_KEEP_SIZE])
 
-    # 构建 messages
-    messages = [
-        {"role": "user", "content": prompt_str.format(
-            target_size=MEMORY_BANK_COMPRESS_TARGET,
-            memory_bank_json=json.dumps(memory_bank, ensure_ascii=False, indent=2),
-            pinned_events_json=pinned_json,
-        )}
-    ]
+    kept = [e for i, e in enumerate(memory_bank) if i in keep]
+    demoted = len(memory_bank) - len(kept)
 
-    # 使用 Memory 策略
-    strategy = _get_strategy("memory")
-    config_map = await _get_llm_config(llm_id, db)
-    result = await strategy.invoke(messages, config_map)
-
-    try:
-        compressed = json.loads(result)
-        _save_memory_bank(compressed, user_id, llm_id)
-        logger.info(f"memory_bank 压缩完成: {len(memory_bank)} → {len(compressed)}")
-    except json.JSONDecodeError:
-        logger.warning("memory_bank 压缩 JSON 解析失败")
+    _save_memory_bank(kept, user_id, llm_id)
+    logger.info(
+        f"memory_bank 降级完成: {len(memory_bank)} → {len(kept)}"
+        f"（钉住 {len(pinned)} 条，降级 {demoted} 条，Chroma 镜像保留可向量召回）"
+    )
 
 async def _extract_compress_events(recent_msg_list: List[str], user_id: str, llm_id: str, db = None) -> None:
-    """事件处理：提取 → 追加 → 压缩"""
+    """事件处理：提取 → 追加 → 降级"""
     events = await _extract_memory_events(recent_msg_list, llm_id, db)
     if not events:
         logger.info("[Event Task] 未提取到事件")
         return
 
     await _deduplicate_and_append_events(events, user_id, llm_id)
-    await _compress_memory_bank_if_needed(user_id, llm_id, db)
+    _demote_memory_bank_if_needed(user_id, llm_id)
 
 
 async def _summary_and_upload(recent_msg_list: List[str], user_id: str, llm_id: str, db = None) -> str:
@@ -329,6 +381,9 @@ async def _summary_and_upload(recent_msg_list: List[str], user_id: str, llm_id: 
         user_id=user_id,
         llm_id=llm_id,
     )
+    # 时间维度保底：最近一次摘要 O(1) 可读（读侧见 llm_invoke_service._get_latest_summary）
+    latest_key = build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.LATEST_SUMMARY)
+    redis_client.set(latest_key, summary)
     logger.info(f"【Summary】写入对话摘要")
     return summary
 

@@ -1,164 +1,165 @@
 """
-意图配置文件
+意图配置文件（SSOT：意图 → event_type 映射的唯一事实源）
 
 用于两层意图判断系统：
 - 第一层：规则模板库（正则匹配，微秒级）
 - 第二层：语义样例库（向量匹配，毫秒级）
 
-意图类型与 memory_event_extractor.md 的 event_type 严格对齐：
-  identity_q    → event_type: identity
-  preference_q  → event_type: preference
-  boundary_q    → event_type: boundary
-  relation_q    → event_type: relation_change
-  follow_up_q   → event_type: follow_up, commitment
-  share_exp_q   → event_type: share_experience
-  emotion_q     → event_type: express_emotion
-  interaction_q → event_type: interaction, other
-  deep_recall   → 全库检索（scope=[]）
-  casual_chat   → 跳过检索
+scope 不再多处维护（历史教训：同一映射曾在规则/策略/写入三处各自漂移）：
+- 检索 scope 统一由 get_scope(intent) 从 INTENT_EVENT_TYPES 派生
+- 写入侧分类走 CONTENT_TYPE_RULES + LLM 兜底（intent_classifier.classify_event_type）
+- 启动时 validate_event_type_consistency() 校验四方一致，不一致直接抛错
+
+设计原则：规则只做「高置信度收窄」；拿不准就不收窄。
+风险不对称：漏检代价 >> 多检代价，兜底 = 全库。
 """
 
 import re
 from dataclasses import dataclass
 from typing import List, Tuple, Dict, Optional
 
+from app.schemas.memory_event import EventDetailType
+
 # ============================================================
 # 第一层：规则模板库
 # ============================================================
-# 格式: (pattern, intent, scope, description)
+# 格式: (pattern, intent, description)
+# 注意：scope 不在此维护，由 get_scope(intent) 从 INTENT_EVENT_TYPES 派生
 
-INTENT_RULES: List[Tuple[str, str, str, str]] = [
+INTENT_RULES: List[Tuple[str, str, str]] = [
     # ────────────────────────────────────────────────────────────
     # casual_chat: 日常闲聊，跳过检索
+    # （skip 行为由 RETRIEVAL_STRATEGY["casual_chat"]["skip"] 决定）
     # ────────────────────────────────────────────────────────────
-    (r"^(你好|嗨|hi|hello|hey)$", "casual_chat", "skip", "问候语"),
-    (r"^(怎么样|如何|还行|不错|挺好的|好的)$", "casual_chat", "skip", "简单回应"),
-    (r"^(是吗|对啊|嗯|哦|啊|好的|明白|了解)$", "casual_chat", "skip", "确认词"),
-    (r"^.*(哈哈|嘿嘿|嘻嘻|呵呵|笑死).*$", "casual_chat", "skip", "笑声表达"),
-    (r"^(谢谢|感谢|多谢|麻烦你了|辛苦了)$", "casual_chat", "skip", "感谢语"),
-    (r"^(没事|没关系|不客气|不用谢)$", "casual_chat", "skip", "客套回应"),
-    (r"^(好的好的|行行行|可以可以|OK|ok|OK)$", "casual_chat", "skip", "同意重复"),
-    (r"^(拜拜|再见|晚安|早安|晚安)$", "casual_chat", "skip", "告别语"),
+    (r"^(你好|嗨|hi|hello|hey)$", "casual_chat", "问候语"),
+    (r"^(怎么样|如何|还行|不错|挺好的|好的)$", "casual_chat", "简单回应"),
+    (r"^(是吗|对啊|嗯|哦|啊|好的|明白|了解)$", "casual_chat", "确认词"),
+    # 只有纯笑声短句才 skip；正经话里带"哈哈"不再误杀整轮检索
+    (r"^(?:哈+|嘿+|嘻+|呵+|笑死)$", "casual_chat", "纯笑声短句"),
+    (r"^(谢谢|感谢|多谢|麻烦你了|辛苦了)$", "casual_chat", "感谢语"),
+    (r"^(没事|没关系|不客气|不用谢)$", "casual_chat", "客套回应"),
+    (r"^(好的好的|行行行|可以可以|OK|ok|OK)$", "casual_chat", "同意重复"),
+    (r"^(拜拜|再见|晚安|早安|晚安)$", "casual_chat", "告别语"),
 
     # ────────────────────────────────────────────────────────────
     # identity_q: 身份查询 → event_type: identity
     # ────────────────────────────────────────────────────────────
-    (r"^.*叫.*什么.*名字.*$", "identity_q", "identity", "我叫什么名字"),
-    (r"^.*名字.*是什么.*$", "identity_q", "identity", "名字是什么"),
-    (r"^.*多大了.*$", "identity_q", "identity", "多大了"),
-    (r"^.*年龄.*$", "identity_q", "identity", "年龄"),
-    (r"^.*职业.*是什么.*$", "identity_q", "identity", "职业是什么"),
-    (r"^.*做什么工作.*$", "identity_q", "identity", "做什么工作"),
-    (r"^.*我是谁.*$", "identity_q", "identity", "我是谁"),
-    (r"^.*身份.*$", "identity_q", "identity", "身份信息"),
+    (r"^.*叫.*什么.*名字.*$", "identity_q", "我叫什么名字"),
+    (r"^.*名字.*是什么.*$", "identity_q", "名字是什么"),
+    (r"^.*多大了.*$", "identity_q", "多大了"),
+    (r"^.*年龄.*$", "identity_q", "年龄"),
+    (r"^.*职业.*是什么.*$", "identity_q", "职业是什么"),
+    (r"^.*做什么工作.*$", "identity_q", "做什么工作"),
+    (r"^.*我是谁.*$", "identity_q", "我是谁"),
+    (r"^.*身份.*$", "identity_q", "身份信息"),
     # 陈述句规则
-    (r"^.*名字.*(是|叫).*$", "identity_q", "identity", "名字陈述"),
-    (r"^.*(是|为|当).*(程序员|老师|医生|学生|工程师|设计师|研究生|公务员).*$", "identity_q", "identity", "职业陈述"),
-    (r"^.*(今年|年龄).*[0-9]+.*$", "identity_q", "identity", "年龄陈述"),
-    (r"^.*(来自|住在|在).*(北京|上海|广州|深圳|杭州|成都|南京|武汉).*$", "identity_q", "identity", "地点陈述"),
+    (r"^.*名字.*(是|叫).*$", "identity_q", "名字陈述"),
+    (r"^.*(是|为|当).*(程序员|老师|医生|学生|工程师|设计师|研究生|公务员).*$", "identity_q", "职业陈述"),
+    (r"^.*(今年|年龄).*[0-9]+.*$", "identity_q", "年龄陈述"),
+    (r"^.*(来自|住在|在).*(北京|上海|广州|深圳|杭州|成都|南京|武汉).*$", "identity_q", "地点陈述"),
 
     # ────────────────────────────────────────────────────────────
     # preference_q: 偏好查询 → event_type: preference
     # ────────────────────────────────────────────────────────────
-    (r"^.*喜欢.*什么.*(颜色|菜|食物|音乐|电影|书|运动|游戏).*$", "preference_q", "preference", "喜欢什么XX"),
-    (r"^.*喜欢.*什么.*$", "preference_q", "preference", "喜欢什么"),
-    (r"^.*最爱.*什么.*$", "preference_q", "preference", "最爱什么"),
-    (r"^.*讨厌.*什么.*$", "preference_q", "preference", "讨厌什么"),
-    (r"^.*不喜欢.*什么.*$", "preference_q", "preference", "不喜欢什么"),
-    (r"^.*偏好.*什么.*$", "preference_q", "preference", "偏好什么"),
+    (r"^.*喜欢.*什么.*(颜色|菜|食物|音乐|电影|书|运动|游戏).*$", "preference_q", "喜欢什么XX"),
+    (r"^.*喜欢.*什么.*$", "preference_q", "喜欢什么"),
+    (r"^.*最爱.*什么.*$", "preference_q", "最爱什么"),
+    (r"^.*讨厌.*什么.*$", "preference_q", "讨厌什么"),
+    (r"^.*不喜欢.*什么.*$", "preference_q", "不喜欢什么"),
+    (r"^.*偏好.*什么.*$", "preference_q", "偏好什么"),
     # 陈述句规则
-    (r"^.*(喜欢|不喜欢|讨厌|最爱|爱好|偏好).*$", "preference_q", "preference", "偏好陈述"),
+    (r"^.*(喜欢|不喜欢|讨厌|最爱|爱好|偏好).*$", "preference_q", "偏好陈述"),
 
     # ────────────────────────────────────────────────────────────
     # boundary_q: 边界查询 → event_type: boundary
     # ────────────────────────────────────────────────────────────
-    (r"^.*不能.*提.*$", "boundary_q", "boundary", "不能提什么"),
-    (r"^.*不要.*说.*$", "boundary_q", "boundary", "不要说什么"),
-    (r"^.*不能.*说.*$", "boundary_q", "boundary", "不能说什么"),
-    (r"^.*禁忌.*$", "boundary_q", "boundary", "禁忌"),
-    (r"^.*边界.*$", "boundary_q", "boundary", "边界"),
-    (r"^.*有什么.*不能.*$", "boundary_q", "boundary", "有什么不能的"),
-    (r"^.*不要.*提.*$", "boundary_q", "boundary", "不要提什么"),
-    (r"^.*避开.*什么.*$", "boundary_q", "boundary", "避开什么"),
+    (r"^.*不能.*提.*$", "boundary_q", "不能提什么"),
+    (r"^.*不要.*说.*$", "boundary_q", "不要说什么"),
+    (r"^.*不能.*说.*$", "boundary_q", "不能说什么"),
+    (r"^.*禁忌.*$", "boundary_q", "禁忌"),
+    (r"^.*边界.*$", "boundary_q", "边界"),
+    (r"^.*有什么.*不能.*$", "boundary_q", "有什么不能的"),
+    (r"^.*不要.*提.*$", "boundary_q", "不要提什么"),
+    (r"^.*避开.*什么.*$", "boundary_q", "避开什么"),
     # 陈述句规则
-    (r"^.*(不希望|不能|不要|禁止|忌讳|不想|不愿|别).*$", "boundary_q", "boundary", "边界陈述"),
-    (r"^.*(底线|敏感|雷区|禁忌).*$", "boundary_q", "boundary", "底线陈述"),
+    (r"^.*(不希望|不能|不要|禁止|忌讳|不想|不愿|别).*$", "boundary_q", "边界陈述"),
+    (r"^.*(底线|敏感|雷区|禁忌).*$", "boundary_q", "底线陈述"),
 
     # ────────────────────────────────────────────────────────────
     # relation_q: 关系查询 → event_type: relation_change
     # ────────────────────────────────────────────────────────────
-    (r"^.*关系.*怎么样.*$", "relation_q", "relation_change", "关系怎么样"),
-    (r"^.*关系.*如何.*$", "relation_q", "relation_change", "关系如何"),
-    (r"^.*关系.*变化.*$", "relation_q", "relation_change", "关系变化"),
-    (r"^.*人际关系.*$", "relation_q", "relation_change", "人际关系"),
-    (r"^.*关系.*好吗.*$", "relation_q", "relation_change", "关系好吗"),
-    (r"^.*对我.*态度.*$", "relation_q", "relation_change", "对我的态度"),
-    (r"^.*对我.*怎么样.*$", "relation_q", "relation_change", "对我怎么样"),
-    (r"^.*怎么看.*我.*$", "relation_q", "relation_change", "怎么看我"),
-    (r"^.*印象.*怎么样.*$", "relation_q", "relation_change", "印象怎么样"),
+    (r"^.*关系.*怎么样.*$", "relation_q", "关系怎么样"),
+    (r"^.*关系.*如何.*$", "relation_q", "关系如何"),
+    (r"^.*关系.*变化.*$", "relation_q", "关系变化"),
+    (r"^.*人际关系.*$", "relation_q", "人际关系"),
+    (r"^.*关系.*好吗.*$", "relation_q", "关系好吗"),
+    (r"^.*对我.*态度.*$", "relation_q", "对我的态度"),
+    (r"^.*对我.*怎么样.*$", "relation_q", "对我怎么样"),
+    (r"^.*怎么看.*我.*$", "relation_q", "怎么看我"),
+    (r"^.*印象.*怎么样.*$", "relation_q", "印象怎么样"),
     # 陈述句规则
-    (r"^.*关系.*(变差|变好|变化|改善|疏远|紧张|恶化).*$", "relation_q", "relation_change", "关系变化陈述"),
-    (r"^.*(态度|印象|看法).*(变|改变|转变).*$", "relation_q", "relation_change", "态度变化陈述"),
+    (r"^.*关系.*(变差|变好|变化|改善|疏远|紧张|恶化).*$", "relation_q", "关系变化陈述"),
+    (r"^.*(态度|印象|看法).*(变|改变|转变).*$", "relation_q", "态度变化陈述"),
 
     # ────────────────────────────────────────────────────────────
     # follow_up_q: 跟进事项查询 → event_type: follow_up, commitment
     # ────────────────────────────────────────────────────────────
-    (r"^刚才.*干什么.*$", "follow_up_q", "follow_up", "刚才准备干什么"),
-    (r"^准备.*什么.*$", "follow_up_q", "follow_up", "准备做什么"),
-    (r"^几小时后.*什么.*$", "follow_up_q", "follow_up", "几小时后干什么"),
-    (r"^明天.*什么.*$", "follow_up_q", "follow_up", "明天做什么"),
-    (r"^.*约定.*怎么样.*$", "follow_up_q", "follow_up", "约定怎么样了"),
-    (r"^.*承诺.*完成了.*$", "follow_up_q", "follow_up", "承诺完成了吗"),
-    (r"^刚才说.*准备.*$", "follow_up_q", "follow_up", "刚才说准备"),
-    (r"^记得.*说.*要做.*$", "follow_up_q", "follow_up", "记得说要做什么"),
-    (r"^下.*月.*什么.*计划.*$", "follow_up_q", "follow_up", "下个月计划"),
+    (r"^刚才.*干什么.*$", "follow_up_q", "刚才准备干什么"),
+    (r"^准备.*什么.*$", "follow_up_q", "准备做什么"),
+    (r"^几小时后.*什么.*$", "follow_up_q", "几小时后干什么"),
+    (r"^明天.*什么.*$", "follow_up_q", "明天做什么"),
+    (r"^.*约定.*怎么样.*$", "follow_up_q", "约定怎么样了"),
+    (r"^.*承诺.*完成了.*$", "follow_up_q", "承诺完成了吗"),
+    (r"^刚才说.*准备.*$", "follow_up_q", "刚才说准备"),
+    (r"^记得.*说.*要做.*$", "follow_up_q", "记得说要做什么"),
+    (r"^下.*月.*什么.*计划.*$", "follow_up_q", "下个月计划"),
     # 陈述句规则
-    (r"^.*(准备|计划|打算|安排|约定|承诺|答应).*$", "follow_up_q", "follow_up", "计划陈述"),
-    (r"^.*(明天|后天|下周|今晚|几小时后|周三|周末).*$", "follow_up_q", "follow_up", "时间锚点陈述"),
+    (r"^.*(准备|计划|打算|安排|约定|承诺|答应).*$", "follow_up_q", "计划陈述"),
+    (r"^.*(明天|后天|下周|今晚|几小时后|周三|周末).*$", "follow_up_q", "时间锚点陈述"),
 
     # ────────────────────────────────────────────────────────────
     # share_exp_q: 经历查询 → event_type: share_experience
     # ────────────────────────────────────────────────────────────
-    (r"^去过.*哪里.*$", "share_exp_q", "share_experience", "去过哪里"),
-    (r"^做过.*什么.*$", "share_exp_q", "share_experience", "做过什么"),
-    (r"^经历.*什么.*$", "share_exp_q", "share_experience", "经历过什么"),
-    (r"^上次.*去.*$", "share_exp_q", "share_experience", "上次去"),
-    (r"^.*在.*呆过.*$", "share_exp_q", "share_experience", "在哪呆过"),
+    (r"^去过.*哪里.*$", "share_exp_q", "去过哪里"),
+    (r"^做过.*什么.*$", "share_exp_q", "做过什么"),
+    (r"^经历.*什么.*$", "share_exp_q", "经历过什么"),
+    (r"^上次.*去.*$", "share_exp_q", "上次去"),
+    (r"^.*在.*呆过.*$", "share_exp_q", "在哪呆过"),
     # 陈述句规则
-    (r"^.*(去过|做过|经历|体验).*$", "share_exp_q", "share_experience", "经历陈述"),
-    (r"^.*(昨天|上次|以前|曾经|之前).*$", "share_exp_q", "share_experience", "过去时间陈述"),
+    (r"^.*(去过|做过|经历|体验).*$", "share_exp_q", "经历陈述"),
+    (r"^.*(昨天|上次|以前|曾经|之前).*$", "share_exp_q", "过去时间陈述"),
 
     # ────────────────────────────────────────────────────────────
     # emotion_q: 情绪查询 → event_type: express_emotion
     # ────────────────────────────────────────────────────────────
-    (r"^.*当时.*心情.*$", "emotion_q", "express_emotion", "当时心情"),
-    (r"^.*那时候.*感觉.*$", "emotion_q", "express_emotion", "那时候感觉"),
-    (r"^.*什么.*情绪.*$", "emotion_q", "express_emotion", "什么情绪"),
-    (r"^.*感受.*怎么样.*$", "emotion_q", "express_emotion", "感受怎么样"),
+    (r"^.*当时.*心情.*$", "emotion_q", "当时心情"),
+    (r"^.*那时候.*感觉.*$", "emotion_q", "那时候感觉"),
+    (r"^.*什么.*情绪.*$", "emotion_q", "什么情绪"),
+    (r"^.*感受.*怎么样.*$", "emotion_q", "感受怎么样"),
     # 陈述句规则
-    (r"^.*(难过|开心|焦虑|生气|伤心|委屈|兴奋|沮丧|紧张|无助|感动|失望|满足|愤怒).*$", "emotion_q", "express_emotion", "情绪陈述"),
-    (r"^.*(感到|觉得|当时|那时候).*$", "emotion_q", "express_emotion", "感受陈述"),
+    (r"^.*(难过|开心|焦虑|生气|伤心|委屈|兴奋|沮丧|紧张|无助|感动|失望|满足|愤怒).*$", "emotion_q", "情绪陈述"),
+    (r"^.*(感到|觉得|当时|那时候).*$", "emotion_q", "感受陈述"),
 
     # ────────────────────────────────────────────────────────────
     # interaction_q: 互动/测试查询 → event_type: interaction, other
     # ────────────────────────────────────────────────────────────
-    (r"^测试.*什么.*$", "interaction_q", "interaction", "测试有什么"),
-    (r"^我们.*测试.*$", "interaction_q", "interaction", "我们测试"),
-    (r"^刚才.*测试.*$", "interaction_q", "interaction", "刚才测试"),
-    (r"^.*测试.*记录.*$", "interaction_q", "interaction", "测试记录"),
+    (r"^测试.*什么.*$", "interaction_q", "测试有什么"),
+    (r"^我们.*测试.*$", "interaction_q", "我们测试"),
+    (r"^刚才.*测试.*$", "interaction_q", "刚才测试"),
+    (r"^.*测试.*记录.*$", "interaction_q", "测试记录"),
 
     # ────────────────────────────────────────────────────────────
     # deep_recall: 深度回忆，全库检索
     # ────────────────────────────────────────────────────────────
-    (r"^说过.*什么.*$", "deep_recall", "all", "说过什么"),
-    (r"^聊过.*什么.*$", "deep_recall", "all", "聊过什么"),
-    (r"^记得.*什么.*$", "deep_recall", "all", "记得什么"),
-    (r"^之前.*说过.*$", "deep_recall", "all", "之前说过"),
-    (r"^上次.*聊.*$", "deep_recall", "all", "上次聊"),
-    (r"^过去.*经历.*$", "deep_recall", "all", "过去经历"),
-    (r"^有什么.*有趣.*$", "deep_recall", "all", "有什么有趣的"),
-    (r"^我们.*讨论.*$", "deep_recall", "all", "我们讨论"),
-    (r"^回忆.*一下.*$", "deep_recall", "all", "回忆一下"),
+    (r"^说过.*什么.*$", "deep_recall", "说过什么"),
+    (r"^聊过.*什么.*$", "deep_recall", "聊过什么"),
+    (r"^记得.*什么.*$", "deep_recall", "记得什么"),
+    (r"^之前.*说过.*$", "deep_recall", "之前说过"),
+    (r"^上次.*聊.*$", "deep_recall", "上次聊"),
+    (r"^过去.*经历.*$", "deep_recall", "过去经历"),
+    (r"^有什么.*有趣.*$", "deep_recall", "有什么有趣的"),
+    (r"^我们.*讨论.*$", "deep_recall", "我们讨论"),
+    (r"^回忆.*一下.*$", "deep_recall", "回忆一下"),
 ]
 
 
@@ -359,65 +360,69 @@ INTENT_EXAMPLES: Dict[str, List[str]] = {
 
 
 # ============================================================
-# 检索策略配置 — scope 与 event_type 严格对齐
+# SSOT：意图 → event_type 映射（检索 scope 与写入分类的唯一事实源）
+# ============================================================
+# 空列表 = 不收窄（全库检索）。deep_recall / default / casual_chat 均为全库。
+
+INTENT_EVENT_TYPES: Dict[str, List[str]] = {
+    "casual_chat":   [],
+    "identity_q":    ["identity"],
+    "preference_q":  ["preference"],
+    "boundary_q":    ["boundary"],
+    "relation_q":    ["relation_change"],
+    "follow_up_q":   ["follow_up", "commitment"],
+    "share_exp_q":   ["share_experience"],
+    "emotion_q":     ["express_emotion"],
+    "interaction_q": ["interaction", "other"],
+    "deep_recall":   [],
+    "default":       [],
+}
+
+# 合法事件细类（与 EventDetailType 枚举严格一致，启动时校验）
+VALID_EVENT_TYPES = frozenset(t.value for t in EventDetailType)
+
+
+def get_scope(intent: str) -> List[str]:
+    """检索 scope 统一派生：规则/语义/默认三条路径共用，杜绝多处维护漂移"""
+    return list(INTENT_EVENT_TYPES.get(intent, []))
+
+
+# ============================================================
+# 写入侧内容规则（陈述句 → event_type，仅高置信度命中）
+# ============================================================
+# 用于 classify_event_type 的第一层；读侧(问句)不适用本表。
+# 顺序敏感：commitment 必须先于 follow_up（"承诺/答应"与"约定/说好"词面高度重叠）。
+
+CONTENT_TYPE_RULES: List[Tuple[str, str]] = [
+    (r"(承诺|答应|保证|说好|发誓|绝不|一定会|一定要)", "commitment"),
+    (r"(不希望|不能|不要|禁止|忌讳|不想|不愿|底线|敏感|雷区|禁忌)", "boundary"),
+    (r"(名字|年龄|职业|身份|岁|来自|住在)", "identity"),
+    (r"(是|为|当).*(程序员|老师|医生|学生|工程师|设计师|研究生|公务员)", "identity"),
+    (r"(喜欢|不喜欢|讨厌|最爱|爱好|偏好)", "preference"),
+    (r"(关系|态度|印象)", "relation_change"),
+    (r"(难过|开心|焦虑|生气|伤心|委屈|兴奋|沮丧|紧张|无助|感动|失望|满足|愤怒|感到|情绪|心情)", "express_emotion"),
+    (r"(去过|做过|经历|体验|上次|以前|曾经|之前|昨天)", "share_experience"),
+    (r"(测试|游戏|互动)", "interaction"),
+    (r"(准备|计划|打算|安排|约定|明天|后天|下周|今晚|几小时后|周三|周末)", "follow_up"),
+]
+
+
+# ============================================================
+# 检索策略配置 — scope 统一由 get_scope(intent) 派生，此处只留 skip/top_k
 # ============================================================
 
 RETRIEVAL_STRATEGY: Dict[str, Dict] = {
-    "casual_chat": {
-        "skip": True,
-        "top_k": 0,
-        "scope": [],
-    },
-    "identity_q": {
-        "skip": False,
-        "top_k": 6,
-        "scope": ["identity"],
-    },
-    "preference_q": {
-        "skip": False,
-        "top_k": 6,
-        "scope": ["preference"],
-    },
-    "boundary_q": {
-        "skip": False,
-        "top_k": 4,
-        "scope": ["boundary"],
-    },
-    "relation_q": {
-        "skip": False,
-        "top_k": 4,
-        "scope": ["relation_change"],
-    },
-    "follow_up_q": {
-        "skip": False,
-        "top_k": 8,
-        "scope": ["follow_up", "commitment"],
-    },
-    "share_exp_q": {
-        "skip": False,
-        "top_k": 6,
-        "scope": ["share_experience"],
-    },
-    "emotion_q": {
-        "skip": False,
-        "top_k": 4,
-        "scope": ["express_emotion"],
-    },
-    "interaction_q": {
-        "skip": False,
-        "top_k": 8,
-        "scope": ["interaction", "other"],
-    },
-    "deep_recall": {
-        "skip": False,
-        "top_k": 8,
-        "scope": [],  # 空=全库检索
-    },
-    "default": {
-        "skip": False,
-        "top_k": 4,
-        "scope": [],
-    },
+    "casual_chat": {"skip": True, "top_k": 0},
+    "identity_q": {"skip": False, "top_k": 6},
+    "preference_q": {"skip": False, "top_k": 6},
+    "boundary_q": {"skip": False, "top_k": 4},
+    "relation_q": {"skip": False, "top_k": 4},
+    "follow_up_q": {"skip": False, "top_k": 8},
+    "share_exp_q": {"skip": False, "top_k": 6},
+    "emotion_q": {"skip": False, "top_k": 4},
+    "interaction_q": {"skip": False, "top_k": 8},
+    "deep_recall": {"skip": False, "top_k": 8},   # scope=[] → 全库
+    "default": {"skip": False, "top_k": 4},       # scope=[] → 全库
 }
 
 
@@ -439,46 +444,9 @@ class IntentType:
     DEFAULT = "default"
 
 
-class RetrievalScope:
-    """检索范围常量 — 与 memory_event_extractor.md 的 event_type 完全一致"""
-    IDENTITY = "identity"
-    PREFERENCE = "preference"
-    BOUNDARY = "boundary"
-    RELATION_CHANGE = "relation_change"
-    FOLLOW_UP = "follow_up"
-    COMMITMENT = "commitment"
-    SHARE_EXPERIENCE = "share_experience"
-    EXPRESS_EMOTION = "express_emotion"
-    INTERACTION = "interaction"
-    OTHER = "other"
-    # 特殊值
-    SKIP = "skip"
-    ALL = "all"
-
-
 # ============================================================
 # 意图结果结构
 # ============================================================
-
-# ============================================================
-# intent → event_type 映射（用于 classify_event_type）
-# ============================================================
-
-# 意图类型到 event_type 的映射，用于提取侧统一分类
-INTENT_TO_EVENT_TYPE: Dict[str, str] = {
-    "identity_q": "identity",
-    "preference_q": "preference",
-    "boundary_q": "boundary",
-    "relation_q": "relation_change",
-    "follow_up_q": "follow_up",
-    "share_exp_q": "share_experience",
-    "emotion_q": "express_emotion",
-    "interaction_q": "interaction",
-    "deep_recall": "other",
-    "casual_chat": "other",
-    "default": "other",
-}
-
 
 @dataclass
 class IntentResult:
@@ -488,3 +456,48 @@ class IntentResult:
     top_k: int
     skip: bool
     confidence: float = 1.0  # 规则匹配=1.0，语义匹配为实际相似度
+
+
+# ============================================================
+# 启动校验：SSOT / 规则库 / 检索策略 / 样例库 四方一致
+# ============================================================
+# 历史教训：同一映射曾在 INTENT_RULES.scope_str / RETRIEVAL_STRATEGY.scope /
+# INTENT_TO_EVENT_TYPE 三处各自维护、无约束无测试，导致规则路径与语义路径
+# scope 不一致、commitment 永远存不出来。此校验防止回归。
+
+def validate_event_type_consistency() -> None:
+    problems = []
+
+    # 1. SSOT 的每个 event_type 必须是合法细类
+    for intent, types in INTENT_EVENT_TYPES.items():
+        for t in types:
+            if t not in VALID_EVENT_TYPES:
+                problems.append(f"INTENT_EVENT_TYPES[{intent}] 含非法 event_type: {t}")
+
+    # 2. 规则库意图必须都在 SSOT 中
+    for _, intent, _ in INTENT_RULES:
+        if intent not in INTENT_EVENT_TYPES:
+            problems.append(f"INTENT_RULES 意图 {intent} 未在 INTENT_EVENT_TYPES 定义")
+
+    # 3. 检索策略与 SSOT 的意图集合一致
+    if set(RETRIEVAL_STRATEGY) != set(INTENT_EVENT_TYPES):
+        missing = set(INTENT_EVENT_TYPES) - set(RETRIEVAL_STRATEGY)
+        extra = set(RETRIEVAL_STRATEGY) - set(INTENT_EVENT_TYPES)
+        problems.append(f"RETRIEVAL_STRATEGY 与 INTENT_EVENT_TYPES 意图集不一致: 缺{missing} 多{extra}")
+
+    # 4. 语义样例库意图必须都在 SSOT 中
+    for intent in INTENT_EXAMPLES:
+        if intent not in INTENT_EVENT_TYPES:
+            problems.append(f"INTENT_EXAMPLES 意图 {intent} 未在 INTENT_EVENT_TYPES 定义")
+
+    # 5. 内容规则的目标类型必须合法
+    for pattern, target in CONTENT_TYPE_RULES:
+        if target not in VALID_EVENT_TYPES:
+            problems.append(f"CONTENT_TYPE_RULES 目标类型非法: {target}")
+
+    if problems:
+        raise ValueError("意图/事件类型配置不一致:\n  " + "\n  ".join(problems))
+
+
+# 导入即校验：配置不一致时启动直接失败，不带病运行
+validate_event_type_consistency()

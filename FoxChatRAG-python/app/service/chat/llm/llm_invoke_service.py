@@ -46,6 +46,20 @@ def _get_talkativeness_guidance(talkativeness: float) -> str:
     return _TALKATIVENESS_GUIDANCE[-1][1]
 
 
+def _get_latest_summary(user_id: str, llm_id: str) -> str:
+    """读取最近一次对话摘要（时间维度保底；写入见 memory_summary_service._summary_and_upload）"""
+    from app.common.constant.LLMChatConstant import LLMChatConstant, build_chat_key
+    from app.core.db.redis_client import redis_client
+
+    try:
+        key = build_chat_key(LLMChatConstant.CHAT_MEMORY, user_id, llm_id, LLMChatConstant.LATEST_SUMMARY)
+        value = redis_client.get(key)
+        return value if isinstance(value, str) else ""
+    except Exception as e:
+        logger.warning(f"【latest_summary】读取失败: {e}")
+        return ""
+
+
 async def _build_chat_messages(
     parsed: "ParsedMemories",
     history_msg: List[BaseMessage],
@@ -86,8 +100,17 @@ async def _build_chat_messages(
     )
     # 获取角色全局提示词
     soul = await PromptManager.get_soul("soul")
-    # 获取历史上下文
-    historical_context = relevant_memories_text if relevant_memories_text else parsed.memory_bank_summary
+    # 获取历史上下文：时间维度（地板）与语义维度（天花板）并存，互不替换。
+    # 旧逻辑 either/or：检索命中丢最近事件、检索为空丢摘要，均为负优化。
+    recent_summary = _get_latest_summary(user_id, llm_id)
+    context_parts = []
+    if relevant_memories_text:
+        context_parts.append(relevant_memories_text)
+    if parsed.memory_bank_summary:
+        context_parts.append(f"【最近事件】\n{parsed.memory_bank_summary}")
+    if recent_summary:
+        context_parts.append(f"【最近对话回顾】\n{recent_summary}")
+    historical_context = "\n\n".join(context_parts)
     # 构建静态锚点
     static_anchors = build_static_anchors(
         soul=soul or "",

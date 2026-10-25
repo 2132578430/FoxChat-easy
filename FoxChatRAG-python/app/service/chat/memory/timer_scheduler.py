@@ -115,6 +115,15 @@ async def timer_summary_check_single(user_id: str, llm_id: str) -> None:
     # Check timer interval elapsed
     current_time = time.time()
     last_summary_time = get_last_summary_time(user_id, llm_id)
+
+    # 时间戳缺失（首次对话/清空记忆/TTL 2h 过期）= 计时未开始：只建立基线，不触发。
+    # 旧逻辑把缺失当 0.0 → elapsed 巨大 → 消息一够 18 条立即抢跑，
+    # 快聊的 30 条阈值（nodes.py trigger_summary）永远轮不到。
+    if last_summary_time <= 0:
+        reset_timer(user_id, llm_id)
+        logger.info(f"[Timer] {user_id}:{llm_id} 无计时基线，已初始化（本次不触发）")
+        return
+
     elapsed = current_time - last_summary_time
 
     if elapsed < TIMER_CHECK_INTERVAL:
