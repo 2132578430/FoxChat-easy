@@ -1,7 +1,10 @@
 <template>
   <div class="home-container theme-qq">
     <!-- Sidebar -->
-    <AppSidebar />
+    <div class="sidebar-wrapper" :class="{ 'mobile-open': showSidebar }" @click="closeMobileSidebar">
+      <AppSidebar />
+    </div>
+    <div v-if="showSidebar" class="sidebar-backdrop" @click="closeMobileSidebar"></div>
 
     <!-- Chat Area -->
     <div class="chat-area">
@@ -19,17 +22,22 @@
       <!-- Normal Chat Interface -->
       <template v-else>
         <div class="chat-header">
-          <span class="chat-title" v-if="showRag">狐狸RAG</span>
-          <span class="chat-title" v-else-if="currentChatType === 'group'">{{ currentGroup.groupName || currentGroup.name || '群聊' }}</span>
-          <span class="chat-title" v-else>
-            {{ currentFriend.nickname || currentFriend.username || '选择好友开始聊天' }}
-            <span v-if="currentFriend.emotion && (currentFriend.role === 1 || currentFriend.isOldFriend)" class="emotion-emoji">{{ emotionToEmoji(currentFriend.emotion) }}</span>
-            <span v-if="isLlmTyping && (currentFriend.role === 1 || currentFriend.isOldFriend)" class="typing-indicator">
-              <span class="typing-dot"></span>
-              <span class="typing-dot"></span>
-              <span class="typing-dot"></span>
+          <div class="chat-header-left">
+            <button class="mobile-menu-btn" type="button" aria-label="打开侧边栏" @click="showSidebar = true">
+              <el-icon><Menu /></el-icon>
+            </button>
+            <span class="chat-title" v-if="showRag">狐狸RAG</span>
+            <span class="chat-title" v-else-if="currentChatType === 'group'">{{ currentGroup.groupName || currentGroup.name || '群聊' }}</span>
+            <span class="chat-title" v-else>
+              {{ currentFriend.nickname || currentFriend.username || '选择好友开始聊天' }}
+              <span v-if="currentFriend.emotion && (currentFriend.role === 1 || currentFriend.isOldFriend)" class="emotion-emoji">{{ emotionToEmoji(currentFriend.emotion) }}</span>
+              <span v-if="isLlmTyping && (currentFriend.role === 1 || currentFriend.isOldFriend)" class="typing-indicator">
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+                <span class="typing-dot"></span>
+              </span>
             </span>
-          </span>
+          </div>
           <!-- 仅私聊显示多选操作 -->
           <div class="chat-actions" v-if="!showRag && currentChatType === 'private' && (currentFriend.userId || currentFriend.id)">
             <transition name="fade-scale" mode="out-in">
@@ -153,6 +161,7 @@
 <script setup>
 import { computed, ref, onMounted, onUnmounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import { Menu } from '@element-plus/icons-vue';
 import { FoxButton } from '@/components/FoxUI';
 
 // Stores
@@ -222,6 +231,12 @@ const { handleOpenLlmAvatarCropper, handleAvatarSuccess, handleAvatarBlob } = us
 const messageListRef = ref(null);
 const friendListRef = ref(null);
 const groupListRef = ref(null);
+
+// 移动端侧边栏抽屉
+const showSidebar = ref(false);
+const closeMobileSidebar = () => {
+  showSidebar.value = false;
+};
 
 // 模型初始化状态轮询：状态 0/1 期间持续轮询，配置保存/手动重试后强制轮询 60 秒
 const LLM_STATUS_POLL_INTERVAL = 5000;
@@ -348,6 +363,28 @@ onUnmounted(() => {
   overflow: hidden;
   transition: background 0.5s ease;
   position: relative;
+}
+
+.sidebar-wrapper {
+  display: flex;
+  flex-shrink: 0;
+  height: 100%;
+}
+
+.sidebar-backdrop {
+  display: none;
+}
+
+.mobile-menu-btn {
+  display: none;
+}
+
+.chat-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
 }
 
 /* ============================================
@@ -538,6 +575,53 @@ onUnmounted(() => {
 }
 
 @media (max-width: 768px) {
+  .sidebar-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: auto;
+    z-index: 31;
+    padding-left: env(safe-area-inset-left, 0px);
+    background: rgba(247, 249, 252, 0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 8px 0 24px rgba(0, 0, 0, 0.12);
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .sidebar-wrapper.mobile-open {
+    transform: translateX(0);
+  }
+
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    background: rgba(17, 24, 39, 0.28);
+  }
+
+  .mobile-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 20px;
+  }
+
+  .mobile-menu-btn:active {
+    background: var(--accent-hover);
+  }
+
   .chat-header {
     padding: 10px 12px;
     gap: 8px;
@@ -560,7 +644,7 @@ onUnmounted(() => {
   .panel-backdrop {
     display: block;
     position: absolute;
-    inset: 0 0 0 72px;
+    inset: 0;
     z-index: 20;
     background: rgba(17, 24, 39, 0.28);
   }

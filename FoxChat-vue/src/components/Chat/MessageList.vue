@@ -726,10 +726,50 @@ defineExpose({
 
   .message-item {
     max-width: 82%;
+    gap: 6px;
   }
 
   .message-item-container {
     gap: 6px;
+  }
+
+  /* 气泡与动作整体缩至桌面端约 85% */
+  .msg-avatar.el-avatar {
+    width: 32px !important;
+    height: 32px !important;
+    line-height: 32px;
+  }
+
+  .bubble-external-time {
+    font-size: 10px;
+    margin-bottom: 3px;
+    padding: 0 3px;
+  }
+
+  .emotion-emoji {
+    font-size: 12px;
+  }
+
+  .msg-bubble {
+    padding: 8px 12px;
+    border-radius: 7px;
+  }
+
+  .bubble-content {
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  .action-tag {
+    font-size: 11px;
+    line-height: 1.6;
+    margin: 5px 0 2px;
+    letter-spacing: 0.2px;
+  }
+
+  .action-tag::before,
+  .action-tag::after {
+    margin: 0 8px;
   }
 }
 
