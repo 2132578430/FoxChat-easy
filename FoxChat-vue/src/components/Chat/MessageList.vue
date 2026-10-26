@@ -325,7 +325,7 @@ defineExpose({
 .chat-messages {
   flex: 1;
   min-height: 0;
-  padding: 15px 15px 130px;
+  padding: 15px 15px 170px;
   overflow-y: auto;
   overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
@@ -720,7 +720,7 @@ defineExpose({
 
 @media (max-width: 768px) {
   .chat-messages {
-    padding: 12px 10px calc(96px + env(safe-area-inset-bottom, 0px));
+    padding: 12px 10px calc(130px + env(safe-area-inset-bottom, 0px));
     gap: 10px;
   }
 

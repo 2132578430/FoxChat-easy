@@ -127,8 +127,8 @@ const config = reactive({
   modelName: props.initialConfig.modelName || '',
   apiKey: props.initialConfig.apiKey || '',
   baseUrl: props.initialConfig.baseUrl || '',
-  temperature: props.initialConfig.temperature || scenarioDefaults[props.scenario]?.temperature || 0.5,
-  maxTokens: props.initialConfig.maxTokens || scenarioDefaults[props.scenario]?.maxTokens || 2048,
+  temperature: props.initialConfig.temperature ?? scenarioDefaults[props.scenario]?.temperature ?? 0.5,
+  maxTokens: props.initialConfig.maxTokens ?? scenarioDefaults[props.scenario]?.maxTokens ?? 2048,
   responseFormat: props.initialConfig.responseFormat || scenarioDefaults[props.scenario]?.responseFormat || 'text'
 });
 
@@ -253,15 +253,20 @@ watch(() => props.initialConfig, (newConfig) => {
   config.modelName = newConfig.modelName || '';
   config.apiKey = newConfig.apiKey || '';
   config.baseUrl = newConfig.baseUrl || '';
-  config.temperature = newConfig.temperature || scenarioDefaults[props.scenario]?.temperature || 0.5;
-  config.maxTokens = newConfig.maxTokens || scenarioDefaults[props.scenario]?.maxTokens || 2048;
+  config.temperature = newConfig.temperature ?? scenarioDefaults[props.scenario]?.temperature ?? 0.5;
+  config.maxTokens = newConfig.maxTokens ?? scenarioDefaults[props.scenario]?.maxTokens ?? 2048;
   config.responseFormat = newConfig.responseFormat || scenarioDefaults[props.scenario]?.responseFormat || 'text';
   testResult.show = false; testResult.success = false;
   testedSignature.value = ''; baseUrlError.value = '';
 }, { deep: true });
 
 const setConfig = (newConfig) => {
-  config.modelName = newConfig.modelName || ''; config.apiKey = newConfig.apiKey || ''; config.baseUrl = newConfig.baseUrl || '';
+  config.modelName = newConfig.modelName || '';
+  config.apiKey = newConfig.apiKey || '';
+  config.baseUrl = newConfig.baseUrl || '';
+  config.temperature = newConfig.temperature ?? scenarioDefaults[props.scenario]?.temperature ?? 0.5;
+  config.maxTokens = newConfig.maxTokens ?? scenarioDefaults[props.scenario]?.maxTokens ?? 2048;
+  config.responseFormat = newConfig.responseFormat || scenarioDefaults[props.scenario]?.responseFormat || 'text';
   testResult.show = false; testResult.success = false;
   testedSignature.value = ''; baseUrlError.value = '';
 };

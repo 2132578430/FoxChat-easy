@@ -188,11 +188,15 @@ async def _extract_initial_memories(experience: str, config_map: dict) -> list[d
     )
     events = _normalize_events(try_parse_json(result))
 
-    timestamp = datetime.now().strftime("%H%M%S%f")
+    now = datetime.now()
+    timestamp = now.strftime("%H%M%S%f")
+    today = now.strftime("%Y-%m-%d")
     for index, event in enumerate(events):
         content_hash = hashlib.md5(event["content"].encode()).hexdigest()[:12]
         event["event_id"] = f"evt_{timestamp}_{index}_{content_hash}"
         event["memory_source"] = INITIAL_MEMORY_SOURCE
+        event["occurred_at"] = today
+        event["last_seen_at"] = today
         event.setdefault("actor", "UNKNOWN")
         event.setdefault("category", "event")
         event.setdefault("type", "event")

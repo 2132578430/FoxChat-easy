@@ -28,6 +28,28 @@
 
       <!-- Right: Config Form -->
       <div class="config-main" v-loading="isLoadingConfig">
+        <div class="import-bar">
+          <span class="import-label">从已有创造物导入</span>
+          <FoxSelect
+            v-model="importSourceId"
+            :options="importSourceOptions"
+            :disabled="importSourceOptions.length === 0 || isImporting"
+            placeholder="选择创造物"
+            class="import-select"
+          />
+          <FoxButton
+            type="ghost"
+            size="small"
+            :loading="isImporting"
+            :disabled="!importSourceId || isImporting"
+            @click="handleImportConfig"
+          >导入</FoxButton>
+          <label class="overwrite-toggle">
+            <input type="checkbox" v-model="overwriteExisting" />
+            覆盖已有
+          </label>
+          <span v-if="importSourceOptions.length === 0" class="import-empty">暂无其他创造物</span>
+        </div>
         <el-tabs v-model="activeTab" class="config-tabs">
           <el-tab-pane label="外观" name="appearance">
             <div class="appearance-form">
@@ -76,7 +98,7 @@
 
 <script setup>
 import { ref, reactive, computed, watch, onMounted } from 'vue';
-import { FoxToast, FoxButton, FoxAvatar, FoxInput } from '@/components/FoxUI';
+import { FoxToast, FoxButton, FoxAvatar, FoxInput, FoxSelect } from '@/components/FoxUI';
 import ScenarioConfigForm from './ScenarioConfigForm.vue';
 import { saveConfigsBatch, getConfigs } from '@/api/llmConfig';
 import { updateLlmFriend } from '@/api/friend';
@@ -153,6 +175,21 @@ const pendingConfigs = reactive({
 });
 const isSavingAll = ref(false);
 
+// Import config from another character
+const importSourceId = ref('');
+const isImporting = ref(false);
+const overwriteExisting = ref(false);
+
+const importSourceOptions = computed(() => {
+  const currentId = String(currentLlmId.value || '');
+  return props.friendList
+    .filter(friend => String(friend.userId || friend.id || friend.llmId) !== currentId)
+    .map(friend => ({
+      label: friend.nickname || friend.username || '未命名创造物',
+      value: String(friend.userId || friend.id || friend.llmId)
+    }));
+});
+
 // Refs for form components
 const chatForm = ref(null);
 const memoryForm = ref(null);
@@ -160,12 +197,35 @@ const summaryForm = ref(null);
 const extractionForm = ref(null);
 const emotionForm = ref(null);
 
+const scenarioFormRefs = {
+  chat: chatForm,
+  memory: memoryForm,
+  summary: summaryForm,
+  extraction: extractionForm,
+  emotion: emotionForm
+};
+const getScenarioForm = (scenario) => scenarioFormRefs[scenario]?.value || null;
+
 const scenarioNames = {
   chat: '聊天对话',
   memory: '记忆存储',
   summary: '对话总结',
   extraction: '信息提取',
   emotion: '情绪识别'
+};
+
+const scenarioDefaults = {
+  chat: { temperature: 0.8, maxTokens: 4096, responseFormat: 'text' },
+  memory: { temperature: 0.3, maxTokens: 2048, responseFormat: 'text' },
+  summary: { temperature: 0.5, maxTokens: 2048, responseFormat: 'text' },
+  extraction: { temperature: 0.0, maxTokens: 2048, responseFormat: 'json_object' },
+  emotion: { temperature: 0.0, maxTokens: 50, responseFormat: 'text' }
+};
+
+const toNumber = (value, fallback) => {
+  if (value === null || value === undefined || value === '') return fallback;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : fallback;
 };
 
 // Helper functions
@@ -309,59 +369,106 @@ const handleTestResult = ({ scenario, success, error, silent }) => {
 
 // One-click config: copy current tab's config to all other scenarios
 const handleOneClickConfig = () => {
-  // 从当前活动的 tab 获取配置
-  const currentFormRef = activeTab.value === 'chat' ? chatForm.value :
-                        activeTab.value === 'memory' ? memoryForm.value :
-                        activeTab.value === 'summary' ? summaryForm.value :
-                        activeTab.value === 'extraction' ? extractionForm.value :
-                        emotionForm.value;
+  const currentFormRef = getScenarioForm(activeTab.value);
 
   const currentConfig = currentFormRef?.getConfig?.();
-  
+
   if (!currentConfig || !currentConfig.modelName) {
     FoxToast.warning('请先在当前场景填写配置');
     return;
   }
-  
+
   const configToCopy = {
     modelName: currentConfig.modelName,
     apiKey: currentConfig.apiKey,
     baseUrl: currentConfig.baseUrl
   };
-  
-  // Get scenario-specific defaults
-  const scenarioDefaults = {
-    chat: { temperature: 0.8, maxTokens: 4096, responseFormat: 'text' },
-    memory: { temperature: 0.3, maxTokens: 2048, responseFormat: 'text' },
-    summary: { temperature: 0.5, maxTokens: 2048, responseFormat: 'text' },
-    extraction: { temperature: 0.0, maxTokens: 2048, responseFormat: 'json_object' },
-    emotion: { temperature: 0.0, maxTokens: 50, responseFormat: 'text' }
-  };
-  
-  // Apply to all forms
+
   ['chat', 'memory', 'summary', 'extraction', 'emotion'].forEach(scenario => {
-    const formRef = scenario === 'chat' ? chatForm.value :
-                   scenario === 'memory' ? memoryForm.value :
-                   scenario === 'summary' ? summaryForm.value :
-                   scenario === 'extraction' ? extractionForm.value :
-                   emotionForm.value;
-    
-    if (formRef) {
-      const fullConfig = {
-        ...configToCopy,
-        ...scenarioDefaults[scenario]
-      };
-      formRef.setConfig(fullConfig);
-    }
-    
-    // Update local configs state
-    configs[scenario] = {
+    const formRef = getScenarioForm(scenario);
+    const fullConfig = {
       ...configToCopy,
       ...scenarioDefaults[scenario]
     };
+
+    if (formRef) {
+      formRef.setConfig(fullConfig);
+    }
+
+    configs[scenario] = fullConfig;
   });
-  
+
   FoxToast.success('已将当前配置复制到所有场景');
+};
+
+const handleImportConfig = async () => {
+  if (!importSourceId.value) {
+    FoxToast.warning('请先选择要导入的创造物');
+    return;
+  }
+  if (String(importSourceId.value) === String(currentLlmId.value)) {
+    FoxToast.warning('不能从当前创造物导入');
+    return;
+  }
+
+  isImporting.value = true;
+  try {
+    const response = await getConfigs(importSourceId.value);
+    if (response.code !== 1000) {
+      FoxToast.error(response.msg || '读取源配置失败');
+      return;
+    }
+
+    const sourceConfigs = Array.isArray(response.data) ? response.data : [];
+    if (sourceConfigs.length === 0) {
+      FoxToast.warning('该创造物还没有模型配置');
+      return;
+    }
+
+    let imported = 0;
+    let skipped = 0;
+    sourceConfigs.forEach(source => {
+      const scenario = source.scenario;
+      if (!Object.prototype.hasOwnProperty.call(configs, scenario)) return;
+
+      const formRef = getScenarioForm(scenario);
+      if (!formRef) return;
+
+      const hasExisting = Boolean(configs[scenario]?.modelName);
+      if (hasExisting && !overwriteExisting.value) {
+        skipped++;
+        return;
+      }
+
+      const importedConfig = {
+        modelName: source.modelName || '',
+        apiKey: source.modelApiKey || '',
+        baseUrl: source.modelBaseUrl || '',
+        temperature: toNumber(source.modelTemperature, scenarioDefaults[scenario]?.temperature ?? 0.5),
+        maxTokens: toNumber(source.modelMaxTokens, scenarioDefaults[scenario]?.maxTokens ?? 2048),
+        responseFormat: source.modelResponseFormat || scenarioDefaults[scenario]?.responseFormat || 'text'
+      };
+
+      configs[scenario] = importedConfig;
+      formRef.setConfig(importedConfig);
+      testResults[scenario] = false;
+      pendingConfigs[scenario] = null;
+      imported++;
+    });
+
+    if (imported === 0) {
+      FoxToast.warning(skipped > 0 ? '当前角色已有配置；如需替换，请勾选“覆盖已有”' : '没有可导入的场景');
+      return;
+    }
+
+    const suffix = skipped > 0 ? `，跳过 ${skipped} 个已有配置` : '';
+    FoxToast.success(`已导入 ${imported} 个场景配置${suffix}，可直接点“保存所有配置”`);
+  } catch (error) {
+    console.error('导入配置失败:', error);
+    FoxToast.error('导入配置失败: ' + (error.message || '网络错误'));
+  } finally {
+    isImporting.value = false;
+  }
 };
 
 const handleSaveAll = async () => {
@@ -388,8 +495,8 @@ const handleSaveAll = async () => {
           modelName: config.modelName,
           modelApiKey: config.apiKey,
           modelBaseUrl: config.baseUrl,
-          modelTemperature: config.temperature || 0.5,
-          modelMaxTokens: config.maxTokens || 2048,
+          modelTemperature: config.temperature ?? 0.5,
+          modelMaxTokens: config.maxTokens ?? 2048,
           modelResponseFormat: config.responseFormat || 'text'
         });
       }
@@ -444,6 +551,7 @@ watch(() => props.friendList, (newList) => {
 // Watch currentLlmId to load configs
 watch(currentLlmId, (newLlmId) => {
   if (newLlmId) {
+    importSourceId.value = '';
     loadConfigs(newLlmId);
   }
 }, { immediate: true });
@@ -590,6 +698,39 @@ const handleSaveAppearance = async () => {
   background: var(--bg-card, #fff);
 }
 
+/* Import bar */
+.import-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--border-light, #eee);
+  background: var(--bg-card, #fff);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+.import-label {
+  font-size: 12px;
+  color: var(--text-secondary, #909399);
+  white-space: nowrap;
+}
+.import-select { width: 200px; }
+.overwrite-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-secondary, #606266);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+.overwrite-toggle input { accent-color: var(--accent-color, #0084ff); }
+.import-empty {
+  font-size: 12px;
+  color: var(--text-secondary, #909399);
+}
+
 /* Tabs */
 .config-tabs {
   flex: 1;
@@ -674,6 +815,17 @@ const handleSaveAppearance = async () => {
 @media (max-width: 768px) {
   .panel-header {
     padding: 10px 12px;
+  }
+
+  .import-bar {
+    padding: 8px 12px;
+    gap: 6px;
+  }
+
+  .import-select {
+    flex: 1 1 140px;
+    width: auto;
+    min-width: 120px;
   }
 
   .panel-body {

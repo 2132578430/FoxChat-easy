@@ -67,8 +67,14 @@ public class LlmUserServiceImpl extends ServiceImpl<LlmUserMapper, LlmUser>
         String partnerName = friendDto.getPartnerName();
         String experience = friendDto.getExperience();
 
-        // 拼接主语信息，降低模型识别错主人的概率
-        String fullExperience = "以下为你与我的经历。你应该称呼我为" + myName + "，你的名字是" + partnerName + "。用户描述经历原文：" + experience;
+        // 显式标注双方身份，降低模型识别错主人的概率
+        String fullExperience =
+                "以下内容描述用户与AI角色的初始设定。\n"
+              + "用户：" + myName + "\n"
+              + "AI角色：" + partnerName + "\n"
+              + "原文中的“你”指AI角色" + partnerName + "，“我”指用户" + myName + "；"
+              + "“" + partnerName + "：”只是名称标签，不是说话人。\n"
+              + "用户描述原文：\n" + experience;
 
         llm.setLlmName(friendDto.getNickname());
         llm.setMemoryContent(fullExperience);
